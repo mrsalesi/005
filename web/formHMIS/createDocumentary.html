@@ -1,0 +1,298 @@
+<style>
+    @media print {
+        #btnPrintDocumentary{
+            display: none;
+        }
+    }
+</style>
+<div class="sh-breadcrumb">
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="http://medyarweb.ir">مدیار</a>
+        <a class="breadcrumb-item" href="http://medyarweb.ir">MedYar</a>
+        <span class="breadcrumb-item active">مدیریت اطلاعات سازمانی</span>
+    </nav>
+</div><!-- sh-breadcrumb --
+-->      <div class="sh-pagetitle">
+
+    <div class="sh-pagetitle-left">
+        <div class="sh-pagetitle-icon"><i class="icon ion-ios-gear mg-t-3"></i></div>
+        <div class="sh-pagetitle-title">
+            <span>ایجاد مستند</span>
+            <h2>مدیریت مستندات سازمانی</h2>
+        </div><!-- sh-pagetitle-left-title -->
+    </div><!-- sh-pagetitle-left -->
+</div><!-- sh-pagetitle -->
+
+
+
+<div class="card bd-primary mg-t-20">
+    <div class="card-header bg-primary tx-white">اطلاع رسانی سازمانی </div>
+    <div class="card-body pd-sm-30">
+        <div class="row">
+            <input type="hidden" id="createDocumentary_id" name="id" />
+            <div class="col-lg-12">
+                عنوان :
+                <input class="form-control" id="createDocumentary_title" name="createDocumentary_title" placeholder="عنوان " type="text">
+            </div>
+             <div class="col-lg-3">
+                کد فرم:
+                <input class="form-control" id="createDocumentary_code" name="createDocumentary_code" placeholder="کد فرم" type="text">
+            </div>
+             <div class="col-lg-3">
+               تاریخ ایجاد فرم:
+                <input class="form-control"  placeholder="تاریخ ایجاد فرم" id="createDocumentary_createDate" type="text">
+            </div>
+            <div class="col-lg" >
+                دسته  :                                                
+                <div class="col-lg-12" >
+                    <select class="form-control col-lg-11" id="createDocumentary_category" name="createDocumentary_category" style="float: right">
+                    </select>
+                    <input class="form-control col-lg-11" id='createDocumentary_category1'  name='createDocumentary_category1' style="display: none;width: 100%;border-color: blue; float: right" /> 
+                    <button class="btn btn-success btn-block  col-lg-1" onclick="hmisCreateDocumentary.changeSelectToInputCategory()">
+                        ...</button>
+                </div>
+
+            </div>
+
+        </div><!-- row -->
+        <div class="row">
+            <div class="col-lg-3" >
+                مسئول مستند
+                <!--آپسن ها را از جدول نقش ها بیاورد-->
+                <!--<div class="form-group" style=" margin-bottom: 20px;" >-->
+                <select  id="createDocumentary_responsibleDocumentary" name="createDocumentary_responsibleDocumentary"  class="form-control">   
+                </select>
+                <!--                        </div>-->
+            </div>
+           
+            <div class="col-lg-3">
+                تاریخ بازنگری :
+                <input class="form-control" id="createDocumentary_revisionDate" name="createDocumentary_revisionDate" placeholder="تاریخ بازنگری" type="text">
+            </div>
+
+            <div class="col-lg-3">
+                تاریخ ابلاغ :
+                <input class="form-control" id="createDocumentary_date" name="createDocumentary_date" placeholder="تاریخ" type="text">
+            </div>
+            <div class="col-lg-3">
+                تاریخ بازنگری بعدی:
+                <input class="form-control" id="createDocumentary_revisionDateNext" name="createDocumentary_revisionDateNext" placeholder="تاریخ بازنگری بعدی" type="text">
+            </div>
+            <div class="col-lg-3" >
+                ابلاغ کننده
+                <!--آپسن ها را از جدول نقش ها بیاورد-->
+                <!--<div class="form-group" style=" margin-bottom: 20px;" >-->
+                <select  id="createDocumentary_communicator" name="createDocumentary_communicator"  class="form-control">   
+                </select>
+                <!--                        </div>-->
+            </div>
+
+            <div class="col-lg-6" >
+                گیرندگان بر اساس نقش
+                <select  id="createDocumentary_reciversRoles" name="createDocumentary_reciversRoles"  class="rolesForCreateDocs form-control" multiple>   
+                </select>
+            </div>
+            <div class="col-lg-6" >
+                گیرندگان بر اساس نام کاربری
+                <select  id="createDocumentary_reciversUsers" name="createDocumentary_reciversUsers"  class="usersForCreateDocs form-control" multiple>   
+                </select>
+                <!--                        </div>-->
+            </div>
+        </div><!-- row -->
+
+        <p>خلاصه مطلب را وارد کنید:</p>
+        <textarea  class="form-control is-valid mg-t-20" id="createDocumentary_summary"  name="createDocumentary_summary"  placeholder="">
+
+        </textarea>
+
+
+        <div class="card bd-primary mg-t-20">
+            <div class="card-header bg-primary tx-white">شرح کامل</div>
+            <div class="card-body pd-sm-30">
+                <p class="mg-b-20 mg-sm-b-30">پیوست فایل</p>
+                <div class="row" style="">
+                    <div class="col-lg" style="margin-button:5px">
+                        <div>
+                            فایل1
+                        </div>
+
+                        <input id="createDocumentary_attachmentfile1" name="createDocumentary_attachmentfile1" type="hidden">
+                        <input id="createDocumentary_attachmentfileTitle1" name="createDocumentary_attachmentfileTitle1" type="hidden">
+                        <img id="PicPreviewFile1"  name="PicPreviewFile1" class="img-thumbnail" src="img/preview.jpg" style="float:right;width: 50%">
+                        <div class="row">
+                            <input class="btn btn-primary" id="sendFile1" type="submit" value="ارسال">
+                            <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                            <input id="createDocumentary_file1" name="createDocumentary_file1" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                            <span id="user_file1"  class="form-control"></span>
+                            عنوان فایل 1
+                            <input id="createDocumentary_titleFile1" name="createDocumentary_titleFile1" class="form-control" />
+                            <!--<span class="form-control"></span>-->
+                        </div>
+                        <!--<input id="title1" disabled="disabled"/>-->
+                        <a   id="Downloadfile1" href="" style="display: none" target="_blank">
+                            دانلود 
+                        </a>
+                    </div>
+                    <br/>
+                    <div class="col-lg " style="margin-button:10px">
+                        <div>
+                            فایل2</div>
+                        <input id="createDocumentary_attachmentfile2" name="createDocumentary_attachmentfile2" type="hidden">
+                        <input id="createDocumentary_attachmentfileTitle2" name="createDocumentary_attachmentfileTitle2" type="hidden">
+                        <img id="PicPreviewFile2"  name="PicPreviewFile2" class="img-thumbnail" src="img/preview.jpg" style="float:right;width: 50%">
+                        <div class="row">
+                            <input class="btn btn-primary" id="sendFile2" type="submit" value="ارسال">
+                            <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                            <input id="createDocumentary_file2" name="createDocumentary_file2" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                            <span id="user_file2"  class="form-control"></span>
+                            عنوان فایل 2
+                            <input id="createDocumentary_titleFile2" name="createDocumentary_titleFile2" class="form-control"/>
+                            <!--<span class="form-control"></span>-->
+                        </div>
+                        <a  id="Downloadfile2" href="" style="display: none" target="_blank">
+                            دانلود
+                        </a>
+                    </div>
+                    <br/>
+                    <div class="col-lg" style="margin-button:5px">
+                        <div>  فایل3</div>
+                        <input id="createDocumentary_attachmentfile3" name="createDocumentary_attachmentfile3" type="hidden">
+                        <input id="createDocumentary_attachmentfileTitle3" name="createDocumentary_attachmentfileTitle3" type="hidden">
+
+                        <img id="PicPreviewFile3"  name="PicPreviewFile3" class="img-thumbnail" src="img/preview.jpg" style="float:right;width: 50%">
+                        <div class="row">
+                            <input class="btn btn-primary" id="sendFile3" type="submit" value="ارسال">
+                            <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                            <input id="createDocumentary_file3" name="createDocumentary_file3" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                            <span id="user_file3"  class="form-control"></span>
+                            عنوان فایل 3
+                            <input id="createDocumentary_titleFile3" name="createDocumentary_titleFile3" class="form-control"/>
+
+                        </div>
+
+                        <a   id="Downloadfile3" href="" style="display: none" target="_blank">
+                            دانلود
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg">
+
+                        <textarea class="summernote" id="createDocumentary_htmlContent" name="createDocumentary_htmlContent"  rows="9" cols="58"  style="margin-top: 30px;" ></textarea>
+
+                    </div>
+
+                </div>
+                <div  id="rows20" style='display:none'>
+                    <div class='row col-lg-12 addSigner' id='row'>
+                        <div class="col-lg-3">
+                            عنوان امضا کننده
+                            <input class="form-control" placeholder="تهیه کننده,تایید کننده,ابلاغ کننده" id="createDocumentary_signatory_title_x" name="createDocumentary_signatory_title_x"  type="text">
+                        </div>
+                        <div class="col-lg-3">
+                            فرد امضا کننده
+                            <div>
+                                <select id="createDocumentary_signatory_user_x" name="createDocumentary_signatory_user_x" class="form-group signerDivTemp"  onchange="hmisRole.getUeserRolesSelectOptionByUserId($(this).val(), '#createDocumentary_signatory_role_x');"   >   
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            سمت امضا کننده
+                            <input type="text" style="" id="signatory_role_x" class="form-control" name="createDocumentary_signatory_role_x" />
+                            <select  class="form-control" id="createDocumentary_signatory_role_x" onclick="hmisCreateDocumentary.setRolInTextField(this);">
+                            </select>
+
+                        </div>
+                        <div class='col-lg-3'>
+                            <button class="btn btn-outline-danger btn-block mg-t-20 mg-b-20  buttonRemove">حذف</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="signatorys"></div><!-- این دیو برای نمایش کسانی که قبلا امضا کرده اند -->
+                <div id="signatorysAdd"></div><!-- این دیو برای افزودن امضا کننده وحذف ان امضا کننده است -->
+                <div class='col-lg-12'>
+                    <div class='col-lg-12'>
+                        <button class="btn btn-success btn-block mg-b-10" id="add" style="margin-top: 16px;" > <i class="fa fa-plus mg-t-3" style="padding-left: 10px;"></i>افزودن امضا کننده</button>
+                        <!--<div class="sh-pagetitle-icon"><a  onclick="window.print();"><i class="fa fa-plus mg-t-3"></i></a></div>-->
+                    </div>
+                </div>
+                <div class="col-lg-2 mg-t-20 row"> 
+                    <div class="mg-t-20  col-lg-6" id="copyDocumentary">
+                        <div class="sh-pagetitle-icon"><a  onclick="hmisCreateDocumentary.copyDocumentary();"><i class="fa fa-clone mg-t-3"></i></a></div>
+
+                    </div>
+
+                    <div class="mg-t-20  col-lg-6" id="printBtnDoc">
+                    </div>
+
+                </div>
+
+
+
+            </div><!-- card -->
+        </div><!-- sh-pagebody -->
+    </div><!-- card-body -->
+</div><!-- card -->        
+<div class="row col-lg-12">
+    <div class="mg-t-20  col-lg">
+        <button  class="btn btn-outline-secondary mg-b-10  btn-block" onclick="hmisCreateDocumentary.m_show_tbl();">بازگشت </button>                
+    </div><!-- col -->
+    <div id="CreateDocumentary_button" class="col-lg-9 mg-t-20 row">            
+    </div>
+</div><!-- card -->
+<script>
+//    $('#btnPrintDocumentary').click(function () {
+//        var divToPrint = document.getElementById('createDocumentary_htmlContent');
+//        var popupWin = window.open('', '_blank', 'width=300,height=300');
+//        popupWin.document.open();
+//        popupWin.document.write('<html><body onload="window.print()">' + divToPrint.innerHTML + '</html>');
+//        popupWin.document.close();
+//    });
+
+    $('#btnPrintDocumentary').click(function () {
+        var elementRef = document.getElementById('createDocumentary_htmlContent');
+        var windowUrl = 'about:blank';
+        var uniqueName = new Date();
+        var windowName = 'Print' + uniqueName.getTime();
+        var printWindow = window.open(windowUrl, windowName, '');
+        printWindow.document.write(elementRef.value);
+        printWindow.document.write('<link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>');
+        printWindow.document.write('<style>div{direction:rtl!important}</style>');
+
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+        printWindow.close();
+
+    });
+
+    $('#add').click(function () {
+        $('#createDocumentary_signatory_role_x').show();
+        var i = 1;
+        var avalable = $(".signerDiv");
+        for (var j = 0; j < 20; j++) {
+            var k = (j + 1);
+
+            if ($("#createDocumentary_signatory_user_" + k).length == 0) {
+                i = j + 1;
+                j = 21;
+            }
+        }
+        if (i > 20) {
+            return;
+        }
+//                    new jj("افزودن امضا کننده ی شماره ی " + i).jjModal("تعریف امضا کنندگان مستند");
+        var temp = $('#rows20').html().replace(/_x/igm, ("_" + i));
+        $("#signatorysAdd").append(temp);
+        $("#signatorysAdd .signerDivTemp").addClass("signerDiv");
+        $("#signatorysAdd .signerDivTemp").removeClass("signerDivTemp");
+        $("#createDocumentary_signatory_user_" + (i)).select2({width: '100%'});
+    });
+
+    $(document).on('click', '.buttonRemove', function () {
+        $(this).parent().parent().remove();
+
+    });
+</script>
+
+

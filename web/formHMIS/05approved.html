@@ -1,0 +1,164 @@
+<input type="hidden" id="hmis_approved_id" name="id"/>
+<!--<div class="card bd-primary mg-t-20">-->
+    <!--<div class="card bd-primary">-->
+        <div class="sh-breadcrumb">
+            <nav class="breadcrumb">
+                <a class="breadcrumb-item" href="http://medyarweb.ir">مدیار</a>
+                <a class="breadcrumb-item" href="http://medyarweb.ir">MedYar</a>
+                <span class="breadcrumb-item active">میز هوشمند مصوبات</span>
+            </nav>
+        </div><!-- sh-breadcrumb -->
+        <div class="card-header btn-teal tx-white">
+            پایش مصوبات
+        </div>
+        <div class="card-body pd-sm-30">
+            <div class="row">
+                <div class="col-lg-12">
+                    عنوان مصوبه:
+                    <div class="form-group has-success mg-b-0">
+                        <input id="myApproved_title" disabled="disabled" class="form-control is-valid" placeholder="عنوان مصوبه  را وارد کنید" type="text" >
+                    </div><!-- form-group -->
+                </div><!-- col -->   
+                <div class="col-lg-3">
+                    <div class="form-group has-warning mg-b-0">
+                        مسئول اجرا
+                        <div  disabled="disabled" id="executorRoleId" style="height:auto" class="form-control" ></div>
+                    </div><!-- form-group -->
+                </div><!-- col -->
+                <div class="col-lg-3">
+                    <div class="form-group has-warning mg-b-0">
+                        مسئول پیگیری
+                        <div   id="trackerId" disabled="disabled" style="height:auto"  class="form-control "></div>
+
+                    </div><!-- form-group -->
+                </div><!-- col -->
+                <div class="col-lg-3">
+                    تاریخ شروع:
+                    <div class="form-group has-success mg-b-0">
+                        <div id="startDate" disabled class="form-control " style="height:auto"  placeholder="تاریخ شروع" ></div>
+                    </div><!-- form-group -->
+                </div><!-- col -->   
+                <div class="col-lg-3">
+                    تاریخ پایان:
+                    <div class="form-group has-success mg-b-0">
+                        <div id="endDate"  disabled class="form-control" style="height:auto" placeholder="تاریخ پایان" ></div>
+                    </div><!-- form-group -->
+                </div><!-- col -->   
+                <br/>
+
+                <div class="col-lg-3">
+                    وضعیت:
+                    <select id="approved_status" name="approved_status" class="form-control" >
+                        <option value="در حال انجام">در حال انجام</option>
+                        <option value="غیر قابل انجام">غیر قابل انجام</option>
+                        <option value="انجام شده">انجام شده</option>
+                    </select>
+                </div><!-- col -->   
+            </div>
+            <div class='row'>
+                <div class="col-lg-3">
+                    در صد پیشرفت مصوبه مسئول اجرا:
+                    <div class="form-group has-success mg-b-0">
+                        <input type="number"  max="100" min="0" id="approved_percentExecutor" disabled="disabled"  name="approved_percentExecutor" class="form-control"  placeholder="درصد پیشرفت" />
+                    </div><!-- form-group -->
+                </div><!-- col -->   
+                <div class="col-lg-9">
+                    :توضیحات مسئول اجرا(1000 کاراکتر)
+                    <div class="form-group has-success mg-b-0">
+                        <textarea id="approved_descriptionExecutor" maxlength="1000" name="approved_descriptionExecutor" disabled="disabled" class="form-control is-valid" placeholder="دلایل مسئول اجرا"  ></textarea>
+                    </div><!-- form-group -->
+                </div><!-- col -->   
+                <div class="col-lg-3">
+                    در صد پیشرفت مصوبه مسئول پیگیری:
+                    <div class="form-group has-success mg-b-0">
+                        <input id="approved_percentTracker" disabled="disabled"  max="100" min="0" type="number" class="form-control" name="approved_percentTracker"  placeholder="درصد پیشرفت مصوبه" />
+                    </div><!-- form-group -->
+                </div><!-- col -->   
+                <div class="col-lg-9">
+                    توضیحات مسئول پیگیری :(1000 کاراکتر)
+                    <div class="form-group has-success mg-b-0">
+                        <textarea id="approved_descriptionTracker" maxlength="1000" name="approved_descriptionTracker" disabled="disabled" class="form-control is-valid" placeholder="دلایل مسئول پیگیری" ></textarea>
+                    </div><!-- form-group -->
+                </div><!-- col -->   
+                <div class="col-lg-3">
+                    در صد پیشرفت مصوبه دبیر کمیته:
+                    <div class="form-group has-success mg-b-10">
+                        <div id="approved_percentSecretary" disabled="disabled"  class="form-control"   placeholder="درصد پیشرفت مصوبه" ></div>
+                    </div><!-- form-group -->
+                </div><!-- col -->   
+                <div class="col-lg-9">
+                    توضیحات دبیر کمیته:
+                    <div class="form-group has-success mg-b-10">
+                        <div id="approved_descriptionApproved" disabled style="height:auto"  class="form-control is-valid"></div>   
+                    </div><!-- form-group -->
+                </div><!-- col -->   
+
+                <div  class="col-lg-3" id="inputFileApprovedDiv"></div>
+
+                <div class="row col-lg-12" id="executorFileApprovedDiv"  style="display:none">
+
+                    <div class="col-lg-12" style="">                        
+                        <div class="col-lg-12">
+                            <div class="" id="showFilesExecutorDiv"></div>
+                        </div>
+                        <div class="input-group col-lg-12">
+                            <div class="">مسئول اجرا عنوان فایل</div>
+                            <span id="user_pic" class="form-control"></span>
+                            <input class="form-control" id="approved_titleFileExecutor" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" >
+                            <input id="attachExecutorFilesApproved" name="attachExecutorFilesApproved" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                            <input class="btn btn-primary" id="sendExecutorFilesApproved" type="submit" value="ارسال">
+                            <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-lg-12" id="trackerFileApprovedDiv"  style="display:none">
+
+
+                    <div class="col-lg-12" style="">                        
+                        <div class="col-lg-12">
+                            <div class="" id="showFilesTrackerDiv"></div>
+                        </div>
+                        <div class="input-group col-lg-12">
+                            <div class="">مسئول پیگیری عنوان فایل</div>
+                            <span id="user_pic" class="form-control"></span>
+                            <input class="form-control" id="approved_titleFileTracker" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" >
+                            <input id="attachTrackerFilesApproved" name="attachTrackerFilesApproved" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                            <input class="btn btn-primary" id="sendTrackerFilesApproved" type="submit" value="ارسال">
+                            <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 mg-t-20" id="downloadFileApprovedDiv"></div>
+                <div class="" id="downloadFileTrackerDiv"></div>
+                <div class="" id="downloadFileExecutorDiv"></div>
+                <div class="col-lg-12" id="filesApprovedExecutorDiv"></div>
+                <div class="col-lg-12" id="filesApprovedTrackerDiv"></div>
+                <div class="col-lg-3" id="Approved_button"></div>
+                <div class="col-lg-3">
+                    <a id="cancel_Approved" class="btn btn-outline-secondary mg-b-10  btn-block">
+                        لغو
+                    </a>   
+                </div><!-- col --> 
+            </div> 
+        </div><!-- card-body -->
+<!--    </div>
+</div>-->
+<script>
+
+//    $(function () {
+//        'use strict';
+//        $('#datatable1').DataTable({
+//            responsive: true,
+//            language: {
+//                searchPlaceholder: 'جستجو...',
+//                sSearch: '',
+//                lengthMenu: '_MENU_ items/page',
+//            }
+//        });
+//
+//
+//        // Select2
+//        $('.dataTables_length select').select2({minimumResultsForSearch: Infinity});
+//
+//    });
+</script>

@@ -1,0 +1,393 @@
+<style>
+    .required{
+        border:1px solid red!important;
+    }
+</style>
+<div class="sh-breadcrumb">
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="http://medyarweb.ir">مدیار</a>
+        <a class="breadcrumb-item" href="http://medyarweb.ir">MedYar</a>
+        <span class="breadcrumb-item active">برنامه عملیاتی هوشمند</span>
+    </nav>
+</div><!-- sh-breadcrumb -->
+<div class="sh-pagetitle">
+    <div class="sh-pagetitle-left">
+        <div class="sh-pagetitle-icon"><i class="icon ion-ios-gear mg-t-3"></i></div>
+        <div class="sh-pagetitle-title">
+            <span>برنامه عملیاتی</span>
+            <h2>ماژول برنامه عملیاتی/بهبود کیفیت </h2>
+        </div><!-- sh-pagetitle-left-title -->
+    </div><!-- sh-pagetitle-left -->
+</div><!-- sh-pagetitle -->
+
+<div class="card bd-primary">
+    <div onclick=" "
+         class="slideToggle card-header bg-primary tx-white">عنوان و توضیحات برنامه عملیاتی/بهبود کیفیت</div>
+    <!--    <div onclick=" if ($('#newFormPlans').css('display') == 'none') {
+                    $('#newFormPlans').slideDown();
+                } else {
+                    $('#newFormPlans').slideUp();
+    
+                }"
+             class="slideToggle card-header bg-primary tx-white">عنوان و توضیحات برنامه عملیاتی/بهبود کیفیت</div>-->
+    <div  id="newFormPlans" >
+        <div class="card-body pd-sm-30">
+            <p class="mg-b-20 mg-sm-b-30">برنامه عملیاتی بصورت سالیانه بر اساس اهداف کلی و جزئی و استراتژی های سازمان برگرفته از برنامه استراتژیک تدوین می گردد</p>
+            <p class="mg-b-20 mg-sm-b-30">برنامه بهبود کیفیت در راستای ارتقا کیفیت خدمات ، اصلاح  فرآیند ها و مدیریت بهینه منابع
+                تدوین می شود.
+            </p>
+            <br/>
+            <div class="row">
+                <input type="hidden" id='hmis_plans_id' name='id'>
+
+                <!--این قسمت از برنامه استراتژیک بارگذاری می گردد-->
+                <div class="col-lg-6" style="float: left">
+                    نوع برنامه
+                    <!--فرم بهبود کمی با فرم عملیات اصلاحی تفاوت دارد-->
+                    <select class="form-control" id='plans_typeOfProgram' name='plans_typeOfProgram' onchange="if ($(this).val() == 'برنامه بهبود کیفیت') {
+                                $('#planImprovementDiv').slideDown();
+                                $('#planImprovementForm').slideDown();
+
+                            } else {
+                                $('#planImprovementDiv').slideUp();
+                                $('#planImprovementForm').slideUp();
+                            }
+                            ">
+                        <option value="برنامه عملیاتی">برنامه عملیاتی</option>
+                        <option value="برنامه بهبود کیفیت">برنامه بهبود کیفیت</option>
+                    </select>
+                </div>
+
+                <div class="col-lg-6" style="float: left">
+                    بخش/واحد
+                    <!--آپسن ها را از جدول بخش ها بیاورد-->
+                    <select class="form-control"  name='plans_department' id='plans_department'>
+                    </select>
+                </div>
+
+            </div><!-- row -->
+            <br/>
+            <div class="row">
+                <!--این قسمت از برنامه استراتژیک بارگذاری می گردد-->
+                <div class="col-lg">
+                    هدف کلان
+                    <select class="form-control " name='plans_hugeGoal' id='plans_hugeGoal' onchange="hmisProprietaryTarget.getOptionForFilter($(this).val(), '#plans_minorGoal');
+                    $('#plans_strategic').html('');
+                ">
+
+                    </select>
+                </div>
+            </div><!-- row -->
+            <div class="row">
+                <!--این قسمت از برنامه استراتژیک بارگذاری می گردد-->
+                <div class="col-lg">
+                    هدف  اختصاصی:
+                    <select class="form-control " id='plans_minorGoal' name='plans_minorGoal' onchange="hmisStrategy.getOptionForFilter($(this).val(),'#plans_strategic');">
+                    </select>
+                </div>
+            </div>   
+            <div class="row">
+                <!--این قسمت از برنامه استراتژیک بارگذاری می گردد-->
+                <div class="col-lg">
+                    استراتژی
+                    <select class="form-control " id='plans_strategic'  name="plans_strategic">
+                    </select>
+                </div>
+            </div>
+            <div class="row ">
+                <div id="planImprovementDiv"  class='col-lg-12' style="display: none">
+                    <div class="col-lg-12">
+                        عنوان مشکل
+                        <input class="form-control" id='plans_titleOfTheProblem'  maxlength="200"  name='plans_titleOfTheProblem' placeholder=" عنوان مشکل(تا 200کاراکتر)" type="text">
+                    </div>
+                    <div class="col-lg-12">
+                        علت مشکل
+                        <input class="form-control" id="plans_causeProblem"  maxlength="200"   name="plans_causeProblem" placeholder="علت مشکل (تا 200کاراکتر)" type="text">
+                    </div>
+                    <div class="col-lg-12">
+                        شیوه شناسایی مشکل
+                        <input class="form-control" id="plans_method"  maxlength="200"  name="plans_method" placeholder="شیوه شناسایی مشکل(تا 200کاراکتر)" type="text">
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    عنوان برنامه عملیاتی/ بهبود کیفیت
+                    <input class="form-control" id='plans_title'  maxlength="200"  name='plans_title' placeholder="عنوان برنامه (تا 200کاراکتر)" type="text">
+                </div>
+                <div class="col-lg-10">
+                    حیطه:
+                    <div id="range_div">
+                        <select class="form-control" id="plans_range"  name="plans_range">
+                        </select>
+                    </div>
+                    <input class="form-control"   id='plans_range1' style="display: none;width:100%;border-color: blue;" maxlength="200" placeholder="(تا 200کاراکتر)"  name='plans_range1'/> 
+                </div>
+                <div class="col-lg-2">
+                    <button class="btn btn-success btn-block mg-b-10" style="margin-top: 20px" onclick="hmisPlans.changeSelectToInputRange()">...</button>
+                </div><!-- col -->
+                <div class="col-lg">
+                    دامنه:
+                    <select class="form-control" id="plans_domain" name='plans_domain'>
+                    </select>
+                </div>
+            </div><!-- row -->
+            <div class="row">
+                <div class="col-lg-4">
+                    مسئول پایش:
+                    <select class="form-control" name='plans_improveQualityId' id='plans_improveQualityId'  ></select>
+                </div>
+                <div class="col-lg-4">
+                    دوره پایش
+                    <select class="form-control" id='plans_period' name='plans_period'>
+                        <option value="1">1روز</option>
+                        <option value="7">7روز</option>
+                        <option value="30">30روز</option>
+                        <option value="60">60روز</option>
+                        <option value="90">90روز</option>
+                        <option value="120">120روز</option>
+                        <option value="180">180روز</option>
+                        <option value="365">365روز</option>
+                    </select>
+                </div>
+                <div class="col-lg-12 mg-t-20" style="">                        
+                    <div class="col-lg-12">بارگذاری فایل:
+                        <div class="" id="showFilesPlansDiv"></div>
+                        <div class="" id="downloadPlansFileDiv"></div>
+                    </div>
+                    <div class="input-group col-lg-12">
+                        <div class=""> عنوان فایل</div>
+                        <span id="user_pic" class="form-control"></span>
+                        <input class="form-control" id="plans_titleFile" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" >
+                        <input id="attachFilePlans" name="attachFilePlans" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                        <input class="btn btn-primary" id="sendFilesPlans" type="submit" value="ارسال">
+                        <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                    </div>
+                </div> 
+            </div><!-- col -->
+        </div><!-- row -->
+        <div class="row mg-t-20">
+            <div class="col-lg-12">
+                توضیحات  :
+                <textarea rows="3" class="form-control" id='plans_description' name='plans_description' placeholder="توضیحات برنامه عملیاتی"></textarea>
+            </div><!-- col -->
+            <div class="col-lg-10 mg-20">
+                :مسئول مافوق جهت تایید
+                <select class="form-control" id="plans_supervisorRolId" name="plans_supervisorRolId">
+                </select>
+            </div>
+        </div><!-- row -->
+        <!--</div> programAmaliatyDiv-->
+        <div class="col-lg-3" id="buttonRecord">
+        </div>
+        <div id="editPlansDiv" class="col-lg-12">
+        </div>
+    </div><!-- div newFormPlans  -->
+</div><!-- card -->
+<div id="formQuestions" style="">
+    <div class="card bd-primary mg-t-20" id="newFormQuestion">
+        <div class="card-header bg-primary tx-white" >مدیریت گام های اجرایی:</div>
+
+        <div class="row">
+
+            <div class="col-lg-12" style="margin-bottom: 1px">
+                <div class="card-header tx-white col-lg-12" style="background-color:#0a79eb">هدف کلان:
+                    <div class="card-header  tx-white col-lg-10"  style="background-color:#0a79eb" id="hugeGoal"></div>
+                </div>
+            </div>
+            <div class="col-lg-12" style="margin-bottom: 1px">
+                <div class="card-header tx-white col-lg-12" style="background-color:#0a79eb">هدف اختصاصی:
+                    <div  id="minorGoal" class="col-lg-10"></div>
+                </div>
+            </div>
+            <div class="col-lg-12" style="margin-bottom: 1px">
+                <div class="card-header  tx-white col-lg-12" style="background-color:#0a79eb">استراتژی:
+                    <div  id="strategic" class="col-lg-10"></div>
+                </div>
+            </div>
+            <div class="col-lg-12" style="margin-bottom: 1px" >
+                <div class="card-header  tx-white col-lg-12" style="background-color:#0a79eb">عنوان برنامه عملیاتی/ بهبود کیفیت:
+                    <div  id="titlePlans" class="col-lg-10"></div>
+                </div>
+            </div>
+            <div class="col-lg-12" style="margin-bottom: 1px">        
+                <div class="card-header col-lg-12 tx-white " style="background-color:#0a79eb">مسئول پایش:
+                    <div class='col-lg-10' id="improveQualityRoleId"></div>
+                </div>
+            </div>
+            <div id='planImprovementForm'  class="col-lg-12" style='display: none'>
+                <div class="col-lg-4" style="margin-bottom: 1px">
+                    <div class="card-header col-lg-12  tx-white" style="background-color:#0a79eb;min-height: 54px">مشکل :
+                        <div class="col-lg-12" id="problem"></div>
+                    </div>
+                </div>
+                <div class="col-lg-4" style="margin-bottom: 1px">
+                    <div class="card-header col-lg-12  tx-white" style="background-color:#0a79eb;min-height: 54px">علت مشکل:
+                        <div class="col-lg-12" id="causeProblem"></div>
+                    </div>
+                </div>
+                <div class="col-lg-4" style="margin-bottom: 1px">
+                    <div class="card-header col-lg-12 tx-white" style="background-color:#0a79eb;min-height: 54px">شیوه شناسایی مشکل:
+                        <div class="col-lg-12" id="methodProblem"></div>
+                    </div>
+                </div>
+
+            </div>
+            <div   class="col-lg-12">
+                <div class="col-lg-4" style="margin-bottom: 1px">
+                    <div class="card-header col-lg-12  tx-white" style="background-color:#0a79eb;min-height: 54px">دامنه:
+                        <div class="col-lg-12" id="domain"></div>
+                    </div>
+                </div>
+                <div class="col-lg-4" style="margin-bottom: 1px">
+                    <div class="card-header col-lg-12  tx-white" style="background-color:#0a79eb;min-height: 54px">حیطه :
+                        <div class="col-lg-12" id="range"></div>
+                    </div>
+                </div>
+                <div class="col-lg-4" style="margin-bottom: 1px">
+                    <div class="card-header col-lg-12 tx-white" style="background-color:#0a79eb;min-height: 54px">دوره پایش:
+                        <div class="col-lg-12" id="period"></div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+
+        </div><!-- row -->
+        <div class="col-lg-12"  id="tblSteps" ></div>
+        <div id="stepsForm" class="card bd-primary mg-t-20 pd-sm-30">
+            <input id="hmis_steps_id" name="hmis_steps_id" type="hidden"/>
+            <p class="mg-b-20 mg-sm-b-30">گام های اجرایی با توجه به مراحل پیش بینی شده اجرای برنامه تعیین می گردند</p>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group has-success mg-b-0">
+                        عنوان:
+                        <input required id="steps_title" maxlength="200" name="steps_title" class="form-control is-valid" placeholder="عنوان: (تا 200کاراکتر)" type="text">
+                    </div><!-- form-group -->
+                </div><!-- col -->
+                <!--/////////////////////////////////////////////////////-->
+                <div class="col-lg-4">
+                    <div class="form-group has-warning mg-b-0">
+                        <input onchange="hmisPlans.executorAction($(this).val());"  type="radio" checked="checked" id="roleExecutor" name="responsibleExecutor" value="سمت">
+                        انتخاب سمت مسئول اجرا
+                        <select required id="steps_executorRoleId"  multiple="" name="steps_executorRoleId" class="form-control select2 select2-hidden-accessible">
+                        </select>
+                    </div><!-- form-group -->
+                </div><!-- col -->
+                <div class="col-lg-4">
+                    <div class="form-group has-warning mg-b-0">
+
+                        انتخاب اشخاص مسئول اجرا <input type="radio" onchange="hmisPlans.executorAction($(this).val());" id="userExecutor" name="responsibleExecutor" value="کاربران">
+                        <select required id="steps_executorUserId" multiple="" disabled='disabled' name="steps_executorUserId" class="form-control select2 select2-hidden-accessible">
+                            <!--در واقع از جدول اشخاص باید بیاورد-->
+                        </select>
+                    </div><!-- form-group -->
+                </div><!-- col -->
+                <div class="col-lg-4">
+                    <div class="form-group has-warning mg-b-0">
+
+                        انتخاب گروه مسئول اجرا <input type="radio" onchange="hmisPlans.executorAction($(this).val());" id="groupExecutor" name="responsibleExecutor" value="گروه">
+                        <select required id="steps_executorGroupsId" multiple="" disabled='disabled' name="steps_executorGroupsId" class="form-control select2 select2-hidden-accessible">
+                            <!--در واقع از جدول اشخاص باید بیاورد-->
+                        </select>
+                    </div><!-- form-group -->
+                </div><!-- col -->
+                <div class="col-lg-12">
+                    <div class="form-group has-warning mg-b-0">
+                        مسئول پیگیری
+                        <select required id="steps_trackerId" name="steps_trackerId" class="form-control">
+                        </select>
+                    </div><!-- form-group -->
+                </div><!-- col -->
+
+            </div><!-- row -->
+            <div class="row">
+                <div class="col-lg">
+                    تاریخ شروع:
+                    <div class="form-group has-success mg-b-0">
+                        <input required id="steps_startDate" name="steps_startDate" class="form-control is-valid" placeholder="تاریخ شروع را وارد کنید" type="text">
+                    </div><!-- form-group -->
+                </div><!-- col -->
+                <div class="col-lg">
+                    تاریخ پایان:
+                    <div class="form-group has-success mg-b-0">
+                        <input required id="steps_endDate" name="steps_endDate" class="form-control is-valid" placeholder="تاریخ پایان را وارد کنید" type="text">
+                    </div><!-- form-group -->
+                </div><!-- col -->
+                <div class="col-lg">
+                    شاخص ارزیابی:
+                    <div class="form-group has-success mg-b-0">
+                        <input id="steps_otherIndicators" name="steps_otherIndicators" maxlength="200" class="form-control is-valid" placeholder="مصاحبه و مشاهده(تا 200کاراکتر)" type="text">
+                    </div><!-- form-group -->
+                </div><!-- col -->
+            </div>   
+            <div class="row">
+                <div class="col-lg-6">
+                    (ریال)هزینه:
+                    <div class="form-group has-success mg-b-0">
+                        <input required class="form-control is-valid" id="steps_cost" name="steps_cost" placeholder="هزینه به ریال" type="number">
+                    </div><!-- form-group -->
+                </div><!-- col -->
+
+                <div class="col-lg-6">
+                    درصد از کل:
+                    <div class="form-group has-success mg-b-0">
+                        <input required  class="form-control is-valid" placeholder="درصد از کل" min="0" max="100" id="steps_percent" name="steps_percent"   type="number" value="" />
+
+                    </div><!-- form-group -->
+                </div><!-- col -->
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-lg-12 mg-t-20" style="">                        
+                    <div class="col-lg-12">بارگذاری فایل:
+                        <div class="" id="showFilesStepsDiv"></div>
+                        <div class="" id="downloadStepsFileDiv"></div>
+                    </div>
+                    <div class="input-group col-lg-12">
+                        <div class=""> عنوان فایل</div>
+                        <span id="user_pic" class="form-control"></span>
+                        <input class="form-control" id="steps_titleFile" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" >
+                        <input id="attachFileSteps" name="attachFileSteps" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                        <input class="btn btn-primary" id="sendFilesSteps" type="submit" value="ارسال">
+                        <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                    </div>
+                </div>
+
+
+
+                <div class="col-lg-12">
+                    توضیحات  :
+                    <div class="form-group has-success mg-b-0 col-lg-12">
+                        <textarea required  class="form-control is-valid"  id="steps_description" name="steps_description"  ></textarea>
+                    </div><!-- form-group -->
+                </div>
+                <div class="row">
+                    <div class="col-lg-3" id="inputFilesPlansDiv"></div>
+                </div>
+                <br/>
+                <div class="row mg-t-20 col-lg-12">
+                    <div class="col-lg-6">
+                        <div class="form-group has-success mg-b-0">
+                            <button class="btn btn-outline-secondary mg-b-10  btn-block" onclick="$('#stepsForm').slideUp();$('#tblSteps').slideDown()">لغو</button>
+                        </div><!-- form-group -->
+                    </div><!-- col -->
+                    <div class='col-lg-6' id='steps_button'></div>
+                </div>
+                <div class="col-lg-12">
+                </div>
+                <br/>
+            </div><!-- newFormQuestion-->
+        </div> <!-- stepsForm-->
+
+        <br/>
+
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="form-group has-success mg-b-0">
+                    <button id="cancel_Plans" class="btn btn-outline-secondary mg-b-10  btn-block">بازگشت</button>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div  id= 'btns_plans'></div>
+            </div>
+        </div><!-- card -->

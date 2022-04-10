@@ -1,0 +1,78 @@
+<div class="card bd-primary mg-t-20">
+    <div class="sh-breadcrumb">
+        <nav class="breadcrumb">
+            <a class="breadcrumb-item" href="index.html">MedYar مدیار</a>
+            <span class="breadcrumb-item active">دسته بندی مجصولات</span>
+        </nav>
+    </div>
+    <div class="sh-pagetitle">
+        <div class="sh-pagetitle-left">
+            <div class="sh-pagetitle-icon"><i class="icon ion-ios-home"></i></div>
+            <div class="sh-pagetitle-title">
+                <span>سامانه جام مدیریت سلامت</span>
+                <h2>مدیریت دسته بندی محصولات</h2>
+            </div><!-- sh-pagetitle-left-title -->
+        </div><!-- sh-pagetitle-left -->
+    </div>
+    <div class="row row-sm">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card rounded-0">
+
+                        <div class="card-header bg-primary tx-white">
+                            اطلاعات دسته بندی محصولات
+                        </div><!-- card-header -->
+                        <div class="card-body">
+                            <div class="row mg-t-20">
+                                <!--<div class="row">-->
+                                <input type="hidden" id="category_product_id" name="id" />
+                                <input type="hidden" id="category_product_lang" name="category_product_lang" value="1"/>
+                                <div class="col-lg-12" style="">
+                                    عنوان
+                                    <input class="form-control" id="category_product_title" name="category_product_title"  placeholder="عنوان" type="text">
+                                </div>
+                                <div class="col-lg-12" style="">
+                                    دسته محصولات
+                                    <select id="category_product_parent" name="category_product_parent" class="form-control categoryProductSelectOption">
+                                    </select>
+                                </div>
+                                <div class="col-lg-4" style="">
+                                    <div class="col-lg-12 mg-t-10 l">
+                                     ایا این محصول فرم دارد یا خیر
+                                     <input class="form-control" type="checkbox" rows="5" id="category_product_script" name="category_product_script"  placeholder="لینک و کد های جاوا اسکریپ">
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-4" style="">
+                                    <input id="category_content_pic" name="category_product_pic" type="hidden"><!--نام برای ارسال به دیتا بیس -->
+                                    <div>
+                                        تصویر
+                                    </div>
+                                    <img id="Pic_preview" name="Pic_preview" class="img-thumbnail" src="img/preview.jpg">
+                                    <div class="row">
+                                        <input class="btn btn-primary" id="sendPic1" type="submit" value="ارسال">
+                                        <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                        <input id="category_product_pic_1" name="category_product_pic" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                        <span id="content_pic1"  class="form-control col-lg"></span>
+                                        <!--<span class="form-control"></span>-->
+                                    </div>
+                                    <a   id="DownloadPic" href="" style="display: none" target="_blank">
+                                        دانلود تصویر
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row mg-t-20">
+                                <div class="col-lg-4">
+                                    <button class="btn btn-outline-secondary mg-b-10 btn-block" onclick="cmsCategoryProducts.m_show_tbl();">بازگشت </button>               
+                                </div><!-- col -->
+                                <div id="CategoryProduct_button" class="col-lg-8">            
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

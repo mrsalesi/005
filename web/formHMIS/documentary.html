@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+
+
+
+        <div class="sh-breadcrumb">
+            <nav class="breadcrumb">
+                <a class="breadcrumb-item" href="http://medyarweb.ir">مدیار</a>
+                <a class="breadcrumb-item" href="http://medyarweb.ir">MedYar</a>
+                <span class="breadcrumb-item active">مدیریت مستندات اعتبار بخشی</span>
+            </nav>
+        </div><!-- sh-breadcrumb -->
+        <div class="sh-pagetitle">
+            <!--        <div class="input-group">
+                        <input type="search" class="form-control" placeholder="Search">
+                        <span class="input-group-btn">
+                            <button class="btn"><i class="fa fa-search"></i></button>
+                        </span> input-group-btn 
+                    </div> input-group -->
+            <div class="sh-pagetitle-left">
+                <div class="sh-pagetitle-icon"><i class="icon ion-ios-gear mg-t-3"></i></div>
+                <div class="sh-pagetitle-title">
+                    <span>مدیریت استاندارد ها</span>
+                    <h2>مدیریت مستندات استاندارد های اعتبار بخشی</h2>
+                </div><!-- sh-pagetitle-left-title -->
+            </div><!-- sh-pagetitle-left -->
+        </div><!-- sh-pagetitle -->
+        <div class="card bd-primary">
+            <div class="card-header bg-primary tx-white">بارگزاری مستندات سنجه ها</div>
+            <div class="card-body pd-sm-30">
+                <p class="mg-b-20 mg-sm-b-30">
+                </p>
+                <div class="row">
+                    <input type="hidden" id="documentary_id" name="id" />
+                    <div class="col-lg-12" style="margin-bottom: 1px">
+                        <div>محور
+                        </div>
+                        <div class="card-header bg-primary tx-white" id="axis">
+                        </div>
+                    </div>
+                    <div class="col-lg-12" style="margin-bottom: 1px">
+                        <div>زیر محور
+                        </div>
+                        <div class="card-header bg-primary tx-white" id="underAxis">
+                        </div>
+                    </div>
+                    <div class="col-lg-12" style="margin-bottom: 1px">
+                        <div> 
+                            استاندارد
+                            <div class="card-header bg-primary tx-white" id="standard" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12" style="margin-bottom: 1px">
+                        <div> سنجه
+                        </div>
+                        <div class="card-header bg-primary tx-white" id="gauges"> 
+                        </div>
+                    </div>
+                    <div class="col-lg-12" style="margin-bottom: 1px">
+                        <div>گام
+                        </div>
+                        <div class="card-header bg-primary tx-white" id="step">
+                        </div>
+                    </div>                    
+                    <div class="col-lg-12" style="margin-bottom: 1px">
+                        <div>
+                            توضیحات
+                        </div>
+                        <div class="col-lg-12" id="comment_documentary">
+                        </div>
+                    </div>
+                </div>
+                <br/>        
+                <!-- row -->
+                <div class="row">
+                    <div class="col-lg-2">
+                        دوره ی بارگذاری این فایل
+                        <div class="form-group has-success mg-b-0">
+                            <input class="form-control is-valid" min='1'  onkeyup="
+                                    if ($(this).val() > 400 || $(this).val() < 1) {
+                                        $(this).val('');
+                                    } else {
+                                        $(this).attr('value', $(this).val());
+                                    }" max='400' id="documentary_LoadingPeriod" name="documentary_LoadingPeriod" placeholder="دوره ی بارگذاری این فایل" type="number" >
+                        </div><!-- form-group -->
+                    </div> 
+                    <div class="col-lg-2">
+                        تاریخ 
+                        <div class="form-group has-success mg-b-0">
+                            <input class="form-control is-valid" id="documentary_dateCreation" name="documentary_dateCreation" placeholder="" type="text" >
+                        </div><!-- form-group -->
+                    </div> 
+                    <div class="col-lg-10">
+                        توضیحات مسئول بارگذاری
+                        <div class="form-group has-success mg-b-0">                      
+                            <input class="form-control is-valid" id="documentary_comments" name="documentary_comments" placeholder="توضیحات مسئول بارگذاری" type="text" >
+                        </div><!-- form-group -->
+                    </div> 
+                    <div class="col-lg-12" style="">                        
+                        <div id="inputAfterSelectGauge" ></div>
+                        <div  class="inputSelectorDiv" ></div>
+                        <div class="col-lg-12">فایل های پیوست
+                            <div class="" id="documentary_divUpload"></div>
+                        </div>
+                        <div class="input-group col-lg-12">
+                            <div class=""> عنوان فایل</div>
+                            <span id="user_pic" class="form-control"></span>
+                            <input class="form-control" id="documentary_titleFile" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" >
+                            <input id="attachFileDocumentary" name="attachFileDocumentary" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                            <input class="btn btn-primary" id="sendFiles" type="submit" value="ارسال">
+                            <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                            <!--<span class="form-control"></span>-->
+                        </div>
+                    </div>
+                    <!--                <div class="col-lg-4">
+                                        بارگذاری مستندات:
+                                        <label class="custom-file">
+                                            <input type="file" id="documentary_getUploaded"  name="documentary_getUploaded" class="custom-file-input">
+                                            <span class="custom-file-control custom-file-control-primary"></span>
+                                        </label>
+                                    </div> col    -->
+                    <div class="row col-lg-12">
+                        <div class="mg-t-20  col-lg">
+                            <button class="btn btn-outline-secondary mg-b-10  btn-block" onclick="hmisDocumentary.m_show_tbl();">بازگشت </button>                
+                        </div><!-- col -->
+                        <div id="Documentary_button" class="col-lg-9 mg-t-20 row">            
+                        </div>
+                    </div><!-- card -->
+                </div><!-- col -->
+            </div><!--row -->
+        </div><!-- card-body -->
+    </div>
+    <div class="card bd-primary mg-t-20" id="newFormQuestion">
+        <div class="card-header bg-primary tx-white">فایل های بارگذاری شده ی این سنجه:</div>
+        <div class="card-body pd-sm-30">
+            <!--<p class="mg-b-20 mg-sm-b-30">-</p>-->
+            <!--                <div class="row"> col -->
+            <div id="savabeghDocumentary" ></div>  
+            <!--                    <table class="table table-responsive table-wrapper">
+                                    <thead>
+                                        <tr>
+                                            <td>کد</td>
+                                            <td>عنوان فایل</td><td>مسئول بارگذاری</td>
+                                            <td>نام بارگذاری کننده</td>
+            
+                                            <td>دوره بارگذاری</td><td>تاریخ ایجاد (سیستمی)</td><td>تاریخ بارگذاری</td>
+            
+                                            <td>وضعیت بارگذاری</td><td>دریافت مستندات</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr style="background-color: #ccffc5"><td><br></td><td><p>استاندارد: الف-1-1<br>سنجه: شماره 1<br><span style="background-color: transparent; font-size: 0.875rem;">گام : گام-1<br></span><span style="background-color: transparent; font-size: 0.875rem;">نام فایل:</span></p></td><td>مسئول اعتبار بخشی<br></td><td>مجید شریعتی</td><td>سوم</td><td>97/06/25<br></td><td>97/06/30</td><td>بارگذاری شده</td><td><i style="color: #0000ff" class="fa fa-download"></i></td></tr>
+                                                                <tr style="background-color: #ccffc5"><td><br></td><td>استاندارد: الف-1-1<br>سنجه: شماره 1<br><span style="font-size: 0.875rem; background-color: transparent;">گام : گام-1<br></span><span style="font-size: 0.875rem; background-color: transparent;">نام فایل:</span><br></td><td>مسئول اعتبار بخشی</td><td>مجید شریعتی<br></td><td>سوم</td><td>97/06/25<br></td><td>97/06/30<br></td><td>مشاهده مستندات</td><td><i style="color: #0000ff" class="fa fa-download"></i></td></tr>
+                                                                <tr style="background-color: #ffc5c5"><td><br></td><td>استاندارد: الف-1-1<br>سنجه: شماره 1<br><span style="font-size: 0.875rem; background-color: transparent;">گام : گام-1<br></span><span style="font-size: 0.875rem; background-color: transparent;">نام فایل:</span><br></td><td>مسئول اعتبار بخشی</td><td>-</td><td>-</td><td>97/03/25<br></td><td>97/03/30<br></td><td>مشاهده مستندات</td><td></td></tr>
+                                    </tbody>
+                                </table>-->
+        </div>
+    </div><!-- card -->
+</div><!-- card-body -->
+
+</body>
+</html>
+
+

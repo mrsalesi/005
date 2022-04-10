@@ -1,0 +1,73 @@
+@font-face {
+    font-family: 'Iranian-Sans';
+    src: 
+        url('../fonts/Iranian-Sans.eot') format('eot'), 
+        url('../fonts/Iranian-Sans.woff') format('woff'),
+        url('../fonts/Iranian-Sans.TTF') format('ttf');  
+    font-family: 'BYekan';
+    src: 
+        url('../fonts/BYekan.eot') format('eot'), 
+        url('../fonts/BYekan.woff') format('woff'),
+        url('../fonts/BYekan.ttf') format('ttf');  
+    font-style:normal;
+    font-weight:normal;
+}
+.hoverAutoWiki:hover{
+    color: #ccccff;
+    font-weight: bold;
+}
+.shortcut-icon:hover a {
+    color: #e7dfff;
+}
+.table img {
+    max-width: 3em;
+}
+tr.green.odd{
+    background-color: #daffd9 !important;
+}
+tr.green.even{
+    background-color: #daffd0 !important;
+}
+tr.yellow.odd{
+    background-color: #ffffbd  !important;
+}
+tr.yellow.even{
+    background-color: #ffffb0 !important;
+}
+tr.red.even{
+    background-color: #ffcaba !important;
+}
+tr.red.odd{
+    background-color: #ffc0ba !important;
+}
+.commeteeTable td {
+    text-align: center;
+    border: thin solid;
+}
+.commeteeTable {
+    width: 100%;
+}
+commeteeTable thead{
+    background-color: #36ab50;    
+}
+.table i{
+        font-size: 2.5em;
+    color: #0866c6;
+    vertical-align: middle;
+    margin: auto 5px;
+}
+
+.c {
+    text-align: center;
+}
+.r {
+    text-align: right;
+    direction: rtl;
+}
+.l{
+    text-align: left;
+    direction: ltr;
+}
+.p{
+    cursor: pointer;
+}

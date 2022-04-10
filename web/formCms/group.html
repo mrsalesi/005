@@ -1,0 +1,897 @@
+
+<div class="sh-pagetitle">
+    <!--        <div class="input-group">
+                <input type="search" class="form-control" placeholder="Search">
+                <span class="input-group-btn">
+                    <button class="btn"><i class="fa fa-search"></i></button>
+                </span> input-group-btn 
+            </div> input-group -->
+    <div class="sh-pagetitle-left">
+        <div class="sh-pagetitle-icon"><i class="icon ion-ios-gear mg-t-3"></i></div>
+        <div class="sh-pagetitle-title">
+            <!--<span>کا</span>-->
+            <h2>گروه های کاربری</h2>
+        </div><!-- sh-pagetitle-left-title -->
+    </div><!-- sh-pagetitle-left -->
+</div><!-- sh-pagetitle -->
+<div class='row'>
+    <div class="col-lg-12">
+        <!--<div class="card bd-primary mg-t-20" id='AccessuserForm'>-->
+        <div class="card-header bg-primary tx-white">گروه ها</div></div></div>
+<!--        <table style="width: 100%;padding: 1px">
+            <tr>-->
+<div class='card-body pd-sm-30'>  
+    <div class="row">
+        <div class="col-lg-6">
+            <input type="hidden" id="group_id" name="id" />
+            نام  گروه:
+            <input class="form-control" id="group_title" name="group_title"  placeholder="نام گروه" type="text">
+        </div>
+        <div class="col-lg-6">
+            توضیحات:
+            <input class="form-control" id="group_des" name="group_des" placeholder="توضیحات" type="text">
+        </div>
+    </div>
+</div>
+
+<table style="width:99%">
+    <tr>
+        <td style="text-align: right;padding: 5px">
+            <!-- ------------------------ -->
+            <div class="card bd-info mg-t-20"> 
+                <div href="#kartablMessages" class="card-header bg-info tx-white c ShowOneDiv1" style="cursor: pointer;">ماژول اطلاعات عمومی</div>
+                <div class="card-body bd-primary pd-sm-30 Alldiv1" id="kartablMessages">
+                    <table width="100%" cellspacing="10" cellpadding="10">
+                        <!--ماژول اطلاعات عمومی-->
+                        <tr>
+                            <td style="width: 25%;vertical-align: top;">
+                                ماژول اطلاعات عمومی
+                                <br/>
+                                <br/>
+                                <div id="showInformationModuleDiv">
+                                    <input type="checkbox" name="C270" id="C270" value="0" > 270.
+                                    نمایش
+                                    <br/>
+                                </div>
+                            </td>
+                            <td style="width: 25%;vertical-align: top;" id="ECM">
+                                مدیریت محتوای سازمانی
+                                <br/>
+                                <br/>
+                                <div id="showECMDiv">
+                                    <input type="checkbox" name="C271" id="C271" value="0"> 271.
+                                    نمایش
+                                    <br/>
+                                </div>
+                                <div id="insertECMDiv">
+                                    <input type="checkbox" name="C272" id="C272" value="0"> 272.
+                                    ثبت
+                                    <br/>
+                                </div>
+                                <div id="editECMDiv">
+                                    <input type="checkbox" name="C273" id="C273" value="0"> 273.
+                                    ویرایش
+                                    <br/>
+                                </div>
+                                <div id="deleteECMDiv">
+                                    <input type="checkbox" name="C274" id="C274" value="0"> 274.
+                                    حذف
+                                    <br/>
+                                </div>
+                                <div id="printECMDiv">
+                                    <input type="checkbox" name="C275" id="C275" value="0"> 275.
+                                    چاپ
+                                    <br/>
+                                </div>
+                                <div id="showAllECMDiv">
+                                    <input type="checkbox" name="C276" id="C276" value="0"> 276.
+                                    نمایش همه
+                                    <br/>
+                                </div>
+                            </td>
+                            <td style="width: 25%;vertical-align: top;" id="ECM">
+                                دسته بندی محتوای سازمانی
+                                <br/>
+                                <br/>
+                                <div id="showECMDiv">
+                                    <input type="checkbox" name="C376" id="C376" value="0"> 376.
+                                    نمایش
+                                    <br/>
+                                </div>
+                                <div id="insertECMDiv">
+                                    <input type="checkbox" name="C377" id="C377" value="0"> 377.
+                                    ثبت
+                                    <br/>
+                                </div>
+                                <div id="editECMDiv">
+                                    <input type="checkbox" name="C378" id="C378" value="0"> 378.
+                                    ویرایش
+                                    <br/>
+                                </div>
+                                <div id="deleteECMDiv">
+                                    <input type="checkbox" name="C379" id="C379" value="0"> 379.
+                                    حذف
+                                    <br/>
+                                </div>                 
+                                <div id="showAllECMDiv">
+                                    <input type="checkbox" name="C276" id="C380" value="0"> 380.
+                                    نمایش همه
+                                    <br/>
+                                </div>
+                            </td>
+                            <td style="width: 25%;vertical-align: top;" id="managementPic">
+                                مدیریت تصاویر
+                                <br/>
+                                <br/>
+                                <div id="showManagementPicDiv">
+                                    <input type="checkbox" name="C280" id="C280" value="0"> 280.
+                                    نمایش
+                                    <br/>
+                                </div>
+                                <div id="insertManagementPicDiv">
+                                    <input type="checkbox" name="C281" id="C281" value="0"> 281.
+                                    ثبت
+                                    <br/>
+                                </div>
+                                <div id="editManagementPicDiv">
+                                    <input type="checkbox" name="C282" id="C282" value="0"> 282.
+                                    ویرایش
+                                    <br/>
+                                </div>
+                                <div id="deleteManagementPicDiv">
+                                    <input type="checkbox" name="C283" id="C283" value="0"> 283.
+                                    حذف
+                                    <br/>
+                                </div>
+                                <div id="printManagementPicDiv">
+                                    <input type="checkbox" name="C284" id="C284" value="0"> 284.
+                                    چاپ
+                                    <br/>
+                                </div>
+                                <div id="showAllManagementPicDiv">
+                                    <input type="checkbox" name="C285" id="C285" value="0"> 285.
+                                    نمایش همه
+                                    <br/>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 25%;vertical-align: top;" id="category_gallery">
+                                دسته بندی تصاویر
+                                <br/>
+                                <br/>
+                                <div id="showCategory_galleryDiv">
+                                    <input type="checkbox" name="C286" id="C286" value="0"> 286.
+                                    نمایش
+                                    <br/>
+                                </div>
+                                <div id="insertCategory_galleryDiv">
+                                    <input type="checkbox" name="C287" id="C287" value="0"> 287.
+                                    ثبت
+                                    <br/>
+                                </div>
+                                <div id="editCategory_galleryDiv">
+                                    <input type="checkbox" name="C288" id="C288" value="0"> 288.
+                                    ویرایش
+                                    <br/>
+                                </div>
+                                <div id="deleteCategory_galleryDiv">
+                                    <input type="checkbox" name="C289" id="C289" value="0"> 289.
+                                    حذف
+                                    <br/>
+                                </div>
+                                <div id="printCategory_galleryDiv">
+                                    <input type="checkbox" name="C290" id="C290" value="0"> 290.
+                                    چاپ
+                                    <br/>
+                                </div>
+                            </td>
+                            <td style="width: 25%;vertical-align: top;" id="News">
+                                اخبار سازمانی
+                                <br/>
+                                <br/>
+                                <div id="showNewsDiv">
+                                    <input type="checkbox" name="C251" id="C251" value="0"> 251.
+                                    نمایش
+                                    <br/>
+                                </div>
+                                <div id="insertNewsDiv">
+                                    <input type="checkbox" name="C252" id="C252" value="0"> 252.
+                                    ثبت
+                                    <br/>
+                                </div>
+                                <div id="editNewsDiv">
+                                    <input type="checkbox" name="C253" id="C253" value="0"> 253.
+                                    ویرایش
+                                    <br/>
+                                </div>
+                                <div id="deleteNewsDiv">
+                                    <input type="checkbox" name="C254" id="C254" value="0"> 254.
+                                    حذف
+                                    <br/>
+                                </div>
+                                <div id="printNewsDiv">
+                                    <input type="checkbox" name="C255" id="C255" value="0"> 255.
+                                    چاپ
+                                    <br/>
+                                </div>
+                                <div id="showAllNewsDiv">
+                                    <input type="checkbox" name="C256" id="C256" value="0"> 256.
+                                    نمایش همه
+                                    <br/>
+                                </div>
+                            </td>
+
+                            <td style="width: 25%;vertical-align: top;" id="category_news">
+                                دسته بندی اخبار سازمانی
+                                <br/>
+                                <br/>
+                                <div id="showCategory_newsDiv">
+                                    <input type="checkbox" name="C261" id="C261" value="0"> 261.
+                                    نمایش
+                                    <br/>
+                                </div>
+                                <div id="insertCategory_newsDiv">
+                                    <input type="checkbox" name="C262" id="C262" value="0"> 262.
+                                    ثبت
+                                    <br/>
+                                </div>
+                                <div id="editCategory_newsDiv">
+                                    <input type="checkbox" name="C263" id="C263" value="0"> 263.
+                                    ویرایش
+                                    <br/>
+                                </div>
+                                <div id="deleteCategory_newsDiv">
+                                    <input type="checkbox" name="C264" id="C264" value="0"> 264.
+                                    حذف
+                                    <br/>
+                                </div>
+                                <div id="printCategory_newsDiv">
+                                    <input type="checkbox" name="C265" id="C265" value="0"> 265.
+                                    چاپ
+                                    <br/>
+                                </div>
+                            </td>
+                        </tr> 
+                    </table>
+                </div>
+            </div>
+            <!--ماژول فرم ساز-->
+            <div class="card bd-info mg-t-20"> 
+                <div href="#module" class="card-header bg-info tx-white c ShowOneDiv1" style="cursor: pointer;">فرم ساز</div>
+                <div class="card-body bd-primary pd-sm-30 Alldiv1" id="module" style="display: none;">
+                    <table width="100%" cellspacing="10" cellpadding="10"> 
+                        <tr>
+                            <td  style="width: 25%;vertical-align: top;" >
+                                <br/>
+                                ماژول فرم ساز
+                                <br/>
+                                <br/>
+                                <div id="showFormattingmoduleDiv">
+                                    <input type="checkbox" name="C347" id="C347" value="0" > 347.
+                                    نمایش
+                                    <br/>
+                                </div>
+                            </td>
+                            <td style="width: 25%;vertical-align: top;" id="form">
+                                <br/>
+                                فرمها
+                                <br/>
+                                <br/>
+                                <div id="showFormDiv">
+                                    <input type="checkbox" name="C348" id="C348" value="0"> 348.
+                                    نمایش
+                                    <br/>
+                                </div>
+                                <div id="insertFormDiv">
+                                    <input type="checkbox" name="C349" id="C349" value="0"> 349.
+                                    ثبت
+                                    <br/>
+                                </div>
+                                <div id="editFormDiv">
+                                    <input type="checkbox" name="C350" id="C350" value="0"> 350.
+                                    ویرایش
+                                    <br/>
+                                </div>
+                                <div id="deleteFormDiv">
+                                    <input type="checkbox" name="C351" id="C351" value="0"> 351.
+                                    حذف
+                                    <br/>
+                                </div>
+                                <div id="printFormDiv">
+                                    <input type="checkbox" name="C352" id="C352" value="0"> 352.
+                                    نمایش همه ی فرم ها
+                                    <br/>
+                                </div>
+                            </td>
+                            <td style="width: 25%;vertical-align: top;" id="ArchiveCompletedForms">
+                                <br/>
+                                ارشیو همه ی  فرمهای تکمیل شده
+                                <br/>
+                                <br/>
+                                <div id="showArchiveCompletedFormsDiv">
+                                    <input type="checkbox" name="C355" id="C355" value="0"> 355.
+                                    نمایش
+                                    <br/>
+                                </div>
+                            </td>
+                            <td style="width: 25%;vertical-align: top;" id="CompletedForms">
+                                <br/>
+                                تکمیل فرمها من
+                                <br/>
+                                <br/>
+                                <div id="showCompletedFormsDiv">
+                                    <input type="checkbox" name="C361" id="C361" value="0"> 361.
+                                    نمایش
+                                    <br/>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 25%;vertical-align: top;" id="ArchiveCompletedFormsMe">
+                                <br/>
+                                ارشیو فرم های تکمیل شده من
+                                <br/>
+                                <br/>
+                                <div id="showArchiveCompletedFormsMeDiv">
+                                    <input type="checkbox" name="C368" id="C368" value="0"> 368.
+                                    نمایش
+                                    <br/>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!--کارتابل پیام-->
+            <div class="card bd-info mg-t-20"> 
+                <div href="#massege" class="card-header bg-info tx-white c ShowOneDiv1" style="cursor: pointer;">کارتابل پیام</div>
+                <div class="card-body bd-primary pd-sm-30 Alldiv1" id="massege" style="display: none;">
+                    <table width="100%" cellspacing="10" cellpadding="10"> 
+                        <tr>
+                            <td style="width: 25%;vertical-align: top;">
+                                کارتابل پیام
+                                <br/>
+                                <br/>
+                                <div id="showMessagesDiv">
+                                    <input type="checkbox" name="C291" id="C291" value="0" > 291.
+                                    نمایش
+                                    <br/>
+                                </div>
+                            </td>
+                            <td style="width: 25%;vertical-align: top;" id="messagesNoRead">
+                                پیام های خوانده نشده
+                                <br/>
+                                <br/>
+                                <div id="showMessagesNoReadDiv">
+                                    <input type="checkbox" name="C292" id="C292" value="0"> 292.
+                                    نمایش
+                                    <br/>
+                                </div>
+                                <div id="insertMessagesNoReadDiv">
+                                    <input type="checkbox" name="C293" id="C293" value="0"> 293.
+                                    ثبت
+                                    <br/>
+                                </div>
+                                <div id="editMessagesNoReadDiv">
+                                    <input type="checkbox" name="C294" id="C294" value="0"> 294.
+                                    ویرایش
+                                    <br/>
+                                </div>
+                                <div id="deleteMessagesNoReadDiv">
+                                    <input type="checkbox" name="C295" id="C295" value="0"> 295.
+                                    حذف
+                                    <br/>
+                                </div>
+                                <div id="printMessagesNoReadDiv">
+                                    <input type="checkbox" name="C296" id="C296" value="0"> 296.
+                                    چاپ
+                                    <br/>
+                                </div>
+                            </td>
+                            <td style="width: 25%;vertical-align: top;" id="messagesRead">
+                                پیام های دیده شده
+                                <br/>
+                                <br/>
+                                <div id="showMessagesReadDiv">
+                                    <input type="checkbox" name="C300" id="C300" value="0"> 300.
+                                    نمایش
+                                    <br/>
+                                </div>
+                                <div id="insertMessagesReadDiv">
+                                    <input type="checkbox" name="C301" id="C301" value="0"> 301.
+                                    ثبت
+                                    <br/>
+                                </div>
+                                <div id="editMessagesReadDiv">
+                                    <input type="checkbox" name="C302" id="C302" value="0"> 302.
+                                    ویرایش
+                                    <br/>
+                                </div>
+                                <div id="deleteMessagesReadDiv">
+                                    <input type="checkbox" name="C303" id="C303" value="0"> 303.
+                                    حذف
+                                    <br/>
+                                </div>
+                                <div id="printMessagesReadDiv">
+                                    <input type="checkbox" name="C304" id="C304" value="0"> 304.
+                                    چاپ
+                                    <br/>
+                                </div>
+                            </td>
+                            <td style="width: 25%;vertical-align: top;" id="messagesMe">
+                                پیام های من
+                                <br/>
+                                <br/>
+                                <div id="showMessagesMeDiv">
+                                    <input type="checkbox" name="C310" id="C310" value="0"> 310.
+                                    نمایش
+                                    <br/>
+                                </div>
+                                <div id="insertMessagesMeDiv">
+                                    <input type="checkbox" name="C311" id="C311" value="0"> 311.
+                                    ثبت
+                                    <br/>
+                                </div>
+                                <div id="editMessagesMeDiv">
+                                    <input type="checkbox" name="C312" id="C312" value="0"> 312.
+                                    ویرایش
+                                    <br/>
+                                </div>
+                                <div id="deleteMessagesMeDiv">
+                                    <input type="checkbox" name="C313" id="C313" value="0"> 313.
+                                    حذف
+                                    <br/>
+                                </div>
+                                <div id="printMessagesMeDiv">
+                                    <input type="checkbox" name="C314" id="C314" value="0"> 314.
+                                    چاپ
+                                    <br/>
+                                </div>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td style="width: 25%;vertical-align: top;" id="messages">
+                                <br/>
+                                پیام ها
+                                <br/>
+                                <br/>
+                                <div id="showMessagesDiv">
+                                    <input type="checkbox" name="C320" id="C320" value="0"> 320.
+                                    نمایش
+                                    <br/>
+                                </div>
+                                <div id="insertMessagesDiv">
+                                    <input type="checkbox" name="C321" id="C321" value="0"> 321.
+                                    ثبت
+                                    <br/>
+                                </div>
+                                <div id="editMessagesDiv">
+                                    <input type="checkbox" name="C322" id="C322" value="0"> 322.
+                                    ویرایش
+                                    <br/>
+                                </div>
+                                <div id="deleteMessagesDiv">
+                                    <input type="checkbox" name="C323" id="C323" value="0"> 323.
+                                    حذف
+                                    <br/>
+                                </div>
+                                <div id="printMessagesDiv">
+                                    <input type="checkbox" name="C324" id="C324" value="0"> 324.
+                                    چاپ
+                                    <br/>
+                                </div>
+                            </td>
+                            <td style="width: 25%;vertical-align: top" id="email">
+                                <br/>
+                                ایمیل
+                                <br/>
+                                <br/>
+                                <div id="showEmailDiv">
+                                    <input type="checkbox" name="C330" id="C330" value="0" > 330.
+                                    نمایش
+                                    <br/>
+                                </div>
+                                <div id="sendEmailAccDiv">
+                                    <input type="checkbox" name="C331" id="C331" value="0"> 331.
+                                    ارسال ایمیل
+                                    <br/>
+                                </div>
+                                <div id="deleteEmailDiv">
+                                    <input type="checkbox" name="C332" id="C332" value="0"> 332.
+                                    حذف
+                                    <br/>
+                                </div>
+                            </td>
+                            <td style="width: 25%;vertical-align: top" id="sms">
+                                <br/>
+                                پیامک
+                                <br/>
+                                <br/>
+                                <div id="showSmsDiv">
+                                    <input type="checkbox" name="C335" id="C335" value="0" > 335.
+                                    نمایش
+                                    <br/>
+                                </div>
+                                <div id="sendSmsDiv">
+                                    <input type="checkbox" name="C336" id="C336" value="0"> 336.
+                                    ارسال پیامک 
+                                    <br/>
+                                </div>
+                                <div id="deleteSmsDiv">
+                                    <input type="checkbox" name="C337" id="C337" value="0"> 337.
+                                    حذف 
+                                    <br/>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!--کارتابل پیام-->
+            <div class="card bd-info mg-t-20"> 
+                <div href="#project" class="card-header bg-info tx-white c ShowOneDiv1" style="cursor: pointer;">پروژه ها</div>
+                <div class="card-body bd-primary pd-sm-30 Alldiv1" id="project" style="display: none;">
+                    <table width="100%" cellspacing="10" cellpadding="10"> 
+                        <tr>
+                            <td style="width: 25%;vertical-align: top;">
+                                ماژول پروژه ها
+                                <br/>
+                                <br/>
+                                <div id="showMessagesDiv">
+                                    <input type="checkbox" name="C381" id="C381" value="0" > 381.
+                                    نمایش
+                                    <br/>
+                                </div>
+                            </td>
+                            <td style="width: 25%;vertical-align: top;" id="messagesNoRead">
+                                پروژه ها
+                                <br/>
+                                <br/>
+                                <div id="showMessagesNoReadDiv">
+                                    <input type="checkbox" name="C382" id="C382" value="0"> 382.
+                                    نمایش
+                                    <br/>
+                                </div>
+                                <div id="insertMessagesNoReadDiv">
+                                    <input type="checkbox" name="C383" id="C383" value="0"> 383.
+                                    ثبت
+                                    <br/>
+                                </div>
+                                <div id="editMessagesNoReadDiv">
+                                    <input type="checkbox" name="C384" id="C384" value="0"> 384.
+                                    ویرایش
+                                    <br/>
+                                </div>
+                                <div id="deleteMessagesNoReadDiv">
+                                    <input type="checkbox" name="C385" id="C385" value="0"> 385.
+                                    حذف
+                                    <br/>
+                                </div>
+                                <div id="printMessagesNoReadDiv">
+                                    <input type="checkbox" name="C386" id="C386" value="0"> 386.
+                                    چاپ
+                                    <br/>
+                                </div>
+                            </td>
+                            <td style="width: 25%;vertical-align: top;" id="messagesRead">
+دسته بندی پروژه ها                                <br/>
+                                <br/>
+                                <div id="showMessagesReadDiv">
+                                    <input type="checkbox" name="C387" id="C387" value="0"> 387.
+                                    نمایش
+                                    <br/>
+                                </div>
+                                <div id="insertMessagesReadDiv">
+                                    <input type="checkbox" name="C388" id="C388" value="0"> 388.
+                                    ثبت
+                                    <br/>
+                                </div>
+                                <div id="editMessagesReadDiv">
+                                    <input type="checkbox" name="C389" id="C389" value="0"> 389.
+                                    ویرایش
+                                    <br/>
+                                </div>
+                                <div id="deleteMessagesReadDiv">
+                                    <input type="checkbox" name="C390" id="C390" value="0"> 390.
+                                    حذف
+                                    <br/>
+                                </div>
+                                <div id="printMessagesReadDiv">
+                                    <input type="checkbox" name="C391" id="C391" value="0"> 391.
+                                    چاپ
+                                    <br/>
+                                </div>
+                            </td>
+                            <td style="width: 25%;vertical-align: top;" id="messagesMe">
+                                برچسب ها
+                                <br/>
+                                <br/>
+                                <div id="showMessagesMeDiv">
+                                    <input type="checkbox" name="C395" id="C395" value="0"> 395.
+                                    نمایش
+                                    <br/>
+                                </div>
+                                <div id="insertMessagesMeDiv">
+                                    <input type="checkbox" name="C396" id="C396" value="0"> 396.
+                                    ثبت
+                                    <br/>
+                                </div>
+                                <div id="editMessagesMeDiv">
+                                    <input type="checkbox" name="C397" id="C397" value="0"> 397.
+                                    ویرایش
+                                    <br/>
+                                </div>
+                                <div id="deleteMessagesMeDiv">
+                                    <input type="checkbox" name="C398" id="C398" value="0"> 398.
+                                    حذف
+                                    <br/>
+                                </div>
+                                <div id="printMessagesMeDiv">
+                                    <input type="checkbox" name="C399" id="C399" value="0"> 399.
+                                    چاپ
+                                    <br/>
+                                </div>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td style="width: 25%;vertical-align: top;" id="messages">
+                                <br/>
+                                فاکتورها
+                                <br/>
+                                <br/>
+                                <div id="showMessagesDiv">
+                                    <input type="checkbox" name="C3405" id="C3405" value="0"> 405.
+                                    نمایش
+                                    <br/>
+                                </div>                               
+                            </td>
+                            <td style="width: 25%;vertical-align: top" id="email">
+                                <br/>
+                                پرداخت ها
+                                <br/>
+                                <br/>
+                                <div id="showEmailDiv">
+                                    <input type="checkbox" name="C410" id="C410" value="0" > 410.
+                                    نمایش
+                                    <br/>
+                                </div>                         
+                            </td>
+                            <td style="width: 25%;vertical-align: top" id="sms">
+                                <br/>
+                                ایتم های سفارش داده شده
+                                <br/>
+                                <br/>
+                                <div id="showSmsDiv">
+                                    <input type="checkbox" name="C415" id="C415" value="0" > 415.
+                                    نمایش
+                                    <br/>
+                                </div>                                
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!--تنظیمات-->
+            <div class="card bd-info mg-t-20"> 
+                <div href="#sitting" class="card-header bg-info tx-white c ShowOneDiv1" style="cursor: pointer;">تنظیمات</div>
+                <div class="card-body bd-primary pd-sm-30 Alldiv1" id="sitting" style="display: none;">
+                    <table width="100%" cellspacing="10" cellpadding="10">                
+
+                        <tr>
+                            <td  style="width: 25%;vertical-align: top;" >
+                                <br/>
+                                ماژول تنظیمات
+                                <br/>
+                                <br/>
+                                <div id="showConfigurationModuleDiv">
+                                    <input type="checkbox" name="C610" id="C610" value="0" > 610.
+                                    نمایش
+                                    <br/>
+                                </div>
+                                <div id="showConfigurationModuleDiv">
+                                    <input type="checkbox" name="C611" id="C611" value="0" > 611.
+                                    ویرایش
+                                    <br/>
+                                </div>
+                            </td>
+
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!--کاربران-->
+            <div class="card bd-info mg-t-20"> 
+                <div href="#access" class="card-header bg-info tx-white c ShowOneDiv1" style="cursor: pointer;">دسترسی ها</div>
+                <div class="card-body bd-primary pd-sm-30 Alldiv1" id="access" style="display: none;">
+                    <table width="100%" cellspacing="10" cellpadding="10">
+                        <tr>
+                            <td style="width: 25%;vertical-align: top;">
+                                دسترسی
+                                <br/>
+                                <br/>
+                                <div id="showAccessDiv">
+                                    <input type="checkbox" name="C130" id="C130" value="0" > 130.
+                                    نمایش
+                                    <br/>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 25%;vertical-align: top" id="ManageSections">
+                                <br/>
+                                مدیریت بخش ها
+                                <br/>
+                                <br/>
+                                <div id="showManageSectionsDiv">
+                                    <input type="checkbox" name="C131" id="C131" value="0" > 131.
+                                    نمایش
+                                    <br/>
+                                </div>
+                                <div id="insertManageSectionsDiv">
+                                    <input type="checkbox" name="C132" id="C132" value="0"> 132.
+                                    درج
+                                    <br/>
+                                </div>
+                                <div id="editManageSectionsDiv">
+                                    <input type="checkbox" name="C133" id="C253" value="0"> 133.
+                                    ویرایش
+                                    <br/>
+                                </div>
+                                <div id="deleteManageSectionsDiv">
+                                    <input type="checkbox" name="C134" id="C134" value="0"> 134.
+                                    حذف
+                                    <br/>
+                                </div>
+                                <div id="rfsAllManageSectionsDiv">
+                                    <input type="checkbox" name="C135" id="C135" value="0"> 135.
+                                    نمایش همه
+                                    <br/>
+                                </div>
+                            </td>
+                            <td style="width: 25%;vertical-align: top" id="RoleManagement"><!-- ????? -->
+                                <br/>
+                                مدیریت نقش ها
+                                <br/>
+                                <br/>
+                                <div id="showRoleManagementDiv">
+                                    <input type="checkbox" name="C141" id="C141" value="0" > 141.
+                                    نمایش
+                                    <br/>
+                                </div>
+                                <div id="insertRoleManagementDiv">
+                                    <input type="checkbox" name="C142" id="C142" value="0"> 142.
+                                    درج
+                                    <br/>
+                                </div>
+                                <div id="editRoleManagementDiv">
+                                    <input type="checkbox" name="C143" id="C143" value="0"> 143.
+                                    ویرایش
+                                    <br/>
+                                </div>
+                                <div id="deleteRoleManagementDiv">
+                                    <input type="checkbox" name="C144" id="C144" value="0"> 144.
+                                    حذف
+                                    <br/>
+                                </div>
+                                <div id="rfsAllRoleManagementDiv">
+                                    <input type="checkbox" name="C145" id="C145" value="0"> 145.
+                                    نمایش همه
+                                    <br/>
+                                </div>
+                            </td>
+                            <td style="width: 25%;vertical-align: top" id="UserManagement">
+                                <br/>
+                                مدیریت کاربران
+                                <br/>
+                                <br/>
+                                <div id="showAllUserManagementDiv">
+                                    <input type="checkbox" name="C150" id="C150" value="0" > 150.
+                                    نمایش همه
+                                    <br/>
+                                </div>
+                                <div id="showUserManagementDiv">
+                                    <input type="checkbox" name="C151" id="C151" value="0" > 151.
+                                    نمایش
+                                    <br/>
+                                </div>
+                                <div id="insertUserManagementDiv">
+                                    <input type="checkbox" name="C152" id="C152" value="0"> 152.
+                                    درج
+                                    <br/>
+                                </div>
+                                <div id="editUserManagementDiv">
+                                    <input type="checkbox" name="C153" id="C153" value="0"> 153.
+                                    ویرایش
+                                    <br/>
+                                </div>
+                                <div id="deleteUserManagementDiv">
+                                    <input type="checkbox" name="C154" id="C154" value="0"> 154.
+                                    حذف
+                                    <br/>
+                                </div>
+
+                            </td>
+
+                            <td style="width: 25%;vertical-align: top" id="GroupManagement">
+                                <br/>
+                                مدیریت گروه ها
+                                <br/>
+                                <br/>
+                                <div id="showGroupManagementDiv">
+                                    <input type="checkbox" name="C161" id="C161" value="0" > 161.
+                                    نمایش
+                                    <br/>
+                                </div>
+                                <div id="insertGroupManagementDiv">
+                                    <input type="checkbox" name="C162" id="C162" value="0"> 162.
+                                    درج
+                                    <br/>
+                                </div>
+                                <div id="editGroupManagementDiv">
+                                    <input type="checkbox" name="C163" id="C163" value="0"> 163.
+                                    ویرایش
+                                    <br/>
+                                </div>
+                                <div id="deleteGroupManagementDiv">
+                                    <input type="checkbox" name="C164" id="C164" value="0"> 164.
+                                    حذف
+                                    <br/>
+                                </div>
+                                <div id="rfsAllGroupManagementDiv">
+                                    <input type="checkbox" name="C165" id="C165" value="0"> 165.
+                                    نمایش همه
+                                    <br/>
+                                </div>
+                            </td>    
+                        </tr>    
+                    </table>
+                </div>
+            </div>
+            <!-- ------------------------ -->
+        </td>
+    </tr>
+</table>
+<div class="row col-lg-12">
+    <div class="mg-t-20  col-lg">
+        <button class="btn btn-outline-secondary mg-b-10  btn-block" onclick="cmsGroup.m_show_tbl();">بازگشت </button>                
+    </div><!-- col -->
+    <div id="Group_button" class="col-lg-9 mg-t-20 row">            
+    </div>
+</div><!-- card -->
+<script>
+    $(".ShowOneDiv1").click(function () {
+        showOneDiv1(this);
+    });
+    var backArray = [];
+    var showOneDiv1 = function (obj) {
+        if ($(obj).attr('href') != null) {
+            backArray.length = 0;
+            backArray.push($(obj).attr('href'));
+        }
+        //                alert(backArray);
+        $(".Alldiv1").hide(500);
+        var href = $(obj).attr('href');
+        if (!href) {
+            $(obj).show(500); // برای مواقعی که بعضی دیو ها لینک ندارند به جای این که لینک را نمایش دهد خود فرم را نمایش  دهد
+        } else {
+            $(href).show(500); //و اگر که لینک بود خودش را نمایش بده
+        }
+    };
+    var switchOneDiv = function (obj) {
+        $(".Alldiv1").hide(500);
+        $(obj).show(500);
+    };
+    var goBack = function (obj) {
+
+        if (backArray.length != 0)
+            id = backArray.pop();
+        if (id !== null && id != "" && id != "undefined") {
+
+            showOneDiv1($(id));
+        }
+
+    };
+</script>

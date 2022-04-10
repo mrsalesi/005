@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)index.html -->
+<html lang="fa"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <!-- Required meta tags -->
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Twitter -->
+
+
+        <!-- Facebook -->
+        <meta property="og:url" content="http://themepixels.me/shamcey">
+        <meta property="og:title" content="SEPANO">
+        <meta property="og:description" content="Premium Quality and Responsive UI for Dashboard.">
+        <meta property="og:image" content="http://themepixels.me/shamcey/img/shamcey-social.png">
+        <meta property="og:image:secure_url" content="http://themepixels.me/shamcey/img/shamcey-social.png">
+        <meta property="og:image:type" content="image/png">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content=%rel="stylesheet" type="text/css"/>
+        <!-- Meta -->
+        <meta name="description" content="Premium Quality and Responsive UI for Dashboard.">
+        <meta name="author" content="ThemePixels">
+
+
+        <title>sepano سپانو </title> 
+
+        <!-- استایل گذاری روی جداول-->
+        <!-- Vendor css -->
+        <link href="Manager/font-awesome.css" rel="stylesheet">
+        <link href="Manager/font-tahoma.css" rel="stylesheet" type="text/css"/>
+        <link href="Manager/ionicons.css" rel="stylesheet">
+        <link href="Manager/perfect-scrollbar.css" rel="stylesheet">
+        <!--time picker-->
+        <!--        <link href="Manager/css/wickedpicker.min.css" rel="stylesheet" />-->
+        <!--DataTable-->
+        <link href="Manager/dataTable/jquery.dataTables.css" rel="stylesheet"/>
+        <link href="Manager/dataTable/select2.min.css" rel="stylesheet"/>
+        <!--TextEditor-->
+        <link href="Manager/textEditor/medium-editor.css" rel="stylesheet">
+        <link href="Manager/textEditor/default.css" rel="stylesheet">
+        <link href="Manager/textEditor/summernote-bs4.css" rel="stylesheet">
+        <link href="Manager/textEditor/summernote.css" rel="stylesheet">
+
+
+        <link href="Manager/css/endUserStyle.css" rel="stylesheet" type="text/css"/>
+        <link href="Manager/forms/spectrum.css" rel="stylesheet">
+        <link href="Manager/css/bootstap.min.css" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="Manager/shamcey.css">
+        <link href="Manager/css/HMIS.css" rel="stylesheet" type="text/css"/>
+
+    </head>
+
+    <body>
+        <div class="ajaxLoaderDiv" style="display: none;">
+            <div class="d-flex justify-content-center form-control col-lg-12 loader11" style="display: block;width: 100%;height: 100%;position: fixed;z-index: 100000;opacity:0.8;">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div class="sh-logopanel">
+            <a href="index.html" class="sh-logo-text">Sepano سپانو</a>
+            <a id="navicon" href="index.html" class="sh-navicon d-none d-xl-block"><i class="icon ion-navicon"></i></a>
+            <a id="naviconMobile" href="index.html" class="sh-navicon d-xl-none"><i class="icon ion-navicon"></i></a>
+        </div><!-- sh-logopanel -->
+
+        <div class="sh-sideleft-menu ps ps--theme_default" data-ps-id="a72ae45b-1ba0-7552-d312-f5135ad4a035">
+            <label class="sh-sidebar-label"> سامانه جامع مدیریت وبسایت سپانو (مفاد)</label>
+            <ul class="nav">
+                <li class="nav-item" id="generalInformationModule" style="display: none;">
+                    <a href="index.html" class="nav-link with-sub">                        
+                        <i class="icon ion-map" style="color: #b2ffff;"></i>
+                        <span> ماژول اطلاعات عمومی</span>
+                    </a>
+                    <ul class="nav-sub">
+                        <li class="nav-item" id="managmentContent" style="display: none;"><a href="#swContent" class="nav-link ShowOneDiv" onclick="if ($('#swContentTbl').html() == '') {
+                                    cmsContent.m_refresh();
+                                    back();
+                                }
+                                ;
+                                cmsContent.tabSizeTbl();
+                                cmsContent.loadForm();">مدیریت محتوای سازمانی</a></li>
+                        <!--                        <li class="nav-item" id="managmentKanoon" style="display: block;"><a href="#swKanoon" class="nav-link ShowOneDiv" onclick="if ($('#swKanoonTbl').html() == '') {
+                                                            cmsKanoon.m_refresh();
+                                                        }
+                                                        ;
+                                                        cmsKanoon.tabSizeTbl();
+                                                        cmsKanoon.loadForm();">مدیریت محتوای کانونها</a></li>-->
+                        <li class="nav-item" id="managmentContentCategory" style="display: none;"><a href="#swCategoryContent" onclick="if ($('#swCategoryContentTbl').html() == '') {
+                                    cmsCategoryContent.m_refresh();
+                                    back();
+                                }
+                                ;
+                                cmsCategoryContent.tabSizeTbl();
+                                cmsCategoryContent.loadForm();" class="nav-link ShowOneDiv" >دسته بندی مدیریت محتوای سازمانی</a></li>
+                        <li class="nav-item" id="managmentPic" style="display: none;"><a href="#swPic" onclick="if ($('#swPicTbl').html() == '') {
+                                    cmsPic.m_refresh();
+                                    back();
+                                }
+                                ;
+                                cmsPic.tabSizeTbl();
+                                cmsPic.loadForm();" class="nav-link ShowOneDiv" >مدیریت تصاویر</a></li>
+                        <li class="nav-item" id="managmentPicCategory" style="display: none;"><a href="#swCategoryGallery" onclick="if ($('#swCategoryGalleryTbl').html() == '') {
+                                    cmsCategoryGallery.m_refresh();
+                                    back();
+                                }
+                                ;
+                                cmsCategoryGallery.tabSizeTbl();
+                                cmsCategoryGallery.loadForm();" class="nav-link ShowOneDiv" >دسته بندی تصاویر</a></li>
+                        <li class="nav-item" id="mujole_content_news" style="display: block"><a href="#swNews" onclick="if ($('#swNewsTbl').html() == '') {
+                                    cmsNews.m_refresh();
+                                    back();
+                                }
+                                ;
+                                cmsNews.tabSizeTbl();
+                                cmsNews.loadForm();" class="nav-link ShowOneDiv">اخبار سازمانی</a></li>
+                        <li class="nav-item" id="mujole_content_GroupingNews" style="display: block"><a href="#swCategoryNews" onclick="if ($('#swCategoryNewsTbl').html() == '') {
+                                    cmsCategoryNews.m_refresh();
+                                    back();
+                                }
+                                ;
+                                cmsCategoryNews.tabSizeTbl();
+                                cmsCategoryNews.loadForm();" class="nav-link ShowOneDiv">دسته بندی اخبار سازمانی</a></li>
+                    </ul>
+                </li><!-- nav-item -->
+
+                <li id="formsModule" class="nav-item" style="display: none;">
+                    <a href="#" class="nav-link with-sub">                        
+                        <i class="icon ion-clipboard" style="color: #b2ffff;"></i>
+                        <span>ماژول فرم ساز</span>
+                    </a>
+                    <ul class="nav-sub">
+                        <li id="managmentForms" class="nav-item" style="display: none;"><a href="#swForms" onclick="if ($('#swFormsTbl').html() == '') {
+                                    hmisForms.m_refresh();
+                                    back();
+                                    ;
+                                }
+                                hmisForms.loadForm();
+                                return false;" class="nav-link ShowOneDiv">فرم ها </a></li>
+
+                        <li id="managmentFormsMe" class="nav-item" style="display: none;"><a href="#swMyForms" target="_blank" onclick="hmisFormAnswerSets.showMyForms();
+                                return false;" class="nav-link ShowOneDiv">تکمیل فرم های من</a></li>
+                        <li id="managmentComplitArshiveFormsMe" class="nav-item" style="display: none;"><a href="#swAllMyAnswerSets" onclick="hmisFormAnswerSets.showAllMyAnswerSets('swAllMyAnswerSetsTbl');
+                                return false;" class="nav-link ShowOneDiv">آرشیو فرم های تکمیل شده ی من</a></li>
+                        <li id="managmentComplitArshiveForms" class="nav-item" style="display: none;"><a href="#swAllAnswerSets" onclick="hmisFormAnswerSets.showAllForms('swAllAnswerSetsTbl');
+                                return false;" class="nav-link ShowOneDiv">آرشیو فرم های تکمیل شده</a></li>
+                    </ul>
+                </li><!-- nav-item -->                
+                <li class="nav-item" id="maduleSms"  style="display: none;">
+                    <a href="index.html" class="nav-link with-sub">
+                        <i class="icon ion-email" style="color: #ffd15c;"></i>
+                        <span>کارتابل پیام</span>
+                    </a>
+                    <ul class="nav-sub">
+
+<!--                        <li class="nav-item"><a href="#swRecivedMessages"  class="nav-link ShowOneDiv" onclick="
+                                cmsComment.m_refresh();
+                                cmsComment.mainTabSetSize();
+                                cmsComment.loadForm();
+
+                                                ">پیام های دریافتی</a></li>
+                        <li class="nav-item"><a href="#swSentMessages"  class="nav-link ShowOneDiv" onclick="
+                                cmsComment.m_refresh();
+                                cmsComment.mainTabSetSize();
+                                cmsComment.loadForm();
+
+                                                ">پیام های ارسالی</a></li>
+                        <li class="nav-item"><a href="#swMyMessages"  class="nav-link ShowOneDiv" onclick="
+                                cmsComment.m_refresh();
+                                cmsComment.mainTabSetSize();
+                                cmsComment.loadForm();
+
+                                                ">پیام های من</a></li>
+                        <li class="nav-item"><a href="#swDeletedMessages"  class="nav-link ShowOneDiv" onclick="
+                                hmisDeletedMessages.m_refresh();
+                                hmisDeletedMessages.mainTabSetSize();
+                                hmisDeletedMessages.loadForm();
+                                                ">پیام های حذف شده</a></li>-->
+                        <li class="nav-item"><a href="#swMessages"  class="nav-link ShowOneDiv" onclick="
+                                cmsComment.m_refresh();
+                                cmsComment.mainTabSetSize();
+                                cmsComment.loadForm();
+                                                ">پیام ها</a></li>
+                        <li class="nav-item"><a href="#swEmail"  class="nav-link ShowOneDiv" onclick="if ($('#swEmailTbl').html() == '') {
+                                    cmsEmail.m_refresh();
+                                    back();
+                                }
+                                ;
+                                cmsEmail.loadForm();
+                                                ">ایمیل</a></li>
+                        <li class="nav-item"><a href="#swSMS"  class="nav-link ShowOneDiv" onclick="if ($('#swSMSTbl').html() == '') {
+                                    //                                   
+                                    cmsSMS.m_refresh();
+                                    back();
+                                }
+                                ;
+                                cmsSMS.loadForm();
+                                                ">پیامک</a></li>
+                    </ul>
+                </li><!-- nav-item -->
+
+                <li class="nav-item" id="accountingModule"  style="display:none;">
+                    <a href="index.html" class="nav-link with-sub">                        
+                        <i class="icon ion-calculator" style="color: #b2ffff;"></i>
+                        <span> ماژول حسابداری</span>
+                    </a>
+                    <ul class="nav-sub">
+                        <li class="nav-item" id="managmentProduct" ><a href="#swProduct" onclick="if ($('#swProductTbl').html() == '') {
+                                    cmsProduct.m_refresh();
+                                    back();
+                                }
+                                ;
+                                cmsProduct.tabSizeTbl();
+                                cmsProduct.loadForm();" class="nav-link ShowOneDiv">محصولات</a></li>                        
+                        <li class="nav-item" id="managmentCategoryProduct" style=""><a href="#swCategoryProduct" onclick="if ($('#swCategoryProductTbl').html() == '') {
+                                    cmsCategoryProducts.m_refresh();
+                                }
+                                ;
+                                cmsCategoryProducts.tabSizeTbl();
+                                cmsCategoryProducts.loadForm();" class="nav-link ShowOneDiv">دسته بندی محصولات</a></li>
+
+                        <li class="nav-item" id="managmentTags" style=""><a href="#swTags" onclick="if ($('#swTagsTbl').html() == '') {
+                                    cmsTagsm_refresh();
+                                }
+                                ;
+                                cmsTagstabSizeTbl();
+                                cmsTagsloadForm();" class="nav-link ShowOneDiv">دسته برچسب ها</a></li>
+                        <li class="nav-item" id="managmentTags" style=""><a href="#swFactor" onclick="if ($('#swFactorTbl').html() == '') {
+                                    cmsFactor.m_refresh();
+                                    back();
+                                }
+                                ;
+                                cmsFactor.loadForm();
+                                                                            " class="nav-link ShowOneDiv">فاکتورها</a></li>
+                        <li class="nav-item" id="managmentTags" style=""><a href="#swPayment" onclick="if ($('#swPaymentTbl').html() == '') {
+                                    cmsPayment.m_refresh();
+                                    back();
+                                }
+                                ;
+                                cmsPayment.tabSizeTbl();
+                                cmsPayment.loadForm();" class="nav-link ShowOneDiv">پرداخت ها</a></li>
+                        <li class="nav-item" id="managmentTags" style=""><a href="#swFactorItem" onclick="if ($('#swFactorItemTbl').html() == '') {
+                                    cmsFactorItem.m_refresh();
+                                    back();
+                                }
+                                ;
+                                cmsFactorItem.tabSizeTbl();
+                                cmsFactorItem.loadForm();" class="nav-link ShowOneDiv">آیتم های سفارش داده شده من</a></li>
+                    </ul>
+                </li><!-- nav-item -->              
+                <li class="nav-item" id="accessli" style="display: none;cursor: pointer;">
+                    <a class="nav-link with-sub">
+                        <i class="icon ion-person-add" style="color: #b2ffff;"></i>
+                        <span>دسترسی</span>
+                    </a>
+                    <ul class="nav-sub">
+
+                        <!--                        <li class="nav-item" id="swDepartmentli" style="display: none;"><a href="#swDepartment"  class="nav-link ShowOneDiv" onclick="if ($('#swDepartmentTbl').html() == '') {
+                                                            hmisDepartment.m_refresh();
+                                                        }
+                                                        ;
+                                                        hmisDepartment.mainTabSetSize();
+                                                        hmisDepartment.loadForm();
+                        
+                                                                                                                   ">بخش ها</a></li>-->
+
+                        <li class="nav-item" id="swUserli" style="display: none;">  <a href="#swUser" class="nav-link ShowOneDiv" onclick="if ($('#swUserTbl').html() == '') {
+                                    cmsUser.m_refresh();
+                                    back();
+
+                                }
+                                ;
+                                cmsUser.mainTabSetSize();
+                                cmsUser.loadForm();
+                                                                                       ">کاربران</a>
+                        </li>
+                        <!--                        <li class="nav-item" id="swUploadExcelUserli" style="display: none;">  <a href="#swUploadExcelUser" class="nav-link ShowOneDiv" onclick="
+                        
+                                                        cmsUploadExcelUser.mainTabSetSize();
+                                                        cmsUploadExcelUser.loadForm();">ثبت کاربر جدید با بارگذاری فایل </a>
+                                                </li>-->
+
+
+
+                        <!--                        <li class="nav-item" id="swRoleli" style="display: none;"><a href="#swRole"  class="nav-link ShowOneDiv" onclick="if ($('#swRoleTbl').html() == '') {
+                                                            hmisRole.m_refresh();
+                        
+                                                        }
+                                                        ;
+                                                        hmisRole.mainTabSetSize();
+                                                        hmisRole.loadForm();
+                        
+                                                                                                             ">جدول نقش ها</a></li>-->
+                        <!--<li class="nav-item"><a href="#" onclick=" $('.sh-mainpanel').load('13userGroup.html', null, function () {});return false;" class="nav-link">جدول گروه های کاربری</a></li>-->
+                        <li  class="nav-item" id="swGroupli" style="display: none;"><a href="#swGroup"  class="nav-link ShowOneDiv" onclick="if ($('#swGroupTbl').html() == '') {
+                                    cmsGroup.m_refresh();
+                                    back();
+
+                                }
+                                ;
+                                cmsGroup.mainTabSetSize();
+                                cmsGroup.loadForm();
+                                                                                       ">جدول گروه های کاربری</a></li>
+                    </ul>
+                </li><!-- nav-item -->
+                <li class="nav-item" id="maduleSitteng"  style="display: none;">
+                    <a href="index.html" class="nav-link with-sub">                        
+                        <i class="icon ion-gear-a" style="color: #b2ffff;"></i>
+                        <span>ماژول تنظیمات</span>
+                    </a>
+                    <ul class="nav-sub">
+                        <li class="nav-item">
+                            <a href="#swTiceConfig" onclick="if ($('#swTiceConfigTbl').html() == '') {
+                                        hmisTiceConfig.m_refresh();
+                                        back();
+                                    }
+                                    ;
+                                    hmisTiceConfig.loadForm();" class="nav-link ShowOneDiv">تنظیمات </a>
+                        </li>
+
+                    </ul>
+                </li>
+            </ul>
+            <div class="ps__scrollbar-x-rail" style="left: 0px; bottom: 0px;"><div class="ps__scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__scrollbar-y-rail" style="top: 0px; right: 0px;"><div class="ps__scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></div>
+        <!-- sh-sideleft-menu -->
+
+        <div class="sh-headpanel">
+            <a href="#swMyMessages"  class="sh-icon-link ShowOneDiv" onclick="
+                    hmisMyMessages.m_refresh();
+                    hmisMyMessages.mainTabSetSize();
+                    hmisMyMessages.loadForm();
+
+               ">
+                <div>
+                    <i class="fa fa-envelope" style='color: #ffd15c;font-size:42px;margin-top: 14px;'></i><br>
+                    <span>پیامهای من</span>
+                </div>
+            </a>
+            <!-- END: HIDDEN IN MOBILE -->
+            <div class="sh-headpanel-left">
+                <!-- START: DISPLAYED IN MOBILE ONLY -->
+                <div class="dropdown dropdown-app-list">
+                    <a href="index.html" data-toggle="dropdown" class="dropdown-link">
+                        <i class="icon ion-ios-keypad tx-18"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="row no-gutters">                              
+                            <div class="col-4">
+                                <a href="#swMyMessages"  class="ShowOneDiv dropdown-menu-link" onclick="
+                                        hmisMyMessages.m_refresh();
+                                        hmisMyMessages.mainTabSetSize();
+                                        hmisMyMessages.loadForm();
+
+                                   ">
+                                    <div>
+                                        <i class="fa fa-envelope" style='color: #ffd15c;font-size:42px;margin-top: 16px;'></i><br>
+                                        <span>پیامهای من</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div><!-- row -->
+                    </div><!-- dropdown-menu -->
+                </div><!-- dropdown -->
+                <!-- END: DISPLAYED IN MOBILE ONLY -->
+
+            </div><!-- sh-headpanel-left -->
+            <div class="sh-headpanel-right">
+                <div class="dropdown dropdown-profile">
+                    <a href="index.html" data-toggle="dropdown" class="dropdown-link">
+                        <img id="picUserProfile" src="./Manager/img1.jpg" class="wd-60 rounded-circle" alt="">
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-left">
+                        <div class="media align-items-center">
+                            <img id="picUserProfile1" src="./Manager/img1.jpg" class="wd-60 ht-60 rounded-circle bd pd-5" alt="">
+                            <div class="media-body">
+                                <h6 class="tx-inverse tx-15 mg-b-5" id="nameUserProfile">مجید شریعتی</h6>
+                                <p class="mg-b-0 tx-12" id="emailUserProfile">majid.shariat@gmail.com</p>
+                            </div><!-- media-body -->
+                        </div><!-- media -->
+                        <hr>
+                        <ul class="dropdown-profile-nav">
+                            <li><a href="#swUserProfile" class="ShowOneDiv" onclick="
+                                    hmisUserProfile.loadForm();
+                                    hmisUserProfile.m_select();
+                                    hmisUserProfile.mainTabSetSize();"><i class="icon ion-ios-person"></i>ویرایش پروفایل</a></li>
+                            <li><a href="index.html"><i class="icon ion-ios-gear"></i> تنظیمات</a></li>
+                            <li><a href="index.html" onclick="signOut();
+                                    return false;"><i class="icon ion-power"></i> خروج</a></li>
+                        </ul>
+                    </div><!-- dropdown-menu -->
+                </div>
+            </div><!-- sh-headpanel-right -->
+        </div><!-- sh-headpanel -->
+
+        <div class="sh-mainpanel" id="maincontent">
+            <div class="sh-pagebody">
+                <div class="row row-sm">
+                    <div class="col-lg-12">
+                        <!--<div class="col-md-12">-->
+                        <!--<div class="row row-xs">-->
+                        <div  class="card bd-primary mg-t-20">
+                            <!--<div class="card-header bg-primary tx-white ">برنامه های عملیاتی/بهبود کیفیت تعریف شده</div>-->
+                            <div class="Alldiv" id="swLoging"></div>
+                            <div class="Alldiv" id="swUserProfile"></div>
+                            <div class="Alldiv" id="swDashbord"></div>
+                            <div class="Alldiv" id="swLearningDangerManagment"></div>
+                            <div class="Alldiv" id="swLearningErrorAndDangerManagment"></div>
+                            <div class="Alldiv" id="swForms">
+                                <div id="swFormsTbl" style=""></div>
+                                <div id="swFormsForm" style="display: none;"></div>
+                            </div>
+                            <div class="Alldiv" id="swPic">
+                                <div id="swPicTbl" style=""></div>
+                                <div id="swPicForm" style="display: none;"></div>
+                            </div>
+                            <div class="Alldiv" id="swAllAnswerSets">
+                                <div id="swAllAnswerSetsTbl" style=""></div>
+                            </div>
+                            <div class="Alldiv" id="swAllMyAnswerSets">
+                                <div id="swAllMyAnswerSetsTbl" style=""></div>
+                            </div>
+                            <div class="Alldiv" id="swMyForms">
+                                <div id="swMyFormsTbl" style=""></div>
+                                <div id="swMyFormsForm" style="display: none;"></div>
+                            </div>
+                            <div class="Alldiv" id="swProduct">
+                                <div id="swProductTbl" style=""></div>
+                                <div id="swProductForm" style="display: none;"></div>
+                            </div>
+                            <!--swCategoryProduct-->
+                            <div class="Alldiv" id="swCategoryProduct">
+                                <div id="swCategoryProductTbl" style=""></div>
+                                <div id="swCategoryProductForm" style="display: none;"></div>
+                            </div>
+                            <!----------category journal----------->
+                            <div class="Alldiv" id="swCategoryJournal">
+                                <div id="swCategoryJournalTbl" style=""></div>
+                                <div id="swCategoryJournalForm" style="display: none;"></div>
+                            </div>
+                            <!----------category journal----------->
+                            <div class="Alldiv" id="swJournal">
+                                <div id="swJournalTbl" style=""></div>
+                                <div id="swJournalForm" style="display: none;"></div>
+                            </div>
+
+                            <div class="Alldiv" id="swUser" style="">
+                                <div id="swUserTbl" ></div>
+                                <div id="swUserForm" style="display: none;"></div>
+                            </div><!--swUser-->
+                            <div class="Alldiv" id="swUploadExcelUser" style="">
+                                <div id="swUploadExcelUserForm" style=""></div>
+
+                            </div>
+                            <div class="Alldiv" id="swRole" style="">
+                                <div id="swRoleTbl" style=""></div>
+                                <div id="swRoleForm" style="display: none;"></div>
+                            </div><!--swRole-->
+                            <div class="Alldiv" id="swGroup" >
+                                <div id="swGroupTbl" ></div>
+                                <div id="swGroupForm" style="display: none;"></div>
+                            </div><!--swGroup-->
+                            <div class="Alldiv" id="swMessenger">
+                                <div id="swMessengerTbl" ></div>
+                                <div id="swMessengerForm" style="display: none;"></div>
+                            </div>
+                            <div class="Alldiv" id="swDeletedMessages">
+                                <div id="swDeletedMessagesTbl" ></div>
+                                <div id="swDeletedMessagesForm" style="display: none;"></div>
+                            </div>
+                            <div class="Alldiv" id="swMyMessages">
+                                <div id="swMyMessagesTbl" ></div>
+                                <div id="swMyMessagesForm" style="display: none;"></div>
+                            </div>
+                            <!--///////////////پیام های دیده شده-->
+                            <div class="Alldiv" id="swSentMessages">
+                                <div id="swSentMessagesTbl" ></div>
+                                <div id="swSentMessagesForm" style="display: none;"></div>
+                            </div>
+                            <div class="Alldiv" id="swMessages">
+
+                                <div id="swMessagesTbl" ></div>
+                                <div id="swMessagesForm" style="display: none;"></div>
+                            </div>
+                            <div class="Alldiv" id="swRecivedMessages">
+                                <div id="swRecivedMessagesTbl" ></div>
+                                <div id="swRecivedMessagesForm" style="display: none;"></div>
+                            </div>
+
+                            <!--ایمیل-->
+                            <div class="Alldiv" id="swEmail">
+                                <div id="swEmailTbl" ></div>
+                                <div id="swEmailForm" style="display: none;"></div>
+                            </div>
+                            <!--//پیامک-->
+                            <div class="Alldiv" id="swSMS">
+                                <div id="swSMSTbl" ></div>
+                                <div id="swSMSForm" style="display: none;"></div>
+                            </div>
+                            <div class="Alldiv" id="swTiceConfig">
+                                <div id="swTiceConfigTbl" ></div>
+                                <div id="swTiceConfigForm" style="display: none;"></div>
+                            </div>
+                            <div class="Alldiv" id="swContent">
+                                <div id="swContentTbl" ></div>
+                                <div id="swContentForm" style="display: none;"></div>
+                            </div>
+                            <div class="Alldiv" id="swKanoon">
+                                <div id="swKanoonTbl" ></div>
+                                <div id="swKanoonForm" style="display: none;"></div>
+                            </div>
+                            <div class="Alldiv" id="swCategoryContent">
+                                <div id="swCategoryContentTbl" ></div>
+                                <div id="swCategoryContentForm" style="display: none;"></div>
+                            </div>
+                            <div class="Alldiv" id="swCategoryGallery">
+                                <div id="swCategoryGalleryTbl" ></div>
+                                <div id="swCategoryGalleryForm" style="display: none;"></div>
+                            </div>
+                            <div class="Alldiv" id="swNews">
+                                <div id="swNewsTbl" ></div>
+                                <div id="swNewsForm" style="display: none;"></div>
+                            </div>
+                            <div class="Alldiv" id="swCategoryNews">
+                                <div id="swCategoryNewsTbl" ></div>
+                                <div id="swCategoryNewsForm" style="display: none;"></div>
+                            </div>
+                            <div class="Alldiv" id="swTags">
+                                <div id="swTagsTbl" ></div>
+                                <div id="swTagsForm" style="display: none;"></div>
+                            </div>
+                            <div class="Alldiv" id="swAccreditationAxes">
+
+                            </div>
+                            <div class="Alldiv" id="swFactor">
+                                <div id="swFactorTbl" ></div>
+                                <div id="swFactorForm" style="display: none;"></div>
+                            </div>
+                            <div class="Alldiv" id="swPayment">
+                                <div id="swPaymentTbl" ></div>
+                                <div id="swPaymentForm" style="display: none;"></div>
+                            </div>
+                            <div class="Alldiv" id="swFactorItem">
+                                <div id="swFactorItemTbl" ></div>
+                                <div id="swFactorItemForm" style="display: none;"></div>
+                            </div>
+                        </div>
+
+                        <!--</div>-->
+                        <!--row-xs-->
+                    </div> <!--col-lg-12-->
+                    <!--</div>-->
+                    <!--col-md-12-->
+                </div><!--row-->
+            </div><!--sh-pagebody-->
+        </div><!--main-panel-->
+        <div id="myAlert" class="alertfixed"></div>
+        <script src="./Manager/js/jquery/jquery-3.5.1.min.js" type="text/javascript"></script>
+        <!--upload-->
+        <script src="Manager/js/ajaxfileupload.js" type="text/javascript"></script>
+                <script src="./Manager/js/jquery/jquery-migrate-1.2.0.js" type="text/javascript"></script>
+        <script src="Manager/popper.js"></script>
+        <script src="Manager/bootstrap.js"></script>
+                <link href="Manager/js/jquery/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+                <script src="Manager/js/jquery/jquery-ui-1.9.2.custom.min.js" type="text/javascript"></script>
+        <!--        //عوض کردن 
+        <!--calendar-->        
+        <script src="Manager/perfect-scrollbar.jquery.js?v=1271310775"></script>
+        <script src="Manager/moment.js?v=1271310775"></script>
+        <script src="Manager/jquery.flot.js?v=1271310775"></script>
+        <script src="Manager/jquery.flot.resize.js?v=1271310775"></script>
+        <script src="Manager/jquery.flot.spline.js?v=1271310775"></script>
+        <!--calendar-->
+        <script src="Manager/js/calendar/jquery.ui.datepicker-cc.js?v=1271310775" type="text/javascript"></script>
+        <script src="Manager/js/calendar/jquery.ui.datepicker-cc-fa.js?v=1271310775" type="text/javascript"></script>
+        <script src="Manager/js/calendar/calendar.all.js?v=1271310775" type="text/javascript"></script>
+        <script src="Manager/js/calendar/calendar.js?v=1271310775" type="text/javascript"></script>
+        <script src="Manager/js/calendar/wickedpicker.min.js?v=1271310775" type="text/javascript"></script>
+        <script src="Manager/js/calendar/wickedpickerSpec.js?v=1271310775" type="text/javascript"></script>
+
+
+        <!--DataTable-->
+        <script src="Manager/dataTable/jquery.dataTables.js"></script>
+        <script src="Manager/dataTable/dataTables.responsive.js"></script>
+        <script src="Manager/dataTable/select2.min.js"></script>
+
+        <!--textEditor-->
+        <script src="Manager/textEditor/medium-editor.js"></script>
+        <script src="Manager/textEditor/summernote-bs4.min.js"></script>
+        <script src="jsHMIS/myMessages.js" type="text/javascript"></script>
+
+        <!--jj2-->
+        <script src="Manager/textEditor/summernote.js" type="text/javascript"></script>
+        <script src="Manager/js/jj2.js" type="text/javascript"></script>
+        <script src="Manager/js/cms.js" type="text/javascript"></script>
+        <!--jsHMIS-->
+        <!--<script src="jsHMIS/HmisManager.js" type="text/javascript"></script>-->
+        <script src="jsHMIS/forms.js" type="text/javascript"></script>
+        <script src="jsHMIS/UserProfile.js" type="text/javascript"></script>
+        <script src="jsHMIS/formQuestions.js" type="text/javascript"></script>
+        <script src="jsHMIS/formQuestionOptions.js" type="text/javascript"></script>
+        <script src="jsHMIS/formAnswers.js" type="text/javascript"></script>
+        <script src="jsHMIS/tice_config.js" type="text/javascript"></script>
+        <script src="jsHMIS/recivedMessages.js" type="text/javascript"></script>
+        <script src="jsCms/user.js" type="text/javascript"></script>
+        <script src="jsCms/group.js" type="text/javascript"></script>
+        <script src="jsHMIS/messenger.js" type="text/javascript"></script>
+        <script src="jsHMIS/role.js" type="text/javascript"></script>
+        <script src="jsHMIS/deletedMessages.js" type="text/javascript"></script>
+        <script src="jsCms/email.js" type="text/javascript"></script>
+        <script src="jsCms/sms.js" type="text/javascript"></script>
+        <script src="jsCms/news.js" type="text/javascript"></script>
+        <script src="jsCms/journal.js" type="text/javascript"></script>
+
+        <!--//ماژول آموزشی-->
+        <script src="jsCms/pic.js" type="text/javascript"></script>
+        <script src="jsCms/factor.js" type="text/javascript"></script>
+        <script src="jsCms/payment.js" type="text/javascript"></script>
+        <script src="jsCms/factorItem.js" type="text/javascript"></script>
+        <!--////ایجاد مستند-->
+        <script src="jsHMIS/createDocumentary.js" type="text/javascript"></script>
+
+        <script src="jsHMIS/sentMessages.js" type="text/javascript"></script>
+        <script src="jsHMIS/messages.js" type="text/javascript"></script>
+        <script src="jsCms/content.js" type="text/javascript"></script>
+        <script src="jsHMIS/LearningManagement.js" type="text/javascript"></script>
+        <script src="jsHMIS/HmisManager.js" type="text/javascript"></script>
+        <script src="Manager/bootstrap-filestyle.js" type="text/javascript"></script>
+        <script src="Manager/bootstrap-filestyle.min.js" type="text/javascript"></script>
+        <!--forms-->
+        <!--<script src="Manager/forms/select2.min.js"></script>-->
+        <script src="Manager/forms/spectrum.js"></script>
+        <script src="jsCms/Tagsjs" type="text/javascript"></script>
+        <!--charts.js-->
+        <script src="jsCms/product.js" type="text/javascript"></script>
+        <script src="Manager/shamcey.js"></script>
+        <script src="Manager/dashboard.js"></script>
+        <script src="Manager/chart/Chart.js"></script>
+        <script src="Manager/chart/chartjs-plugin-datalabels.js" type="text/javascript"></script>
+        <script src="Manager/chart/chartjs-plugin-annotation.min.js" type="text/javascript"></script>
+        <script src="Manager/js/HMIS.js" type="text/javascript"></script>
+        <script src="jsCms/kanoon.js" type="text/javascript"></script>
+        <script src="Manager/js/gauge.min.js" type="text/javascript"></script>
+        <script src="jsHMIS/Dashbord.js" type="text/javascript"></script>
+        <script src="Manager/dataTable/dataTables.buttons.min.js" type="text/javascript"></script>
+        <script src="Manager/dataTable/jszip.min.js" type="text/javascript"></script>
+        <script src="Manager/dataTable/buttons.html5.min.js" type="text/javascript"></script>
+        <script src="jsCms/comment.js" type="text/javascript"></script>
+        <script type="text/javascript">
+                                var part_content_editor = "";
+                                var part_praivate_editor = "";
+                                //        $(".nav-sub a.nav-link").css("color","#fff");
+                                $(".nav-sub a.nav-link").on('click', function () {
+                                    $("a.nav-link.active").removeClass("active");
+                                    $(this).parent().parent().parent().find('a.nav-link.with-sub').addClass("active");
+                                    $(this).addClass("active");
+                                });
+
+                                $(function () {
+                                    $("#swLoging").load("formCms/login.html", null, function () {
+                                        new jj("do=Access_User.login&jj=1&" + new jj("#loginForm").jjSerial()).jjAjax2(false);
+                                        new jj("#user_birthdate").jjCalendarWithYearSelector(1320, 1380);
+                                    });
+                                });
+                                $(".ShowOneDiv").click(function () {
+                                    showOneDiv(this);
+
+                                });
+                                var backArray = [];
+                                var showOneDiv = function (obj) {
+                                    if ($(obj).attr('href') != null) {
+                                        backArray.length = 0;
+                                        backArray.push($(obj).attr('href'));
+                                    }
+                                    //                alert(backArray);
+                                    $(".Alldiv").hide();
+                                    var href = $(obj).attr('href');
+                                    if (!href) {
+                                        $(obj).show(); // برای مواقعی که بعضی دیو ها لینک ندارند به جای این که لینک را نمایش دهد خود فرم را نمایش  دهد
+                                    } else {
+                                        $(href).show(); //و اگر که لینک بود خودش را نمایش بده
+                                    }
+                                };
+                                var switchOneDiv = function (obj) {
+                                    $(".Alldiv").hide();
+                                    $(obj).show();
+                                };
+                                var goBack = function (obj) {
+
+                                    if (backArray.length != 0)
+                                        id = backArray.pop();
+                                    if (id !== null && id != "" && id != "undefined") {
+
+                                        showOneDiv($(id));
+                                    }
+
+                                };
+                                function back() {
+                                    cmsContent.m_show_tbl();
+                                    cmsCategoryContent.m_show_tbl();
+                                    cmsPic.m_show_tbl();
+                                    cmsCategoryGallery.m_show_tbl();
+                                    cmsNews.m_show_tbl();
+                                    cmsCategoryNews.m_show_tbl();
+                                    hmisForms.m_show_tbl();
+                                    hmisSentMessages.m_show_tbl();
+                                    cmsProduct.m_show_tbl();
+                                    cmsCategoryProducts.m_show_tbl();
+                                    cmsUser.m_show_tbl();
+                                    cmsGroup.m_show_tbl();
+                                }
+                                $(".nav-sub li").on("click",function(){
+     cmsContent.m_show_tbl();
+                                    cmsCategoryContent.m_show_tbl();
+                                    cmsPic.m_show_tbl();
+                                    cmsCategoryGallery.m_show_tbl();
+                                    cmsNews.m_show_tbl();
+                                    cmsCategoryNews.m_show_tbl();
+                                    hmisForms.m_show_tbl();
+                                    hmisSentMessages.m_show_tbl();
+                                    cmsProduct.m_show_tbl();
+                                    cmsCategoryProducts.m_show_tbl();
+                                    cmsUser.m_show_tbl();
+                                    cmsGroup.m_show_tbl();                                });
+                                //        </script>
+
+
+
+    </body></html>

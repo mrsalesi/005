@@ -1,0 +1,641 @@
+<style>
+    .required{
+        border:1px solid red!important;
+    }
+    span.select2-selection.select2-selection--single{
+        height:35px;
+    }
+</style>
+<div class="sh-breadcrumb">
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="http://medyarweb.ir">مدیار</a>
+        <a class="breadcrumb-item" href="http://medyarweb.ir">MedYar</a>
+        <span class="breadcrumb-item active">فرم ساز هوشمند</span>
+    </nav>
+</div><!-- sh-breadcrumb -->
+<div class="sh-pagetitle">
+    <!--        <div class="input-group">
+                <input type="search" class="form-control" placeholder="Search">
+                <span class="input-group-btn">
+                    <button class="btn"><i class="fa fa-search"></i></button>
+                </span> input-group-btn 
+            </div> input-group -->
+    <div class="sh-pagetitle-left">
+        <div class="sh-pagetitle-icon"><i class="icon ion-ios-gear mg-t-3"></i></div>
+        <div class="sh-pagetitle-title">
+            <span>ایجاد فرم جدید</span>
+            <h2>ماژول فرم ساز</h2>
+        </div><!-- sh-pagetitle-left-title -->
+    </div><!-- sh-pagetitle-left -->
+</div><!-- sh-pagetitle -->
+
+<div class="card bd-primary mg-t-20" id="newForm">
+    <div class="card-header bg-primary tx-white" onclick="$('#fromDetail').slideToggle('slow');">عنوان، مشخصات و ویژگی های فرم</div>
+    <div class="card bd-primary">
+        <div class="card-body pd-sm-30" id="fromDetail">
+            <div class="row" >
+                <div class="col-lg-3" style="margin-bottom: 20px">
+                    <input id="hmis_forms_id" name="id" type="hidden" />
+                    <input id="forms_icon" name="forms_icon" type="hidden" />
+                    آیکن فرم:
+                    <img id="forms_icon_Preview"  class="img-thumbnail"  src="img/preview.jpg" style=""/>
+                    <div class="row">
+                        <input class="btn btn-primary" id="send_forms_icon" type="submit" value="ارسال">
+                        <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                        <input id="forms_icon_file" name="forms_icon_file" onchange="$(this).parent().find('span.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                        <span class="form-control col-lg"></span>
+                    </div>
+                    <!--                                    <a onclick="hmisDepartment.downloadIcon();"></a>-->
+                </div>                
+                <div class="col-lg-6">
+                </div>
+                <div class="col-lg-6">
+                    کد فرم
+                    <input id="forms_code" name="forms_code" class="form-control" placeholder="کد فرم" type="text">
+                </div>
+     
+                <div class="col-lg-12">
+                    عنوان فرم
+                    <input id="forms_title" name="forms_title" class="form-control" placeholder="عنوان فرم" type="text">
+                </div>
+                <div class="col-lg-3">
+                    ایجاد کننده
+                    <!--<input id="forms_ownerName" readonly="" class="form-control" disabled="disabled" placeholder="ایجاد کننده" type="text">-->
+                    <select id="forms_ownerId" name="forms_ownerId" class="form-control" ></select>
+                </div>
+                <div class="col-lg-3">
+                    نقش مالک فرم
+                    <select id="forms_ownerRole" name="forms_ownerRole" class="form-control" style="width: 100%">
+                    </select>
+                </div>                
+                <div class="col-lg-3">
+                    تاریخ ایجاد فرم
+                    <input id="forms_creationDate" name="forms_creationDate" readonly="" style="direction: ltr;text-align: center;" class="form-control" placeholder="از این تاریخ به بعد فرم فعال است" type="text">
+                </div>
+                <div class="col-lg-3">
+                    ساعت ایجاد فرم
+                    <input id="forms_creationTime" name="forms_creationTime" readonly="" style="direction: ltr;text-align: center;" class="form-control" placeholder="" type="text">
+                </div>
+                <div class="col-lg-3">
+                </div>
+                <div class="col-lg-3">
+                </div>
+                <div class="col-lg-3">
+                    تاریخ انقضای فرم
+                    <input id="forms_expireDate" name="forms_expireDate" readonly="" style="direction: ltr;text-align: center;" class="form-control"  placeholder="تاریخ اتمام مهلت پر کردن برای کاربران" type="text">
+                </div>
+                <div class="col-lg-3">
+                    ساعت انقضای فرم
+                    <input id="forms_expireTime" name="forms_expireTime" readonly="" style="direction: ltr;text-align: center;" class="form-control" placeholder="ساعت انقضای فرم" type="text">
+                </div>
+            </div><!-- row -->
+            <div class="row">
+                <div class="col-lg-6 mg-t-20 mg-lg-t-0">
+                    گروه بندی فرم
+                    <div class="form-group mg-b-0">
+                        <select class="form-control col-lg-12" id="forms_category_id" name="forms_category_id">
+                            <option value="">انتخاب</option>
+                            <option value="ارزیابی کمیته">ارزیابی کمیته</option>                          
+                            <option value="بازدیدهای ایمنی">بازدیدهای ایمنی</option>                          
+                            <option value="فرم و آزمون و چک لیست">فرم و آزمون و چک لیست</option>                          
+                            <option value="گزارشات پرستاری">گزارشات پرستاری</option>                            
+                            <option value="خودارزیابی">خودارزیابی</option>                            
+                            <option value="گزارش دهی خطا و خطر">گزارش دهی خطا و خطر</option>                          
+                            <option value="گزارش خطر  حوادث و بلایا">گزارش خطر  حوادث و بلایا</option>                          
+                            <option value="فرم های وقایع ناخواسته ی تهدید کننده حیات">فرم های وقایع ناخواسته ی تهدید کننده حیات</option>                          
+                            <option value="فرم های گزارش دهی حوادث">فرم های گزارش دهی حوادث</option>                          
+                            <option value="فرم های ارزیابی ریسک">فرم های ارزیابی ریسک</option>                          
+                            <option value="فرم های ارزیابی عملکردی">فرم های ارزیابی عملکردی</option>                          
+                            <option value="فرم های ارزیابی ایمنی سازه ای">فرم های ارزیابی ایمنی سازه ای</option>                          
+                            <option value="فرم های ارزیابی ایمنی غیر سازه ای">فرم های ارزیابی ایمنی غیر سازه ای</option>                          
+                            <option value="سناریو">سناریو</option>                          
+                            <option value="گزارش مانور">گزارش مانور</option>                          
+                            <option value="گزارش پایان حادثه">گزارش پایان حادثه</option>
+                            <option value="آموزشی">آموزشی</option>
+                            <option value="اطلاعات شاخص">اطلاعات شاخص</option>
+                            <option value="فرم های آموزش به پرسنل">فرم های آموزش به پرسنل</option>
+                            <option value="فرم های آموزش به بیمار">فرم های آموزش به بیمار</option>
+                            <option value="پرسشنامه رضایت سنجی از بیماران">پرسشنامه رضایت سنجی از بیماران</option>
+                            <option value="پرسشنامه رضایت سنجی از کارکنان">پرسشنامه رضایت سنجی از کارکنان</option>
+                        </select>
+                    </div>
+                </div>
+                <!--                <div class="col-lg-6 mg-t-20 mg-lg-t-0">
+                                    گروه بندی کمیته
+                                    <div class="form-group mg-b-0">
+                                        <select class="form-control col-lg-12 AllcommettesTitle" id="forms_category_commettes_id" name="forms_category_commettes_id">
+                                        </select>
+                                    </div>
+                                </div>-->
+                <div class="col-lg-6 mg-t-20 mg-lg-t-0">
+                    بخش
+                    <div class="form-group">
+                        <select id="forms_departments" name="forms_departments" class="form-control" style="width: 100%">
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-12">
+                    <label class="ckbox">
+                        <input id="forms_isActive" name="forms_isActive" type="checkbox" checked="checked"><span>فرم فعال باشد؟</span>
+                    </label>
+                </div>
+                <div class="col-lg-12">
+                    <label class="ckbox">
+                        <input id="forms_isDateEditable" name="forms_isDateEditable" type="checkbox" checked="checked"><span>تاریخ فرم قابل ویرایش باشد</span>
+                    </label>
+                </div>
+                <div class="col-lg-12">
+                    <label class="ckbox">
+                        <input id="forms_showResultToQuestioner" name="forms_showResultToQuestioner" type="checkbox" checked="checked"><span>نتایج فرم به تکمیل کننده نشان داده بشود؟ </span>
+                    </label>
+                </div>
+                <div class="col-lg-12">
+                    <label class="ckbox">
+                        <input id="forms_showCometePreAproveForm" name="forms_showCometePreAproveForm" type="checkbox" checked="checked"><span> نمایش فرم ویژه پیشنهادات اصلاحی بعد از مشاهده آمار</span>
+                    </label>
+                </div>
+                 <div class="col-lg-12">
+                    <label class="ckbox">
+                        <input id="forms_uniqueComplete" name="forms_uniqueComplete" type="checkbox" checked="checked"><span>فرم توسط هر فرد فقط یکبار تکمیل بشود؟</span>
+                    </label>
+                </div>
+
+                <div class="col-lg-4">
+                    نقش هایی که به نتایج و آمار فرم دسترسی دارند
+                    <br/>
+                    <select id="forms_resultAccessRole" name="forms_resultAccessRole" class="form-control roleSelectOption" data-placeholder="نقش هایی که به آمار فرم دسترسی دارند" multiple >
+                    </select>
+                </div>
+                <div class="col-lg-4">
+                    افرادی که به نتایج و آمار  فرم دسترسی دارند
+                    <br/>
+                    <select id="forms_resultAccessUsers" name="forms_resultAccessUsers" class="form-control userSelectOption" data-placeholder="افرادی که به آمار فرم دسترسی دارند" multiple >
+                    </select>
+                </div>
+                <div class="col-lg-4">
+                    گروه هایی که به نتایج و آمار فرم دسترسی دارند
+                    <br/>
+                    <select id="forms_resultGroupId" name="forms_resultGroupId" class="form-control groupSelectOption" data-placeholder="گروهایی که به آمار فرم دسترسی دارند" multiple >
+                    </select>
+                </div>
+                <div class="col-lg-4">
+                    دفعات دیده شدن فرم
+                    <input id="forms_visit" type="text" readonly="" class="form-control" disabled="disabled">
+                </div>
+                <div class="col-lg-4">
+                    نقش هایی که میتوانند این فرم را پر کنند
+                    <br/>
+                    <select id="forms_accesseRoles" name="forms_accesseRoles" class="form-control roleSelectOption" data-placeholder="نقش ها را وارد کنید" multiple >
+                    </select>
+                </div>
+                <div class="col-lg-4">
+                    افرادی که میتوانند این فرم را پر کنند
+                    <br/>
+                    <select id="forms_accessesUsers" name="forms_accessesUsers" class="form-control userSelectOption" data-placeholder="کاربرانی که می توانند فرم را پر کنند" multiple >
+                    </select>
+                </div>
+                <div class="col-lg-4">
+                    گروه هایی که میتوانند این فرم را پر کنند
+                    <br/>
+                    <select id="forms_accessessGroupId" name="forms_accessessGroupId" class="form-control groupSelectOption" data-placeholder="گروه هایی که می توانند فرم را پر کنند" multiple >
+                    </select>  
+                </div>
+                <div class="col-lg-4">
+                    فرم بعد از این فرم چه باشد؟
+                    <select id="forms_nextFormId" name="forms_nextFormId"  class="formSelectOption form-control">
+
+                    </select>
+                </div>
+                <div class="card-body pd-sm-30 col-lg-12 ">
+                    <div class="card bd-primary mg-t-20 mg-b-20">
+                        <div class="card-header bg-grandeur tx-white" onclick="if ($('#professionalSettingForms').css('display') == 'none') {
+                                    $('#professionalSettingForms').slideDown();
+                                } else {
+                                    $('#professionalSettingForms').slideUp();
+                                }">تنظیمات پیشرفته فرم</div>
+                        <div id='professionalSettingForms' style='display: none'>
+                            <div class="col-lg-12 mg-b-20 mg-t-20 mg-sm-b-30">
+                                توضیحات و خلاصه:
+                                <p>برای ثبت فرم جدید میتوانید توضیحات قبل از تکمیل فرم را برای راهنمایی تکمیل کنندگان فرم ها ثبت نمایید</p>
+                                <textarea id="forms_discription" name="forms_discription" rows="4" class="form-control summernote" placeholder="توضیحات فرم"></textarea>
+                            </div><!-- col -->
+                            <div class="col-lg-12">
+                                راهنمای تکمیل فرم
+                                <textarea id="forms_htmlContent" name="forms_htmlContent" rows="4" class="form-control summernote" placeholder="توضیحات فرم"></textarea>
+                            </div><!-- col -->                
+                            <div class="col-lg-12">
+                                قالب
+                                <textarea id="forms_css" name="forms_css"   rows="4" class="form-control l" placeholder="<style type='text/css>...</style> OR <link href='upload/yourCss.css' rel='stylesheet'> '"></textarea>
+                            </div><!-- col -->
+                            <div class="col-lg-12 mg-b-20">
+                                کد های جاوا اسکریپت
+                                <textarea id="forms_javaScript" name="forms_javaScript"   rows="4" class="form-control l" placeholder="<script type='text/javascript'>jquery and javascript</script> OR <script src='upload/yourJs.js' type='text/javascript'></script>"></textarea>
+                            </div><!-- col -->
+                            <div class="col-lg-12">
+                                <label class="ckbox">
+                                    <input id="forms_isRandomQuestion" name="forms_isRandomQuestion" type="checkbox" checked="checked"><span>سوال ها  به صورت تصادفی جا به جا شود</span>
+                                </label>
+                            </div>
+                            <div class="col-lg-12">
+                                <label class="ckbox">
+                                    <input id="forms_isRandomOption" name="forms_isRandomOption" type="checkbox" checked="checked"><span> گزینه ها به صورت تصادفی جا به جا شود</span>
+                                </label>
+                            </div>
+                            <div class="col-lg-12">
+                                <label class="ckbox">
+                                    <input id="forms_showQuestionsOneByOne" name="forms_showQuestionsOneByOne" type="checkbox" checked="checked"><span> سوال ها یکی یکی نمایش داده شود</span>
+                                </label>
+                            </div>
+                            <div class="col-lg-12">
+                                <label class="ckbox">
+                                    <input id="forms_isAutoWiki" name="forms_isAutoWiki" type="checkbox" checked="checked"><span>لینک ساز فرم/آزمون برای این فرم انجام بشود</span>
+                                </label>
+                            </div>
+                            <div class="col-lg-12">
+                                <label class="ckbox">
+                                    <input id="forms_hasAutoWikiInContent" name="forms_hasAutoWikiInContent" type="checkbox" checked="checked"><span>در محتوای فرم لینک ساز فعال باشد؟</span>
+                                </label>
+                            </div>
+                            <div class="col-lg-12">
+                                <label class="ckbox">
+                                    <input id="forms_uniqueComplete" name="forms_uniqueComplete" type="checkbox" checked="checked"><span>فرم توسط هر فرد فقط یکبار تکمیل بشود؟</span>
+                                </label>
+                            </div>
+                            <div class="col-lg-12">
+                                <label class="ckbox">
+                                    <input id="forms_showAllResultToQuestioner" name="forms_showAllResultToQuestioner" type="checkbox" checked="checked"><span>آمار کلی فرم به تکمیل کننده نشان داده بشود؟ </span>
+                                </label>
+                            </div>
+                        </div><!--card-header -->
+                    </div><!--card -->
+                </div><!--card-body -->
+
+            </div><!-- row -->
+            <div class="col-lg-12">
+                <div class="mg-t-20  col-lg">
+                    <button class="btn btn-outline-secondary mg-b-10  btn-block" onclick="hmisForms.m_show_tbl();">بازگشت به جدول فرم ها</button>                
+                </div><!-- col -->
+                <div id="forms_buttons" class="col-lg-9 mg-t-20 row">            
+                </div>
+            </div><!-- card -->
+        </div><!-- card-body -->
+    </div><!-- card -->
+</div><!-- pageboy -->
+
+<div class="card bd-primary mg-t-20" id="formQuestions" style="display: none" >
+
+    <div class="card-header bg-primary tx-white">مدیریت سوالات فرم:</div>
+    <div class="card bd-primary mg-t-20">
+        <div class="row pd-sm-30">
+            <div class="col-lg-4">
+                فرم مورد نظر را انتخاب کنید 
+                <br/>
+                <select class="form-control" id="forms_FormIdInCopyQuestion" onchange="hmisFormQuestions.getQuestion($(this).val(), '#forms_questionsIdInCopyQuestion');"></select>
+            </div>
+            <div class="col-lg-4">
+                سوال موردنظر را انتخاب کنید
+                <br/>
+                <select class="form-control" id="forms_questionsIdInCopyQuestion"></select>
+            </div>   
+            <div  class='col-lg mg-t-20'>
+                <button title='کپی سوال در این فرم' class='btn btn-outline-danger btn-block mg-b-10' onclick="hmisFormQuestions.copyQuestionInForm($('#forms_questionsIdInCopyQuestion').val(), $('#hmis_forms_id').val());" id='edit_Forms_new'>کپی سوال در این فرم</button>
+            </div>   
+        </div>   
+    </div>   
+    <div class="card-body pd-sm-30">
+        <p class="mg-b-20 mg-sm-b-30">هر فرم از تعدادی سوال تشکیل شده</p>
+
+        <div id="swFormQuestionsForm" class="card bd-primary">
+            <div class="card-header bg-info tx-white">افزودن یا ویرایش یکی از سوالات فرم</div>
+            <div   class="col-lg-12">
+                <div class="row mg-t-20 card-body">
+                    <div class="row mg-t-20 card-body">
+                        <div class="col-lg-3" style="margin-bottom: 20px">
+                            <input id="hmis_formquestions_id" name="id" type="hidden" />
+                            <input id="formQuestions_icon" name="formQuestions_icon" type="hidden" />
+                            آیکن مخصوص این سوال
+                            <img id="formQuestions_icon_Preview"  class="img-thumbnail"  src="img/preview.jpg"/>
+                            <div class="row">
+                                <input  class="btn btn-primary" id="send_formQuestions_icon" type="submit"  value="ارسال" >
+                                <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();" >انتخاب فایل</span>
+                                <input id="formQuestions_icon_file" name="formQuestions_icon_file"  onchange="$(this).parent().find('span.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                <span class="form-control col-lg"></span>
+                            </div>
+                        </div>
+                    </div> <!-- row -->
+                    <div class="row mg-t-20">
+                        <div class="col-lg-10">
+                            <div class="form-group has-success mg-b-0">
+                                ترتیب سوال:
+                                <input id="formQuestions_preority" name="formQuestions_preority"  class="form-control" placeholder="ترتیب سوال" min="1" max="1000" type="number"  onkeyup="
+                                        if ($(this).val() > 1000 || $(this).val() < 1) {
+                                            $(this).val('');
+                                        } else {
+                                            $(this).attr('value', $(this).val());
+                                        }">                            
+                            </div><!-- form-group -->
+                        </div><!-- col -->
+                        <div class="col-lg-10">
+                            <div class="form-group has-success mg-b-0">
+                                متن سوال:
+                                <input id="formQuestions_title" name="formQuestions_title"  class="form-control" placeholder="متن سوال را حداکثر در 1000 کاراکتر وارد کنید :" type="text">                            
+                            </div><!-- form-group -->
+                        </div><!-- col -->
+
+                        <div class="col-lg-10">
+                            حیطه:
+                            <div id="rangeQuestion_div">  
+                                <select class="form-control" id="formQuestions_range"  name="formQuestions_range">
+                                </select>
+                            </div>
+                            <input class="form-control"   id='formQuestions_range1' style="display: none;width:100%;border-color: blue;" maxlength="200" placeholder="(تا 200کاراکتر)"  name='formQuestions_range1'/> 
+                        </div>
+                        <div class="col-lg-2">
+                            <button class="btn btn-success btn-block mg-b-10" style="margin-top: 20px" onclick="hmisFormQuestions.changeSelectToInputRange()">...</button>
+                        </div><!-- col -->
+                        <!--/////////////////////////////////-->
+                        <div class="col-lg-10">
+                            <div class="form-group has-success mg-b-0" id="defaultValueDiv">
+                                مقدار پیشفرض:
+                                <input id="formQuestions_defaultValue" name="formQuestions_defaultValue"  class="form-control" placeholder="وقتی کاربر فرم را باز می کند مقدار پیشفرض در پاسخ قرار دارد" type="text">                            
+                            </div><!-- form-group -->
+                        </div><!-- col -->
+                        <div class="col-lg-10">
+                            <div class="form-group has-success mg-b-0" id="placeHolderDiv">
+                                راهنمای درون فیلد های متنی(place holder):
+                                <input id="formQuestions_placeHolder" name="formQuestions_placeHolder"  class="form-control" placeholder="متن راهنمایی که کمک میکند کاربر چطور فیلد مربوطه را تکمیل کند" type="text">                            
+                            </div><!-- form-group -->
+                        </div><!-- col -->
+                        <div class="col-lg-10">
+                            <div class="form-group has-success mg-b-0">
+                                پاسخ صحیح (فقط هنگام مشاهده ی نتایج به کاربر نشان داده میشود):
+                                <input id="formQuestions_trueAnswer" name="formQuestions_trueAnswer"  class="form-control" placeholder="پاسخ صحیح در حدود 200 کارکاکتر" type="text">                            
+                            </div><!-- form-group -->
+                        </div><!-- col -->
+                        <div class="col-lg-10">
+                            <div class="form-group has-warning mg-b-0">
+                                ضریب وزنی سوال: (اگر وزن را صفر بگذارید در محاسبه ی میانگین و مجموع تاثیری نخواهد داشت)
+                                <input id="formQuestions_weight" name="formQuestions_weight" class="form-control" placeholder="فقط عدد" type="number" value="1">                            
+
+                            </div><!-- form-group -->
+                        </div><!-- col -->
+                        <div class="col-lg-10">
+                            <div class="form-group has-warning mg-b-0">
+                                حداکثر زمان پاسخ:
+                                <input id="formQuestions_timeLimit" name="formQuestions_timeLimit" class="form-control" placeholder="فقط عدد برحسب ثانیه" type="number" value="1">                            
+
+                            </div><!-- form-group -->
+                        </div><!-- col -->
+                        <div class="col-lg-10">
+                            <label class="ckbox">
+                                <input id="formQuestions_isRequierd" name="formQuestions_isRequierd" type="checkbox"><span>پاسخ اجباری باشد</span>
+                            </label>
+                        </div><!-- col -->
+                        <div class="col-lg-10">
+                            <input id="formQuestions_numberForCopy" type="number"   value="1" name="formQuestions_numberForCopy" ><span>تعداد برای کپی این سوال</span>
+                        </div><!-- col -->
+                        <br/>
+
+                        <div class="card-body pd-sm-30 col-lg-12 ">
+                            <div class="card bd-primary mg-t-20 mg-b-20">
+                                <div class="card-header bg-grandeur tx-white" onclick="if ($('#professionalSettingQuestions').css('display') == 'none') {
+                                            $('#professionalSettingQuestions').slideDown();
+                                        } else {
+                                            $('#professionalSettingQuestions').slideUp();
+                                        }">تنظیمات پیشرفته</div>
+                                <div id='professionalSettingQuestions' style='display: none'>
+                                    <div class="col-lg-12">
+                                        راهنمای سوال
+                                        <textarea id="formQuestions_htmlDiscription" name="formQuestions_htmlDiscription" rows="4" class="form-control summernote" placeholder="توضیحات فرم"></textarea>
+                                    </div><!-- col -->
+                                    <div class="col-lg-12">
+                                        متن راهنمای پس از آزمون   (فقط هنگام مشاهده ی نتایج به کاربر نشان داده میشود) :
+                                        <textarea id="formQuestions_htmlDiscriptionInResult" name="formQuestions_htmlDiscriptionInResult" rows="4" class="form-control summernote" 
+                                                  placeholder="مثل روش رسیدن به پاسخ صحیح و یا راهنمایی ای که هنگام مشاهده ی نتایج کاربر مشاهده می کند"></textarea>
+                                    </div><!-- col -->
+                                </div><!--card-header -->
+                            </div><!--card -->
+                        </div><!--card-body -->
+
+
+                    </div><!-- row -->
+                    <input id="formQuestions_answersType" name="formQuestions_answersType"  type="hidden" value="text">                            
+                    <div class="row col-lg-12" >
+                        <div class="formTypeSelector" style="display:none">
+                            نوع پاسخ:
+                            <ul class="choose_type list-group" style="display: inline-flex;flex-direction: row;">
+                                <li id="field_checkbox" class="list-group-item pull-left text-center pointer " title="چک باکس" onclick="$('.list-group-item.active').removeClass('active');
+                                        $('#formQuestions_answersType').val('checkbox');
+                                        $('#placeHolderDiv').val('');
+                                        $('#defaultValueDiv').val('');
+                                        $('#defaultValueDiv').hide();
+                                        $('#placeHolderDiv').hide();
+                                        $(this).toggleClass('active');
+                                        hmisFormQuestionOptions.m_show_tbl();
+                                        hmisFormQuestionOptions.m_refresh($('#hmis_formquestions_id').val());
+                                    ">
+                                    <p>
+                                        <i class="fa fa-check-square-o"></i></p>
+                                </li>
+                                <li id="field_radio" class="list-group-item pull-left text-center pointer" title="رادیو" onclick="$('.list-group-item.active').removeClass('active');
+                                        $('#placeHolderDiv').val('');
+                                        $('#defaultValueDiv').val('');
+                                        $('#placeHolderDiv').hide();
+                                        $('#defaultValueDiv').hide();
+                                        $('#formQuestions_answersType').val('radio');
+                                        $(this).toggleClass('active');
+                                        hmisFormQuestionOptions.m_show_tbl()
+                                        hmisFormQuestionOptions.m_refresh($('#hmis_formquestions_id').val());
+                                    ">
+                                    <p>
+                                        <i class="fa fa-circle-o"></i></p>
+                                </li>
+                                <li id="field_select_option" class="list-group-item pull-left text-center pointer" title="کشویی" onclick="$('.list-group-item.active').removeClass('active');
+                                        $('#placeHolderDiv').val('');
+                                        $('#defaultValueDiv').val('');
+                                        $('#placeHolderDiv').hide();
+                                        $('#defaultValueDiv').hide();
+                                        $('#formQuestions_answersType').val('select_option');
+                                        $(this).toggleClass('active');
+                                        hmisFormQuestionOptions.m_show_tbl();
+                                        hmisFormQuestionOptions.m_refresh($('#hmis_formquestions_id').val());
+                                    ">
+                                    <p>
+                                        <i class="fa fa-caret-square-o-down"></i></p>
+                                </li>
+                                <li id="field_select_optionDepartment" class="list-group-item pull-left text-center pointer" title="بخش" onclick="$('.list-group-item.active').removeClass('active');
+                                        $('#placeHolderDiv').val('');
+                                        $('#defaultValueDiv').val('');
+                                        $('#placeHolderDiv').hide();
+                                        $('#defaultValueDiv').hide();
+                                        $('#formQuestions_answersType').val('select_option');
+                                        $(this).toggleClass('active');
+                                        hmisFormQuestionOptions.m_show_tbl();
+                                        hmisFormQuestionOptions.createDepartmentQuestion($('#hmis_formquestions_id').val());
+                                        hmisFormQuestionOptions.m_refresh($('#hmis_formquestions_id').val());
+                                    ">
+                                    <p>
+                                        <i class="fa fa-sitemap"></i></p>
+                                </li>
+                                <li id="field_select_optionDepartment" class="list-group-item pull-left text-center pointer" title="کاربران بخش این فرم" onclick="$('.list-group-item.active').removeClass('active');
+                                        $('#placeHolderDiv').val('');
+                                        $('#defaultValueDiv').val('');
+                                        $('#placeHolderDiv').hide();
+                                        $('#defaultValueDiv').hide();
+                                        $('#formQuestions_answersType').val('select_option');
+                                        $(this).toggleClass('active');
+                                        hmisFormQuestionOptions.m_show_tbl();
+                                        hmisFormQuestionOptions.createUserDepartment($('#hmis_formquestions_id').val());
+                                        hmisFormQuestionOptions.m_refresh($('#hmis_formquestions_id').val());
+                                    ">
+                                    <p>
+                                        <i class="fa fa-users"></i></p>
+                                </li>
+                                <li id="field_text" class="list-group-item pull-left text-center pointer active" title="متن" onclick="$('.list-group-item.active').removeClass('active');
+                                        $('#formQuestions_answersType').val('text');
+                                        $(this).toggleClass('active');
+                                        $('#defaultValueDiv').show();
+                                        $('#placeHolderDiv').show();
+                                        $('#swFormQuestionOptionsForm').hide();
+                                        $('#swFormQuestionOptionsTbl').hide();">
+
+                                    <p>
+                                        <i class="fa fa-file-text-o"></i></p>
+                                </li>
+                                <li id="field_textarea" class="list-group-item pull-left text-center pointer" title="متن چند خطی" onclick="$('.list-group-item.active').removeClass('active');
+                                        $('#formQuestions_answersType').val('textarea');
+                                        $(this).toggleClass('active');
+                                        $('#swFormQuestionOptionsForm').hide();
+                                        $('#defaultValueDiv').show();
+                                        $('#placeHolderDiv').show();
+                                        $('#swFormQuestionOptionsTbl').hide();">
+                                    <p>
+                                        <i class="fa fa-file-text"></i></p>
+                                </li>
+                                <li id="field_email" class="list-group-item pull-left text-center pointer" title="ایمیل" onclick="$('.list-group-item.active').removeClass('active');
+                                        $('#formQuestions_answersType').val('email');
+                                        $(this).toggleClass('active');
+                                        $('#defaultValueDiv').show();
+                                        $('#placeHolderDiv').show();
+                                        $('#swFormQuestionOptionsForm').hide();
+                                        $('#swFormQuestionOptionsTbl').hide();">
+                                    <p>
+                                        @                                    </p>
+                                </li>
+                                <li id="field_number" class="list-group-item pull-left text-center pointer" title="عدد" onclick="$('.list-group-item.active').removeClass('active');
+                                        $('#formQuestions_answersType').val('number');
+                                        $(this).toggleClass('active');
+                                        $('#defaultValueDiv').show();
+                                        $('#placeHolderDiv').show();
+                                        $('#swFormQuestionOptionsForm').hide();
+                                        $('#swFormQuestionOptionsTbl').hide();">  
+                                    <p>
+                                        123                                    </p>
+                                </li>
+                                <li id="field_date" class="list-group-item pull-left text-center pointer" title="تاریخ" onclick="$('.list-group-item.active').removeClass('active');
+                                        $('#formQuestions_answersType').val('date');
+                                        $(this).toggleClass('active');
+                                        $('#defaultValueDiv').show();
+                                        $('#placeHolderDiv').show();
+                                        $('#swFormQuestionOptionsForm').hide();
+                                        $('#swFormQuestionOptionsTbl').hide();">
+                                    <p>
+                                        <i class="fa fa-clock-o"></i></p>
+                                </li>
+                                <!--                                    <li id="field_geoloc" class="list-group-item pull-left text-center pointer" title="موقعیت جغرافیایی" onclick="$('.list-group-item.active').removeClass('active');
+                                                                        
+                                                                            $(this).toggleClass('active');
+                                                                           $('#swFormQuestionOptionsForm').hide();$('#swFormQuestionOptionsTbl').hide();">
+                                                                        <p>
+                                                                            <i class="fa fa-map"></i></p>
+                                                                    </li>-->
+
+                                <li id="field_image" class="list-group-item pull-left text-center pointer" title="تصویر" onclick="$('.list-group-item.active').removeClass('active');
+                                        $('#placeHolderDiv').val('');
+                                        $('#defaultValueDiv').val('');
+                                        $('#defaultValueDiv').hide();
+                                        $('#placeHolderDiv').hide();
+                                        $('#formQuestions_answersType').val('file');
+                                        $(this).toggleClass('active');
+                                        $('#swFormQuestionOptionsForm').hide();
+                                        $('#swFormQuestionOptionsTbl').hide();">
+                                    <p>  
+                                        <i class="fa fa-file-picture-o"></i></p>
+                                </li>
+                                <li id="field_location" class="list-group-item pull-left text-center pointer" title="موقعیت" onclick="$('.list-group-item.active').removeClass('active');
+                                        $('#placeHolderDiv').val('');
+                                        $('#defaultValueDiv').val('');
+                                        $('#defaultValueDiv').hide();
+                                        $('#placeHolderDiv').hide();
+                                        $('#formQuestions_answersType').val('location');
+                                        $(this).toggleClass('active');
+                                        $('#swFormQuestionOptionsForm').hide();
+                                        $('#swFormQuestionOptionsTbl').hide();">
+                                    <p>
+                                        <i class="fa fa-map-marker"></i></p>
+                                </li>
+
+                            </ul>
+                        </div><!-- col-1 -->                
+                    </div><!-- row -->
+                    <div class="row col-sm-12 mg-t-20">
+                        <div class="col-lg-4 row">
+                            <div class='col-lg'>
+                                <button class="btn btn-outline-secondary btn-block mg-b-10" onclick="hmisFormQuestions.m_show_tbl();
+                                        $('#refreshFormQuestions').dataTable({destroy: true});" title="بازگشت">بازگشت به فرم</button>
+                            </div>
+                        </div><!-- col-1 --> 
+                        <div id="form_Question_buttons" class="col-lg row" >
+                        </div>
+                    </div><!-- row -->
+
+                    <div id="swFormQuestionOptionsTbl" class="col-lg-12" >
+                    </div>
+                    <div id="swFormQuestionOptionsForm" class="row col-lg-12 mg-t-20" style="text-align: right;">
+                        <div class="card-body pd-sm-30">
+                            <div class="card-header bg-info tx-white">افزودن یا ویرایش یکی از گزینه های سوال</div>
+                            <div class="card bd-primary">
+                                <input type="hidden" id="hmis_formquestionOptions_id" name="id">
+                                <div class="col-xs-3 col-sm-3 col-lg-3">
+                                    <input id="formQuestionOptions_icon" name="formQuestionOptions_icon" type="hidden">
+                                    تصویر برای نمایش این گزینه
+                                    <div>
+                                        <img id="formQuestionOptions_Preview" class="img-thumbnail" src="img/preview.jpg" style="max-width:80;height: 36px ;">
+                                        <input class="btn btn-primary" id="send_formQuestionOptions_icon" type="submit" value="ارسال">
+                                        <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                        <input id="formQuestionOptions_icon_file" name="formQuestionOptions_icon_file" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                        <!--<span class="form-control"></span>-->
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="col-xs-4 col-sm-4 col-lg-6">
+                                        مقدار عددی
+                                        <input id="formQuestionOptions_value" name="formQuestionOptions_value" class="form-control is-valid jjdigit" placeholder="برای محاسبات" type="number">
+                                    </div>
+                                    <div class="col-xs-4 col-sm-4 col-lg-6">
+                                        عنوان گزینه
+                                        <input id="formQuestionOptions_lable" name="formQuestionOptions_lable" class="form-control is-valid" placeholder="متن حداکثر 1000 کاراکتر" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="col-lg-4 mg-t-20 text-center">
+                                        <button class="btn btn-outline-secondary btn-block text-center" onclick="hmisFormQuestionOptions.m_show_tbl();" title="بازگشت">بازگشت</button>
+                                    </div>
+                                    <div id="formQuestionOption_buttons" class="mg-t-20  col-lg-8 text-center">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- row -->
+            </div><!-- card-body -->
+        </div><!-- card-body -->
+        <div id="swFormQuestionsTbl" class="col-lg-12" >
+        </div>
+    </div><!-- formquestion-->
+    <div class="col-lg-12 mg-t-20 ">
+        <button class="btn btn-outline-secondary mg-b-10  btn-block" onclick="hmisForms.m_show_tbl();">بازگشت به جدول فرم ها </button>                
+    </div><!-- card -->
+</div><!-- sh-pagebody -->    

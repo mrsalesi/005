@@ -1,0 +1,117 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+           <!--<script type="text/javascript" src="js/calendar/jquery.ui.datepicker-cc.js"></script>-->
+        <script type="text/javascript" src="js/calendar/jquery.ui.datepicker-cc-fa.js"></script>
+        <!--<script type="text/javascript" src="js/calendar/jquery.ui.datepicker-cc.js"></script>-->
+        <script type="text/javascript" src="js/calendar/calendar.all.js"></script>
+        <script type="text/javascript" src="js/calendar/calendar.js"></script>
+        <link rel="stylesheet" href="../css/style1.css" type="text/css"/>
+    </head>
+    <body class="body" style="padding-top: 8px;width: 98%">
+        <div style="display: block">
+           
+            <table style="width: 100%;;text-align: right">
+                <tr>
+                    <td style="text-align: right;padding: 5px">
+                        <table style="width: 90%;padding: 1px">
+                            <tr>
+                                <td style="text-align: right;">
+                                    گزارش مالی :
+                                </td>
+                                <td style="text-align: right;">
+                                    از
+                                    <input id="gozareshat_date_start" name="gozareshat_date_start" class="tahoma10" style="width: 135px;text-align:right;direction: ltr"/>
+                                    در
+                                    <input id="gozareshat_date_end" name="gozareshat_date_end" class="tahoma10" style="width: 135px;text-align:right;direction: ltr"/>
+                                    <!--<input type="button" id="noRegist_btn" name="noRegist_btn"  class="tahoma10" style="width: 100px;" value="نمایش"/>-->
+                                    <input type="button" onclick='cmsGozareshat.printAllMali();' id="printAllMali" name="printAllMali"  class="tahoma10" style="width: 100px;" value="چاپ"/>
+                                    <!--<input type="button" id="noRegist_preview_sms" name="noRegist_preview_sms"  class="tahoma10" style="width: 100px;" value="پیامک"/>-->
+                                </td>
+                                
+                           
+                           
+                        </table>
+                    </td>
+                </tr>
+            </table>
+             <div style='    position: relative;
+    top: 108px;' id='EtelateForosheKetab'></div>
+             <div style='    position: relative;
+    top: 220px;' id='MizaneForosh'></div>
+        </div>
+<!--        <div id="tice_report_Status_div" style= "width: 100%;text-align: center;background-color: #EEF6FB">
+            <table style= "width: 100%;text-align: center;vertical-align:top">
+                <tr style="background-color: #eaeaf4;height: 450px;vertical-align:top">
+                    <td>
+                        <br/>
+                        <div id="report_div" style="padding-right: 3px;float: right;width: 975px;right: 3px;position: absolute"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>-->
+        <br/>
+        <div style="clear: both"></div>
+<!--        <div style="display: block">
+            <table id="pollQuestionInClassForm" style="width: 90%;padding: 1px;margin-top: 30px;display: list-item;" >
+                <tr>
+                    <td style="text-align: right;">&nbsp;
+                    </td>
+                    <td style="text-align: right;">
+                        سوالات نظر سنجی
+                    </td>
+                </tr>
+                <tr><td style="text-align: right;width: 30px">01.</td><td style="text-align: right;"><input id="ft1" name="ft1" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">02.</td><td style="text-align: right;"><input id="ft2" name="ft2" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">03.</td><td style="text-align: right;"><input id="ft3" name="ft3" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">04.</td><td style="text-align: right;"><input id="ft4" name="ft4" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">05.</td><td style="text-align: right;"><input id="ft5" name="ft5" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">06.</td><td style="text-align: right;"><input id="ft6" name="ft6" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">07.</td><td style="text-align: right;"><input id="ft7" name="ft7" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">08.</td><td style="text-align: right;"><input id="ft8" name="ft8" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">09.</td><td style="text-align: right;"><input id="ft9" name="ft9" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">10.</td><td style="text-align: right;"><input id="ft10" name="ft10" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">11.</td><td style="text-align: right;"><input id="ft11" name="ft11" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">12.</td><td style="text-align: right;"><input id="ft12" name="ft12" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">13.</td><td style="text-align: right;"><input id="ft13" name="ft13" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">14.</td><td style="text-align: right;"><input id="ft14" name="ft14" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">15.</td><td style="text-align: right;"><input id="ft15" name="ft15" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">16.</td><td style="text-align: right;"><input id="ft16" name="ft16" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">17.</td><td style="text-align: right;"><input id="ft17" name="ft17" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">18.</td><td style="text-align: right;"><input id="ft18" name="ft18" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">19.</td><td style="text-align: right;"><input id="ft19" name="ft19" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">20.</td><td style="text-align: right;"><input id="ft20" name="ft20" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">21.</td><td style="text-align: right;"><input id="ft21" name="ft21" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">22.</td><td style="text-align: right;"><input id="ft22" name="ft22" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">23.</td><td style="text-align: right;"><input id="ft23" name="ft23" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">24.</td><td style="text-align: right;"><input id="ft24" name="ft24" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">25.</td><td style="text-align: right;"><input id="ft25" name="ft25" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">26.</td><td style="text-align: right;"><input id="ft26" name="ft26" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">27.</td><td style="text-align: right;"><input id="ft27" name="ft27" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">28.</td><td style="text-align: right;"><input id="ft28" name="ft28" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">29.</td><td style="text-align: right;"><input id="ft29" name="ft29" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">30.</td><td style="text-align: right;"><input id="ft30" name="ft30" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">31.</td><td style="text-align: right;"><input id="ft31" name="ft31" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">32.</td><td style="text-align: right;"><input id="ft32" name="ft32" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">33.</td><td style="text-align: right;"><input id="ft33" name="ft33" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr><td style="text-align: right;width: 30px">34.</td><td style="text-align: right;"><input id="ft34" name="ft34" class="tahoma10" style="width: 598px;text-align:right;direction: rtl" value=""></td></tr>
+                <tr>
+                    <td style="text-align: right;width: 30px">&nbsp;</td>
+                    <td style="text-align: right;">
+                        <input type="button" id="setPollToFile_btn" name="setPollToFile_btn"  class="tahoma10" style="width: 100px;" value="تنظیم"/>
+                    </td>
+                </tr>
+            </table>
+        </div>-->
+<!--<table style="float:right">
+ <tr style="background-color: #eaeaf4;height: 40px">
+                <td style="text-align: right">
+                  
+                    <div id="Gozareshat_button" style="position: relative;float: right">
+                        ذخیره
+                    </div>
+                </td>
+            </tr>
+</table>-->
+    </body>
+</html>

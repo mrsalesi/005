@@ -1,0 +1,157 @@
+<style>
+
+    .required{
+        border:1px solid red!important;
+    }    
+    @media print{ 
+        table { page-break-inside:auto }
+        tr    { page-break-inside:avoid; page-break-after:auto }
+    }
+</style>
+<div class="card bd-primary">
+    <div class="sh-breadcrumb">
+        <nav class="breadcrumb">
+            <a class="breadcrumb-item" href="http://medyarweb.ir">مدیار</a>
+            <a class="breadcrumb-item" href="http://medyarweb.ir">MedYar</a>
+            <span class="breadcrumb-item active">میز هوشمند مصوبات</span>
+        </nav>
+    </div><!-- sh-breadcrumb -->
+    <div class="card bd-primary mg-t-20">
+        <div class="card-header btn-teal tx-white">
+            گزارشات کمیته        
+        </div>
+        <div class="card-body pd-sm-30">
+            <div class="card-header btn-teal tx-white">
+                گزارشات حضار        
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    از تاریخ   :
+                    <div class="form-group has-success mg-b-0">
+                        <input id="dateFrom" class="form-control is-valid dateFrom"  type="text" placeholder="از تاریخ" >
+                    </div><!-- form-group -->
+                </div><!-- col -->   
+                <div class="col-lg-3">
+                    <div class="form-group has-warning mg-b-0">
+                        تا تاریخ
+                        <input type="text"  id="dateTo" class="form-control is-valid dateTo" placeholder="تا تاریخ" />
+                    </div><!-- form-group -->
+                </div><!-- col -->
+                <div class="col-lg-3">
+                    نام کمیته:
+                    <div class="form-group has-success mg-b-0">
+                        <select required  class="form-control commettesTitle" id="commettesTitleIndicator" tabindex='-1'></select>
+                        <!--<select required  class="form-control commettesTitle" id="commettesTitle" tabindex='-1'></select>-->
+                    </div><!-- form-group -->
+                </div><!-- row -->
+                <div class="col-lg-3">
+                    جستجو
+                    <a id="searchAudience" onclick="hmisIndicatorCommettes.ShowCommetteSessions($('#commettesTitleIndicator option:selected').val());" class="btn btn-outline-warning btn-block mg-b-10">
+                        جستجو
+                    </a>   
+                </div><!-- col --> 
+                <div class="row  col-lg-12">              
+                    <div class="col-lg-12" id="result1"></div>
+                </div>
+                <div class="col-lg-12" id="IndicatorCommettes_button"></div>
+
+            </div><!-- card -->
+            <div class="row">
+                <div class="col-lg-3">
+                    از تاریخ   :
+                    <div class="form-group has-success mg-b-0">
+                        <input id="dateFromOneAudience" class="form-control is-valid dateFrom"  type="text" placeholder="از تاریخ" >
+                    </div><!-- form-group -->
+                </div><!-- col -->   
+                <div class="col-lg-3">
+                    <div class="form-group has-warning mg-b-0">
+                        تا تاریخ
+                        <input type="text"  id="dateToOneAudience" class="form-control is-valid dateTo" placeholder="تا تاریخ" />
+                    </div><!-- form-group -->
+                </div><!-- col -->
+                <div class="col-lg-3">
+                    نقش:
+                    <div class="form-group has-success mg-b-0">
+                        <select required  class="form-control" id="roleIdOneAudience" tabindex='-1'></select>
+                    </div> 
+                </div> 
+
+                <div class="col-lg-3">
+                    جستجو  
+                    <a id="searchAudience" onclick="hmisIndicatorCommettes.reportOneAudience($('#roleIdOneAudience option:selected').val());" class="btn btn-outline-warning btn-block mg-b-10">
+                        جستجو
+                    </a>   
+                </div><!-- col --> 
+                <div class="row  col-lg-12">              
+                    <div class="col-lg-12" id="result3"></div>
+                </div>
+                <div class="col-lg-12" id="IndicatorCommettes_button"></div>
+
+            </div><!-- card -->
+            <div class="card-header btn-teal tx-white">
+                گزارشات مصوبات        
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    از تاریخ   :
+                    <div class="form-group has-success mg-b-0">
+                        <input id="dateFromApproved" class="form-control is-valid dateFrom"  type="text" placeholder="از تاریخ" >
+                    </div><!-- form-group -->
+                </div><!-- col -->   
+                <div class="col-lg-3">
+                    <div class="form-group has-warning mg-b-0">
+                        تا تاریخ
+                        <input type="text"  id="dateToApproved" class="form-control is-valid dateTo" placeholder="تا تاریخ" />
+                    </div><!-- form-group -->
+                </div><!-- col -->
+                <div class="col-lg-3">
+                    نام کمیته:
+                    <div class="form-group has-success mg-b-0">
+                        <select required class="form-control AllcommettesTitle"  id="AllcommettesTitle" tabindex='-1'></select>
+                    </div><!-- form-group -->
+                </div><!-- row -->
+                <div class="col-lg-3">
+                    <div class="sh-pagetitle-icon col-lg-5"><a  onclick="PrintElem('#result2');" title="چاپ گزارش" target="_blank" class="active btn-block mg-l-8"><i class="fa fa-print mg-t-3"></i></a></div>
+                    <div class="col-lg-8">
+                        جستجو
+                        <a id="searchApproved" onclick="hmisIndicatorCommettes.showApprovedReport($('#AllcommettesTitle option:selected').val());" class="btn btn-outline-warning btn-block mg-b-10">
+                            جستجو
+                        </a>  
+                    </div>
+
+
+                </div><!-- col --> 
+                <div class="row  col-lg-12">              
+                    <div class="col-lg-12" id="result2"></div>
+                </div>
+
+            </div><!-- card -->
+        </div><!-- card-body -->
+    </div>
+</div>
+<script>
+
+    function PrintElem(elem) {
+        Popup($(elem).html());
+    }
+
+    function Popup(data) {
+        var mywindow = window.open('', 'new div', 'height=400,width=600');
+        mywindow.document.write('<html><head><title></title>');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write(data);
+        mywindow.document.write('</body></html>');
+        var htmlToPrint = '' +
+                '<style type="text/css">' +
+                'table td {text-align:center;}' +
+                'table th, table td {' +
+                'border:1px solid #eee;' +
+                'padding:0.5em;' +
+                '}' +
+                '</style>';
+//    htmlToPrint += divToPrint.outerHTML;
+        mywindow.document.write(htmlToPrint);
+        mywindow.print();
+        mywindow.close();
+    }
+</script>

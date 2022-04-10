@@ -1,0 +1,161 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" href="../css/style1.css" type="text/css"/>
+        <style>
+            table {
+    width: 100%;
+}
+a,td,tr{
+        font-family: IRANIANSANS;
+}
+#loginRegistForm{
+      width: 100%;
+      LEFT:0PX;
+}
+/*td input #registBtnPardakht,#loginBtnPardakht{
+    display: inline-block;
+                                                                                                                                  background-color: #ffbb05;
+                                                                                                                                  color: #343434;
+                                                                                                                                  font-size: 13px;
+                                                                                                                                  padding: 12px 18px;
+                                                                                                                                  border-radius: 3px;
+                                                                                                                                  text-decoration: none;
+                                                                                                                                  border: 1px solid transparent;
+                                                                                                                                  margin-right: 3px;
+                                                                                                                                  margin-left: 3px;
+                                                                                                                                  font-family: IRANIANSANS;
+                                                                                                                                  padding-top: 1px;
+}*/
+        </style>
+    </head>
+    <body class="body" style="padding-top: 8px;width: 100%;">
+        <div id="loginRegistFormPardakht" class="tahoma10"  style="text-align: justify;direction: rtl;padding-right: 3px;width: 860px;color: black;" >
+            <div class="primary-button" style="    margin: auto;
+    "><a onclick="WorodPardakht();">ورود</a><a onclick="sabtenamPardakht();">ثبت نام</a></div>
+            <table  class='loginRegist'>
+                <tr>
+                    <td class="loginLogin" >
+                        <table  >
+<!--                            <tr>
+                                <td></td>
+                            </tr>-->
+                            <tr>
+                                <td>
+                                    <table  id="loginFormPardakht" style="display:none;    margin-top: 5%;
+    display: inline;    position: relative;
+    top: 68px;
+    ">
+                                        <tr>
+                                            <td style="width: 10%;text-align: right;">ایمیل:</td>
+                                            <td style="">
+                                                <input style="direction: ltr;" class="form-control" type="text" name="user_email" id="user_email_pardakht"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right;width: 10%;">رمز عبور:</td>
+                                            <td><input type="password" name="user_pass" class="form-control" id="user_pass_pardakht" style="direction: ltr;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right"></td>
+                                            <td> <input id="loginBtnPardakht"  style="float: right" type="button" value="ورود" name="loginbtn"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right">&nbsp;</td>
+                                            <td id="loginMessagePanelPardakht" style="text-align: right;direction: rtl;color: red">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right">&nbsp;</td>
+                                            <td style="text-align: right">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right">&nbsp;</td>
+                                            <td style="text-align: right">&nbsp;</td>
+                                        </tr>
+<!--                                        <tr>
+                                            <td style="text-align: right;vertical-align: top">
+                                                ثبت نام کنید تا:
+                                            </td>
+                                            <td>
+                                                <br/>
+                                                1. بتوانید در انجمن ها بحث جدید ایجاد کنید.
+                                                <br/>
+                                                2. بتوانید در بحث ها کامنت بگذارید.
+
+                                                <br/>
+                                                3. بتوانید در رای گیری ها شرکت کنید.
+                                            </td>
+                                        </tr>-->
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td >
+                        <table width="100%">
+                            <tr>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table width="100%"  id="registFormPardakht" style="display:none">
+                                        <tr>
+                                            <td style="width: 22%;text-align: right">ایمیل:*</td>
+                                            <td style="width: 70%"><input type="text" class="form-control" name="user_email" id="user_email_pardakht2" style="width: 95%;direction: ltr" ></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right">نام:*</td>
+                                            <td><input type="text" name="user_nam" class="form-control" id="user_name_pardakht" style="width: 95%"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right">نام خانوادگی:*</td>
+                                            <td><input type="text" name="user_family" class="form-control" id="user_family_pardakht" style="width: 95%"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right">رمز عبور:*</td>
+                                            <td><input type="password" name="user_pass" class="form-control" id="user_pass_pardakht2" style="width: 95%;text-align: right;direction: ltr"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right">تکرار رمز عبور:*</td>
+                                            <td><input type="password" name="user_pass_2" class="form-control"  id="user_pass_2_pardakht" style="width: 95%;text-align: right;direction: ltr"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <!--                                                <select size="1" name="user_question" id="user_question" style="width: 97%">
+                                                                                                    <option>حیوان مورد علاقه شما چیست؟</option>
+                                                                                                    <option>نام بهترین دوست شما چیست؟</option>
+                                                                                                    <option>نام کوچک پدرتان چیست؟</option>
+                                                                                                    <option>اولین شماره تلفن شما چند بود؟</option>
+                                                                                                    <option>نام معلم مورد علاقه شما چیست؟</option>
+                                                                                                    <option>ساز موسیقی مورد علاقه شما چیست؟</option>
+                                                </select>-->
+                                        <tr>
+                                            <td style="text-align: right">یادآور گذرواژه</td>
+                                            <td><input type="text" name="user_password_hint"  class="form-control"  id="user_password_hint_pardakht" style="width: 95%"></td>
+                                        </tr>
+<!--                            <tr>
+                                <td style="text-align: right">جواب شما:*</td>
+                                <td><input type="text" name="user_answer"  id="user_answer" style="width: 95%"></td>
+                            </tr>-->
+                            <tr>
+                                <td style="text-align: right">تاریخ تولد:</td>
+                                <td><input type="text" name="user_birthdate" class="form-control" id="user_birthdate_pardakht" style="width: 95%"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right"></td>
+                                <td><input  id="registBtnPardakht" style="float: right" type="button" value="ثبت نام" name="registbtn"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right"></td>
+                                <td id="registMessagePanel" style="direction: rtl;text-align: right;color: red">&nbsp;</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+</div>
+</body>
+</html>

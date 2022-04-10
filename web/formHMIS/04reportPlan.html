@@ -1,0 +1,107 @@
+<style>.required{border:1px solid red}</style>
+<div class="card bd-primary mg-t-20">
+    <div class="card bd-primary">
+        <div class="sh-breadcrumb">
+            <nav class="breadcrumb">
+                <a class="breadcrumb-item" href="http://medyarweb.ir">مدیار</a>
+                <a class="breadcrumb-item" href="http://medyarweb.ir">MedYar</a>
+                <span class="breadcrumb-item active">برنامه عملیاتی هوشمند</span>
+            </nav>
+        </div><!-- sh-breadcrumb -->
+        <div class="sh-pagetitle">
+            <!--        <div class="input-group">
+                        <input type="search" class="form-control" placeholder="Search">
+                        <span class="input-group-btn">
+                            <button class="btn"><i class="fa fa-search"></i></button>
+                        </span> input-group-btn 
+                    </div> input-group -->
+            <div class="sh-pagetitle-left">
+                <div class="sh-pagetitle-icon"><i class="icon ion-ios-gear mg-t-3"></i></div>
+                <div class="sh-pagetitle-title">
+                    <span>برنامه عملیاتی- بهبود کیفیت</span>
+                    <h2>گزارش های برنامه عملیاتی- بهبود کیفیت </h2>
+                </div><!-- sh-pagetitle-left-title -->
+            </div><!-- sh-pagetitle-left -->
+        </div><!-- sh-pagetitle -->
+        <div class="col-lg-12">
+            <div class="card bd-primary mg-t-20" id="newFormQuestion">
+                <div class="card-header bg-primary tx-white">گزارش های خاص برنامه های عملیاتی و بهبود:</div>
+                <div class="card-body pd-sm-30">                    
+                    <div class="row">
+                        <div class="col-lg-4">
+                            بخش/واحد
+                            <select class="form-control"  id="report_department" name="plans_department">
+                            </select>
+                        </div>
+                        <div class="col-lg-12">
+                            هدف کلان
+                            <select class="form-control " name="plans_hugeGoal" id="report_hugeGoal" onchange="hmisProprietaryTarget.getOptionForFilter($(this).val(), '#report_minorGoal');$('#report_strategic').html('');">
+                            </select>
+                        </div>
+                        <div class="col-lg-12">
+                            هدف اختصاصی 
+                            <select class="form-control " id="report_minorGoal" name="plans_minorGoal" onchange="hmisStrategy.getOptionForFilter($(this).val(),'#report_strategic');" >
+                            </select>
+                        </div>
+                        <div class="col-lg-12 mg-b-10">
+                            استراتژی
+                            <select class="form-control " name="plans_strategic" id="report_strategic">
+                            </select>
+                        </div>
+                        <br/>
+                        <div class="col-lg-2">
+                            <button class="btn btn-success btn-block mg-b-10" onclick="hmisReports.report();">مشاهده</button>
+                        </div><!-- col -->
+                        <div id='reportButtonPlan' >
+                          
+                        </div><!-- col -->
+                    </div>
+                    <div id="reportPlansTbl"></div>
+
+                    <!--<div class="card-header bg-primary tx-white">گزارش و ارسال گام های اجرایی به کمیته ها:</div>-->
+                    <!--                    <div class="row mg-t-20">
+                                            <div class="col-lg-2 l">
+                                                ارسال گام های بخش
+                                            </div>
+                                            <div class="col-lg-2">
+                                                آپسن ها را از جدول بخش ها بیاورد
+                                                <select class="form-control">
+                                                    این آپشن ها را از قسمت مدیریت بخش ها بصورت اتوماتیک می آوریم
+                    
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2 l">
+                                                ارسال گام های با وضعیت
+                                            </div>
+                                            <div class="col-lg-2">
+                                                آپسن ها را از جدول بخش ها بیاورد
+                                                <select class="form-control" >
+                                                    <option value=""></option>
+                                                    <option value="غیر قابل انجام">غیر قابل انجام</option>
+                                                    <option value="در حال انجام">در حال انجام</option>
+                                                    <option value="انجام شده">انجام شده</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2 l">
+                                                به کمیته ی 
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <select id='commette0' class="form-control" >
+                    
+                                                </select>
+                                            </div>
+                                            <br/>
+                                            <div class="col-lg-2"  style="float: left">
+                                                <button class="btn btn-success btn-block mg-b-10" onclick="$('.sh-mainpanel').load('04reportsJSP.html', null, function () {
+                                                        });
+                                                        return false;">پیش نمایش</button>
+                                            </div>
+                                            <div class="col-lg-2"  style="float: left">
+                                                <button class="btn btn-danger  btn-block mg-b-10" onclick="alert('پنج پیشنهاد به کمیته ی ' + $('#commette0').val() + 'ارسال شد');">ارسال<i class="fa fa-send mg-r-10"></i></button>
+                                            </div>
+                                        </div>-->
+                </div>
+            </div><!-- card -->
+        </div><!-- card-body -->
+    </div><!-- card -->
+</div><!-- card-body -->

@@ -1,0 +1,74 @@
+<div class="card bd-primary mg-t-20">
+    <div class="sh-breadcrumb">
+        <nav class="breadcrumb">
+            <a class="breadcrumb-item" href="index.html">MedYar مدیار</a>
+            <span class="breadcrumb-item active">دسته بندی محتوای سازمانی</span>
+        </nav>
+    </div>
+    <div class="sh-pagetitle">
+        <div class="sh-pagetitle-left">
+            <div class="sh-pagetitle-icon"><i class="icon ion-ios-home"></i></div>
+            <div class="sh-pagetitle-title">
+                <span>سامانه جام مدیریت سلامت</span>
+                <h2>مدیریت دسته بندی محتوای سازمانی</h2>
+            </div><!-- sh-pagetitle-left-title -->
+        </div><!-- sh-pagetitle-left -->
+    </div>
+    <div class="row row-sm">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card rounded-0">
+
+                        <div class="card-header bg-primary tx-white">
+                            اطلاعات دسته بندی محتوای سازمانی
+                        </div><!-- card-header -->
+                        <div class="card-body">
+                            <div class="row mg-t-20">
+                                <!--<div class="row">-->
+                                <input type="hidden" id="category_content_id" name="id" />
+                                <div class="col-lg-12" style="">
+                                    عنوان
+                                    <input class="form-control" id="category_content_title" name="category_content_title"  placeholder="عنوان" type="text">
+                                </div>
+                                <div class="col-lg-4" style="">
+                                    <input id="category_content_pic" name="category_content_pic" type="hidden"><!--نام برای ارسال به دیتا بیس -->
+                                    <div>
+                                        تصویر
+                                    </div>
+                                    <img id="Pic_preview" name="Pic_preview" class="img-thumbnail" src="img/preview.jpg">
+                                    <div class="row">
+                                        <input class="btn btn-primary" id="sendPic1" type="submit" value="ارسال">
+                                        <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                        <input id="content_file" name="content_file" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                        <span id="content_pic1"  class="form-control col-lg"></span>
+                                        <!--<span class="form-control"></span>-->
+                                    </div>
+                                    <a   id="DownloadPic" href="" style="display: none" target="_blank">
+                                        دانلود تصویر
+                                    </a>
+                                </div>
+                                <div class="col-lg-12" style="">
+                                    دسته محتوای سازمانی
+                                    <select id="category_content_parent" name="category_content_parent" class="form-control categoryContentSelectOption">
+                                    </select>
+                                </div>
+                                <div class="col-lg-12" style="">
+                                    توضیحات
+                                    <input class="form-control" id="category_content_explain" name="category_content_explain"  placeholder="توضیحات" type="text">
+                                </div>
+                            </div>
+                            <div class="row col-lg-12">
+                                <div class="mg-t-20 col-lg">
+                                    <button class="btn btn-outline-secondary mg-b-10 btn-block" onclick="cmsCategoryContent.m_show_tbl();">بازگشت </button>               
+                                </div><!-- col -->
+                                <div id="CategoryContent_button" class="mg-t-20 col-lg-9 row">            
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

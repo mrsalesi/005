@@ -1,0 +1,47 @@
+
+/*//////////////////////////status//////////////////////////*/
+.status_communicated td{
+    background-color:  #beffbe !important;
+    color: #000 !important;
+}
+.status_created td{
+    background-color:rgb(255, 255, 0) !important;
+    color: yellow !important;
+}
+.status_initialRegistration  td{
+    background-color:  rgb(255, 255, 0) !important;
+    color: yellow !important;
+}
+.status_inDoing td{
+    background-color: rgba(125, 135, 251, 0.74) !important;
+    color: yellow !important;
+}
+.status_finished td{
+    background-color:  #42e842 !important;
+    color: #000 !important;
+}
+.status_unDone td{
+    background-color: #ffbebe !important;
+    color: red !important;
+}
+.status_done td{
+    background-color:  #beffbe !important;
+    color:green !important;
+}
+.status_reject td{
+    background-color:  #ff00006b !important;
+    color: red !important;
+}
+
+.status_confirmationFinal td{
+    background-color:#ddf9dd !important;
+    color: green !important;
+}
+.status_ignore td{
+    background-color:#ffbebe !important;
+    color: #000 !important;
+}
+.status_offer td{
+    background-color:#eee !important;
+    color: #000 !important;
+}

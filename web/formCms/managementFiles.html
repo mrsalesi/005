@@ -1,0 +1,97 @@
+<div class="card bd-primary mg-t-20">
+    <div class="sh-breadcrumb">
+        <nav class="breadcrumb">
+            <a class="breadcrumb-item" href="index.html">MedYar مدیار</a>
+            <span class="breadcrumb-item active">گالری تصاویر</span>
+        </nav>
+    </div>
+    <div class="sh-pagetitle">
+        <div class="sh-pagetitle-left">
+            <div class="sh-pagetitle-icon"><i class="icon ion-ios-home"></i></div>
+            <div class="sh-pagetitle-title">
+                <span>سامانه جامع مفاد </span>
+                <h2>مدیریت فایل ها</h2>
+            </div><!-- sh-pagetitle-left-title -->
+        </div><!-- sh-pagetitle-left -->
+    </div>
+    <div class="row row-sm">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card rounded-0">
+
+                        <div class="card-header bg-primary tx-white">
+                            اطلاعات  فایل ها
+                        </div><!-- card-header -->
+                        <div class="card-body">
+                            <div class="row mg-t-20" id="managementFiles" style="display: none">
+                                <!--<div class="row">-->
+                                <input type="hidden" id="upload_id" name="id" />
+
+                                <div class="col-lg-12" style="">
+                                    عنوان
+                                    <input class="form-control" id="titleFile" name="upload_title"  placeholder="عنوان" type="text">
+                                </div>
+                                <div class="col-lg-12" style="">
+                                    وضعیت
+                                    <input class="form-control" id="upload_status" name="upload_status"  placeholder="وضعیت" disabled="disabled">
+                                </div>
+                                <div class="col-lg-12" style="">
+                                    روند وضعیت
+                                    <input class="form-control" id="upload_logStatus" name="upload_logStatus"  placeholder="روند وضعیت" disabled="disabled">
+                                </div>
+                                <div class="col-lg-12" style="">
+                                    تاریخ بارگذاری
+                                    <input class="form-control" id="upload_date" name="upload_date"  placeholder="تاریخ بارگذاری" type="text">
+                                </div>
+                                <div class="col-lg-12" style="">
+                                    نوع فایل
+                                    <input class="form-control" id="upload_type" name="upload_type"  placeholder="نوع فایل" disabled="disabled">
+                                </div>
+                                <div class="col-lg-12" style="">
+                                    <div>
+                                        فایل
+                                    </div>
+                                    <input class="form-control" id="upload_file_name" name="upload_file_name" disabled="disabled" >
+
+                                    <a id="DownloadFile" href=""   target="_blank">
+                                        دانلود فایل
+                                    </a>
+                                </div>
+                            </div>
+                            <div id="addNewFile">
+                                <div class="col-lg-12" style="">
+                                    عنوان
+                                    <input class="form-control" id="upload_title" name="upload_title"  placeholder="عنوان" type="text">
+                                
+                                <div class="">
+                                        فایل
+                                    </div>
+                                    <input id="upload_attachFile" name="upload_file_name" type="hidden">
+                                    <!--<img id="Pic_preview" name="Pic_preview" class="img-thumbnail" src="img/preview.jpg">-->
+                                    <div class="row">
+                                       
+                                        <input class="btn btn-primary" id="sendFile" type="submit" value="ارسال">
+                                        <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                        <input id="upload_file" name="upload_file" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                        <span id="upload"  class="form-control col-lg-4"></span>
+                                        
+                                    
+                                    </div>
+                            </div>
+                            </div>
+
+                            <div class="row col-lg-12">
+                                <div class="mg-t-20 col-lg">
+                                    <button class="btn btn-outline-secondary mg-b-10 btn-block" onclick="cmsManagmentFiles.m_show_tbl();">بازگشت </button>                
+                                </div><!-- col -->
+                                <div id="Upload_button" class="mg-t-20 col-lg-9 row">            
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

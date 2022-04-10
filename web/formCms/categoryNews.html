@@ -1,0 +1,53 @@
+<div class="card bd-primary mg-t-20">
+    <div class="sh-breadcrumb">
+        <nav class="breadcrumb">
+            <a class="breadcrumb-item" href="index.html">MedYar مدیار</a>
+            <span class="breadcrumb-item active">دسته بندی اخبار سازمانی</span>
+        </nav>
+    </div>
+    <div class="sh-pagetitle">
+        <div class="sh-pagetitle-left">
+            <div class="sh-pagetitle-icon"><i class="icon ion-ios-home"></i></div>
+            <div class="sh-pagetitle-title">
+                <span>سامانه جام مدیریت سلامت</span>
+                <h2>مدیریت دسته بندی اخبار سازمانی</h2>
+            </div><!-- sh-pagetitle-left-title -->
+        </div><!-- sh-pagetitle-left -->
+    </div>
+    <div class="row row-sm">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card rounded-0">
+
+                        <div class="card-header bg-primary tx-white">
+                            اطلاعات دسته بندی اخبار سازمانی
+                        </div><!-- card-header -->
+                        <div class="card-body">
+                            <div class="row mg-t-20">
+                                <!--<div class="row">-->
+                                <input type="hidden" id="category_news_id" name="id" />
+                                <div class="col-lg-12" style="">
+                                    عنوان
+                                    <input class="form-control" id="category_news_title" name="category_news_title"  placeholder="عنوان" type="text">
+                                </div>
+                                <div class="col-lg-12" style="">
+                                    دسته تصاویر گالری
+                                    <select id="category_news_parent" name="category_news_parent" class="form-control categoryNewsSelectOption" >
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row col-lg-12">
+                                <div class="mg-t-20 col-lg">
+                                    <button class="btn btn-outline-secondary mg-b-10 btn-block" onclick="cmsCategoryNews.m_show_tbl();">بازگشت </button>               
+                                </div><!-- col -->
+                                <div id="CategoryNews_button" class="mg-t-20 col-lg-9 row">            
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

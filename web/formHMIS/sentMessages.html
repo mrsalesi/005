@@ -1,0 +1,150 @@
+
+<div class="card bd-primary mg-t-20">
+    <div class="sh-breadcrumb">
+        <nav class="breadcrumb">
+            <a class="breadcrumb-item" href="index.html">MedYar مدیار</a>
+            <span class="breadcrumb-item active">کارتابل پیام رسان</span>
+        </nav>
+
+
+    </div><!-- sh-breadcrumb -->
+    <div class="sh-pagetitle">
+
+        <div class="sh-pagetitle-left">
+            <div class="sh-pagetitle-icon"><i class="icon ion-ios-home"></i></div>
+            <div class="sh-pagetitle-title">
+                <span>سامانه جام مدیریت سلامت</span>
+                <h2>کارتابل پیام رسان</h2>
+            </div><!-- sh-pagetitle-left-title -->
+        </div><!-- sh-pagetitle-left -->
+    </div><!-- sh-pagetitle -->
+
+    <div class="row row-sm">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card rounded-0">
+                        <div class="card-header bg-primary tx-white">
+                            اطلاعات پیام
+                        </div><!-- card-header -->
+                        <div class="card-body">
+                            <input type="hidden" id="sentMessages_id" name="id" />
+                            <div class="row">
+                                <div class="col-lg" style="">
+                                    عنوان 
+                                    <input class="form-control" id="sentMessages_title" name="messenger_title"  placeholder="عنوان پیام" type="text">
+                                </div>
+
+
+                                <div class="col-lg" style="">
+                                    گیرنده
+
+                                    <div class="form-group" style=" margin-bottom: 20px;" >
+                                        <select multiple="multiple" id="sentMessages_receiver" name="messenger_receiver"  class="form-control" >   
+                                        </select>
+                                    </div>
+                                    <!--                                                <div id="messenger_receivers"></div>-->
+                                </div>
+                                <div class="col-lg" style="">
+                                    گروه
+                                    <div class="form-group" style=" margin-bottom: 20px;" >
+                                        <select multiple="multiple" id="sentMessages_receiverGroupId" name="sentMessages_receiverGroupId"  class="form-control groupSelectOption" >   
+                                        </select>
+                                    </div>
+                                    <!--                                                <div id="messenger_receivers"></div>-->
+                                </div>
+                                <div class="col-lg" style="">
+                                    فرستنده
+                                    <input   class="form-control" id="sentMessages_sender" name="messenger_sender"  />
+                                </div>
+                                <div class="col-lg" style="display:none">
+                                    نقش
+                                    <input  type="hidden"  class="form-control" id="sentMessages_role" name="messenger_role"  />
+                                </div>
+
+
+                            </div>
+                            <div class="row">
+<!--                                                                <div class="col-lg-4" style="">
+                                                                    تاریخ ارسال
+                                                                    <input class="form-control" id="sentMessages_postageDate" name="messenger_postageDate"  type="text">
+                                                                </div>-->
+                                <div class="col-lg-4" style="" id="status">
+                                    وضعیت
+                                    <input type="text" id="sentMessages_status" name="messenger_status"   class="form-control"  disabled="disabled"/>
+                                </div>
+                                <div id="sendMethodSentMessages" class="col-lg-12">
+                                    روش ارسال
+                                    <select class="form-control" id="messenger_sendingMethod" name="messenger_sendingMethod" multiple>
+                                        <option value="email">Email</option>
+                                        <option value="sms">Sms</option>
+                                        <option value="app">App</option>
+                                    </select>
+                                </div>
+                                <div id="typeMessages" class="col-lg-12">
+                                    نوع پیام
+                                    <select class="form-control" id="messenger_type" name="messenger_type">
+                                        <option value="">لطفا نوع پیام خود را انتحاب کنید</option>
+                                        <option value="مشاوره">مشاوره</option>
+                                        <option value="عادی">عادی</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-4" style="" id="logStatus" >
+                                    جزئیات پیام :
+                                    <div style="display: initial;" onclick="if ($('#sentMessages_logStatusDiv').css('display') == 'none') {
+                                                $('#sentMessages_logStatusDiv').show('fast');
+                                            } else {
+                                                $('#sentMessages_logStatusDiv').hide('fast');
+                                            }">
+                                        <img src="template/add_row.png" alt="Log"/>
+                                    </div>                                
+                                    <div id="sentMessages_logStatusDiv" style="display: none;">
+                                        <textarea id="sentMessages_logStatus" name="messenger_logStatus"  class="tahoma10" style="width: 99.8%;height: 260px;text-align: right" disabled="disabled">           
+                                        </textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-lg" style="">
+                                    متن پیام
+                                    <textarea  class="form-control" id="sentMessages_textMessage" name="messenger_textMessage"  ></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg" style="">
+                                    متن پیام همراه اچ تی ام ال
+                                    <input  class="form-control" id="sentMessages_textHTML" name="messenger_textHTML" /> 
+                                </div>
+                            </div>
+                            <div class="row col-lg-12" id=""  style="">
+                                <div class="col-lg-12 mg-t-20" style="">       
+
+                                    <div class="col-lg-12">بارگذاری مستندات مسئول اجرا
+                                        <div class="" id="showFileMessagesDiv"></div>
+                                        <div class="" id="downloadFileMessagesDiv"></div>
+                                    </div>
+                                    <div class="input-group col-lg-12">
+                                        <div class=""> عنوان فایل</div>
+                                        <span id="user_pic" class="form-control"></span>
+                                        <input class="form-control" id="messanger_titleFileSentMessages" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" >
+                                        <input id="attachFileSentMessages" name="attachFileSentMessages" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                        <input class="btn btn-primary" id="sendFileSentMessages" type="submit" value="ارسال">
+                                        <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row col-lg-12">
+                                <div class="mg-t-20  col-lg-3">
+                                    <button class="btn btn-outline-secondary mg-b-10  btn-block" onclick="hmisSentMessages.m_show_tbl();">بازگشت </button>                
+                                </div><!-- col -->
+                                <div id="Messenger_button" class="col-lg-9 mg-t-20 row" >                      
+                                </div>
+                            </div>
+                        </div><!-- card -->
+                    </div><!-- col -->
+                </div><!-- col -->
+            </div>
+        </div><!-- col-8 -->
+    </div><!-- col-8 -->
+</div><!-- col-8 -->

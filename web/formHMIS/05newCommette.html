@@ -1,0 +1,324 @@
+
+<style>
+    .required{
+        border:1px solid red!important;
+    }
+</style>
+
+<div class="sh-breadcrumb">
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="http://medyarweb.ir">مدیار</a>
+        <a class="breadcrumb-item" href="http://medyarweb.ir">MedYar</a>
+        <span class="breadcrumb-item active">کمیته ها</span>
+    </nav>
+</div><!-- sh-breadcrumb -->
+<div class="card bd-primary mg-t-20" id="">
+    <input id="hmis_commettes_id" name="id" type="hidden"/>
+    <div id="newCommetteForm" style="display: none">
+        <div class="sh-pagetitle">
+            <div class="sh-pagetitle-left">
+                <div class="sh-pagetitle-icon"><i class="icon ion-ios-gear mg-t-3"></i></div>
+                <div class="sh-pagetitle-title">
+                    <span> جلسات و کمیته ها</span>
+                    <h2>تعریف کمیته ها</h2>
+                </div><!-- sh-pagetitle-left-title -->
+            </div><!-- sh-pagetitle-left -->
+        </div><!-- sh-pagetitle -->
+        <!--<div class="card bd-primary mg-t-20" id="newFormQuestion">-->
+        <div class="card-header bg-primary tx-white">مشخصات </div>
+        <div id="formQuestionsCommettes" class="col-lg-12">
+            <div class="row mg-t-20">
+                <div class="col-lg-12">
+                    <label class="ckbox">
+                        <input  checked="checked" id="commettes_isActive" name="commettes_isActive" type="checkbox">
+                        <span>کمیته فعال باشد</span>
+                    </label>
+
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group has-success mg-b-0">
+                        عنوان:
+                        <input id="commettes_title" required name="commettes_title" class="form-control is-valid" placeholder="عنوان:" type="text">
+                    </div><!-- form-group -->
+                </div><!-- col -->
+                <div class="col-lg-4">
+                    <div class="form-group has-warning mg-b-0">
+                        رئیس :
+                        <select required class="form-control Roles" id="commettes_superwizar" name="commettes_superwizar" tabindex='-1'></select>
+
+                    </div><!-- form-group -->
+                </div><!-- col -->
+                <div class="col-lg-4">
+                    <div class="form-group has-warning mg-b-0">
+                        دبیر :
+                        <select multiple required class="form-control Roles" id="commettes_secretary" name="commettes_secretary" tabindex='-1'></select>
+                    </div><!-- form-group -->
+                </div><!-- col -->                          
+                <div class="col-lg-4">
+                    <div class="form-group has-warning mg-b-0">
+                        برگزاری جلسات
+
+                        <select required class="form-control" id="commettes_period" name="commettes_period">
+                            <option value="1">1روز</option>
+                            <option value="7">7روز</option>
+                            <option value="15">15روز</option>
+                            <option value="30">30روز</option>
+                            <option value="60">60روز</option>
+                            <option value="90">90روز</option>
+                            <option value="120">120روز</option>
+                            <option value="180">180روز</option>
+                            <option value="365">365روز</option>
+
+                        </select>
+                    </div><!-- form-group -->
+                </div><!-- col -->                          
+                <div class="col-lg-4">
+                    برگزاری از تاریخ:
+                    <div class="form-group has-success mg-b-0">
+                        <input id="commettes_date" name="commettes_date" class="form-control is-valid" placeholder="تاریخ برگزاری" type="text">
+                    </div><!-- form-group -->
+
+                </div><!-- col -->     
+                <div class="col-lg-8">
+                    توضیحات:
+                    <div class="form-group has-success mg-b-0" >
+                        <input id="commettes_description" name="commettes_description" class="form-control is-valid" placeholder="توضیحات " type="text" >
+                    </div><!-- form-group -->
+                </div><!-- col -->                                     
+            </div>
+
+            <div class="col-lg-12" style="">                        
+                <div class="col-lg-12">بارگذاری مستندات :
+                    <div class="" id="showFiles1Div"></div>
+                </div>
+                <div class="input-group col-lg-12">
+                    <div class=""> عنوان فایل</div>
+                    <span id="user_pic" class="form-control"></span>
+                    <input class="form-control" id="commettes_titleFile1" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" >
+                    <input id="attachDocumentCommettes" name="attachDocumentCommettes" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                    <input class="btn btn-primary" id="sendDocumentCommettes" type="submit" value="ارسال">
+                    <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                </div>
+            </div>
+
+            <div class="col-lg-12" style="">                        
+                <div class="col-lg-12">بارگذاری آیین نامه:
+                    <div class="" id="showFiles2Div"></div>
+                </div>
+                <div class="input-group col-lg-12">
+                    <div class=""> عنوان فایل</div>
+                    <span id="user_pic" class="form-control"></span>
+                    <input class="form-control" id="commettes_titleFile2" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" >
+                    <input id="attachFileCommettes" name="attachFileCommettes" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                    <input class="btn btn-primary" id="sendFilesCommettes" type="submit" value="ارسال">
+                    <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                </div>
+            </div>
+            <div  class="inputSelectorDiv" ></div>
+            <!--///////////////////////////////-->
+            <div class="col-lg-12">
+                <div class="card-body ">                    
+                    <p class="">
+                        اعضای کمیته 
+                    </p>
+                    <select id="commettes_members" name="commettes_members" class="Roles" multiple></select>  
+                </div>
+            </div>
+
+        </div><!-- card -->
+        <div class="col-lg-12" id="Commette_button"></div>
+        <!--</div> card-body -->
+        <!--</div>formQuestion -->
+    </div><!--newCommetteFrom -->
+    <div id="formInvitation"  style="display: none">
+        <div class="sh-pagetitle">
+            <div class="sh-pagetitle-left">
+                <div class="sh-pagetitle-icon"><i class="icon ion-ios-gear mg-t-3"></i></div>
+                <div class="sh-pagetitle-title">
+                    <span> جلسات و کمیته ها</span>
+                    <h2>ارسال دعوتنامه به کمیته ها و کارگروه ها</h2>
+                </div><!-- sh-pagetitle-left-title -->
+            </div><!-- sh-pagetitle-left -->
+        </div><!-- sh-pagetitle -->
+        <div  class="col-lg-12">
+            <div class="card bd-primary mg-t-20" >
+                <div class="card-header bg-primary tx-white">تنظیم دعوتنامه</div>
+                <div class="card bd-primary  pd-20">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            عنوان جلسه(تا 1000 کاراکتر)
+                            <div class="form-group has-success mg-b-0">
+                                <input id="sessions_title" maxlength="1000" name="sessions_title" class="form-control is-valid" placeholder="مانند جلسه سه ماهه دوم کمیته ی اجرایی" type="text">
+                            </div><!-- form-group -->
+                        </div><!-- col -->   
+                        <div class="col-lg-12">
+                            متن دعوتنامه
+                            <div class="form-group has-success mg-b-0">
+                                <input id="sessions_contextInvitation" name="sessions_contextInvitation" maxlength="300" onfocus="hmisCommettes.contextLimited($(this).attr('id'));" onkeyup="hmisCommettes.contextLimited($(this).attr('id'));"  class="form-control is-valid" placeholder="متن دعوتنامه " type="text">
+                            </div><!-- form-group -->
+                        </div><!-- col -->   
+                        <div class="col-lg-12">
+                            <p style="position:relative;top: 5%"> دستور جلسه</p>
+                            <div class="form-group has-success mg-b-0">
+                                <textarea rows="7" id="sessions_agenda" name="sessions_agenda" class="form-control is-valid mg-t-20" placeholder="دستور جلسه">
+                                </textarea>  
+                            </div><!-- form-group -->
+                        </div><!-- col -->   
+                        <div class="col-lg-3">
+                            تاریخ جلسه
+                            <div class="form-group has-success mg-b-0">
+                                <input class="form-control is-valid" onkeyup="hmisCommettes.dateRegex(this);" name="sessions_date" id="sessions_date" placeholder="تاریخ جلسه" type="text">
+                            </div><!-- form-group -->
+                        </div><!-- col -->   
+                        <div class="col-lg-3">
+                            ساعت جلسه
+                            <div class="form-group has-success mg-b-0">
+                                <input style="direction:ltr;text-align: center" class="form-control is-valid" id="sessions_time" name="sessions_time" placeholder="ساعت جلسه" type="text">
+                            </div><!-- form-group -->
+                        </div><!-- col -->   
+                        <div class="col-lg-3">
+                            تاریخ یادآوری به اعضا
+                            <div class="form-group has-success mg-b-0">
+                                <input id="sessions_invitationDate" onkeyup="hmisCommettes.dateRegex(this);" name="sessions_invitationDate" class="form-control is-valid" placeholder="قبل از تاریخ جلسه باشد" type="text">
+                            </div><!-- form-group -->
+                        </div><!-- col -->   
+                        <!--                        <div class="col-lg-3">
+                                                    ساعت یادآوری به اعضا
+                                                    <div class="form-group has-success mg-b-0">
+                                                        <input id="sessions_timeReminder" name="sessions_timeReminder"  value="7 : 00 AM" style="direction:ltr;text-align: center" class="form-control" placeholder="ساعت یادآوری" type="text">
+                                                    </div> form-group 
+                                                </div> col    -->
+                        <div class="col-lg-12" style="">                        
+                            <div class="col-lg-12">بارگذاری مستندات برای مدعوین جلسه:
+                                <div class="" id="showFilesDiv"></div>
+                            </div>
+                            <div class="input-group col-lg-12">
+                                <div class=""> عنوان فایل</div>
+                                <span id="user_pic" class="form-control"></span>
+                                <input class="form-control" id="sessions_titleFile" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" >
+                                <input id="attachFileInvitees" name="attachFileInvitees" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                <input class="btn btn-primary" id="sendFilesInvitees" type="submit" value="ارسال">
+                                <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                            </div>
+                        </div>
+
+                    </div>   
+                    <div class="row">
+                        <div class="row col-lg-12" id="InviteesDiv" >
+                            <div class="col-lg-12 pd-20">
+                                مدعوین به جلسه : 
+                                <div class="form-group has-danger mg-b-0">
+                                    <div id="invitessDiv"></div>
+                                </div><!-- form-group -->
+                            </div>
+                            <div class="col-lg-12 mg-b-20">
+                                مهمان داخل سازمان:
+
+                                <select id='sessions_InviteesInSide' multiple name='sessions_InviteesInSide' class='form-control select2 select2-hidden-accessible' tabindex='-1' aria-hidden="true">
+                                </select>
+                            </div>
+                            <div class="col-lg-12 mg-b-20">
+                                گروه ها:
+                                <select id='sessions_InviteesGroupId' multiple name='sessions_InviteesGroupId' class='form-control select2 select2-hidden-accessible'  tabindex='-1' aria-hidden="true">
+                                </select>
+                            </div>
+                            <!--                            <div class="col-lg-12 mg-b-20">
+                                                            کاربران در گروه انتخاب شده:
+                                                            <select id='sessions_InviteesUsersId' multiple name='sessions_InviteesUsersId' class='form-control' >
+                                                            </select>
+                                                        </div>-->
+                            <div class="col-lg-12">
+                                <span>
+                                    (برای دسترسی مهمانان به قسمت امضا صورتجلسه باید آنها را در سیستم عضو کنیم.)    مهمان خارج سازمان:
+                                </span> 
+                                <div  id="rows20" style='display:none'>
+                                    <div class='col-lg-12 addSigner' id='row'>
+                                        <div class="row invitedOutSide"  id="invitedOutSide_x">
+                                            <div class="col-lg-3">
+                                                نام :
+                                                <div class="form-group has-danger mg-b-0">
+                                                    <input type="text" class="form-control is-valid name signerDiv"  onkeyup="hmisCommettes.validateName(this)" id='sessions_invitedOutSide_name_x' placeholder="نام و نام خانوادگی مهمان">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                شماره همراه :
+                                                <div class="form-group has-danger mg-b-0">
+                                                    <input style="direction:ltr" type="text" onkeyup="hmisCommettes.validatePhone(this)" class="form-control is-valid phone " id='sessions_invitedOutSide_mobile_x' placeholder="شماره همراه مهمان">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="form-group has-danger mg-b-0">
+                                                    سمت:
+                                                    <input type="text"  id='sessions_invitedOutSide_role_x' onkeyup="hmisCommettes.validateName(this);"  placeholder="سمت مهمان" class="form-control is-valid role ">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                پست الکترونیکی :
+                                                <div class="form-group has-danger mg-b-0">
+                                                    <input style="direction:ltr" onkeyup="hmisCommettes.validateEmail(this);" type="text" id='sessions_invitedOutSide_email_x' placeholder="پست الکترونیکی مهمان" class="form-control is-valid email ">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <button class="btn btn-outline-danger btn-block mg-t-20 mg-b-20  buttonRemove">حذف</button>
+                                            </div>
+                                        </div><!-- form-group -->
+                                    </div><!--row-->
+                                </div>
+                                <div id="signatorysAdd"></div>
+
+                                <div class='col-lg-6'>
+                                    <button class="btn btn-outline-success  btn-block mg-b-10" id="add"  ><img  style="width: 2%;" src="template/add_1.png" />افزودن</button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--//////////////////////////////////////////////////////-->
+                        <div class="col-lg-12">
+                            <!--دسترسی برای کسی که امکان ان را داشته باشد-->
+                            <button class="btn btn-outline-danger btn-block mg-b-10" onclick="hmisCommettes.Invitees();"><i class="fa fa-envelope mg-r-10"></i> ارسال دعوت نامه برای مدعوین جلسه </button>
+                        </div>                    
+                    </div>
+                </div><!-- card -->
+            </div><!-- card-body -->
+        </div><!-- formInvitation -->
+    </div><!-- card-body -->
+
+    <div class="row R">
+        <div class="col-lg-12">
+            <div class="form-group has-success mg-b-0 ">
+                <button id="cancel_Commettes" class="btn btn-outline-secondary mg-b-10  btn-block" 
+                        onclick="hmisCommettes.m_clean();
+                                hmisCommettes.m_show_tbl();" >بازگشت</button>
+            </div><!-- form-group -->
+        </div>
+    </div>
+</div>
+<script>
+//    $('#sessions_InviteesInSide').select2({width: '100%'});
+</script>
+<script>
+
+    $('#add').click(function () {
+        var i = 1;
+        var available = $(".signerDiv");
+        for (var j = 0; j < 4; j++) {
+            var k = (j + 1);
+
+            if ($("#sessions_invitedOutSide_name_" + k).length == 0) {
+                i = j + 1;
+                j = 5;
+            }
+        }
+        if (i > 4) {
+            return;
+        }
+        new jj("افزودن مهمان شماره ی " + i).jjModal("تعریف مهمان");
+        var temp = $('#rows20').html().replace(/_x/igm, ("_" + i));
+        $("#signatorysAdd").append(temp);
+    });
+
+    $(document).on('click', '.buttonRemove', function () {
+        $(this).parent().parent().remove();
+
+    });
+</script>

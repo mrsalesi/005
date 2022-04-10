@@ -1,0 +1,250 @@
+    
+<!--</div>-->
+
+<!--/این دیو برای مصوبات قبلی ایجاد شده که زمانی که روی جدول با مصوبات قیلی کلیک شده اطلاعات را در قیلد های دیگری نمایش دهد///-->
+
+
+<!--<div class="sh-pagebody">-->
+<!--////////////////////////////////////////////////////////////////-->
+<div class="col-lg-12 card card-body bd-primary">
+    <div class="sh-breadcrumb">
+        <nav class="breadcrumb">
+            <a class="breadcrumb-item" href="http://medyarweb.ir">مدیار</a>
+            <a class="breadcrumb-item" href="http://medyarweb.ir">Medyar</a>
+            <span class="breadcrumb-item active">مدیریت اطلاعات سازمانی</span>
+        </nav>
+    </div><!-- sh-breadcrumb -->
+    <div class="sh-pagetitle">
+        <div class="sh-pagetitle-left">
+            <div class="sh-pagetitle-icon"><i class="icon ion-ios-gear mg-t-3"></i></div>
+            <div class="sh-pagetitle-title">
+                <input id="communicatedSessions_id" name="communicatedSessions_id" type="hidden">
+                <span>ماژول کمیته ها و جلسات</span>
+                <h2>میز هوشمند جلسات</h2>
+            </div><!-- sh-pagetitle-left-title -->
+        </div><!-- sh-pagetitle-left -->
+    </div><!-- sh-pagetitle -->
+
+
+</div>
+
+<!--////////////////////////////////////////////////////////////////-->
+<div class="card bd-primary mg-t-20">
+    <div class="card-header bg-primary tx-white">
+        میز هوشمند جلسه ی کمیته ی<p id="commettesTitleCommunicatedSessions"></p> 
+    </div>
+    <div class="card-body pd-sm-30">
+        تاریخ:<p id='communicatedSessions_sessionsDate'></p>
+        <div class="row">
+            <div class="col-lg">
+                عنوان  جلسه
+                <input class="form-control" id="communicatedSessions_titleSessions" name="sessions_title" placeholder="عنوان جلسه را وارد کنید" type="text" value="جلسه ی خرداد ماه کمیته ی اجرایی">
+            </div>
+        </div><!-- row -->
+
+        <div class="card-header btn-teal tx-white">
+            دستور جلسه:
+        </div>
+        <textarea rows="7" id="communicatedSessions_agendaSessions" class="form-control is-valid mg-t-20" placeholder="Textarea (success state)">
+              
+        </textarea>                        
+
+        <div class="card-header bg-primary tx-white">
+            بررسی و تحلیل دستور جلسات
+        </div>
+        <div class="card-body pd-sm-30">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    دستور جلسه:
+                    <textarea rows="7" id="communicatedSessions_otherDescription" class="form-control is-valid mg-t-20" placeholder="Textarea (success state)">
+                    </textarea> 
+                </div><!-- col -->   
+
+
+
+                <!--</div>-->
+            </div>
+        </div><!-- card-body -->
+        <div class="card-body pd-sm-30">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    شرح جلسه:
+                    <textarea rows="7" id="communicatedSessions_sessionDescription" class="form-control is-valid mg-t-20" name="sessions_sessionDescription" placeholder="Textarea (success state)">
+                    </textarea> 
+                </div><!-- col -->   
+
+
+
+                <!--</div>-->
+            </div>
+        </div><!-- card-body -->
+        <div class="card-header btn-teal tx-white">
+            مصوبات جلسه
+        </div>
+        <div class="card-body pd-sm-30">
+            <!--<div class="row">-->
+
+            <div id="insertApprovedCommunicated" class="card-body pd-sm-30" style="display: none">
+                <div class="row">
+                    <input type="hidden" id="communicatedApproved_id" name="communicatedApproved_id"/>
+
+                    <div class="col-lg-12">
+                        عنوان مصوبه:
+                        <div class="form-group has-success mg-b-0">
+                            <input id="communicatedApproved_title" name="approved_title" class="form-control is-valid" placeholder="عنوان مصوبه  را وارد کنید" type="text" >
+                        </div><!-- form-group -->
+                    </div><!-- col -->   
+                    <div class="col-lg-4">
+                        <div class="form-group has-warning mg-b-0">
+                            <input onchange="hmisCommunicatedSessions.executorAction($(this).val());"  type="radio" checked="checked" id="roleExecutorCommunicated"  name="roleExecutor"  value="سمت">
+                            انتخاب سمت مسئول اجرا
+                            <select id="communicatedApproved_executorRoleId"  multiple="" name="approved_executorRoleId" class="form-control select2 select2-hidden-accessible">
+                                <!--در واقع از جدول اشخاص باید بیاورد-->
+                            </select>
+                        </div><!-- form-group -->
+                    </div><!-- col -->
+                    <div class="col-lg-4">
+                        <div class="form-group has-warning mg-b-0">
+                            انتخاب اشخاص مسئول اجرا <input type="radio" onchange="hmisCommunicatedSessions.executorAction($(this).val());" id="userExecutorCommunicated"  name="roleExecutor"  value="کاربران">
+                            <select id="communicatedApproved_executorUserId" name="approved_executorUserId" multiple class="form-control select2 select2-hidden-accessible">
+                                <!--در واقع از جدول اشخاص باید بیاورد-->
+                            </select>
+
+                        </div><!-- form-group -->
+                    </div><!-- col -->
+
+                    <div class="col-lg-4">
+                        <div class="form-group has-warning mg-b-0">
+                            انتخاب گروه مسئول اجرا <input type="radio" onchange="hmisCommunicatedSessions.executorAction($(this).val());" id="groupExecutorCommunicated"  name="roleExecutor"  value="گروه">
+                            <select id="communicatedApproved_executorGroupsId" name="approved_executorGroupsId" multiple class="form-control select2 select2-hidden-accessible">
+                                <!--در واقع از جدول گروه ها باید بیاورد-->
+                            </select>
+                        </div><!-- form-group -->
+                    </div><!-- col -->
+                    <div class="col-lg-3">
+                        <div class="form-group has-warning mg-b-0">
+                            مسئول پیگیری
+                            <select id="communicatedApproved_trackerId" name="approved_trackerId" class="form-control">
+                            </select>
+                        </div><!-- form-group -->
+                    </div><!-- col -->
+                    <div class="col-lg-3">
+                        تاریخ شروع:
+                        <div class="form-group has-success mg-b-0">
+                            <input style="z-index:100" id="communicatedApproved_startDate"  name="approved_startDate" class="form-control is-valid" placeholder="تاریخ شروع" type="text">
+                        </div><!-- form-group -->
+                    </div><!-- col -->   
+                    <div class="col-lg-3">
+                        تاریخ پایان:
+                        <div class="form-group has-success mg-b-0">
+                            <input style="z-index: 100" id="communicatedApproved_endDate" name="approved_endDate"   class="form-control is-valid" placeholder="تاریخ پایان" type="text">
+                        </div><!-- form-group -->
+                    </div><!-- col -->   
+                    <div class="col-lg-3">
+                        وضعیت:
+                        <input id="communicatedApproved_status" class="form-control" />
+                    </div><!-- col -->
+                    <br/>
+                    <div class="col-lg-12 mg-t-20">
+                        <!--                                                    بارگذاری مستندات:<br/>
+                                                                            <input id="communicatedApproved_file" name="approved_file" type="hidden" />
+                                                                            <div class="row col-lg-12 mg-b-10">
+                                                                                <input class="btn btn-primary" id="sendFilesApproved" type="submit" value="ارسال">
+                                                                                <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                                                                <input id="attachFileApproved" name="attachFileApproved" onchange="$(this).parent().find('span.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                                                                <span class="form-control col-lg"></span>
+                                                                            </div>
+                                                                            <a onclick="hmisDepartment.downloadIcon();"></a>
+                                                
+                                                                            <div id="inputApprovedFileDiv"></div>-->
+
+
+                        <div class="col-lg-12 mg-t-20" style="">                        
+                            <div class="col-lg-12">بارگذاری مستندات:
+                                <div class="" id="showFilesApprovedCommunicatedSessionsDiv"></div>
+                            </div>
+                            <div class="input-group col-lg-12">
+                                <div class=""> عنوان فایل</div>
+                                <span id="user_pic" class="form-control"></span>
+                                <input class="form-control" id="approved_titleFileCommunicatedSessions" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" >
+                                <input id="attachFileApprovedCommunicatedSessions" name="attachFileApprovedCommunicatedSessions" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                <input class="btn btn-primary" id="sendFilesApprovedCommunicatedSessions" type="submit" value="ارسال">
+                                <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+
+                            </div>
+                        </div>  
+
+                        <div id="inputDownloadCommunicatedApprovedDiv"></div>
+
+                    </div> 
+                    <div class="col-lg-12">
+                        توضیحات:
+                        <div class="form-group has-success mg-b-0">
+                            <input id="communicatedApproved_description" name="approved_description" style="z-index: 0"   class="form-control is-valid" placeholder="دلایل عدم انجام یادرخواست فرصت اضافی را مسئول اجرا واردمی کند" type="text" >
+                        </div><!-- form-group -->
+                    </div><!-- col -->   
+
+
+                </div>
+                <div class="row col-lg-12">
+                    <div class="col-lg-3">
+                        <div class="form-group has-success mg-b-0">
+                            <button class="btn btn-outline-secondary btn-block mg-b-10" onclick="$('#insertApprovedCommunicated').slideUp();$('#communicatedApprovedTbl').slideDown();">انصراف
+                            </button>
+                        </div><!-- form-group -->
+                    </div><!-- col -->
+                    <div class="col-lg-3" id="communicatedApprovedInSessions_button">
+
+                    </div><!-- col -->
+                </div>
+            </div><!-- card-body -->
+            <div id="communicatedApprovedTbl" class="col-lg-12"></div>
+            <div class="row col-lg-12">
+                <div class="col-lg-7">
+                    مسئول ابلاغ
+                    <div class="form-group has-success mg-b-0">
+                        <div disabled="" id="communicatedSessions_communicatorId" class="form-control">
+                        </div>
+                    </div><!-- form-group -->
+                </div><!-- col -->   
+                <div class="col-lg-3" id="sessionsFilePdfDiv"></div>
+            </div><!-- col -->   
+
+
+            <div id="sessionsFileDiv"></div>
+            <!--</div>-->
+        </div><!-- card-body -->
+
+
+        <!--</div>-->
+    </div><!-- card-body -->
+</div><!-- card -->
+
+<div class="row ">
+
+    <div class="col-lg-3">
+        <a id="cancel_communicatedSessions" onclick=" hmisCommunicatedSessions.m_clean();
+                hmisCommunicatedSessions.m_show_tbl();" class="btn btn-outline-secondary mg-b-10  btn-block" role="button" aria-disabled="false">بازگشت</a>
+    </div><!-- col --> 
+
+    <div class="col-lg-6" id="communicatedSessions_button"  ></div>
+
+    <!--<a href="Server?do=Sessions.downloadSessions&amp;id=87" title="چاپ صورتجلسه" target="_blank" class="active btn-block mg-l-10"><i class="fa fa-print mg-t-3"></i></a>-->
+</div>
+<script>
+    $(function () {
+        'use strict';
+
+        // Inline editor
+        var editor = new MediumEditor('.editable');
+
+        // Summernote editor
+        $('#summernote').summernote({
+            height: 150,
+            tooltip: false
+        })
+    });
+</script>
+

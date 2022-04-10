@@ -1,0 +1,416 @@
+    
+<!--</div>-->
+
+<!--/این دیو برای مصوبات قبلی ایجاد شده که زمانی که روی جدول با مصوبات قیلی کلیک شده اطلاعات را در قیلد های دیگری نمایش دهد///-->
+
+
+<!--<div class="sh-pagebody">-->
+<!--////////////////////////////////////////////////////////////////-->
+<style>
+    .required{
+        border:1px solid red!important;
+    }
+</style>
+<div class=" card card-body bd-primary">
+    <div class="sh-breadcrumb">
+        <nav class="breadcrumb">
+            <a class="breadcrumb-item" href="http://medyarweb.ir">مدیار</a>
+            <a class="breadcrumb-item" href="http://medyarweb.ir">Medyar</a>
+            <span class="breadcrumb-item active">میز هوشمند جلسات</span>
+        </nav>
+    </div><!-- sh-breadcrumb -->
+    <div class="sh-pagetitle">
+        <div class="sh-pagetitle-left">
+            <div class="sh-pagetitle-icon"><i class="icon ion-ios-gear mg-t-3"></i></div>
+            <div class="sh-pagetitle-title">
+
+                <span>ماژول کمیته ها </span>
+                <h2>میز هوشمند جلسات</h2>
+            </div><!-- sh-pagetitle-left-title -->
+        </div><!-- sh-pagetitle-left -->
+    </div><!-- sh-pagetitle -->
+
+</div>
+
+<!--////////////////////////////////////////////////////////////////-->
+<!--<div class="card bd-primary mg-t-20">-->
+<div class="card-header bg-primary tx-white">
+    <div class="row ">
+        <div class="col-lg">
+            <p  class="col-lg-10 mg-0" id="commettesTitle"></p> 
+            <div class="col-lg-2"> میز هوشمند جلسه کمیته:</div>
+        </div>
+    </div>
+</div>
+<div class="card-body pd-sm-30">
+    <!--    تاریخ:<p id='sessions_sessionsDate'></p>-->
+    <div class="row">
+        <div class="col-lg">
+            تاریخ ارسال دعوت نامه : <p><input id="sessions_invitationDateSessions"  type="text"  style="display: block;"></p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg">
+            عنوان  جلسه:
+            <input class="form-control" id="sessions_titleSessions" name="sessions_title" placeholder="عنوان جلسه را وارد کنید" type="text" value="جلسه ی خرداد ماه کمیته ی اجرایی">
+        </div>
+    </div><!-- row -->
+    <div class="card-header btn-teal tx-white mg-t-10">
+        دستور جلسه:
+    </div>
+    <textarea rows="7" id="sessions_agendaSessions" name="sessions_agenda" class="form-control is-valid mg-t-20" placeholder="Textarea (success state)">
+    </textarea>  
+    <!--//////////////////////////////مصوبات قبلی/////////////////-->
+    <div class="card-header btn-teal tx-white">
+        مصوبات جلسات قبلی
+    </div>
+    <div id="approvedPreviousTbl" class="col-lg-12"></div>
+    <div id="approvedPreviousAllSessionsTbl" class="col-lg-12"></div>
+    <div id="approvedPreviousDiv" style="display: none">
+        <div class="card bd-primary mg-t-20">
+            <div class="card-body pd-sm-30">
+                <input type="hidden" id="approvedPrevious_id" name="approvedId"/>
+                <div class="col-lg-12">
+                    عنوان مصوبه:
+                    <div class="form-group has-success mg-b-0">
+                        <input id="approvedPrevious_title" disabled="disabled" class="form-control is-valid" type="text" >
+                    </div><!-- form-group -->
+                </div><!-- col -->   
+                <div class="col-lg-3">
+                    <div class="form-group has-warning mg-b-0">
+                        مسئول اجرا
+                        <input type="text" disabled="disabled" id="approvedPrevious_executorRoleId" style="height:auto" class="form-control is-valid" />
+                    </div><!-- form-group -->
+                </div><!-- col -->
+                <div class="col-lg-3">
+                    <div class="form-group has-warning mg-b-0">
+                        مسئول پیگیری
+                        <input type="text" id="approvedPrevious_trackerId" disabled="disabled" style="height:auto"   class="form-control is-valid"/>
+                    </div><!-- form-group -->
+                </div><!-- col -->
+                <div class="col-lg-3">
+                    تاریخ پایان:
+                    <div class="form-group has-success mg-b-0">
+                        <input id="approvedPrevious_endDate" name="approved_endDate" class="form-control is-valid" placeholder="تاریخ پایان" type="text">
+                    </div><!-- form-group -->
+                </div><!-- col -->   
+                <div class="col-lg-3">
+                    تاریخ شروع:
+                    <div class="form-group has-success mg-b-0">
+                        <input id="approvedPrevious_startDate" name="approved_startDate" class="form-control is-valid" placeholder="تاریخ شروع" type="text">
+                    </div><!-- form-group -->
+                </div><!-- col -->   
+                <br/>
+                <div class="col-lg-12  mg-t-20">
+                    <div class="col-lg-3">
+                        <label class="ckbox">
+                            <input  checked="checked" id="approved_isActive" name="approved_isActive" type="checkbox">
+                            <span>تایید نهایی وضعیت</span>
+                        </label>
+                    </div><!-- col -->   
+                    <div class="col-lg-9">
+                    وضعیت:
+                        <select id="approvedPrevious_status"  name="approved_status" class="form-control" >
+                            <option value="در حال انجام">در حال انجام</option>
+                            <option value="غیر قابل انجام">غیر قابل انجام</option>
+                            <option value="انجام شده">انجام شده</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-12">
+                        درصد پیشرفت مصوبه
+                        <div class="form-group has-success mg-b-0">
+                            <input  max="100" min="0" id="approved_percent" name="approved_percent" class="form-control is-valid" placeholder="درصد پیشرفت" type="number">
+                        </div><!-- form-group -->
+                    </div><!-- col -->   
+                </div><!-- col -->   
+                <!--                <div class="col-lg-2">
+                
+                                </div>-->
+                <div class="col-lg-12">
+                    توضیحات دبیر کمیته:
+                    <div class="form-group has-success mg-b-0">
+                        <textarea id="approvedPrevious_description" name="approved_description" class="form-control is-valid" ></textarea>
+                    </div><!-- form-group -->
+                </div><!-- col -->   
+
+                <div class="row col-lg">
+
+                    <div class="col-lg-3">
+                        : درصد پیشرفت گام مسئول اجرا
+                        <div class="form-group has-success mg-b-0">
+                            <div id="approvedPrevious_percentExecutor"  disabled="disabled" class="form-control "  ></div>
+                        </div><!-- form-group -->
+                    </div><!-- col -->   
+                    <div class="col-lg-9">
+                        :توضیحات مسئول اجرا
+                        <div class="form-group has-success mg-b-0">
+                            <div id="approvedPrevious_descriptionExecutor" style="height:auto"  disabled="disabled" class="form-control is-valid" placeholder="توضیحات مسئول اجرا" ></div>
+                        </div><!-- form-group -->
+                    </div><!-- col -->   
+                    <div class="col-lg-3">
+                        :درصد پیشرفت گام مسئول پیگیری 
+                        <div class="form-group has-success mg-b-0">
+                            <div id="approvedPrevious_percentTracker" disabled="disabled" class="form-control "  ></div>
+                        </div><!-- form-group -->
+                    </div><!-- col -->   
+                    <div class="col-lg-9">
+                        :توضیحات مسئول پیگیری 
+                        <div class="form-group has-success mg-b-0">
+                            <div id="approvedPrevious_descriptionTracker" style="height:auto" disabled="disabled" class="form-control is-valid" placeholder="توضیحات  مسئول پیگیری" ></div>
+                        </div><!-- form-group -->
+                    </div><!-- col -->   
+
+<!--                    <div class="col-lg-9">
+                        روند وضعیت  مصوبه:
+                        <div class="form-group has-success mg-b-0">
+                            <div id="approvedPrevious_statusLog"  class=""></div>
+                        </div> form-group 
+                    </div> col    -->
+                </div><!-- col -->  
+
+                <div class="col-lg-12" style="">                        
+                    <div class="col-lg-12">بارگذاری مستندات :
+                        <div class="" id="showFilesApprovedPreviousDiv"></div>
+                    </div>
+                    <div class="input-group col-lg-12">
+                        <div class=""> عنوان فایل</div>
+                        <span id="user_pic" class="form-control"></span>
+                        <input class="form-control" id="approvedPrevious_titleFile1" placeholder="عنوان فایل پیوست مصوبه" type="text" >
+                        <input id="attachFileApprovedPrevious" name="attachFileApprovedPrevious" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                        <input class="btn btn-primary" id="sendFilesApprovedPrevious" type="submit" value="ارسال">
+                        <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+
+                    </div>
+                    <div id="inputDownloadDiv"></div>
+                </div>
+
+
+                <div class="col-lg-12 row" id="ApprovedPrevious_FileInsessions"></div><!-- فایل مسئولین -->
+                <div class="row col-lg-12">
+                    <div class="col-lg-6" id="ApprovedPrevious_button"></div><!-- دکمه ویرایش از جاوا -->
+                    <div class="col-lg-3">
+                        <div class="form-group has-success mg-b-0">
+                            <button class="btn btn-outline-secondary btn-block mg-b-10" onclick="$('#approvedPreviousDiv').slideUp();">انصراف
+                            </button>
+                        </div><!-- form-group -->
+                    </div>
+                </div>
+            </div><!-- col -->
+        </div>
+    </div>
+    <!--//////////////////////////////مصوبات قبلی/////////////////-->
+    <div class="card-body pd-sm-30">
+        <div  class="card bd-primary">
+
+            <div class="card-header bg-danger tx-white">
+                بررسی و تحلیل دستور جلسات
+            </div>
+        </div>
+    </div>
+    <div class="card-body pd-sm-30">
+
+        <div class="row">
+            <div class="col-lg-12">
+                دستور جلسه:
+                <div class="form-group has-success mg-b-0">
+                    <textarea rows="7" id="sessions_otherDescription" name="sessions_otherDescription" class="form-control is-valid mg-t-20" placeholder="">
+                    </textarea>  
+                </div>
+            </div>              
+            <div class="col-lg-12" style="">                        
+                <div class="col-lg-12">بارگذاری مستندات :
+                    <div class="" id="showFilesSessionsDiv"></div>
+                    <div class="" id="filesDownloadDiv"></div>
+                </div>
+                <div class="input-group col-lg-12">
+                    <div class=""> عنوان فایل</div>
+                    <span id="user_pic" class="form-control"></span>
+                    <input class="form-control" id="sessions_titleFile1" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" >
+                    <input id="attachFileSessions" name="attachFileSessions" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                    <input class="btn btn-primary" id="sendFilesSessions" type="submit" value="ارسال">
+                    <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <p class="mg-t-10">
+                    شرح جلسه:
+                </p>
+                <textarea  id="sessions_sessionDescription" name="sessions_sessionDescription" rows="7" class="form-control is-valid mg-t-20" placeholder="Textarea (success state)">
+                </textarea>
+            </div>
+        </div>
+    </div><!-- card-body -->
+    <div class="card-header btn-teal tx-white">
+        مصوبات جلسه
+    </div>
+    <div class="card-body pd-sm-30">
+
+        <div class="row">
+
+            <div class="col-lg-3">
+                <button  id="addNewApproved" class="btn btn-outline-success active btn-block mg-b-10" onclick="$('#insertApproved2').slideDown();$('#approvedInSessionsTbl').slideUp();hmisApproved.m_add_new();">
+                    افزودن مصوبه
+                    <i class="fa fa-star"></i>
+                </button>
+            </div>
+        </div>
+        <div id="insertApproved2" class="" style="display: none">
+            <div class="card bd-primary mg-t-20">
+                <div class="card-body pd-sm-30">
+                    <div class="row">
+                        <input type="hidden" id="approved_id" name="approved_id"/>
+                        <div class="col-lg-12">
+                            عنوان مصوبه:
+                            <div class="form-group has-success mg-b-0">
+                                <input id="approved_title" name="approved_title" class="form-control is-valid" placeholder="عنوان مصوبه  را وارد کنید" type="text" >
+                            </div><!-- form-group -->
+                        </div><!-- col -->   
+                        <div class="col-lg-4">
+                            <div class="form-group has-warning mg-b-0">
+                                <input onchange="hmisSessions.executorAction($(this).val());"  type="radio" checked="checked" id="roleExecutor" name="responsibleExecutor" value="سمت">
+                                انتخاب سمت مسئول اجرا
+                                <select id="approved_executorRoleId"  multiple="" name="approved_executorRoleId" class="form-control select2 select2-hidden-accessible roleSelectOption">
+                                    <!--در واقع از جدول اشخاص باید بیاورد-->
+                                </select>
+                            </div><!-- form-group -->
+                        </div><!-- col -->
+                        <div class="col-lg-4">
+                            <div class="form-group has-warning mg-b-0">
+                                انتخاب اشخاص مسئول اجرا <input type="radio" onchange="hmisSessions.executorAction($(this).val());" id="userExecutor" name="responsibleExecutor" value="کاربران">
+                                <select id="approved_executorUserId" multiple="" name="approved_executorUserId" class="form-control select2 select2-hidden-accessible userSelectOption">
+                                    <!--در واقع از جدول اشخاص باید بیاورد-->
+                                </select>
+                            </div><!-- form-group -->
+                        </div><!-- form-group -->
+                        <div class="col-lg-4">
+                            <div class="form-group has-warning mg-b-0">
+                                انتخاب گروه مسئول اجرا <input type="radio"  onchange="hmisSessions.executorAction($(this).val());" id="groupExecutor" name="responsibleExecutor" value="گروه">
+                                <select id="approved_executorGroupsId" multiple="" name="approved_executorGroupsId" class="form-control select2 select2-hidden-accessible">
+                                    <!--در واقع از جدول اشخاص باید بیاورد-->
+                                </select>
+                            </div><!-- form-group -->
+                        </div><!-- col -->
+                        <div class="col-lg-6">
+                            <div class="form-group has-warning mg-b-0">
+                                مسئول پیگیری
+                                <select id="approved_trackerId" name="approved_trackerId" class="form-control roleSelectOption">
+                                </select>
+                            </div><!-- form-group -->
+                        </div><!-- col -->
+                        <div class="col-lg-3">
+                            تاریخ شروع:
+                            <div class="form-group has-success mg-b-0">
+                                <input style="z-index:100" id="approved_startDate" name="approved_startDate" class="form-control is-valid" placeholder="تاریخ شروع" type="text">
+                            </div><!-- form-group -->
+                        </div><!-- col -->   
+                        <div class="col-lg-3">
+                            تاریخ پایان:
+                            <div class="form-group has-success mg-b-0">
+                                <input style="z-index: 100" id="approved_endDate" name="approved_endDate" class="form-control is-valid" placeholder="تاریخ پایان" type="text">
+                            </div><!-- form-group -->
+                        </div><!-- col -->   
+                        <br/>
+                        <div class="col-lg-12" style="">                        
+                            <div class="col-lg-12">بارگذاری مستندات :
+                                <div class="" id="showFilesApprovedDiv"></div>
+                            </div>
+                            <div class="input-group col-lg-12">
+                                <div class=""> عنوان فایل</div>
+                                <span id="user_pic" class="form-control"></span>
+                                <input class="form-control" id="approved_titleFile1" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" >
+                                <input id="attachFileApproved" name="attachFileApproved" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                <input class="btn btn-primary" id="sendFilesApproved" type="submit" value="ارسال">
+                                <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+
+                            </div>
+                            <div id="fileApprovedDiv"></div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            توضیحات:
+                            <div class="form-group has-success mg-b-0">
+                                <input id="approved_description" style="z-index: 0" name="approved_description" class="form-control is-valid" placeholder="دلایل عدم انجام یادرخواست فرصت اضافی را مسئول اجرا واردمی کند" type="text" >
+                            </div><!-- form-group -->
+                        </div><!-- col -->   
+
+                    </div>
+                    <div class="row col-lg-12">
+                        <div class="col-lg-3 mg-t-20">
+                            <div class="form-group has-success mg-b-0">
+                                <button class="btn btn-outline-secondary btn-block mg-b-10" onclick="$('#insertApproved2').slideUp();$('#approvedInSessionsTbl').slideDown();">انصراف
+                                </button>
+                            </div><!-- form-group -->
+                        </div><!-- col -->
+                        <div class="col-lg-3 mg-t-20" id="ApprovedInSessions_button">
+                        </div><!-- col -->
+                    </div>
+                </div><!-- card-body -->
+            </div><!-- card-body -->
+        </div><!-- card-body -->
+        <div id="approvedInSessionsTbl" class="col-lg-12"></div>
+        <!--</div>-->
+
+
+        <div class="card bd-primary mg-t-20">
+            <div class="card-body pd-sm-30"> 
+                <div class="row"> 
+                    <div class="row col-lg-12">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <p class='tx-bold'> حضور و غیاب مدعوین به جلسه : </p>
+                                <div id="audience"></div>
+                                <div id="signers"></div>
+                            </div>
+                        </div><!-- col -->
+                        <div class="col-lg-3">
+                            تاریخ جلسه بعد:
+                            <div class="form-group has-success mg-b-0">
+                                <input id="sessions_nextSessionDate" name="sessions_nextSessionDate" class="form-control is-valid" placeholder="تاریخ جلسه بعد" type="text">
+                            </div><!-- form-group -->
+                        </div><!-- col -->  
+                        <div id="filePdfLoader" class="col-lg-12 mg-t-20" style="">                        
+                            <div class="col-lg-12">بارگذاری pdfصورتجلسه :
+                                <div class="" id="showFilesPdfSessionsDiv"></div>
+                            </div>
+                            <div class="input-group col-lg-12">
+                                <div class=""> عنوان فایل</div>
+                                <span id="user_pic" class="form-control"></span>
+                                <input class="form-control" id="sessions_titleFilePdf" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" >
+                                <input id="attachFilePdfSessions" name="attachFilePdfSessions" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                <input class="btn btn-primary" id="sendFilesPdfSessions" type="submit" value="ارسال">
+                                <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+
+                            </div>
+                            <div id="filePdfSessionsDiv"></div> 
+                        </div>
+                    </div>
+                    <div class="row col-lg-12">  
+                        <div class=" col-lg-12 mg-t-20">
+                            <p>فایل های پیوست کمیته</p>
+                        </div>
+                        <div class=" col-lg-12" id="commettesFileDiv"> </div>
+                    </div>
+                    <div class="row  col-lg-12">  
+
+                        <div class="col-lg-4">
+                            مسئول ابلاغ
+                            <select required class="form-control  roleSelectOption" id="sessions_communicatorRoleId" name="sessions_communicatorRoleId" tabindex='-1'></select>
+                        </div><!-- row -->
+                    </div><!-- col --> 
+                </div>  
+            </div>
+        </div>
+    </div>
+</div>
+<!-- card-body -->
+
+<div class="row  col-lg-12">
+    <div class="col-lg-3">
+        <button id="cancel_Sessions" onclick="hmisSessions.m_clean();hmisSessions.m_show_tbl();" class="btn btn-outline-secondary mg-b-10  btn-block" >بازگشت</button>
+    </div><!-- col --> 
+    <div class="col-lg">
+        <div class="col-lg" id="Sessions_button"></div>
+    </div>
+    <input id="hmis_sessions_id" name="hmis_sessions_id" type="hidden">
+</div>

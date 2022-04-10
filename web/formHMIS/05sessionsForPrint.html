@@ -1,0 +1,72 @@
+<div class="card bd-primary mg-t-20">
+    <div class="card bd-primary">
+        <div class="sh-breadcrumb">
+            <nav class="breadcrumb">
+                <a class="breadcrumb-item" href="http://medyarweb.ir">مدیار</a>
+                <a class="breadcrumb-item" href="http://medyarweb.ir">MedYar</a>
+                <span class="breadcrumb-item active">آرشیو صورت جلسه های برگزار شده</span>
+            </nav>
+        </div><!-- sh-breadcrumb -->
+        <div class="sh-pagetitle">
+            <!--        <div class="input-group">
+                        <input type="search" class="form-control" placeholder="Search">
+                        <span class="input-group-btn">
+                            <button class="btn"><i class="fa fa-search"></i></button>
+                        </span> input-group-btn 
+                    </div> input-group -->
+            <div class="sh-pagetitle-left">
+                <div class="sh-pagetitle-icon"><i class="icon ion-ios-gear mg-t-3"></i></div>
+                <div class="sh-pagetitle-title">
+                    <span>کمیته ها و جلسات</span>
+                    <h2> آرشیو صورت جلسات تکمیل شده </h2>
+                </div><!-- sh-pagetitle-left-title -->
+            </div><!-- sh-pagetitle-left -->
+        </div><!-- sh-pagetitle -->
+        <div class="col-lg-12">
+            <div class="card bd-primary mg-t-20" id="newFormQuestion">
+                <div class="card-header bg-primary tx-white">جدول جلسات برگزار شده</div>
+                <div class="card-body pd-sm-30">
+                            <table id="datatable1" class="table table-responsive table-wrapper">
+                                <thead>
+                                    <tr>                    
+                                        <td>کد</td>
+                                        <td>عنوان جلسه</td>
+                                        <td>کمیته</td>
+                                        <td>دبیر کمیته</td>
+                                        <td>تاریخ و ساعت شروع</td>
+                                        <td>وضعیت</td>
+                                        <td>دریافت صورتجلسه</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td><br></td><td><span>جلسه خرداد کمیته ی اجرایی<br></span></td><td>کمیته ی مدیریت اجرایی</td><td><font >مدیر بیمارستان</font></td><td><span>97/3/20-10:30</span></td><td><font >تکمیل شده</font></td><td><a href="template/session.docx" target="_blank" ><i class="fa fa-download" ></i></a></td></tr>
+                                    <tr><td><br></td><td>جلسه اردیبهشت کمیته ی اجرایی<span><br></span></td><td>کمیته ی مدیریت اجرایی<br></td><td>مدیر بیمارستان<br></td><td>97/2/20-10:30</td><td>تکمیل شده</td><td><a href="template/session.docx" target="_blank" ><i class="fa fa-download"></i></a></td></tr>
+                                    <tr><td><br></td><td>جلسه فروردین کمیته ی اجرایی<br></td><td>کمیته ی مدیریت اجرایی<br></td><td>مدیر بیمارستان<br></td><td>97/1/20-10:30<br></td><td>تکمیل شده</td><td><a href="template/session.docx" target="_blank" ><i class="fa fa-download" ></i></a></td></tr>
+                                    <tr><td><br></td><td>جلسه کمیته ی فروردین کنترل عفونت</td><td>کمیته ی کنترل عفونت</td><td>مسئول کنترل عفونت</td><td>97/1/20-10:30<br></td><td>تشکیل شده</td><td><a href="template/session.docx" target="_blank" ><i class="fa fa-download" ></i></a></td></tr>
+                                </tbody>
+                            </table>
+                </div>
+            </div><!-- card -->
+        </div><!-- card-body -->
+    </div><!-- card -->
+</div><!-- card-body -->
+
+<script>
+
+    $(function () {
+        'use strict';
+        $('#datatable1').DataTable({
+            responsive: true,
+            language: {
+                searchPlaceholder: 'جستجو...',
+                sSearch: '',
+                lengthMenu: '_MENU_ items/page',
+            }
+        });
+
+
+        // Select2
+        $('.dataTables_length select').select2({minimumResultsForSearch: Infinity});
+
+    });
+</script>

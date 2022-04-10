@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html lang="en" class="root-ba-color">
+    <head>
+        <title>jivegi</title>
+        <meta charset="utf-8">
+        <meta content="width=devic%e-width, initial-scale=1" name="viewport"> 
+        <link href="las_settings/css/style.css" rel="stylesheet" type="text/css"/>
+        <link href="las_settings/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href="las_settings/bootstrap/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="las_settings/bootstrap/bootstrap-grid.min.css" rel="stylesheet" type="text/css"/>
+        <link href="las_settings/css/login.css" rel="stylesheet" type="text/css"/>
+        <link href="las_settings/css/slidernew.css" rel="stylesheet" type="text/css"/>
+        <link href="las_settings/css/setting.css" rel="stylesheet" type="text/css"/>
+        <link href="las_settings/css/fontiran.css" rel="stylesheet" type="text/css"/>
+        <link href="las_settings/css/style_1.css" rel="stylesheet" type="text/css"/>
+        <link href="las_settings/css/emptyCartShop.css" rel="stylesheet" type="text/css"/>
+        <link href="las_settings/css/raiting (3).css" rel="stylesheet" type="text/css"/>
+        <!--<link href="las_settings/css/raiting.css" rel="stylesheet" type="text/css"/>-->
+        <link href="las_settings/css/formcss.css" rel="stylesheet" type="text/css"/>
+
+        <!--DataTable-->
+        <link href="las_settings/datatable/jquery.dataTables.css" rel="stylesheet" type="text/css"/>
+        <link href="las_settings/datatable/select2.min.css" rel="stylesheet" type="text/css"/>
+        <!--<link rel="stylesheet" href="Manager/shamcey.css">-->
+        <!--<link href="las_settings/css/fs-modal.css" rel="stylesheet" type="text/css"/>-->
+        <!--http://localhost:8080/LAS/Server?do=FormAnswerSet.add_new&formAnswers_formId=190-->
+        <!--<link href="las_settings/css/styles.pure.css" rel="stylesheet" type="text/css"/>-->
+        <style>
+            textarea:hover, 
+            input:hover, 
+            textarea:active, 
+            input:active, 
+            textarea:focus, 
+            input:focus,
+            button:focus,
+            button:active,
+            button:hover,
+            label:focus,
+            .btn:active,
+            .btn.active
+            {
+                outline:0px !important;
+                box-shadow: none !important;
+            }
+            #search__input::placeholder {
+                font-size: 12px;
+                text-align: right;
+                /*text-transform: uppercase;*/
+                letter-spacing: 1.5px;
+            } 
+			
+			  *::selection{
+            }
+            *::-moz-selection{
+            }
+            *::-webkit-selection{
+            }
+            *::-o-selection{
+            }
+            input::selection,textarea::selection,button::selection{
+                color: #fff;
+                background: #39f;
+            }
+            input::-moz-selection,textarea::-moz-selection,button::-moz-selection{
+                color: #fff;
+                background: #39f;
+            }
+            input::-webkit-selection,textarea::-webkit-selection,button::-webkit-selection{
+                color: #fff;
+                background: #39f;
+            }
+            input::-o-selection,textarea::-o-selection,button::-o-selection{
+                color: #fff;
+                background: #39f;
+            }
+			  #loaderText{
+                position: absolute;
+                top: 50%;
+                right: 45%;
+                background: black;
+                z-index: 100;
+                border-radius: 5px;
+                display: none;
+                color:white;
+                font-weight: bolder;
+            }
+        </style>
+    </head>
+    <body class="root-ba-color ir" style="display: block;overflow-x: hidden;">
+        <input type="hidden" id="search-info-show" /><!--این اینپوت برای اونوقتیه که ما میخواهیم گزینه ی بک سرچ کار بده-->
+        <!--        _________________________________________________________________________________
+                _____________________________________this input art for chats form _strat_________________-->
+        <input id="idPackageForSupporter" type="hidden" style="display: none" value="" name="idPackageForSupporter"/>
+        <!--_____________________________________this input art for chats form ___end_______________-->
+        <div id="showpopup"></div>
+        <div id="header-top" class="tab-top-nav col-12 root-ba-color" style="z-index: 2;top: 0px;width: 100%;height: 25vh">
+            <div class="row">
+                <div class="col-3" onclick="window.history.back()">
+                    <i class="far fa-angle-left"  style="font-size: 17px;color:white;margin-top:15px;float: left"></i>
+                </div>
+                <div class="col-6">
+                    <p class="text-white" style="margin-top:14px;text-align:center;margin-left: auto;margin-right: auto; display: block">جیوگی
+                    </p>
+                </div>
+                <div class="col-3" id="picProfileHeader">
+                    <i  style="font-size: 17px;color:white;margin-top:15px"></i>
+                </div>
+                <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4" style="width: 100%;margin: 0px 10px;height: 8vh">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <button id="button-addon2" type="submit" class="btn btn-link text-warning"><i class="fa fa-search"></i></button>
+                        </div>
+                        <input id="search__input" type="search" placeholder="جستجو" aria-describedby="button-addon2" class="form-control border-0 bg-light" style="border-radius: 15px;height: 7vh">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="margin: 0 35px;">
+            <div class="row" id="search_field_new" style="display: none">
+                <div class="col-lg-12 col-sm-12 col-xs-12">
+                    <div id="result_search" style="margin-top: 60px;color: white"></div>
+                </div>
+            </div>
+        </div>
+        <div id="maincontent" style="overflow-x: hidden;">
+            <!--==========================search result========================-->
+            <div class="row">
+                <div class="col-12">
+                    <div id="slidernew" style="margin-top:50px" ></div>
+                </div>
+            </div>
+            <div id="sw" class="root-ba-color" style="margin-bottom: 40px;"></div>
+
+            <!--===========spinner============-->
+            <div id="loader"></div>
+			            <div id="loaderText">در حال بارگزاری...</div>
+
+            <!--=========end spinner===========-->
+
+            <!--------------------این قسمت زمان لود شدن محصولات است که باید انها در این قسمت لود گردند----->
+            <!--<div id="sw" style="display:block "></div></div>این قسمت برای انتهای  اید ی  اس دبیلو پکیح هاست-->
+            <div id="factor" class=" root-ba-color" style="overflow-x: hidden;margin-bottom: 77px"></div>
+
+            <!--===========================tabbar=========================-->
+            <span id="sabadkharid" style="display: none;background: red;height: 5px;width: 5px;position: absolute;z-index: 998;bottom: 7%;left: 28%;border-radius: 50%;position: fixed"></span>
+            <div class="bottom-navigation root-ba-color" id="tab-bar" style="z-index: 400;margin-top: 100px;color:white">
+                <div onclick="cmsConsulting.loadForm();" class="bottom-navigation-item">
+                    <i class="fal fa-comments"></i>
+                    <span>گفتگو</span>
+                </div>
+                <div onclick="showShoppingCart();" id="loa" class="bottom-navigation-item">
+                    <i class="fal fa-shopping-cart" id="lo"></i>
+                    <span>سبد خرید</span>
+                </div>
+                <div onclick="home();
+                    cleanStack();"  class="bottom-navigation-item" style="background-color: #6760d2;border-radius: 50px;margin: 2px;">
+                    <i class="fas fa-home"></i>
+                    <span>خانه</span>
+                </div>
+                <div onclick="settingLoad();" class="bottom-navigation-item">
+                    <i  class="fal fa-cog"></i>
+                    <span>تنظیمات</span>
+                </div>
+                <div id="lopinpanel" onclick="loginForm();" class="bottom-navigation-item">
+                    <i  class="fal fa-sign-in "></i>
+                    <span class="outAndIn2">ورود</span>
+                </div>
+                <div id="lopoutpanel" onclick="sign_out();" class="bottom-navigation-item" style="display: none">
+                    <i  class="fal fa-sign-out "></i>
+                    <span class="outAndIn2">خروج</span>
+                </div>
+            </div>
+			    <div id="tab_bar2" style="height: 12vh;display: block"></div>
+
+        </div>
+        <!--End loading Page -->
+        <!--dargah::::::::::05971d20-d529-4c22-888c-0dcdad0ac03f-->
+        <!--dargah new::::::ad2e0e89-e29d-4fe2-a061-5e50ed739314-->
+        <script src="las_settings/js/jquery.js" type="text/javascript"></script>
+        <script src="las_settings/bootstrap/bootstrap.min.js" type="text/javascript"></script>
+        <script src="js/jj2.js" type="text/javascript"></script>
+        <script type="text/javascript" src="js/jquery/jquery.cookie.min.js"></script>
+        <script src="js/ajaxfileupload.js" type="text/javascript"></script>
+        <script src="las_settings/js/jquery.dialog.js" type="text/javascript"></script>
+        <script src="las_settings/js/chat.js" type="text/javascript"></script>
+        <script src="las_settings/js/index.js" type="text/javascript"></script>
+        <script src="las_settings/js/Consulting.js" type="text/javascript"></script>
+        <script src="las_settings/js/cmsConsultingLesson.js" type="text/javascript"></script>
+        <!--DataTable-->
+        <script src="las_settings/datatable/dataTables.responsive.js" type="text/javascript"></script>
+        <script src="las_settings/datatable/jquery.dataTables.js" type="text/javascript"></script>
+        <script src="las_settings/datatable/select2.min.js" type="text/javascript"></script>
+        <!--<script src="Manager/dataTable/select2.min.js"></script>-->
+        <!--<script src="las_settings/js/fs-modal.min.js" type="text/javascript"></script>-->
+
+        <!--<script src="Manager/js/index.js" type="text/javascript"></script>-->
+        <!--<script src="ckeditor_4_7_1_full/ckeditor.js" type="text/javascript"></script>-->
+				        <script src="cordova.js" type="text/javascript"></script>
+						<script type="text/javascript" src="js/plugins/LaunchMyApp.js"></script>
+							<script type="text/javascript" src="js/SocialSharing.js"></script>
+        <script type="text/javascript">
+		 function shareLink(){
+	 			            var code = "'"+$("#code").val()+"'";
+            var name = "'"+$("#name").val()+"از شما دعوت کرده است به اپلیکیشن دکتر شیمی بپیوندید'";
+            var link = "'"+$("#link").val()+"'";
+
+			           // var video ="<video src=" +$("#video").val();+"></video>";
+            window.plugins.socialsharing.share(name, '' , '', link);
+        }
+		
+		function handleOpenURL(url) {
+		alert("received url: " + url);
+  console.log("received url: " + url);
+}
+
+                    //            cordova.plugins.codeplayshareapplink.shareWithContact("Share via",$("#shairingsafe").val();,success,fail);
+                    //
+                    //function success(result)
+                    //{
+                    // console.log(result);
+                    //}
+                    //function fail(result)
+                    //{
+                    // console.log(result);
+                    //}
+
+                    //                            === === === === === === === === === === === === === === === === == slide
+                    $(document).ready(function () {
+                        new jj("do=Pic.getSliderApp&jj=1&panel=slidernew").jjAjax2(false);
+                    });
+                    $('.bottom-navigation-item ').click(function () {
+                        //                    $(this).css("font-weight", "600").css("color", "#ffbd2e");
+                        $(this).css("color", "#ffbd2e");
+                        //                    $(".bottom-navigation-item ").not(this).css("font-weight", "100").css("color", "white");
+                        $(".bottom-navigation-item ").not(this).css("color", "white");
+                    });
+                    function SearchBtn() {
+                        $('#home').css({display: 'none'});
+                        //                    $('#tab-bar').css({display: 'none'});
+                        $('#jjSearchBtn').css({display: 'none'});
+                        $('#back_search').css({display: 'block'});
+                        $('#result_search').css({display: 'block'});
+                        $("#factor").html("");
+                    }
+                    ;
+                    //            =====================================================================
+                    $(document).ready(function () {
+                        var param = "";
+                        param = "do=Package.getList";
+                        param += "&jj=1";
+                        param += "&panel=factor";
+                        new jj(param).jjAjax2(false);
+                        shopcart();
+                        var isLogin = window.localStorage.getItem('user_token');
+                        if (!isLogin == '') {
+                            login();
+                        }
+                    });
+                    $(document).ready(function () {
+                        $(".bottom-navigation-item").on("click", function () {
+                            $(this).find("i").toggleClass('fal').toggleClass('fas');
+                        });
+                    });
+                    $("#search__input").on("keyup", function () {
+                        searchNew();
+                        var value = $(this).val().toLowerCase();
+                        if ($("#search__input").length > 0) {
+
+                            var text = new jj("#search__input").jjVal();
+                            if (text.length >= 1) {
+                                new jj("do=Package.SearchPackeges&panel=result_search&text=" + text + "").jjAjax2(false);
+                            }
+                        }
+                    });
+                    //====================
+                    function sign_out() {
+                        var exit = "";
+                        exit = "do=Access_User.signOut";
+                        exit += "&jj=1";
+                        new jj(exit).jjAjax2(true);
+                        success();
+                        $("#nameUserProfile").html('');
+                        $("#id_user").val('');
+                        $("#picUserProfile").attr("src", "las_settings/img/profile.jpg");
+                        $("#lopoutpanel").hide();
+                        $("#lopinpanel").show();
+                        //                        $("#outAndIn1").removeClass('fas fal fa-sign-out');
+                        //                        $("#outAndIn1").addClass('fal fa-sign-in');
+                        //                        $("#outAndIn2").html('log in');
+                        //                        $("#outAndIn").attr("onclick", "loginForm()");
+                        $("#picProfileHeader").html('<i style="font-size: 17px;color: white;margin-top:15px;"></i>');
+                        window.localStorage.setItem('user_token', '');
+                    }
+                    function popup1() {
+                        $('#popup1').css('display', 'none');
+                    }
+                    ;
+                    //----------------------------------send notification-----------------------------------------------------------------
+                    $(document).ready(function () {
+                localnotif();
+            });
+
+            function localnotif() {
+
+                window.setInterval(function () {
+                    cordova.plugins.backgroundMode.disable();
+                    localNOtification();
+
+                }, 60000);
+            }
+            ;
+
+            document.addEventListener("deviceready", function () {
+                StatusBar.backgroundColorByHexString("#03050b");
+                cordova.plugins.backgroundMode.enable();
+                cordova.plugins.backgroundMode.on('activate', function () {
+                    cordova.plugins.backgroundMode.disableWebViewOptimizations();
+                    cordova.plugins.notification.local.setDefaults({
+                        led: {color: '#FF00FF', on: 500, off: 500},
+                        vibrate: true
+                    });
+
+
+                });
+                cordova.plugins.notification.local.on('click', function (notification, eopts) {
+                    try {
+                        eval(notification.data.script);
+                    } catch (e) {
+                        alert(notification.data.script);
+                    }
+                });
+            }, false);
+
+
+            function localNOtification() {
+                new jj("do=Lessons.localNOtification").jjAjax2(false);
+            }
+
+        </script>
+        <div class="toast fade hide" id="myToast" style="top: 13%;width: 34%;position: fixed;left: 10%;background-color: #89d700;z-index: 900;border-radius: 9%;">
+            <div class="toast-body">
+                <div style="color: #fff;"><p><i class="fal fa-shopping-cart">به سبد اضافه شد</i></p></div>
+            </div>
+        </div>
+        <div class="toast fade hide" id="loginToast" style="position: fixed; top: 100px; right: 20px;background-color: #89d700;">
+            <div class="toast-body">
+                <div style="color: #fff;">ثبت نام با موفقیت انجام شد<i class="fal fa-check"></i></div>
+            </div>
+        </div>
+    </body>
+</html>

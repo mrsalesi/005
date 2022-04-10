@@ -1,0 +1,98 @@
+<div class="card bd-primary mg-t-20">
+    <div class="sh-breadcrumb">
+        <nav class="breadcrumb">
+            <a class="breadcrumb-item" href="index.html">MedYar مدیار</a>
+            <span class="breadcrumb-item active">گالری تصاویر</span>
+        </nav>
+    </div>
+    <div class="sh-pagetitle">
+        <div class="sh-pagetitle-left">
+            <div class="sh-pagetitle-icon"><i class="icon ion-ios-home"></i></div>
+            <div class="sh-pagetitle-title">
+                <span>سامانه جام مدیریت سلامت</span>
+                <h2>مدیریت گالری تصاویر</h2>
+            </div><!-- sh-pagetitle-left-title -->
+        </div><!-- sh-pagetitle-left -->
+    </div>
+    <div class="row row-sm">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card rounded-0">
+
+                        <div class="card-header bg-primary tx-white">
+                            اطلاعات گالری تصاویر
+                        </div><!-- card-header -->
+                        <div class="card-body">
+                            <div class="row mg-t-20">
+                                <!--<div class="row">-->
+                                <input type="hidden" id="pic_id" name="id" />
+                                <input class="form-control" type="hidden" id="pic_parent" name="pic_parent" value="0"/>
+                                <div class="col-lg-12" style="">
+                                    عنوان
+                                    <input class="form-control" id="pic_title" name="pic_title"  placeholder="عنوان" type="text">
+                                </div>
+                                <div class="col-lg-4" style="">
+                                    <div>
+                                        تصویر
+                                    </div>
+                                    <input id="pic_attachPic" name="pic_pic_name" value="" type="hidden">
+                                    <img id="Pic_preview" name="Pic_preview" class="img-thumbnail" src="img/preview.jpg">
+                                    <div class="row">
+                                        <input class="btn btn-primary" id="sendPic" type="submit" value="ارسال">
+                                        <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                        <input id="pic_file" name="pic_file" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                        <span id="pic_pic"  class="form-control col-lg"></span>
+                                        <!--<span class="form-control"></span>-->
+                                    </div>
+                                    <a id="DownloadPic" href="" style="display: none" target="_blank">
+                                        دانلود تصویر
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row mg-t-20">
+                                <div class="col-lg-12">
+                                    اسم وآدرس عکس 
+                                    <input class="form-control" id="pic_address"  placeholder="اسم و آدرس عکس " style="text-align: left;" type="text">
+                                </div>
+                                <div class="col-lg-12">
+                                    دسته
+                                    <br/>
+                                    <select id="pic_gallery_id" name="gallery_id" class="form-control categoryGallerySelectOption">
+                                    </select>
+                                </div>
+                                <div class="col-lg-12">
+                                    html1
+                                    <textarea class="form-control" id="pic_html1" name="pic_html1"  placeholder="html1" rows="5" style="background-color: #000;color: #fff;text-align: left;"></textarea>
+                                </div>
+                                <div class="col-lg-12">
+                                    html2
+                                    <textarea class="form-control" id="pic_html2" name="pic_html2"  placeholder="html2" rows="5" style="background-color: #000;color: #fff;text-align: left;"></textarea>
+                                </div>
+                                <div class="col-lg-12">
+                                    html3
+                                    <textarea class="form-control" id="pic_html3" name="pic_html3"  placeholder="html3" rows="5" style="background-color: #000;color: #fff;text-align: left;"></textarea>
+                                </div>
+                                <div class="col-lg-12">
+                                    اسکریپت کلیک عکس
+                                    <input class="form-control" id="pic_scriptOnClickImg" name="pic_scriptOnClickImg"  placeholder="اسکریپت کلیک عکس" style="text-align: left;" type="text">
+                                </div>
+                                <div class="col-lg-12 mg-t-10">
+                                    توضیحات
+                                    <textarea class="form-control" rows="5" id="pic_discription" name="pic_discription"  placeholder="توضیحات خودتون را وارد کنید"></textarea>
+                                </div>
+                            </div>
+                            <div class="row col-lg-12">
+                                <div class="mg-t-20 col-lg">
+                                    <button class="btn btn-outline-secondary mg-b-10 btn-block" onclick="cmsPic.m_show_tbl();">بازگشت </button>                
+                                </div><!-- col -->
+                                <div id="Pic_button" class="mg-t-20 col-lg-9 row">            
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

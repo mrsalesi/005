@@ -1,0 +1,111 @@
+
+<div class="card bd-primary mg-t-20">
+
+    <div class="card bd-primary">
+
+        <div class="sh-breadcrumb">
+            <nav class="breadcrumb">
+                <a class="breadcrumb-item" href="http://medyarweb.ir">مدیار</a>
+                <a class="breadcrumb-item" href="http://medyarweb.ir">MedYar</a>
+                <span class="breadcrumb-item active">جایگاه ها</span>
+            </nav>
+        </div><!-- sh-breadcrumb -->
+        <div class="sh-pagetitle">
+
+            <div class="sh-pagetitle-left">
+                <div class="sh-pagetitle-icon"><i class="icon ion-ios-gear mg-t-3"></i></div>
+                <div class="sh-pagetitle-title">
+                    <!--<span>کا</span>-->
+                    <h2>جایگاه ها</h2>
+                </div><!-- sh-pagetitle-left-title -->
+            </div><!-- sh-pagetitle-left -->
+        </div><!-- sh-pagetitle -->
+        <div class="col-lg-12">
+
+            <div class="card bd-primary mg-t-20" id='AccessuserForm'>
+                <input type="hidden" id="positions_id" name="id" />
+                <div class="card-header bg-primary tx-white">جایگاه ها</div>
+                <div class="card-body pd-sm-30">                    
+                    <div class="row">
+                        <div class="col-lg-4">
+                            عنوان 
+                            <input class="form-control" id="positions_title"  name="positions_title" placeholder="عنوان" type="text">
+                        </div>
+
+
+                        <div class="col-lg-4" >
+                            سطح
+
+                            <select class="form-control" id="positions_level" name='positions_level' >                    
+                                <option value="0">سطح0</option>
+                                <option value="1">سطح1</option>
+                                <option value="2">سطح2</option>
+                                <option value="3"> سطح3</option>
+                                <option value="4">سطح4</option>
+                                <option value="5">سطح5</option>
+                                <option value="6">سطح6</option>
+                                <option value="7">سطح7</option>
+                                <option value="8">سطح8</option>
+                                <option value="9">سطح9</option>
+                                <option value="10">سطح10</option>
+                            </select>
+                        </div>       
+                        <div class="col-lg-4" >
+                            موقعیت
+                            <select class="form-control" id="positions_parent" name='positions_parent' >                    
+                            </select>
+                        </div>       
+                    </div> 
+                    <div class="row">
+                        <div class="col-lg-3">
+                            فرد اصلی جایگاه
+                            <select id="positions_user_id1" class="form-control">                    
+                            </select>
+                        </div>
+                        <div class="col-lg-3">
+                            جانشین اول جایگاه
+                            <select id="positions_user_id2" class="form-control">                    
+                            </select>
+                        </div>
+                        <div class="col-lg-3">
+                            جانشین دوم جایکاه
+                            <select id="positions_user_id3" class="form-control">                    
+                            </select>
+                        </div>
+                        <div class="col-lg-3">
+                            جانشین سوم جایگاه
+                            <select id="positions_user_id4" class="form-control">                    
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            رنگ مورد نظر جایگاه را انتخاب کنید
+                            <select class="form-control" id="positions_color" name='positions_color' >     
+                                <option value="0" selected>رنگ مورد نظر خود را وارد کنید...</option>
+                                <option value="#fff">سفید</option>
+                                <option value="#f5838d">قرمز</option>
+                                <option value="#a3b0ec">آبی</option>
+                                <option value="#0ef60a">سبز</option>
+                                <option value="#f0ff05">زرد</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- card-body -->
+        </div><!-- card -->
+
+
+
+        <div class="row col-lg-12">
+            <div class="mg-t-20  col-lg">
+                <button class="btn btn-outline-secondary mg-b-10  btn-block" onclick="hmisPositions.m_show_tbl();">بازگشت </button>                
+            </div><!-- col -->
+            <div id="Positions_button" class="col-lg-9 mg-t-20 row">            
+            </div>
+        </div><!-- card -->
+    </div>
+
+</div>
+
+
+</div><!-- card -->
+

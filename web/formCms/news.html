@@ -1,0 +1,126 @@
+<div class="card bd-primary mg-t-20">
+    <div class="sh-breadcrumb">
+        <nav class="breadcrumb">
+            <a class="breadcrumb-item" href="index.html">MedYar مدیار</a>
+            <span class="breadcrumb-item active">تولید محتوا</span>
+        </nav>
+    </div>
+    <div class="sh-pagetitle">
+        <div class="sh-pagetitle-left">
+            <div class="sh-pagetitle-icon"><i class="icon ion-ios-home"></i></div>
+            <div class="sh-pagetitle-title">
+                <span>سامانه جام مدیریت سلامت</span>
+                <h2>مدیریت اخبار سازمانی</h2>
+            </div><!-- sh-pagetitle-left-title -->
+        </div><!-- sh-pagetitle-left -->
+    </div>
+    <div class="row row-sm">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card rounded-0">
+                        <div class="card-header bg-primary tx-white">
+                            اطلاعات اخبار سازمانی
+                        </div><!-- card-header -->
+                        <div class="card-body">
+                            <div class="row mg-t-20">
+                                <!--<div class="row">-->
+                                <input type="hidden" id="news_id" name="id" />
+                                <input type="hidden" id="news_parent" name="news_parent" value="0"/>
+                                <div class="col-lg-12" style="">
+                                    عنوان
+                                    <input class="form-control" id="news_title" name="news_title"  placeholder="عنوان" type="text">
+                                </div>
+                                <div class="col-lg-4" style="">
+                                    <input id="news_attachPic" name="news_attachPic" type="hidden">
+                                    <div>
+                                        تصویر
+                                    </div>
+                                    <img id="news_Pic_preview" name="news_Pic_preview" class="img-thumbnail" src="img/preview.jpg">
+                                    <div class="row">
+                                        <input class="btn btn-primary" id="newsSendPic1" type="submit" value="ارسال">
+                                        <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                        <input id="news_file" name="news_file" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                        <span id="news_pic1"  class="form-control col-lg"></span>
+                                        <!--<span class="form-control"></span>-->
+                                    </div>
+                                    <a   id="newsDownloadPic" href="" style="display: none" target="_blank">
+                                        دانلود تصویر
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="row mg-t-20">
+                            <div class="col-lg-6">
+                                گروههایی که میتواند به این خبر دسترسی داشته باشد:
+                                <select id="news_privateGroupId" name="news_privateGroupId" class="form-control" multiple>
+                                </select>
+                            </div>
+                            <div class="col-lg-6">
+                                کاربرانی که فقط میتواند به این خبر دسترسی داشته باشد:
+                                <select id="news_privateUserId" name="news_privateUserId" class="form-control" multiple>
+                                </select>
+                            </div>
+                                <div class="col-lg-6">
+                                    تاریخ ثبت خبر:   
+                                    <input class="form-control" type="text" id="news_date" name="news_date">
+                                </div>
+                                <div class="col-lg-6">
+                                    اولویت:   
+                                    <input class="form-control" type="text" id="news_priority" name="news_priority">
+                                </div>
+                                <div class="col-lg-12" style="">
+                                    دسته اخبار سازمانی
+                                    <select id="news_category_id" name="news_category_id" class="form-control newsSelectOption" >
+                                    </select>
+                                </div>
+                                <div class="col-lg-12 mg-t-20">
+                                    خلاصه
+                                    <textarea class="form-control summernote" id="news_abstract" name="news_abstract" rows="7"></textarea>
+                                </div>
+                                <div class="col-lg-12 mg-t-20">
+                                    محتوا
+                                    <textarea class="form-control summernote" id="news_content" name="news_content" rows="7"></textarea>
+                                </div>
+                                <div class="col-lg-12 mg-t-20">   
+                                    <input id="news_has_link" name="news_has_link" type="checkbox" checked="checked"><span>
+                                        برای ایجاد لینک مربوط به این خبر این گزینه را انتخاب کنید.</span>
+                                </div>
+                                <div class="col-lg-4 mg-t-10">
+                                    <label class="ckbox">
+                                        <input id="news_visit_checkbox" name="news_visit_checkbox" type="checkbox" checked="checked" onclick='$("#news_visit").prop("disabled", !$("#news_visit").prop("disabled"));
+                                                $("#news_visit").val(-1 * +$("#news_visit").val());'><span>بازدید</span>
+                                    </label>
+                                    <input class="form-control" type="number" id="news_visit" min="0" value="0" name="news_visit"/>
+                                </div>
+
+                                <div class="col-lg-4 mg-t-10">
+                                    <label class="ckbox">
+                                        <input id="news_likes_checkbox" name="news_likes_checkbox" type="checkbox" checked="checked" onclick='$("#news_likes").prop("disabled", !$("#news_likes").prop("disabled"));
+                                                $("#news_likes").val(-1 * +$("#news_likes").val());'><span>تعداد موافقت ها</span>
+                                    </label>
+                                    <input class="form-control" type="number" id="news_likes" min="0" value="0" name="news_likes"/>
+                                </div>
+
+                                <div class="col-lg-4 mg-t-10">
+                                    <label class="ckbox">
+                                        <input id="news_disLikes_checkbox" name="news_disLikes_checkbox" type="checkbox" checked="checked" onclick='$("#news_disLikes").prop("disabled", !$("#news_disLikes").prop("disabled"));
+                                                $("#news_disLikes").val(-1 * +$("#news_disLikes").val());'><span>تعداد مخالفت ها</span>
+                                    </label>
+                                    <input class="form-control" type="number" id="news_disLikes"  min="0" value="0" name="news_disLikes"/>
+                                </div>
+                            </div>
+                            <div class="row col-lg-12">
+                                <div class="mg-t-20 col-lg">
+                                    <button class="btn btn-outline-secondary mg-b-10 btn-block" onclick="cmsNews.m_show_tbl();">بازگشت </button>                
+                                </div><!-- col -->
+                                <div id="News_button" class="mg-t-20 col-lg-9 row">            
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,371 @@
+
+<div class="card bd-primary mg-t-20">
+
+    <div class="card bd-primary">
+
+        <div class="sh-breadcrumb">
+            <nav class="breadcrumb">
+                <a class="breadcrumb-item" href="http://medyarweb.ir">مدیار</a>
+                <a class="breadcrumb-item" href="http://medyarweb.ir">MedYar</a>
+                <span class="breadcrumb-item active">کاربران</span>
+            </nav>
+        </div><!-- sh-breadcrumb -->
+        <div class="sh-pagetitle">
+            <!--        <div class="input-group">
+                        <input type="search" class="form-control" placeholder="Search">
+                        <span class="input-group-btn">
+                            <button class="btn"><i class="fa fa-search"></i></button>
+                        </span> input-group-btn 
+                    </div> input-group -->
+            <div class="sh-pagetitle-left">
+                <div class="sh-pagetitle-icon"><i class="icon ion-ios-gear mg-t-3"></i></div>
+                <div class="sh-pagetitle-title">
+                    <!--<span>کا</spanuser_attachPicPersonal>-->
+                    <h2>کاربران</h2>
+                </div><!-- sh-pagetitle-left-title -->
+            </div><!-- sh-pagetitle-left -->
+        </div><!-- sh-pagetitle -->
+        <div class="col-lg-12">
+
+            <div class="card bd-primary mg-t-20" id='AccessuserForm'>
+                <input type="hidden" id="access_user_id" name="id" />
+                <div class="card-header bg-primary tx-white">سند فیزیکی کاربر بصورتpdf</div>
+                  <div class="col-lg-12">فایل های پیوست توسط ادمین
+                        <div class="" id="user_divUpload1"></div>
+                    </div>
+                    <div class="input-group col-lg-12">
+                        <div class=""> عنوان فایل</div>
+                        <span id="user_pic_admin" class="form-control"></span>
+                        <input class="form-control" id="user_titleFile_admin" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" >
+                        <input id="attachFileUserAdmin" name="attachFileUser" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                        <input class="btn btn-primary" id="userAttachFiles_sendFilesAdmin" type="submit" value="ارسال">
+                        <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                        <!--<span class="form-control"></span>-->
+                        <a   id="DownloadattachFileUser" href="" style="display: none" target="_blank" download>
+                            دانلود
+                        </a>
+                    </div>                            
+                    <br/>
+                <div class="card-header bg-primary tx-white">سند های جداگانه</div>
+                <div class="card-body pd-sm-30">                    
+                    <div class="row" style="margin-bottom: 10px">
+                            <div class="row" style="margin-bottom: 10px">
+                        <div class="col-lg" style="">
+                            <div>
+                                عکس پرسنلی
+                            </div>
+
+                            <input id="user_attachPicPersonal" name="user_attachPicPersonal" type="hidden">
+                            <img id="PicPreviewPersonal" name="PicPreviewPersonal" class="img-thumbnail" src="img/profile_pre.png">
+                            <div class="row">
+                                <input class="btn btn-primary" id="sendPic1" type="submit" value="ارسال">
+                                <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                <input id="user_file_personal" name="user_file_personal" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                <span id="user_pic1"  class="form-control"></span>
+                                <!--<span class="form-control"></span>-->
+                            </div>
+                            <a   id="DownloadPicPersonal" href="" style="display: none" target="_blank" download>
+                                دانلود عکس پرسنلی
+                            </a>
+                        </div>
+                        <br/>
+                        <div class="col-lg " style="">
+                            <div>
+                                عکس کارت پرسنلی</div>
+                            <input id="user_attachPicPersonnelCard" name="user_attachPicPersonnelCard" type="hidden">
+                            <img id="PicPreview" name="PicPreview" class="img-thumbnail" src="img/preview.jpg">
+                            <div class="row">
+                                <input class="btn btn-primary" id="sendPicupload" type="submit" value="ارسال">
+                                <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                <input id="uploaded_file" name="upload_file" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                <span id="user_pic3"  class="form-control"></span>
+                                <!--<span class="form-control"></span>-->
+                            </div>
+                            <a   id="DownloadPicPersonnelCard" href="" style="display: none" target="_blank" download>
+                                دانلودکارت پرسنلی
+                            </a>
+                        </div>
+                        <br/>
+                        <div class="col-lg" style="">
+                            <div>  عکس امضا</div>
+                            <input id="user_attachPicSignature" name="user_attachPicSignature" type="hidden">
+
+                            <img id="PicPreviewSignature"  name="PicPreviewSignature" class="img-thumbnail" src="img/preview.jpg">
+                            <div class="row">
+                                <input class="btn btn-primary" id="sendPicSignature" type="submit" value="ارسال">
+                                <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                <input id="user_file_Signature" name="user_file_Signature" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                <span id="user_pic2"  class="form-control"></span>
+                                <!--<span class="form-control"></span>-->
+                            </div>
+                            <a   id="DownloadPicSignature" href="" style="display: none" target="_blank" download>
+                                دانلود عکس امضا
+                            </a>
+                        </div>
+                 
+                    </div>
+                    </div>
+                </div>
+                <div class="card-header bg-primary tx-white">اطلاعات کاربر</div>
+                <div class="card-body pd-sm-30">                    
+                
+                    <div class="row">
+                        <div class="col-lg">
+                            شماره عضویت
+                            <input class="form-control" id="user_int1" name="user_int1"  placeholder="کد" type="text">
+                        </div>
+                        <div class="col-lg">
+                            نام 
+                            <input class="form-control" id="user_nameUser" name="user_name"  placeholder="نام" type="text">
+                        </div>
+                        <div class="col-lg">
+                            نام  خانوادگی
+                            <input class="form-control" id="user_familyUser" name="user_family" placeholder="نام خانوادگی" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg">
+                            نام  پدر
+                            <input class="form-control" id="user_char1" name="user_char1" placeholder="نام پدر" type="text">
+                        </div>
+                        <div class="col-lg">
+                            شماره های همراه
+                            <input class="form-control"  id="user_mobileUser" name="user_mobile"  placeholder="شماره همراه" type="text">
+                        </div>
+                        <div class="col-lg">
+                            شماره ثابت
+                            <input class="form-control"  id="user_char3" name="user_char3"  placeholder="شماره ثابت" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg">
+                            مبلغ حق عضویت
+                            <input class="form-control"  id="user_char2" name="user_char2"  placeholder="مبلغ حق عضویت" type="text">
+                        </div>
+                        <div class="col-lg">
+                            محل خدمت
+                            <input class="form-control"  id="user_no1" name="user_no1"  placeholder="محل خدمت" type="text">
+                        </div>
+                        <div class="col-lg">
+                            وضعیت خدمت
+                            <input class="form-control"  id="user_no2" name="user_no2"  placeholder="مبلغ حق عضویت" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg">
+                            محل صدور
+                            <input class="form-control"  id="user_question" name="user_question"  placeholder="محل صدور" type="text">
+                        </div>
+                        <div class="col-lg">
+                            تاریخ صدور
+                            <input class="form-control"  id="user_answer" name="user_answer"  placeholder="تاریخ صدور" type="text">
+                        </div>
+                        <div class="col-lg">
+                            شماره پرسنلی
+                            <input class="form-control"  id="user_weblog" name="user_weblog"  placeholder="شماره پرسنلی" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg">
+                            شغل
+                            <input class="form-control"  id="user_int2" name="user_int2"  placeholder="شغل" type="text">
+                        </div>
+                        <div class="col-lg">
+                            کد پستی
+                            <input class="form-control"  id="user_postalCode" name="user_postalCode"  placeholder="کد پستی" type="text">
+                        </div>
+                        <div class="col-lg">
+                            ایثارگری
+                            <input class="form-control"  id="user_password_hint" name="user_password_hint"  placeholder="ایثارگری" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg">
+                            وضعیت پرونده
+                            <input class="form-control"  id="user_int3" name="user_int3"  placeholder="وضعیت پرونده" type="text">
+                        </div>
+                        <div class="col-lg">
+                            تلفن داخلی
+                            <input class="form-control"  id="user_studentNumber" name="user_studentNumber"  placeholder="تلفن داخلی" type="text">
+                        </div>
+                        <div class="col-lg">
+                            شعبه بانک
+                            <input class="form-control"  id="user_grade" name="user_grade"  placeholder="شعبه بانک" type="text">
+                        </div>
+                    </div>                  
+                    <div class="row">
+                        <div class="col-lg">
+                            فعال می باشد
+                            <input type="checkbox" id="user_is_active" name="user_is_active" class="form-control" checked>
+                        </div>
+                        <div class="col-lg">
+                            تاریخ ایجاد در سیستم
+                            <input class="form-control" id="user_createDate" name="user_createDate" placeholder="تاریخ سیستمی" type="text" readonly>
+                        </div>
+                        <div class="col-lg">
+                            نام کاربری یا ایمیل
+                            <input class="form-control"  id="user_emailUser" name="user_email"  placeholder="نام کاربری یا ایمیل" type="text">
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-lg">
+                            اطلاعات حساب
+                            <input class="form-control" id="user_AccountInformationUser" name="user_AccountInformation" placeholder="اطلاعات حساب" type="text">
+                        </div>
+                        <div class="col-lg">
+                            تاریخ تولد
+                            <input class="form-control" id="user_birthdateUser" name="user_birthdate" placeholder="تاریخ تولد" type="text">
+                        </div>
+                        <div class="col-lg">
+                            مدرک تحصیلی
+                            <input class="form-control" id="user_gradeUser" name="user_grade" placeholder="مدرک تحصیلی" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg">
+                            جنسیت
+                            <select class="form-control" id="user_jensiatUser" name="user_jensiat">
+                                <option value="">انتخاب</option>
+                                <option value="اقای">اقای</option>
+                                <option value="خانم">خانم</option>
+
+                            </select>
+                        </div>
+                        <div class="col-lg">
+                            کدملی
+                            <input class="form-control" id="user_codeMeliUser" name="user_codeMeli"  placeholder="کدملی" type="text">
+                        </div>
+                        <div class="col-lg">
+                            شماره شناسنامه
+                            <input class="form-control" id="user_shomareShenasnameUser" name="user_shomareShenasname"  placeholder="شماره شناسنامه" type="text">
+                        </div>
+                    </div>
+                    <div class='row'>
+                        <div class="col-lg">
+                            رمز عبور
+                            <input class="form-control" id="user_passUser"  name="user_pass"  placeholder="رمز عبور" type="text">
+                        </div>
+                        <div class="col-lg">
+                            یاد آور گذر واژه
+                            <input class="form-control" id="user_passwordReminderUser"  name="user_passwordReminder"  placeholder=" یاد آور گذر واژه" type="text">
+                        </div>
+                        <div class="col-lg">
+                            نشانی
+                            <input class="form-control" id="user_addressUser" name="user_address" placeholder="نشانی" type="text">
+                        </div>
+                    </div> 
+                    <div class="row">
+                        <div class="col-lg-12 mg-t-20">
+                            توضیحات
+                            <textarea class="form-control summernote" id="user_adminDescription" name="user_adminDescription" rows="7"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        گروه ها:
+                        <select id="selectOptionGroupUser" name="selectOptionGroupUser" class="form-control" multiple>
+                        </select>
+                    </div>
+                    <br/>                                                    
+                </div>
+
+            </div><!-- card-body -->
+        </div><!-- card -->
+        <div class="row col-lg-12">
+            <div class="mg-t-20  col-lg" >
+                <button class='btn btn-outline-secondary mg-b-10  btn-block' onclick="cmsUser.m_show_tbl();
+                        cmsUser.m_clean();">بازگشت </button>;
+            </div><!-- col -->
+            <div id="User_button" class="col-lg-9 mg-t-20 row">            
+            </div>
+        </div><!-- card -->
+    </div>
+</div><!-- card -->
+
+<!--</div> card-body -->
+
+<script>
+    var regularExpression = /.*/;
+    $("#user_passUser").change(function () {
+        var newPassword = document.getElementById('user_passUser').value;
+        var maxNumberofChars = 16;
+        if (newPassword.length > maxNumberofChars) {
+            alert("رمز شما نباید از 16 کاراکتر بیشتر شود");
+            $("#user_passUser").val('');
+            return false;
+        }
+        if (!regularExpression.test(newPassword)) {
+            alert("پسورد شما شامل اعداد و کاراکترهای انگلیسی کوچک و بزرگ باشد و از 6 کاراکتر کمتر نباشد");
+            $("#user_passUser").val('');
+            return false;
+        }
+    });
+    function readURLPersonal(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#PicPreviewPersonal').attr('src', e.target.result);
+            }
+
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#user_file_personal").change(function () {
+        readURLPersonal(this);
+    });
+    function readURLSignature(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#PicPreviewSignature').attr('src', e.target.result);
+            }
+
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#user_file_Signature").change(function () {
+        readURLSignature(this);
+    });
+    function readURL(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#PicPreview').attr('src', e.target.result);
+            }
+
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#uploaded_file").change(function () {
+        readURL(this);
+    });
+    function readURLfiles(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#PicPreviewAttach').attr('src', e.target.result);
+            }
+
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#attachFile").change(function () {
+        readURLfiles(this);
+    });
+</script>

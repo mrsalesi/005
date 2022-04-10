@@ -1,0 +1,544 @@
+<div class="card bd-primary mg-t-20">
+    <div class="sh-breadcrumb">
+        <nav class="breadcrumb">
+            <a class="breadcrumb-item" href="index.html">MedYar مدیار</a>
+            <span class="breadcrumb-item active">محصولات</span>
+        </nav>
+    </div>
+    <div class="sh-pagetitle">
+        <div class="sh-pagetitle-left">
+            <div class="sh-pagetitle-icon"><i class="icon ion-ios-home"></i></div>
+            <div class="sh-pagetitle-title">
+                <span>سامانه جام مدیریت سلامت</span>
+                <h2>محصولات</h2>
+            </div><!-- sh-pagetitle-left-title -->
+        </div><!-- sh-pagetitle-left -->
+    </div>
+    <div class="row row-sm">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card rounded-0">
+                        <div class="card-header bg-primary tx-white">
+                            اطلاعات محصولات
+                        </div><!-- card-header -->
+                        <div class="card-body" id="">
+                            <div class="row mg-t-20">
+                                <!--<div class="row">-->
+                                <input type="hidden" id="account_product_id" name="id" />
+                                <input class="form-control" type="hidden" id="account_product_parent" name="account_product_parent" value="0"/>
+                                <input class="form-control" type="hidden" id="account_product_lang" name="account_product_lang" value="1"/>
+
+                                <div class="col-lg-6" style="">
+                                    <div class="col-lg-12" style="">
+                                        نام محصول
+                                        <input class="form-control" id="account_product_name" name="account_product_name"  placeholder="نام" type="text">
+                                    </div>
+                                    <div class="col-lg-12" style="">
+                                        کد دستی
+                                        <input class="form-control" id="account_product_code" name="account_product_code"  placeholder="کد دستی" type="text">
+                                    </div>
+                                    <div class="col-lg-12" style="">
+                                        قیمت خرید
+                                        <input class="form-control" id="account_product_price1" name="account_product_price1"  placeholder="قیمت خرید" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        قیمت فروش
+                                        <input class="form-control" id="account_product_price2" name="account_product_price2"  placeholder="قیمت فروش" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        واحد پول
+                                        <select class="form-control" id="account_product_currency" name="account_product_currency">
+                                            <option selected="selected">واحد پول خود را وارد کنید</option>
+                                            <option value="تومان">تومان</option>
+                                            <option value="ریال">ریال</option>
+                                            <option value="دلار">دلار</option>
+                                        </select>                                   
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        ارزش افزوده
+                                        <input class="form-control" id="account_product_taxPercent" name="account_product_taxPercent"  placeholder="ارزش افزوده" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        تعداد مو جودی
+                                        <input class="form-control" id="account_product_quantity" name="account_product_quantity"  placeholder="تعداد موجودی" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6" style="">
+                                    <div class="col-lg-12" style="">
+                                        <div class="col-lg-4" style="">
+                                            تخفیف%
+                                            <input class="form-control" id="pricePercent1" name="pricePercent1"  placeholder="تخفیف%" type="text">
+                                        </div>
+                                        <div class="col-lg-4" style="">
+                                            قیمت با تخفیف
+                                            <input class="form-control" id="account_product_groupPrice1" name="account_product_groupPrice1"  placeholder="معادل" type="text">
+                                        </div>
+                                        <div class="col-lg-4" style="">
+                                            قیمت ویژه
+                                            <select class="form-control selectOptionGroupUserProduct" id='account_product_userGroup1' name='account_product_userGroup1'>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" style="">
+                                        <div class="col-lg-4" style="">
+                                            تخفیف%
+                                            <input class="form-control" id="pricePercent2" name="pricePercent2"  placeholder="تخفیف%" type="text">
+                                        </div>
+                                        <div class="col-lg-4" style="">
+                                            قیمت با تخفیف
+                                            <input class="form-control" id="account_product_groupPrice2" name="account_product_groupPrice2"  placeholder="معادل" type="text">
+                                        </div>
+                                        <div class="col-lg-4" style="">
+                                            قیمت ویژه
+                                            <select class="form-control selectOptionGroupUserProduct" id='account_product_userGroup2' name='account_product_userGroup2'>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" style="">
+                                        <div class="col-lg-4" style="">
+                                            تخفیف%
+                                            <input class="form-control" id="pricePercent3" name="pricePercent3"  placeholder="تخفیف%" type="text">
+                                        </div>
+                                        <div class="col-lg-4" style="">
+                                            قیمت با تخفیف
+                                            <input class="form-control" id="account_product_groupPrice3" name="account_product_groupPrice3"  placeholder="معادل" type="text">
+                                        </div>
+                                        <div class="col-lg-4" style="">
+                                            قیمت ویژه
+                                            <select class="form-control selectOptionGroupUserProduct" id='account_product_userGroup3' name='account_product_userGroup3'>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" style="">
+                                        <div class="col-lg-4" style="">
+                                            تخفیف%
+                                            <input class="form-control" id="pricePercent4" name="pricePercent4"  placeholder="تخفیف%" type="text">
+                                        </div>
+                                        <div class="col-lg-4" style="">
+                                            قیمت با تخفیف
+                                            <input class="form-control" id="account_product_groupPrice4" name="account_product_groupPrice4"  placeholder="معادل" type="text">
+                                        </div>
+                                        <div class="col-lg-4" style="">
+                                            قیمت ویژه
+                                            <select class="form-control selectOptionGroupUserProduct" id='account_product_userGroup4' name='account_product_userGroup4'>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" style="">
+                                        <div class="col-lg-4" style="">
+                                            تخفیف%
+                                            <input class="form-control" id="pricePercent5" name="pricePercent5"  placeholder="تخفیف%" type="text">
+                                        </div>
+                                        <div class="col-lg-4" style="">
+                                            قیمت با تخفیف
+                                            <input class="form-control" id="account_product_groupPrice5" name="account_product_groupPrice5"  placeholder="معادل" type="text">
+                                        </div>
+                                        <div class="col-lg-4" style="">
+                                            قیمت ویژه
+                                            <select class="form-control selectOptionGroupUserProduct" id='account_product_userGroup5' name='account_product_userGroup5'>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12" style="">
+                                    <div class="col-lg-4" style="">
+                                        تاریخ اتمام تخفیف
+                                        <input class="form-control" id="account_product_discount_Date" name="account_product_discount_Date"  placeholder="تاریخ اتمام تخفیف" type="text">
+                                    </div>
+                                    <div class="col-lg-4" style="">
+                                        تخفیف%
+                                        <input class="form-control" id="discountPercent" name="discountPercent"  placeholder="تخفیف%" type="text">
+                                    </div>
+                                    <div class="col-lg-4" style="">
+                                        قیمت با تخفیف
+                                        <input class="form-control" id="account_product_discount" name="account_product_discount"  placeholder="معادل تخفیف" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 c bg-primary mg-b-10 mg-t-10" style="">
+                                    در صورت پر کردن پنج ویژگی زیر به عنوان ویژگی های اصلی کالا در سایت نمایش داده می شوند.
+                                </div>
+                                <div class="col-lg-12" style="">
+                                    <div class="col-lg-6" style="">
+                                        مقدار 1
+                                        <input class="form-control" id="account_product_val1" name="account_product_val1"  placeholder="مقدار 1" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        ویژگی 1
+                                        <input class="form-control" id="account_product_prop1" name="account_product_prop1"  placeholder="ویژگی 1" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        مقدار 2
+                                        <input class="form-control" id="account_product_val2" name="account_product_val2"  placeholder="مقدار 2" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        ویژگی 2
+                                        <input class="form-control" id="account_product_prop2" name="account_product_prop2"  placeholder="ویژگی 2" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        مقدار 3
+                                        <input class="form-control" id="account_product_val3" name="account_product_val3"  placeholder="مقدار 3" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        ویژگی 3
+                                        <input class="form-control" id="account_product_prop3" name="account_product_prop3"  placeholder="ویژگی 3" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        مقدار 4
+                                        <input class="form-control" id="account_product_val4" name="account_product_val4"  placeholder="مقدار 4" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        ویژگی 4
+                                        <input class="form-control" id="account_product_prop4" name="account_product_prop4"  placeholder="ویژگی 4" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        مقدار 5
+                                        <input class="form-control" id="account_product_val5" name="account_product_val5"  placeholder="مقدار 5" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        ویژگی 5
+                                        <input class="form-control" id="account_product_prop5" name="account_product_prop5"  placeholder="ویژگی 5" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 c bg-primary mg-t-20" style="cursor: pointer;" onclick="cmsProduct.m_showProperties('extraPropertiesTbl');">
+                                    <i class="icon ion-plus-circled" id="ion-plus-circled"></i>
+                                    <i class="icon ion-minus-circled" id="ion-minus-circled" style="display: none;"></i>
+                                    افزودن ویژگی های بیشتر ...
+                                </div>
+                                <div class="col-lg-12" style="display: none;" id='extraPropertiesTbl'>
+                                    <div class="col-lg-12 c bg-warning tx-white" style="">
+                                        در صورت پر کردن ویژگی های زیر، فقط در صفحه مربوط به همان محصول نمایش داده می شوند.
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        مقدار 6
+                                        <input class="form-control" id="account_product_val6" name="account_product_val6"  placeholder="مقدار 6" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        ویژگی 6
+                                        <input class="form-control" id="account_product_prop6" name="account_product_prop6"  placeholder="ویژگی 6" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        مقدار 7
+                                        <input class="form-control" id="account_product_val7" name="account_product_val7"  placeholder="مقدار 7" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        ویژگی 7
+                                        <input class="form-control" id="account_product_prop7" name="account_product_prop7"  placeholder="ویژگی 7" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        مقدار 8
+                                        <input class="form-control" id="account_product_val8" name="account_product_val8"  placeholder="مقدار 8" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        ویژگی 8
+                                        <input class="form-control" id="account_product_prop8" name="account_product_prop8"  placeholder="ویژگی 8" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        مقدار 9
+                                        <input class="form-control" id="account_product_val9" name="account_product_val9"  placeholder="مقدار 9" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        ویژگی 9
+                                        <input class="form-control" id="account_product_prop9" name="account_product_prop9"  placeholder="ویژگی 9" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        مقدار 10
+                                        <input class="form-control" id="account_product_val10" name="account_product_val10"  placeholder="مقدار 10" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        ویژگی 10
+                                        <input class="form-control" id="account_product_prop10" name="account_product_prop10"  placeholder="ویژگی 10" type="text">
+                                    </div>
+
+                                    <div class="col-lg-6" style="">
+                                        مقدار 11
+                                        <input class="form-control" id="account_product_val11" name="account_product_val11"  placeholder="مقدار 11" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        ویژگی 11
+                                        <input class="form-control" id="account_product_prop11" name="account_product_prop11"  placeholder="ویژگی 11" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        مقدار 12
+                                        <input class="form-control" id="account_product_val12" name="account_product_val12"  placeholder="مقدار 12" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        ویژگی 12
+                                        <input class="form-control" id="account_product_prop12" name="account_product_prop12"  placeholder="ویژگی 12" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        مقدار 13
+                                        <input class="form-control" id="account_product_val13" name="account_product_val13"  placeholder="مقدار 13" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        ویژگی 13
+                                        <input class="form-control" id="account_product_prop13" name="account_product_prop13"  placeholder="ویژگی 13" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        مقدار 14
+                                        <input class="form-control" id="account_product_val14" name="account_product_val14"  placeholder="مقدار 14" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        ویژگی 14
+                                        <input class="form-control" id="account_product_prop14" name="account_product_prop14"  placeholder="ویژگی 14" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        مقدار 15
+                                        <input class="form-control" id="account_product_val15" name="account_product_val15"  placeholder="مقدار 15" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        ویژگی 15
+                                        <input class="form-control" id="account_product_prop15" name="account_product_prop15"  placeholder="ویژگی 15" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        مقدار 16
+                                        <input class="form-control" id="account_product_val16" name="account_product_val16"  placeholder="مقدار 16" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        ویژگی 16
+                                        <input class="form-control" id="account_product_prop16" name="account_product_prop16"  placeholder="ویژگی 16" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        مقدار 17
+                                        <input class="form-control" id="account_product_val17" name="account_product_val17"  placeholder="مقدار 17" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        ویژگی 17
+                                        <input class="form-control" id="account_product_prop17" name="account_product_prop17"  placeholder="ویژگی 17" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        مقدار 18
+                                        <input class="form-control" id="account_product_val18" name="account_product_val18"  placeholder="مقدار 18" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        ویژگی 18
+                                        <input class="form-control" id="account_product_prop18" name="account_product_prop18"  placeholder="ویژگی 18" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        مقدار 19
+                                        <input class="form-control" id="account_product_val19" name="account_product_val19"  placeholder="مقدار 19" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        ویژگی 19
+                                        <input class="form-control" id="account_product_prop19" name="account_product_prop19"  placeholder="ویژگی 19" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        مقدار 20
+                                        <input class="form-control" id="account_product_val20" name="account_product_val20"  placeholder="مقدار 20" type="text">
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        ویژگی 20
+                                        <input class="form-control" id="account_product_prop20" name="account_product_prop20"  placeholder="ویژگی 20" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mg-t-20">
+                                <div class="col-lg-12" style="">
+                                    <div class="col-lg-2" style="">
+                                        <input id="account_product_pic1" name="account_product_pic1" type="hidden">
+                                        <div id="preview1">
+                                            تصویر
+                                        </div>
+                                        <img id="account_product_preview1" name="account_product_preview1" class="img-thumbnail" src="img/preview.jpg">
+                                        <div class="row">
+                                            <input class="btn btn-primary" id="account_product_sendPic1" type="submit" value="ارسال">
+                                            <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                            <input id="account_product_file1" name="account_product_file1" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                            <span id="product_pic1"  class="form-control col-lg"></span>
+                                            <!--<span class="form-control"></span>-->
+                                        </div>
+                                        <a   id="account_product_DownloadPic1" href="" style="display: none" target="_blank">
+                                            دانلود تصویر
+                                        </a>
+                                    </div>
+                                    <div class="col-lg-2" style="">
+                                        <input id="account_product_pic2" name="account_product_pic2" type="hidden">
+                                        <div id="preview2">
+                                            تصویر
+                                        </div>
+                                        <img id="account_product_preview2" name="account_product_preview2" class="img-thumbnail" src="img/preview.jpg">
+                                        <div class="row">
+                                            <input class="btn btn-primary" id="account_product_sendPic2" type="submit" value="ارسال">
+                                            <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                            <input id="account_product_file2" name="account_product_file2" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                            <span id="product_pic2"  class="form-control col-lg"></span>
+                                            <!--<span class="form-control"></span>-->
+                                        </div>
+                                        <a   id="account_product_DownloadPic2" href="" style="display: none" target="_blank">
+                                            دانلود تصویر
+                                        </a>
+                                    </div>
+                                    <div class="col-lg-2" style="">
+                                        <input id="account_product_pic3" name="account_product_pic3" type="hidden">
+                                        <div id="preview3">
+                                            تصویر
+                                        </div>
+                                        <img id="account_product_preview3" name="account_product_preview3" class="img-thumbnail" src="img/preview.jpg">
+                                        <div class="row">
+                                            <input class="btn btn-primary" id="account_product_sendPic3" type="submit" value="ارسال">
+                                            <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                            <input id="account_product_file3" name="account_product_file3" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                            <span id="product_pic3"  class="form-control col-lg"></span>
+                                            <!--<span class="form-control"></span>-->
+                                        </div>
+                                        <a   id="account_product_DownloadPic3" href="" style="display: none" target="_blank">
+                                            دانلود تصویر
+                                        </a>
+                                    </div>
+                                    <div class="col-lg-2" style="">
+                                        <input id="account_product_pic4" name="account_product_pic4" type="hidden">
+                                        <div id="preview4">
+                                            تصویر
+                                        </div>
+                                        <img id="account_product_preview4" name="account_product_preview4" class="img-thumbnail" src="img/preview.jpg">
+                                        <div class="row">
+                                            <input class="btn btn-primary" id="account_product_sendPic4" type="submit" value="ارسال">
+                                            <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                            <input id="account_product_file4" name="account_product_file4" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                            <span id="product_pic4"  class="form-control col-lg"></span>
+                                            <!--<span class="form-control"></span>-->
+                                        </div>
+                                        <a   id="account_product_DownloadPic4" href="" style="display: none" target="_blank">
+                                            دانلود تصویر
+                                        </a>
+                                    </div>
+                                    <div class="col-lg-2" style="">
+                                        <input id="account_product_pic5" name="account_product_pic5" type="hidden">
+                                        <div id="preview5">
+                                            تصویر
+                                        </div>
+                                        <img id="account_product_preview5" name="account_product_preview5" class="img-thumbnail" src="img/preview.jpg">
+                                        <div class="row">
+                                            <input class="btn btn-primary" id="account_product_sendPic5" type="submit" value="ارسال">
+                                            <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                            <input id="account_product_file5" name="account_product_file5" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                            <span id="product_pic5"  class="form-control col-lg"></span>
+                                            <!--<span class="form-control"></span>-->
+                                        </div>
+                                        <a   id="account_product_DownloadPic5" href="" style="display: none" target="_blank">
+                                            دانلود تصویر
+                                        </a>
+                                    </div>
+                                    <div class="col-lg-2" style="">
+                                        <div id="preview6">
+                                            تصویر
+                                        </div>
+                                        <input id="account_product_pic6" name="account_product_pic6" type="hidden">
+                                        <img id="account_product_preview6" name="account_product_preview6" class="img-thumbnail" src="img/preview.jpg">
+                                        <div class="row">
+                                            <input class="btn btn-primary" id="account_product_sendPic6" type="submit" value="ارسال">
+                                            <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                            <input id="account_product_file6" name="account_product_file6" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                            <span id="product_pic6"  class="form-control col-lg"></span>
+                                            <!--<span class="form-control"></span>-->
+                                        </div>
+                                        <a   id="account_product_DownloadPic6" href="" style="display: none" target="_blank">
+                                            دانلود تصویر
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    گروه:
+                                    <select id="account_product_category_id" name="account_product_category_id"  class="form-control col-lg-12 categoryProductSelectOption">
+                                    </select>  
+                                </div>
+                                <div class="col-lg-6">
+                                    تاریخ:   
+                                    <input class="form-control" type="text" id="account_product_date" name="account_product_date" placeholder="تاریخ">
+                                </div>
+                                <div class="col-lg-6">
+                                    اولویت:   
+                                    <select id="account_product_priority" name="account_product_priority"  class="form-control tahoma10">
+                                        <option value="1" selected="selected">اسلاید</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                    </select> 
+                                </div>
+                                <div class="col-lg-12 mg-t-20">
+                                    خلاصه
+                                    <textarea class="form-control" id="account_products_abstract" name="account_products_abstract" rows="7"></textarea>
+                                </div>
+                                <div class="col-lg-12 mg-t-20">
+                                    محتوا
+                                    <textarea class="form-control summernote" id="account_products_content" name="account_products_content" rows="7"></textarea>
+                                </div>
+                                <div class="col-lg-12 mg-t-10">
+                                    <label class="ckbox">
+                                        <input id="account_product_has_link" name="account_product_has_link" type="checkbox" checked="checked"><span>برای ایجاد لینک مربوط به این محصول این گزینه را انتخاب کنید.</span>
+                                    </label>
+                                </div>
+                                <div class="col-lg-12">
+                                    <label class="ckbox">
+                                        <input id="account_product_hasInContentAutoWiki" name="account_product_hasInContentAutoWiki" type="checkbox" checked="checked"><span>Auto wiki 
+                                            داشته باشد
+                                            (برای ایجاد لینک هوشمند مربوط سایر محتوا ها هنگام نمایش در این محتوا قرار بگیرد، این گزینه را انتخاب کنید)</span>
+                                    </label>
+                                </div>
+                                <div class=" col-lg-12">
+                                    برچسب: 
+                                    <select class="form-control selectOptionTags" id="account_product_tags" name="account_product_tags" multiple></select>
+                                </div>
+                                <div class="col-lg-12">
+                                    Title tag بهتر است حداکثر 70 کاراکتر باشد
+                                    <input class="form-control" id="account_product_titleTag" name="account_product_titleTag" type="text">
+
+                                </div>
+                                <div class="col-lg-12 mg-t-5 ">
+                                    Discription Tag توصیف این محتوا برای شبکه های اجتماعی و سئو                    
+
+                                    <textarea class="form-control" rows="5" id="account_product_description" name="account_product_description"  placeholder="title برای سئو تایپ کنید"></textarea>
+                                </div>
+                                <div class="col-lg-12 mg-t-10" l>
+                                    CSS های اختصاصی این صفحه                   
+                                    <textarea class="form-control l" rows="5" id="account_product_style" name="account_product_style"  placeholder="لینک و کد های سی اس اس"></textarea>
+                                </div>
+                                <div class="col-lg-12 mg-t-10 l">
+                                    Java Sript لینک و کد های جاوا اسکریپت برای این صفحه که در  پایین ترین قسمدت زیر همه ی اسکریپت ها قرار می گیرد                   
+                                    <textarea class="form-control" rows="5" id="account_product_script" name="account_product_script"  placeholder="لینک و کد های جاوا اسکریپت"></textarea>
+
+                                </div>
+                                <div class="col-lg-4 mg-t-10">
+                                    <label class="ckbox">
+                                        <input id="account_product_visit_checkbox" name="account_product_visit_checkbox" type="checkbox" checked="checked" onclick='$("#account_product_visit").prop("disabled", !$("#account_product_visit").prop("disabled"));
+                                                $("#account_product_visit").val(-1 * +$("#account_product_visit").val());'><span>بازدید</span>
+                                    </label>
+                                    <input class="form-control" type="number" id="account_product_visit" min="0" value="0" name="account_product_visit"/>
+                                </div>
+
+                                <div class="col-lg-4 mg-t-10">
+                                    <label class="ckbox">
+                                        <input id="account_product_like_checkbox" name="account_product_like_checkbox" type="checkbox" checked="checked" onclick='$("#account_product_like").prop("disabled", !$("#account_product_like").prop("disabled"));
+                                                $("#account_product_like").val(-1 * +$("#account_product_like").val());'><span>تعداد موافقت ها</span>
+                                    </label>
+                                    <input class="form-control" type="number" id="account_product_like" min="0" value="0" name="account_product_like"/>
+                                </div>
+
+                                <div class="col-lg-4 mg-t-10">
+                                    <label class="ckbox">
+                                        <input id="account_product_dislike_checkbox" name="account_product_dislike_checkbox" type="checkbox" checked="checked" onclick='$("#account_product_dislike").prop("disabled", !$("#account_product_dislike").prop("disabled"));
+                                                $("#account_product_dislike").val(-1 * +$("#account_product_dislike").val());'><span>تعداد مخالفت ها</span>
+                                    </label>
+                                    <input class="form-control" type="number" id="account_product_dislike"  min="0" value="0" name="account_product_dislike"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="mg-t-20 col-lg-4">
+                                    <button class="form-control btn btn-outline-secondary mg-b-10 btn-block" onclick="cmsProduct.m_show_tbl();">بازگشت </button>                
+                                </div><!-- col -->
+                                <div id="account_product_button" class="mg-t-20 col-lg-8">            
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

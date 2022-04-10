@@ -1,0 +1,200 @@
+<div class="card bd-primary mg-t-20">
+    <div class="card bd-primary">
+        <div class="sh-breadcrumb">
+            <nav class="breadcrumb">
+                <a class="breadcrumb-item" href="http://medyarweb.ir">مدیار</a>
+                <a class="breadcrumb-item" href="http://medyarweb.ir">MedYar</a>
+                <span class="breadcrumb-item active">میز هوشمند مصوبات</span>
+            </nav>
+        </div><!-- sh-breadcrumb -->
+        <div class="card-header btn-teal tx-white">
+            پیشرفت گام
+        </div>
+        <div class="card-body pd-sm-30">
+            <div class="row">
+                <input type="hidden" id="hmis_mySteps_id" name="id"/>
+                <div class="col-lg-6">
+                    عنوان گام
+                    <div class="form-group has-success mg-b-0">
+                        <input id="MySteps_title" disabled="disabled" class="form-control is-valid" placeholder="عنوان گام  را وارد کنید" type="text" >
+                    </div><!-- form-group -->
+                </div><!-- col -->   
+                <div class="col-lg-6">
+                    درصد گام
+                    <div class="form-group has-success mg-b-0">
+                        <input id="MySteps_percent" disabled="disabled" min="0" max="100" class="form-control is-valid" placeholder="درصد گام  را وارد کنید" type="number" >
+                    </div><!-- form-group -->
+                </div><!-- col -->   
+                <div class="col-lg-12">
+                    درصد پیشرفت گام
+                    <div class="form-group has-success mg-b-0">
+                        <input id="MySteps_progressPercent" disabled="disabled"  min="0" max="100"  class="form-control is-valid" placeholder="درصد پیشرفت گام  را وارد کنید" type="number" >
+                    </div><!-- form-group -->
+                </div><!-- col -->   
+                <div class="col-lg-3">
+                    <div class="form-group has-warning mg-b-0">
+                        مسئول اجرا
+                        <input type="text" disabled="disabled" id="MySteps_executorRoleId" class="form-control is-valid" />
+                    </div><!-- form-group -->
+                </div><!-- col -->
+                <div class="col-lg-3">
+                    <div class="form-group has-warning mg-b-0">
+                        مسئول پیگیری
+                        <input type="text" id="MySteps_trackerId" disabled="disabled"  class="form-control is-valid"/>
+
+                    </div><!-- form-group -->
+                </div><!-- col -->
+                <div class="col-lg-3">
+                    تاریخ شروع:
+                    <div class="form-group has-success mg-b-0">
+                        <input id="MySteps_startDate" disabled="disabled" class="form-control is-valid" placeholder="تاریخ شروع" type="text">
+                    </div><!-- form-group -->
+                </div><!-- col -->   
+                <div class="col-lg-3">
+                    تاریخ پایان:
+                    <div class="form-group has-success mg-b-0">
+                        <input  id="MySteps_endDate"  disabled="disabled" class="form-control is-valid" placeholder="تاریخ پایان" type="text">
+                    </div><!-- form-group -->
+                </div><!-- col -->   
+                <br/>
+                <div class="col-lg-3">
+                    وضعیت:
+                    <select id="MySteps_status" name="steps_status" class="form-control" >
+                        <option value="در حال انجام">در حال انجام</option>
+                        <option value="غیر قابل انجام">غیر قابل انجام</option>
+                        <option value="انجام شده">انجام شده</option>
+                    </select>
+                </div><!-- col -->  
+<!--                <div class="col-lg-3" style="float: left">
+                    روند وضعیت:
+                    <br/>
+
+                    <a href="#" class="btn btn-outline-dark btn-icon mg-r-5"><div style="font-size: 18px"><i class="icon ion-loop" onclick="$('#statusLogMySteps').slideDown();"></i></div></a>
+                </div>-->
+                <div class="col-lg-12">
+                    <div id="statusLogMySteps"  class="form-control" style="display:none;"></div>
+                </div>
+                <div class="col-lg-12">
+                    توضیحات  :
+                    <div class="form-group has-success mg-b-0">
+                        <div required  class="form-control"  disabled="disabled" id="MySteps_description" ></div>
+                    </div><!-- form-group -->
+                </div>
+                <div class="col-lg-12">
+                    توضیحات مسئول پایش :
+                    <div class="form-group has-success mg-b-0">
+                        <div   class="form-control"  disabled="disabled"  maxlength="1000" style="height: auto"  id="MySteps_descriptionImproveQuality" ></div>
+                    </div><!-- form-group -->
+                </div>
+                <!--                <div class="col-lg-9">
+                                    :توضیحات مسئول اجرا
+                                    <div class="form-group has-success mg-b-0">
+                                        <input id="MySteps_descriptionExecutor" name="steps_descriptionExecutor" disabled="disabled" class="form-control is-valid" placeholder="دلایل عدم انجام یادرخواست فرصت اضافی را مسئول اجرا وارد می کند" type="text" >
+                                    </div> form-group 
+                                </div> col    
+                                <div class="col-lg-9">
+                                    :توضیحات مسئول پیگیری 
+                                    <div class="form-group has-success mg-b-0">
+                                        <input id="MySteps_descriptionTracker" name="steps_descriptionTracker" disabled="disabled" class="form-control is-valid" placeholder="دلایل عدم انجام یادرخواست فرصت اضافی را مسئول اجرا وارد می کند" type="text" >
+                                    </div> form-group 
+                                </div> col    -->
+                <!--///////////////////////////////////////////////////////////////-->
+                <div class="row col-lg-12">
+                    <div class="col-lg-3">
+                        در صد پیشرفت گام مسئول اجرا:
+                        <div class="form-group has-success mg-b-0">
+                            <input type="number"  max="100" min="0" id="MySteps_percentExecutor" disabled="disabled"  name="steps_percentExecutor" class="form-control"  placeholder="درصد پیشرفت" />
+                        </div><!-- form-group -->
+                    </div><!-- col -->   
+                    <div class="col-lg-9">
+                        :توضیحات مسئول اجرا
+                        <div class="form-group has-success mg-b-0">
+                            <textarea  id="MySteps_descriptionExecutor" maxlength="1000" name="steps_descriptionExecutor" disabled="disabled" class="form-control is-valid" placeholder="دلایل عدم انجام یادرخواست فرصت اضافی را مسئول اجرا وارد می کند"  ></textarea>
+                        </div><!-- form-group -->
+                    </div><!-- col -->   
+                </div>
+                <div class="row col-lg-12" id="executorFileDiv"  style="display:none">
+                    <div class="col-lg-12 mg-t-20" style="">       
+
+                        <div class="col-lg-12">بارگذاری مستندات مسئول اجرا
+                            <div class="" id="showExecutorFileMyStepsDiv"></div>
+                            <div class="" id="downloadExecutorFileMyStepsDiv"></div>
+                        </div>
+                        <div class="input-group col-lg-12">
+                            <div class=""> عنوان فایل</div>
+                            <span id="user_pic" class="form-control"></span>
+                            <input class="form-control" id="steps_titleExecutorFileMySteps" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" >
+                            <input id="attachExecutorFileMySteps" name="attachExecutorFileMySteps" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                            <input class="btn btn-primary" id="sendExecutorFileMySteps" type="submit" value="ارسال">
+                            <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="filesDownloadMySteps2Div"></div>
+
+
+
+                <div class="row col-lg-12">
+                    <div class="col-lg-3">
+                        در صد پیشرفت گام مسئول پیگیری:
+                        <div class="form-group has-success mg-b-0">
+                            <input type="number"  max="100" min="0" id="MySteps_percentTracker" disabled="disabled"  name="steps_percentTracker" class="form-control"  placeholder="درصد پیشرفت" />
+                        </div><!-- form-group -->
+                    </div><!-- col -->   
+                    <div class="col-lg-9">
+                        :توضیحات مسئول پیگیری 
+                        <div class="form-group has-success mg-b-0">
+                            <textarea id="MySteps_descriptionTracker" name="steps_descriptionTracker" disabled="disabled" class="form-control is-valid" placeholder="دلایل عدم انجام یادرخواست فرصت اضافی را مسئول اجرا وارد می کند"></textarea>
+                        </div><!-- form-group -->
+                    </div><!-- col -->   
+                </div>
+                <!--///////////////////////////////////////////////////////////////-->
+                <div class="row col-lg-12" id="trackerFileDiv"  style="display:none">
+                    <div class="col-lg-12 mg-t-20" style="">                        
+                        <div class="col-lg-12">بارگذاری  مستندات مسئول پیگیری
+                            <div class="" id="showTrackerFileMyStepsDiv"></div>
+                            <div class="" id="downloadTrackerFileMyStepsDiv"></div>
+                        </div>
+                        <div class="input-group col-lg-12">
+                            <div class=""> عنوان فایل</div>
+                            <span id="user_pic" class="form-control"></span>
+                            <input class="form-control" id="steps_titleTrackerFileMySteps" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" >
+                            <input id="attachTrackerFileMySteps" name="attachTrackerFileMySteps" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                            <input class="btn btn-primary" id="sendTrackerFileMySteps" type="submit" value="ارسال">
+                            <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                        </div>
+                    </div>
+                    <div class="row" id="filesDownloadMySteps1Div"></div>
+                </div>
+                <div  class="col-lg-3" id="inputFileStepsDiv"></div>
+                <div class="col-lg-12 mg-t-20" id="inputTextSelectorDiv"></div>
+                <div class="col-lg-12 mg-t-20" id="FilesStepsDiv"></div>
+                <div class="col-lg-3" id="MySteps_button"></div>
+                <div class="col-lg-3">
+                    <a id="cancel_MySteps" class="btn btn-outline-secondary mg-b-10  btn-block">
+                        بازگشت
+                    </a>   
+                </div><!-- col --> 
+            </div><!-- card-body -->
+        </div>
+    </div>
+</div>
+<script>
+
+//        $(function () {
+//            'use strict';
+//            $('#datatable1').DataTable({
+//                responsive: true,
+//                language: {
+//                    searchPlaceholder: 'جستجو...',
+//                    sSearch: '',
+//                    lengthMenu: '_MENU_ items/page',
+//                }
+//            });
+//
+//
+//            // Select2
+//            $('.dataTables_length select').select2({minimumResultsForSearch: Infinity});
+//
+//        });
+</script>

@@ -1,0 +1,76 @@
+<!--@ToDo-->
+<!--این قسمت در واقع یک کد جاوا اسکریپت میتواند باشد که فقط دسته بندی 
+"ارزیابی کمیته ها را"
+می آورد-->
+<div class="card bd-primary mg-t-20">
+    <div class="card bd-primary">
+        <div class="sh-breadcrumb">
+            <nav class="breadcrumb">
+                <a class="breadcrumb-item" href="http://medyarweb.ir">مدیار</a>
+                <a class="breadcrumb-item" href="http://medyarweb.ir">MedYar</a>
+                <span class="breadcrumb-item active">میز هوشمند جلسه</span>
+            </nav>
+        </div><!-- sh-breadcrumb -->
+        <div class="sh-pagetitle">
+            <!--        <div class="input-group">
+                        <input type="search" class="form-control" placeholder="Search">
+                        <span class="input-group-btn">
+                            <button class="btn"><i class="fa fa-search"></i></button>
+                        </span> input-group-btn 
+                    </div> input-group -->
+            <div class="sh-pagetitle-left">
+                <div class="sh-pagetitle-icon"><i class="icon ion-ios-gear mg-t-3"></i></div>
+                <div class="sh-pagetitle-title">
+                    <span>کمیته ها و جلسات</span>
+                    <h2>  ارزیابی عملکرد  کمیته ها و کارگروه ها </h2>
+                </div><!-- sh-pagetitle-left-title -->
+            </div><!-- sh-pagetitle-left -->
+        </div><!-- sh-pagetitle -->
+        <div class="col-lg-12">
+            <div class="card bd-primary mg-t-20" id="newFormQuestion">
+                <div class="card-header bg-primary tx-white">تحلیل و ارزیابی عملکرد کمیته ها</div>
+                <div class="card-body pd-sm-30">
+                    <table id="datatable1" class="table table-responsive table-wrapper">
+                        <thead>
+                            <tr>                    
+                                <td>کد</td>
+                                <td>نام کمیتیه&nbsp;</td>
+                                <td>فرم خام ارزیابی</td>
+                                <td>انجام ارزیابی</td>
+                                <td>گزارش ارزیابی</td>
+                                <td>آرشیو</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><br></td><td>کمیته ی مدیریت اجرایی</td><td><span style="color: rgb(57, 123, 33);">ارزیابی کمیته ی مدیریت اجرایی</span></td><td><i class="icon ion-compose"></i></td><td><i class="fa fa-bar-chart"></i></td><td><i class="icon ion-grid"></i></td></tr>
+                            <tr><td><br></td><td>کمیته ی بهداشت حرفه ای<br></td><td>ارزیابی کمیته ی بهداشت حرفه ای<br></td><td><i class="icon ion-compose"></i></td><td><i class="fa fa-bar-chart"></i></td><td><i class="icon ion-grid"></i></td></tr>
+                            <tr><td><br></td><td>کمیته ی مدارک پزشکی<br></td><td>ارزیابی کمیته ی مدارک پزشکی<br></td><td><i class="icon ion-compose"></i></td><td><i class="fa fa-bar-chart"></i></td><td><i class="icon ion-grid"></i></td></tr>
+                            <tr><td><br></td><td>کمیته ی ایمنی بیمار</td><td>ارزیابی کمیته ی ایمنی بیمار<br></td><td><i class="icon ion-compose"></i></td><td><i class="fa fa-bar-chart"></i></td><td><i class="icon ion-grid"></i></td></tr>
+                            <tr><td><br></td><td>کمیته ی دارو-درمان</td><td>ارزیابی کمیته ی دارو-درمان<br></td><td><i class="icon ion-compose"></i></td><td><i class="fa fa-bar-chart"></i></td><td><i class="icon ion-grid"></i></td></tr>
+                            <tr><td><br></td><td>کمیته ی بهداشت محیط<br></td><td>ارزیابی کمیته ی بهداشت محیط</td><td><i class="icon ion-compose"></i></td><td><i class="fa fa-bar-chart"></i></td><td><i class="icon ion-grid"></i></td></tr>
+                        </tbody></table>
+                </div>
+            </div><!-- card -->
+        </div><!-- card-body -->
+    </div><!-- card -->
+</div><!-- card-body -->
+
+<script>
+
+    $(function () {
+        'use strict';
+        $('#datatable1').DataTable({
+            responsive: true,
+            language: {
+                searchPlaceholder: 'جستجو...',
+                sSearch: '',
+                lengthMenu: '_MENU_ items/page',
+            }
+        });
+
+
+        // Select2
+        $('.dataTables_length select').select2({minimumResultsForSearch: Infinity});
+
+    });
+</script>

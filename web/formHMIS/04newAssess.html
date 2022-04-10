@@ -1,0 +1,253 @@
+<style> .required{border:1px solid red}:</style>
+
+<div class="card bd-primary mg-t-20">
+    <div class="card bd-primary">
+        <div class="sh-breadcrumb">
+            <nav class="breadcrumb">
+                <a class="breadcrumb-item" href="http://medyarweb.ir">مدیار</a>
+                <a class="breadcrumb-item" href="http://medyarweb.ir">MedYar</a>
+                <span class="breadcrumb-item active">برنامه عملیاتی هوشمند</span>
+            </nav>
+        </div><!-- sh-breadcrumb -->
+        <div class="sh-pagetitle">
+            <div class="sh-pagetitle-left">
+                <div class="sh-pagetitle-icon"><i class="icon ion-ios-gear mg-t-3"></i></div>
+                <div class="sh-pagetitle-title">
+                    <span>برنامه عملیاتی</span>
+                    <h2>ماژول برنامه عملیاتی/بهبود کیفیت </h2>
+                </div><!-- sh-pagetitle-left-title -->
+            </div><!-- sh-pagetitle-left -->
+        </div><!-- sh-pagetitle -->
+
+
+        <input type="hidden" id="hmis_plansForAssess_id" name="id"/>
+        <div id="formQuestions" class="col-lg-12">
+            <div class="card bd-primary mg-t-20" >
+                <div class="card-header bg-primary tx-white">پایش گام های اجرایی:</div>
+                <div id="tblPlansForAssess"></div>
+                <div align="right">
+                    <div id="stepsFormInAssess" class="card-body pd-sm-30" style="display: none">
+                        <div class="row">
+                            <div class="col-lg-12" style="margin-bottom: 1px">
+                                <div class="card-header bg-primary tx-white">عنوان گام:
+                                    <div id="titleStepsInAssess"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4" style="margin-bottom: 1px">
+                                <div class="card-header bg-primary tx-white">مسئول اجرا:
+                                    <div id="executorStepsInAssess"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4" style="margin-bottom: 1px">
+                                <div class="card-header bg-primary tx-white">مسئول پیگیری:
+                                    <div id="trackerStepsInAssess"></div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-4" >
+                                <div class="card-header bg-primary tx-white">تاریخ شروع:
+                                    <div id="startDateStepsInAssess"></div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="card-header bg-primary tx-white">تاریخ پایان:
+                                    <div id="endDateStepsInAssess"></div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="card-header bg-primary tx-white">شاخص دستیابی:
+                                    <div id="otherIndicatorsStepsInAssess"></div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card bd-primary mg-t-20">
+                            <div id="StepsFormInPlansForAssess" class="card-body pd-sm-30">
+                                <input id="hmis_stepsInAssess_id" name="hmis_steps_id" type="hidden"/>
+                                <p class="mg-b-20 mg-sm-b-30">گام های اجرایی با توجه به مراحل پیش بینی شده اجرای برنامه تعیین می گردند</p>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group has-success mg-b-0">
+                                            عنوان:
+                                            <input id="stepsInAssess_title" disabled="disabled" class="form-control is-valid" placeholder="عنوان:" type="text">
+                                        </div><!-- form-group -->
+                                    </div><!-- col -->
+                                    <!--<div class="row">-->
+                                    <div class="col-lg-6">
+                                        <div class="form-group has-warning mg-b-0">
+                                            مسئول اجرا
+                                            <div id="stepsInAssess_executor"   class="form-control" disabled="disabled">
+                                                <!--در واقع از جدول اشخاص باید بیاورد-->
+                                            </div>
+                                        </div><!-- form-group -->
+                                    </div><!-- form-group -->
+                                    <!--</div> col -->
+
+                                    <div class="col-lg-6 mg-t-20 mg-lg-t-0">
+                                        <div class="form-group has-warning mg-b-0">
+                                            مسئول پیگیری:
+                                            <div class="form-control" id="stepsInAssess_trackerId"  disabled="disabled">
+                                                <!--این آپشن ها را از قسمت مسئولان باید بیاوریم-->
+
+                                            </div>
+                                        </div><!-- form-group -->
+                                    </div><!-- col -->
+                                    <div class="row col-lg-12">
+                                        <div class="col-lg-12">
+                                            توضیحات :
+                                            <div class="form-group has-success mg-b-0">
+                                                <textarea required  class="form-control is-valid" disabled="disabled"  id="stepsInAssess_description"  ></textarea>
+                                            </div><!-- form-group -->
+                                        </div>
+
+                                    </div><!-- row -->
+                                    <div class="row col-lg-12">
+                                        <div class="col-lg">
+                                            تاریخ شروع:
+                                            <div class="form-group has-success mg-b-0">
+                                                <input id="stepsInAssess_startDate"  disabled="disabled" class="form-control is-valid" placeholder="تاریخ شروع را وارد کنید" type="text">
+                                            </div><!-- form-group -->
+                                        </div><!-- col -->
+                                        <div class="col-lg">
+                                            تاریخ پایان:
+                                            <div class="form-group has-success mg-b-0">
+                                                <input id="stepsInAssess_endDate"  disabled="disabled" class="form-control is-valid" placeholder="تاریخ پایان را وارد کنید" type="text">
+                                            </div><!-- form-group -->
+                                        </div><!-- col -->
+                                        <div class="col-lg">
+                                          شاخص ارزیابی:
+                                            <div class="form-group has-success mg-b-0">
+                                                <input id="stepsInAssess_otherIndicators"  disabled="disabled" class="form-control is-valid" placeholder="مصاحبه و مشاهده" type="text">
+                                            </div><!-- form-group -->
+                                        </div><!-- col -->
+                                    </div>
+                                    <div class="row col-lg-12">
+                                        <div class="col-lg-6">
+                                            هزینه:
+                                            <div class="form-group has-success mg-b-0">
+                                                <input class="form-control is-valid" id="stepsInAssess_cost" disabled="disabled" placeholder="هزینه" type="text">
+                                            </div><!-- form-group -->
+                                        </div><!-- col -->
+
+                                        <div class="col-lg-6">
+                                            درصد از کل:
+                                            <div class="form-group has-success mg-b-0">
+                                                <input class="form-control is-valid" id="stepsInAssess_percent" disabled="disabled"  placeholder="درصد از کل" type="text">
+                                            </div><!-- form-group -->
+                                        </div><!-- col -->
+                                        
+
+                                    </div>
+
+                                   
+                                    <div class="row col-lg-12">
+                                        <div class="col-lg-3">
+                                            درصد پیشرفت مسئول اجرا:
+                                            <div class="form-group has-success mg-b-0">
+                                                <div   disabled="disabled"   class="form-control is-valid" id="percentExecutorInAssess"  ></div>
+                                            </div>
+                                        </div> 
+                                        <div class="col-lg-9">
+                                            توضیحات مسئول اجرا :
+                                            <div class="form-group has-success mg-b-0">
+                                                <div  class="form-control " id="descriptionExecutorInAssess"  style="height: auto" placeholder="توضیحات مسئول اجرا"  disabled="disabled" ></div>
+                                            </div> 
+                                        </div> 
+                                    </div>  
+                                    <div class="row col-lg-12">
+                                        <div class="col-lg-3">
+                                            درصد پیشرفت مسئول پیگیری:
+                                            <div class="form-group has-success mg-b-0">
+                                                <div   disabled="disabled"  class="form-control is-valid"  id="percentTrackerInAssess" ></div>
+                                            </div> 
+                                        </div> 
+                                        <div class="col-lg-9">
+                                            توضیحات مسئول پیگیری: 
+                                            <div class="form-group has-success mg-b-0">
+                                                <div  class="form-control"  style="height: auto" disabled="disabled"  placeholder="توضیحات مسئول پیگیری"   id="descriptionTrackerInAssess" ></div>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                    <div class="row col-lg-12">
+                                        <div class="col-lg-3">
+                                          درصد  پیشرفت گام  :
+                                            <div class="form-group has-success mg-b-0">
+                                                <input class="form-control is-valid" id="stepsInAssess_progressPercent" name="steps_progressPercent" placeholder="درصد پیشرفت" type="text">
+                                            </div><!-- form-group -->
+                                        </div><!-- col -->
+                                        <div class="col-lg-9">
+                                            توضیحات مسئول پایش: 
+                                            <div class="form-group has-success mg-b-0">
+                                                <textarea  class="form-control"  name="steps_descriptionImproveQuality"   id="steps_descriptionImproveQuality"></textarea>
+                                            </div> 
+                                        </div>
+
+                                    </div>
+                                     <div class="row col-lg-12 mg-10">
+                                        <div class="col-lg-9">
+                                        وضعیت:
+                                            <select id="stepsInAssess_status" name="steps_status" class="form-control" >
+                                                <option value="در حال انجام">در حال انجام</option>
+                                                <option value="غیر قابل انجام">غیر قابل انجام</option>
+                                                <option value="انجام شده">انجام شده</option>
+                                            </select> 
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <label class="ckbox">
+                                                <input   id="stepsInAssess_isActive" name="steps_isActive" type="checkbox"/>
+                                                <span>تایید نهایی وضعیت</span>
+                                            </label>
+                                        </div>      
+                                    </div>
+                                    <div class="row col-lg-12">
+
+                                        <div class="col-lg-12" style="">                        
+                                            <div class="col-lg-12">بارگذاری فایل:
+                                                <div class="" id="showFilesStepsInAssessDiv"></div>
+                                                <div class="" id="downloadFileInAssessDiv"></div>
+                                            </div>
+                                            <div class="input-group col-lg-12">
+                                                <div class=""> عنوان فایل</div>
+                                                <span id="user_pic" class="form-control"></span>
+                                                <input class="form-control" id="steps_titleFilesInAssess" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" >
+                                                <input id="attachFilesStepsInAssess" name="attachFilesStepsInAssess" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                                <input class="btn btn-primary" id="sendFilesStepsInAssess" type="submit" value="ارسال">
+                                                <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='col-lg-6' id='downloadStepsInAssessFileDiv'></div>
+
+                                    <div class="row mg-t-20 col-lg-12">
+                                        <div class="col-lg-3">
+                                            <div class="form-group has-success mg-b-0">
+                                                <button class="btn btn-outline-secondary mg-b-10  btn-block" onclick="$('#stepsFormInAssess').slideUp();">لغو</button>
+                                            </div><!-- form-group -->
+                                        </div><!-- col -->
+                                        <div class='row col-lg-6' id='stepsInAssess_button'></div>
+                                    </div>
+                                </div><!-- myPlansStepForm -->
+                            </div><!-- stepsForm1 -->
+                        </div>
+                        <br/>
+                    </div><!-- newFormQuestion-->
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="form-group has-success mg-b-0">
+                            <button id="cancel_PlansForAssess" class="btn btn-outline-secondary mg-b-10  btn-block">بازگشت</button>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class='col-lg-6' id='plansForAssess_button'></div>
+                        <!--                    <div  id= 'btns_plansForAssess'></div>-->
+                    </div>
+                </div><!-- card -->
+
+            </div><!-- card -->
+        </div><!-- card-body -->
+    </div><!-- card -->
+</div><!-- card-body -->

@@ -1,0 +1,433 @@
+/*@import url(fontiran.css);*/
+/**
+ * Invoice Style Sheet
+ *
+ * Contains styling specific to the view invoice page.
+ *
+ * @project   WHMCS
+ * @version   1.0
+ * @author    WHMCS Limited <development@whmcs.com>
+ * @copyright Copyright (c) WHMCS Limited 2005-2015
+ * @license   http://www.whmcs.com/license/
+ * @link      http://www.whmcs.com/
+ */
+
+body {
+    background-color: #efefef;
+}
+
+/* Container Responsive Behaviour */
+
+@media print {
+    html, body {
+        width: 750px;
+    }
+}
+
+.invoice-container {
+    margin: 15px auto;
+    padding: 70px;
+    max-width: 850px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -o-border-radius: 6px;
+    border-radius: 6px;
+}
+
+@media (max-width: 895px) {
+    .invoice-container {
+        margin: 15px;
+    }
+}
+@media (max-width: 767px) {
+    .invoice-container {
+        padding: 45px 45px 70px 45px;
+    }
+}
+
+@media (max-width: 499px) {
+    .invoice-header {
+        text-align: center;
+    }
+}
+
+.invoice-col {
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+@media (min-width: 500px) {
+    .invoice-col {
+        float: left;
+        width: 50%;
+    }
+    .invoice-col.right {
+        float: right;
+        text-align: right;
+    }
+}
+
+/* Invoice Status Formatting */
+
+.invoice-container .invoice-status {
+    margin: 20px 0 0 0;
+    text-transform: uppercase;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Invoice Status Colors */
+
+.draft {
+    color: #888;
+}
+.unpaid {
+    /*color: #cc0000;*/
+}
+.paid {
+    color: #779500;
+}
+.refunded {
+    color: #224488;
+}
+.cancelled {
+    color: #888;
+}
+.collections {
+    color: #ffcc00;
+}
+
+/* Payment Button Formatting */
+
+.invoice-container .payment-btn-container {
+    margin-top: 5px;
+    text-align: center;
+}
+.invoice-container .payment-btn-container table {
+    margin: 0 auto;
+}
+
+/* Text Formatting */
+
+.invoice-container .small-text {
+    font-size: 0.9em;
+}
+
+/* Invoice Items Table Formatting */
+
+.invoice-container td.total-row {
+    background-color: #f8f8f8;
+}
+.invoice-container td.no-line {
+    border: 0;
+}
+.invoice-container .invoice-header img {
+    max-width: 100%;
+}
+
+.dirltr{direction:ltr}
+@media (min-width: 768px)
+{
+        .navbar-right .dropdown-menu {
+                left: 0;
+                right: auto;
+        }
+}
+
+/* *************** customize menu ********************* */
+.navbar-main{background-color: #4b4b4b;}
+.navbar-main li.account,.navbar-main .navbar-nav > .active > a, .navbar-main .navbar-nav > .active > a:focus, .navbar-main .navbar-nav > .active > a:hover, .navbar-main .navbar-nav > .open > a, .navbar-main .navbar-nav > .open > a:focus, .navbar-main .navbar-nav > .open > a:hover, .navbar-main .navbar-nav > li > a:focus, .navbar-main .navbar-nav > li > a:hover {
+    color: #fff;
+    background-color: #ff872a;
+}
+.panel-sidebar > .panel-heading,ul.top-nav > li.primary-action > a.btn {
+    background-color: #f5f5f5 !important;
+    color: #333;
+}
+.panel-sidebar .panel-title{color:#333;font-weight: 400;}
+.panel-sidebar .panel-minimise{color:#333}
+div.header-lined h1{color: #ff7e29;}
+
+.home-shortcuts { background-color: #ef7727; border-color: #da5700; }
+.home-shortcuts li{border-color: #da5700 !important;}
+section#home-banner{background: -webkit-gradient(linear,left top,right top,from(#eee),to(#ccc));
+background: linear-gradient(90deg,#eee,#ccc);
+position: relative;
+color: #302828;}
+#home-banner {
+    background: -webkit-gradient(linear,left top,right top,from(#eee),to(#ccc));
+    background: linear-gradient(90deg,#eee,#ccc);
+    position: relative;
+    color: #302828;
+}
+#home-banner h2{font-size:20px}
+
+
+.login-form .btn#login {background-color: #eab702;border-color: #eab702;}
+.login-form .btn#login:hover {background-color: #e75c00;border-color: #da5700;}
+
+.panel-sidebar a.list-group-item.active, .panel-sidebar a.list-group-item.active:focus, .panel-sidebar a.list-group-item.active:hover {
+    background-color: #f9f9f9;
+    border-color: #f5f5f5;
+        border-right-color: rgb(245, 245, 245);
+    color: #4b4b4b;
+    border-right: 5px solid #4b4b4b;
+}
+.panel-sidebar a.list-group-item.active i, .panel-sidebar a.list-group-item.active:focus i, .panel-sidebar a.list-group-item.active:hover i {
+    color: #4b4b4b;
+}
+
+div.announcement-single h3 .label{border-radius: 5px;font-size: 15px;font-weight: normal;padding: .2em .6em 0em .3em;}
+div.announcement-single blockquote a.label{border-radius: 5px;}
+div.announcement-single h3 a{font-size: 20px;}
+div.announcement-single blockquote{font-size:16px !important;line-height:2}
+div.announcement-single .label {margin-left: 10px;margin-right: unset;}
+.home-shortcuts .lead{font-size:18px !important;}
+
+table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after, table.dataTable thead .sorting_desc::after{left: 5px;right: auto !important;}
+
+h1{font-size:25px}
+h2{font-size:22px}
+.input-lg{font-size: 16px;}
+.panel-sidebar .panel-title {font-size: 1em;}
+.client-home-panels .panel-title{font-size:15px}
+ul.top-nav > li.primary-action > a.btn{}
+/* ****************** INVOICE *********************************** */
+.invoice-col .panel{min-height:180px}
+.invoice-container{padding: 30px;border-top: 4px solid #eab702;border-bottom: 4px solid #eab702;}
+.invoice-container .panel-success form .row{margin-top: 15px;}
+
+
+.navbar-right{float: left !important;}
+.pull-right {
+    float: left !important;
+}
+.pull-left {
+    float: right !important;
+}
+@media screen and (min-width:990px){
+
+.pull-md-left {
+    float: right;
+}
+.pull-md-right {
+    float: left;
+}
+
+}
+.sidebar.sidebar-secondary {
+    clear: right;
+}
+ul.top-nav {float: left !important;}
+ul.top-nav > li.primary-action {
+    padding-right: 15px;
+    margin-right: 5px;
+    border-right: solid 1px #ddd;
+	border-left: none;
+}
+.tile .icon{left: 10px;right: auto;}
+.domain-promo-box i {float: left !important;}
+#order-standard_cart .view-cart-tabs .nav-tabs {padding-right: 20px;padding-left: 0;}
+#order-standard_cart .prepend-icon .field {padding-right: 36px;padding-left: unset !important;}
+#order-standard_cart .empty-cart{text-align: left !important;margin: -20px 0 0 20px !important;}
+#checkout i{transform: rotate(180deg);vertical-align: bottom;}
+
+section#home-banner{background-image: url('../img/homebannerbg.png');}
+section#footer p{text-align:center}
+.captchaimage,#inputCaptcha{float: left;}
+@media (max-width:991px) {
+    .navbar-header {
+        float: none
+    }
+    .navbar-left,
+    .navbar-right {
+        float: none!important
+    }
+    .navbar-toggle {
+        display: block
+    }
+    .navbar-collapse {
+        border-top: 1px solid transparent;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1)
+    }
+    .navbar-fixed-top {
+        top: 0;
+        border-width: 0 0 1px
+    }
+    .navbar-collapse.collapse {
+        display: none!important
+    }
+    .navbar-nav {
+        float: none!important;
+        margin-top: 7px
+    }
+    .navbar-nav>li {
+        float: none
+    }
+    .navbar-nav>li>a {
+        padding-top: 10px;
+        padding-bottom: 10px
+    }
+    .collapse.in {
+        display: block!important;
+        margin-bottom: 10px
+    }
+}
+@media (min-width:992px) {
+    .pull-md-left {
+        float: right
+    }
+    .pull-md-right {
+        float: left
+    }
+}
+
+@media (min-width:768px) {
+    .pull-sm-left {
+        float: right
+    }
+    .pull-sm-right {
+        float: left
+    }
+    .text-right-sm {
+        text-align: left
+    }
+    #frmProductDomainSelections .suggested-domains .price{float:right}
+}
+.dropdown-menu-right {
+    left: 0;
+    right: auto;
+}
+
+#order-standard_cart .domain-selection-options .option .iradio_square-blue {
+    margin-left: 10px;
+    margin-right: 0;
+}
+.popover-user-notifications{font-family:IRANSans}
+
+#domainSuggestions{direction: ltr;padding: 0;line-height:1.5}
+.suggested-domains .btn{
+   min-width: 100px;
+   float:right;
+}
+
+.suggested-domains .extension{font-size: 15px;}
+.btn-add-to-cart{width: auto;}
+
+#frmDomainChecker,#frmDomainHomepage{direction: ltr;}
+#frmDomainChecker #btnCheckAvailability{border-radius: 0 6px 6px 0;margin-left: -1px;}
+#frmDomainHomepage .input-group{box-shadow: 0 0px 10px #00000024;}
+.domain-promo-box h3 {
+    font-size: 20px;
+    margin-bottom: 10px !important;
+}
+.kb-article-title h2{line-height: 2}
+.kb-article-content{font-size: 14px;
+font-weight: normal;
+line-height: 30px;
+color:#000;}
+
+.kb-rate-article,.kb-rate-article .btn{font-size: 18px;}
+.kbarticles{line-height: 2;}
+@media (max-width: 768px)
+{
+    .kb-article-title{border-bottom: 2px solid #dcdcdc;padding-bottom: 15px;}
+    .kb-article-title h2{font-size: 16px !important;}
+    #inputKnowledgebaseSearch,#btnKnowledgebaseSearch{font-size:13px}
+    .suggested-domains .list-group-item .btn{width:100% !important;max-width: 150px;margin: 0 auto;}
+}
+
+div.announcement-single blockquote {
+    margin-top: 5px;
+}
+div.announcement-single{margin-bottom:30px}
+#frmDomainHomepage div.input-group{
+    box-shadow: 0 0 5px 0px #cecece;
+}
+.domain-promo-box h3{font-size: 20px; margin-bottom: 5px;}
+
+
+
+#frmProductDomain #domainregister div.col-sm-8,#frmProductDomain #domaintransfer div.col-sm-8,#frmProductDomain #domainowndomain div.col-sm-9 .domains-row {direction:ltr}
+#frmProductDomain #domainregister div.col-sm-8 .domains-row .col-xs-9,#frmProductDomain #domaintransfer div.col-sm-8 .domains-row .col-xs-9{float: left}
+#frmProductDomain #domainregister div.col-sm-8 .domains-row .col-xs-9 .input-group-addon,#frmProductDomain #domaintransfer div.col-sm-8 .domains-row .col-xs-9 .input-group-addon{border-right: 0;border-left: 1px solid #ccc;border-radius:5px 0 0 5px}
+#frmProductDomain #domainregister div.col-sm-8 .domains-row .col-xs-9 input,#frmProductDomain #domaintransfer div.col-sm-8 .domains-row .col-xs-9 input{border-bottom-left-radius: 0;border-top-left-radius: 0;}
+#frmProductDomain #domainowndomain div.col-sm-9 .col-xs-2,#frmProductDomain #domainowndomain div.col-sm-9 .col-xs-7{float: left;}
+#frmProductDomain #domainowndomain div.col-sm-9 .col-xs-2{text-align: right}
+
+.main-content {line-height: 2;}
+.login-form input{direction: ltr}
+
+.jproduct-title{font-size: 15px}
+.jproduct-desc{list-style: none;padding: 0;margin: 0;line-height: 1}
+.jproduct-desc li:before{content: "\f104";font-family: "Font Awesome 5 Pro";padding-left: 5px;vertical-align: top}
+.jproduct-desc li .fa.fa-star{color: #ffc83d;}
+.jproduct-desc li .fa.fa-times{color: red;}
+
+.spotlight-tld-new{line-height: initial;}
+.spotlight-tld{direction: ltr}
+.spotlight-tld .domain-lookup-result{direction: rtl;}
+.spotlight-tld span.available.price{font-size: 13px}
+
+
+.headernotification{background: #00b2b2;color: #fff;padding: 5px 10px;text-align: center;font-size: 14px;line-height: 2;font-weight: bold; border-bottom: 2px solid white; }
+.headernotification a{color: #050505;text-decoration: underline;}
+.headernotification p{margin:0}
+.headernotification p i{margin-left: 5px;vertical-align: baseline;border-bottom: 2px solid white; }
+
+/* sub domain module*/
+
+#frmProductDomain #domainownsubdomain .domains-row{direction: ltr;}
+#ownsubdomain-text , #ownsubdomain-sub , #ownsubdomain-sld{float:left;padding-right:2px;padding-left:2px}
+#ownsubdomain-text{padding-left: 15px;padding-right: 15px ;text-align: right;}
+#order-standard_cart #products .product .cart_other_price{margin-top: 10px;padding: 0 10px;text-align: right;}
+#order-standard_cart .products .product div.product-desc {
+    float: left;
+    width: 40%;
+}
+
+#order-standard_cart #products .product .product-desc , #order-standard_cart #products .product footer{padding: 10px}
+#order-standard_cart .products .product div.product-desc{float: none !important;width: 100% !important;font-size:13px !important}
+#order-standard_cart .products .product footer{float: none !important;width: 100% !important;margin: 0 !important}
+
+.domainchecker-homepage-captcha #google-recaptcha-domainchecker {
+    margin-bottom: 15px;
+}
+#sidebarTicketCc, #Secondary_Navbar-Account-Security_Settings, #Primary_Sidebar-My_Account-Security_Settings, #Primary_Navbar-Support-Downloads, #Secondary_Sidebar-Support-Downloads{
+    display: none;
+}
+#frmConfigureDomains button[type=submit] i{
+    transform: rotate(180deg);
+}
+#orderSummary #btnCompleteProductConfig i,
+#frmProductDomainSelections #btnDomainContinue i,
+#btnCompleteOrder i{
+    transform: rotate(180deg);
+}
+.sidebar--netafrazId .panel-heading{
+    display: none;
+}
+.sidebar--netafrazId .id {
+    background: transparent;
+    border: solid 3px #f5f5f5;
+    /*color: #ff7e29;*/
+    padding: 6px 12px;
+    text-align: center;
+    border-radius: 6px;
+}
+.sidebar--netafrazId .id span {
+    font-weight: bold;
+}
+@media (max-width: 768px) {
+    .sidebar--netafrazId .panel-body{
+        display: block !important;
+    }
+}
+
+#Primary_Sidebar-Domain_Details_Management-Auto_Renew_Settings  {
+    display: none;
+}

@@ -1,0 +1,416 @@
+
+<style>
+    .required{
+        border:1px solid red!important;
+    }
+</style>
+<!--<div class="card bd-primary mg-t-20">-->
+<!--<div class="card bd-primary">-->
+<div class="sh-breadcrumb">
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="http://medyarweb.ir">مدیار</a>
+        <a class="breadcrumb-item" href="http://medyarweb.ir">MedYar</a>
+        <span class="breadcrumb-item active">تعریف دوره</span>
+    </nav>
+</div><!-- sh-breadcrumb -->
+<div class="sh-pagetitle">
+    <div class="sh-pagetitle-left">
+        <div class="sh-pagetitle-icon"><i class="icon ion-ios-gear mg-t-3"></i></div>
+        <div class="sh-pagetitle-title">
+            <span>تعریف دوره</span>
+            <h2>ماژول آموزش</h2>
+        </div><!-- sh-pagetitle-left-title -->
+    </div><!-- sh-pagetitle-left -->
+</div><!-- sh-pagetitle -->
+<input type="hidden" id="hmis_education_id" name="hmis_education_id"/>
+<!--<div id="" class="col-lg-12">-->
+<div class="card bd-primary" >
+    <div class="card-header bg-primary tx-white">دوره</div>
+    <div align="right">
+        <!--<div class="card bd-primary mg-t-20">-->
+        <div class="card-body pd-sm-30">
+
+            <div class="row col-lg-12">
+                <div class="col-lg-12">
+                    <label class="ckbox">
+                        <input id="education_isActive" name="education_isActive" type="checkbox" checked="checked"><span>دوره فعال باشد؟</span>
+                    </label>
+                </div>
+                <div class="form-group has-success mg-b-0 col-lg-4">
+                    کد دوره:
+                    <input id="education_code" name="education_code" class="form-control is-valid" placeholder="کد دوره:" type="text">
+                </div> 
+                <div class="form-group has-success mg-b-0 col-lg-4">
+                    نام دوره:
+                    <input id="education_title" name="education_title" class="form-control is-valid" placeholder="نام دوره:" type="text">
+                </div> 
+                <div class="form-group has-success mg-b-0 col-lg-4"> 
+                    نوع دوره:
+                    <select id="education_type" name="education_type"  class="form-control is-valid"  >
+                        <option value="">انتخاب</option>
+                        <option value="الزامی">الزامی</option>
+                        <option value="اختیاری">اختیاری</option>
+                    </select>
+                </div>
+                <div class="col-lg-12" id="requiredNeedAssessmentDiv" style="display:none">
+                    <label class="ckbox">
+                        <input id="education_requiredNeedAssessment" name="education_requiredNeedAssessment" type="checkbox" onchange="hmisEducationDefinition.selectOptionEducationType();" ><span>دوره نیازسنجی شود؟</span>
+                    </label>
+                </div>
+                <div class="form-group has-success mg-b-0 col-lg-4"> 
+                    نوع آموزش:
+                    <select id="education_typeOfEducation" name="education_typeOfEducation"  class="form-control is-valid"  >
+                        <option value="">انتخاب</option>
+                        <option value="شغلی">شغلی</option>
+                        <option value="عمومی">عمومی</option>
+                        <option value="بهبود مدیریت">بهبود مدیریت</option>   
+                    </select>
+                </div>
+                <div class="form-group has-success mg-b-0 col-lg-4">
+                    گروه هدف:
+                    <select multiple  class="form-control is-valid targetGroup"   id="education_targetGroup_groupId" name="education_targetGroup_groupId"  ></select>
+                </div> 
+                <div class="form-group has-success mg-b-0 col-lg-4">
+                    بخش :
+                    <select  class="form-control is-valid" onchange="hmisDepartment.getUserAndRoleInDepatrment($(this).val(), '.userSelectOption');"   id="education_department_id" name="education_department_id"  ></select>
+                </div>     
+                <!--فرم اختیاری-->
+                 <div class="form-group has-success mg-b-0 col-lg-12">
+                        ثبت نام کنندگان:
+                        <select multiple  class="form-control is-valid userSelectOption"   id="education_registrants_userId" name="education_registrants_userId"  ></select>
+                    </div> 
+                <div id="optionalForm" class="row col-lg-12" style="display:none">
+                    <div class="form-group has-success mg-b-0 col-lg-12">  
+                        کاربران هدف:
+                        <select multiple  class="form-control is-valid userSelectOption"   id="education_targetUser_userId" name="education_targetUser_userId"  ></select>
+                    </div> 
+                    <div class="form-group has-success mg-b-0 col-lg-4">
+                        تایید کننده اول:
+                        <select   class="form-control is-valid seconder"   id="education_seconderRoleId1" name="education_seconderRoleId1" ></select>
+                    </div>
+                    <div class="form-group has-success mg-b-0 col-lg-4">
+                        تایید کننده دوم
+                        <select  class="form-control is-valid seconder"   id="education_seconderRoleId2" name="education_seconderRoleId2" ></select>
+                    </div>
+                    <div class="form-group has-success mg-b-0 col-lg-4">
+                        تایید کننده سوم
+                        <select   class="form-control is-valid seconder"   id="education_seconderRoleId3" name="education_seconderRoleId3" ></select>
+                    </div>
+                    <button  onclick='hmisEducationMyNeedAssessment.insertEducationAssessmet();'>ثبت نیازسنجی </button>
+                    
+                    <div class="col-lg-12 mg-t-20" id="resultNeedAaasessmentTbl"></div>
+                </div>
+                <div id="nesseccaryForm" class="row col-lg-12" >
+                    <!--///فرم اجباری--> 
+                    <div class="form-group has-success mg-b-0 col-lg-4">
+                        دوره پیش نیاز :
+                        <select multiple  class="form-control is-valid"   id="education_prerequisite_courseId" name="education_prerequisite_courseId"  ></select>
+                    </div> 
+<!--                    <div class="form-group has-success mg-b-0 col-lg-12">
+                        ثبت نام کنندگان:
+                        <select multiple  class="form-control is-valid userSelectOption"   id="education_registrants_userId" name="education_registrants_userId"  ></select>
+                    </div> -->
+                    <div class="card-header bg-grandeur  tx-white col-lg-12 mg-t-20" onclick='$("#educationDetails").slideToggle();'>جزئیات دوره</div>  
+                    <div class="card bd-primary col-lg-12" id='educationDetails' style='display: none'>
+
+                        <div class="form-group has-success mg-b-0">
+                            شرکت کنندگان:
+                            <select multiple  class="form-control is-valid" disabled  id="education_participant_userId" name="education_participant_userId"  ></select>
+                        </div> 
+                        <div class="form-group has-success mg-b-0 ">
+                            غائبین:
+                            <div   class="form-control is-valid" disabled  id="education_absent_userId" name="education_abent_userId"  ></div>
+                        </div> 
+                        <div class="form-group has-success mg-b-0 ">
+                            قبول شدگان:
+                            <div   class="form-control is-valid" disabled  id="education_accespted_userId" name="education_accespted_userId"  ></div>
+                        </div> 
+                        <div class="form-group has-success mg-b-0 ">
+                            رد شدگان:
+                            <div   class="form-control is-valid" disabled  id="education_reject_userId" name="education_reject_userId"  ></div>
+                        </div>    
+                    </div>
+                    <div  id="rows10" style='display:none'>
+                        <div class='row col-lg-12 addAbility' id='row'>
+                            <div class="col-lg-3">
+                                توانایی این دوره
+                                <input class="form-control abilityDivTemp" placeholder="توانایی" id="education_ability_x" name="education_ability_x"  type="text">
+                            </div>
+                            <div class="col-lg-3">
+                                سطح 
+                                <div>
+                                    <select id="education_abilityLevel_x" name="education_abilityLevel_x" class="form-control "    > 
+                                        <option>آشنایی</option>
+                                        <option>تسلط</option>
+                                        <option>توانایی</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class='col-lg-3'>
+                                <button class="btn btn-outline-danger btn-block mg-t-20 mg-b-20  buttonRemove">حذف</button>
+                            </div>
+                        </div>   
+                    </div>
+                    <div id="abilitiesDiv" class='row col-lg-12 mg-t-20'></div>
+                    <div class="row col-lg" id="abilitiesAdd"></div><!-- این دیو برای افزودن امضا کننده وحذف ان امضا کننده است -->
+                    <div class='col-lg-12'>
+                        <div class='col-lg-12'>
+                            <button class="btn btn-success btn-block mg-b-10" id="addBtnAbility" style="margin-top: 16px;" > <i class="fa fa-plus mg-t-3" style="padding-left: 10px;"></i>افزودن توانایی</button>
+                        </div>
+                    </div>
+                </div>              
+            </div>              
+        </div>
+
+
+
+        <!--</div>-->
+
+        <div id="educationClassDiv" class="col-lg-12" style="display:none">
+            <div id="educationClassForm" class="pd-sm-30" style="display:none">
+                <input type="hidden" id="hmis_educationclass_id" name="hmis_educationclass_id"/>
+                <div class="card-header bg-primary tx-white" >کلاس جدید برای این دوره</div>
+                <div class="card bd-primary" >
+                    <div class="row col-lg-12">
+                        <div class="col-lg-12">
+                            <label class="ckbox">
+                                <input id="educationClass_isActive" name="educationClass_isActive" type="checkbox" checked="checked"><span>کلاس فعال باشد؟</span>
+                            </label>
+                        </div>
+                        <div class="col-lg-12">
+                            <label class="ckbox">
+                                <input id="educationClass_isShowScore" name="educationClass_isShowScore" type="checkbox" checked="checked"><span>نمرات نمایش داده شود؟</span>
+                            </label>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group has-warning mg-b-0">
+                                نام استاد:
+                                <select   class="form-control is-valid"   id="educationClass_teacher_userId" name="educationClass_teacher_userId"  ></select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group has-warning mg-b-0">
+                                تاریخ شروع کلاس
+                                <input id="educationClass_startDate"  name='educationClass_startDate' type='text' class="form-control is-valid date">
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group has-warning mg-b-0">
+                                تاریخ پایان کلاس
+                                <input id="educationClass_endDate"  name='educationClass_endDate' type='text' class="form-control  is-valid date">
+                            </div>
+                        </div> 
+                        <div class="col-lg-3">
+                            <div class="form-group has-warning mg-b-0">
+                                ساعت شروع کلاس
+                                <input id="educationClass_startTime"  style='direction: ltr'  name='educationClass_startTime' type='text' class="form-control is-valid time">
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group has-warning mg-b-0">
+                                ساعت پایان کلاس
+                                <input id="educationClass_endTime"  style='direction: ltr'  name='educationClass_endTime' type='text' class="form-control  is-valid time">
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group has-success mg-b-0">
+                                محل برگزاری آزمون    :
+                                <input type='text' class="form-control is-valid"  id="educationClass_eventPlace" name="educationClass_eventPlace"  >
+                            </div> 
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group has-success mg-b-0">
+                                توضیحات    :
+                                <textarea  class="form-control is-valid"  id="educationClass_description" name="educationClass_description"  ></textarea>
+                            </div> 
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group has-success mg-b-0">
+                                تعداد جلسات  :
+                                <input type='number' class="form-control is-valid"  min='0' max='100' id="educationClass_numberOfSessions" name="educationClass_numberOfSessions"  >
+                            </div> 
+                        </div>
+                        <div class="col-lg-12 mg-b-20">
+                            <div class="form-group has-success mg-b-0">
+                                ثبت نام کنندگان :
+                                <select multiple  class="form-control is-valid userSelectOption" name="educationClass_registrants_userId" id="educationClass_registrants_userId"></select>
+                            </div>  
+                        </div>
+                        <div class="col-lg-12 mg-b-20">
+                            <div class="form-group has-success mg-b-0">
+                                گروهها:
+                                <select  onchange="hmisDepartment.getUserAndRoleInGroup($(this).val(), '#educationClass_registrants_userId');"  class="form-control is-valid targetGroup" name="educationClass_registrants_groupId" id="educationClass_registrants_groupId"></select>
+                            </div>       
+                        </div>
+                    </div>
+                    <div class="row col-lg-12" id="fileEducationClassDiv"  >
+                        <div class="col-lg-12" style="">                        
+                            <div class="col-lg-12">
+                                <div class="" id="showFilesEducationClassDiv"></div>
+                            </div>
+                            <div class="input-group col-lg-12">
+                                <div class="">فایل</div>
+                                <span id="user_pic" class="form-control"></span>
+                                <input class="form-control" id="educationClass_titleFile" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" >
+                                <input id="attachFilesEducationClass" name="attachFilesEducationClass" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                <input class="btn btn-primary" id="sendFilesEducationClass" type="submit" value="ارسال">
+                                <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="" id="downloadFilesEducationClassDiv"></div>
+                    <div class="row col-lg-12">
+                        <div class="col-lg-6">
+                            <div class="form-group has-success mg-b-0">
+                                آزمون preTest :
+                                <select  required  class="form-control is-valid selectOptionForm"   id="educationClass_preTest_formId" name="educationClass_preTest_formId"  ></select>
+                            </div>
+                            <!--form-group--> 
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group has-success mg-b-0">
+                                تاریخ شروع آزمون :
+                                <input type='text' class="form-control is-valid date"   id="educationClass_preTest_startDate" name="educationClass_preTest_startDate"  >
+                            </div>
+                            <!--form-group--> 
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group has-success mg-b-0">
+                                تاریخ پایان آزمون :
+                                <input type='text' class="form-control is-valid date"   id="educationClass_preTest_endDate" name="educationClass_preTest_endDate"  >
+                            </div>
+                            <!--form-group--> 
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group has-success mg-b-0">
+                                ساعت شروع آزمون :
+                                <input type='text' class="form-control is-valid time"  style='direction: ltr'   id="educationClass_preTest_startTime" name="educationClass_preTest_startTime"  >
+                            </div> 
+                            <!--form-group--> 
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="form-group has-success mg-b-0">
+                                ساعت پایان آزمون :
+                                <input type='text' class="form-control is-valid time"  style='direction: ltr'   id="educationClass_preTest_endTime" name="educationClass_preTest_endTime"  >
+                            </div>
+                            <!--form-group--> 
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group has-success mg-b-0">
+                                حداقل نمره پذیرش:
+                                <input class="form-control is-valid"   id="educationClass_preTest_min" name="educationClass_preTest_min"   type='number'>
+                            </div>
+                            <!--form-group--> 
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group has-success mg-b-0">
+                                حداکثر نمره پذیرش    :
+                                <input  class="form-control is-valid"   id="educationClass_preTest_max" name="educationClass_preTest_max"  type='number'>
+                            </div> 
+                            <!--form-group--> 
+                        </div>
+                    </div> 
+                    <div class="row col-lg-12">
+                        <div class="col-lg-6">
+                            <div class="form-group has-success mg-b-0">
+                                آزمون postTest :
+                                <select  required  class="form-control is-valid selectOptionForm"   id="educationClass_postTest_formId" name="educationClass_postTest_formId"></select>
+                            </div>
+                            <!--form-group--> 
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group has-success mg-b-0">
+                                تاریخ شروع آزمون :
+                                <input type='text' class="form-control is-valid date"   id="educationClass_postTest_startDate" name="educationClass_postTest_startDate"  >
+                            </div> 
+                            <!--form-group--> 
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group has-success mg-b-0">
+                                تاریخ پایان آزمون :
+                                <input type="text"  class="form-control is-valid date"   id="educationClass_postTest_endDate" name="educationClass_postTest_endDate"  >
+                            </div>
+                            <!--form-group--> 
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group has-success mg-b-0">
+                                ساعت شروع آزمون :
+                                <input type='text' class="form-control is-valid time"  style='direction: ltr'   id="educationClass_postTest_startTime" name="educationClass_postTest_startTime" >
+                            </div>
+                            <!--form-group--> 
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group has-success mg-b-0">
+                                ساعت پایان آزمون :
+                                <input type='text' class="form-control is-valid time"  style='direction: ltr'   id="educationClass_postTest_endTime" name="educationClass_postTest_endTime"  >
+                            </div>
+                            <!--form-group--> 
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group has-success mg-b-0">
+                                حداقل نمره پذیرش:
+                                <input type='number'  class="form-control is-valid"  min='0' max='100' id="educationClass_postTest_min" name="educationClass_postTest_min"  >
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group has-success mg-b-0">
+                                حداکثر نمره پذیرش    :
+                                <input type='number' class="form-control is-valid"  min='0' max='100' id="educationClass_postTest_max" name="educationClass_postTest_max"  >
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="row col-lg-12 mg-t-30">
+                        <div class="col-lg-3" id="educationClass_buttons"></div><!-- دکمه ویرایش از جاوا -->
+                        <div class="col-lg-3">
+                            <div class="form-group has-success mg-b-0">
+                                <button class="btn btn-outline-secondary btn-block mg-b-10" onclick="$('#educationClassForm').slideUp('slow');$('#educationClassTbl').slideDown('slow');">انصراف
+                                </button>
+                            </div><!-- form-group -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row col-lg-12" id="educationClassTbl"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row col-lg-12 mg-t-20">
+    <div class="col-lg">
+        <div class='col-lg' id='educationDefinition_buttons'></div>
+    </div>
+    <div class="col-lg">
+        <div class="form-group has-success mg-b-0">
+            <button id="cancel_EducationDefinition" class="btn btn-outline-secondary mg-b-10  btn-block">بازگشت</button>
+        </div>
+    </div>
+</div>
+<script>
+    $('#addBtnAbility').click(function () {
+//        $('#createDocumentary_signatory_role_x').show();
+        var i = 1;
+        var avalable = $(".abilityDiv");
+        for (var j = 0; j < 10; j++) {
+            var k = (j + 1);
+
+            if ($("#education_ability_" + k).length == 0) {
+                i = j + 1;
+                j = 11;
+            }
+        }
+        if (i > 10) {
+            return;
+        }
+        var temp = $('#rows10').html().replace(/_x/igm, ("_" + i));
+        $("#abilitiesAdd").append(temp);
+        $("#abilitiesAdd .abilityDivTemp").addClass("abilityDiv");
+        $("#abilitiesAdd .abilityDivTemp").removeClass("abilityDivTemp");
+    });
+
+    $(document).on('click', '.buttonRemove', function () {
+        $(this).parent().parent().remove();
+
+    });
+</script>

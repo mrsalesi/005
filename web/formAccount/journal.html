@@ -1,0 +1,136 @@
+<div class="card bd-primary mg-t-20">
+    <div class="sh-breadcrumb">
+        <nav class="breadcrumb">
+            <a class="breadcrumb-item" href="CMS.html">MedYar مدیار</a>
+            <span class="breadcrumb-item active">نشریات</span>
+        </nav>
+    </div>
+    <div class="sh-pagetitle">
+        <div class="sh-pagetitle-left">
+            <div class="sh-pagetitle-icon"><i class="icon ion-ios-home"></i></div>
+            <div class="sh-pagetitle-title">
+                <span>سامانه جامع فرهنگی</span>
+                <h2>نشریات</h2>
+            </div><!-- sh-pagetitle-left-title -->
+        </div><!-- sh-pagetitle-left -->
+    </div>
+    <div class="row row-sm">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card rounded-0">
+                        <div class="card-header bg-primary tx-white">
+                            اطلاعات نشریات
+                        </div><!-- card-header -->
+                        <div class="card-body">
+                            <div class="row mg-t-20">
+                                <!--<div class="row">-->
+<!--                                <input type="hidden" id="account_Journal_id" name="id" />
+                                <input class="form-control" type="hidden" id="jornal_parent" name="jornal_parent" value="0"/>-->
+
+                                <div class="col-lg-12" style="">
+                                    عنوان نشریه
+                                    <input class="form-control" id="jornal_title" name="jornal_title"  placeholder="عنوان نشریه" type="text">
+                                </div>
+                                <div class="col-lg-12" style="">
+                                    زمینه نشریه
+                                    <input class="form-control" id="jornal_Issue" name="jornal_Issue"  placeholder="زمینه نشریه" type="text">
+                                </div>
+                                <div class="col-lg-12">
+                                    دسته بندی نشریات:
+                                    <select id="jornal_parent" name="jornal_parent"  class="form-control col-lg-12 categoryProductSelectOption">
+                                    </select>  
+                                </div>
+                                <div class="col-lg-12" style="">
+                                    شماره نشریه
+                                    <input class="form-control" id="jornal_ReleaseNumber" name="jornal_ReleaseNumber"  placeholder="شماره نشریه" type="text">
+                                </div>
+                                <div class="col-lg-12" style="">
+                                    تاریخ انتشار
+                                    <input class="form-control" id="jornal_DateRelease" name="jornal_DateRelease"  placeholder="تاریخ انتشار" type="text">
+                                </div>
+                                <div class="col-lg-12" style="">
+                                    صاحب امتیاز
+                                    <input class="form-control" id="jornal_Concessionaire" name="jornal_Concessionaire"  placeholder="صاحب امتیاز" type="text">
+                                </div>
+                                <div class="col-lg-12" style="">
+                                    مدیر مسئول
+                                    <input class="form-control" id="jornal_Responsible" name="jornal_Responsible"  placeholder="مدیر مسئول" type="text">
+                                </div>
+                                <div class="col-lg-12" style="">
+                                    سر دبیر
+                                    <input class="form-control" id="jornal_chiefEditor" name="jornal_chiefEditor"  placeholder="سر دبیر" type="text">
+                                </div>
+                                <div class="col-lg-12" style="">
+                                    نویسنده
+                                    <input class="form-control" id="jornal_writer1" name="jornal_writer1"  placeholder="نویسنده" type="text">
+                                </div>
+                                <div class="col-lg-12" style="">
+                                    نویسنده
+                                    <input class="form-control" id="jornal_writer2" name="jornal_writer2"  placeholder="نویسنده" type="text">
+                                </div>
+                                <div class="col-lg-12" style="">
+                                    نویسنده
+                                    <input class="form-control" id="jornal_writer3" name="jornal_writer3"  placeholder="نویسنده" type="text">
+                                </div>
+                                <div class="col-lg-12" style="">
+                                    بازدید
+                                    <input class="form-control" id="account_product_code" name="account_product_code"  placeholder="بازدید" type="text">
+                                </div>
+                                <div class="col-lg-12" style="">
+                                    قیمت
+                                    <input class="form-control" id="jornal_visit" name="jornal_visit"  placeholder="0تومان" type="text">
+                                </div>
+                                <div class="col-lg-12" style="">
+                                    <div class="col-lg-6" style="">
+                                        <input id="jornal_file" name="jornal_file" type="hidden">
+                                        <div id="preview1">
+                                            بارگزاری فایل
+                                        </div>
+                                        <img id="jornal_file1" name="jornal_file1" class="img-thumbnail" src="img/preview.jpg">
+                                        <div class="row">
+                                            <input class="btn btn-primary" id="account_product_sendPic1" type="submit" value="ارسال">
+                                            <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                            <input id="account_product_file1" name="account_product_file1" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                            <span id="product_pic1"  class="form-control col-lg"></span>
+                                            <!--<span class="form-control"></span>-->
+                                        </div>
+                                        <a   id="account_product_DownloadPic1" href="" style="display: none" target="_blank">
+                                            دانلود فایل
+                                        </a>
+                                    </div>
+                                    <div class="col-lg-6" style="">
+                                        <input id="jornal_pic" name="jornal_pic" type="hidden">
+                                        <div id="preview2">
+                                            تصویر
+                                        </div>
+                                        <img id="account_product_preview2" name="account_product_preview2" class="img-thumbnail" src="img/preview.jpg">
+                                        <div class="row">
+                                            <input class="btn btn-primary" id="account_product_sendPic2" type="submit" value="ارسال">
+                                            <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                            <input id="account_product_file2" name="account_product_file2" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                            <span id="product_pic2"  class="form-control col-lg"></span>
+                                            <!--<span class="form-control"></span>-->
+                                        </div>
+                                    </div>
+                                </div>
+                                 <div class="col-lg-12">
+                                    <label class="ckbox">
+                                        <input id="jornal_hasInContentAutoWiki" name="jornal_hasInContentAutoWiki" type="checkbox" checked="checked"><span>Auto wiki 
+                                            داشته باشد
+                                            (برای ایجاد لینک هوشمند مربوط سایر محتوا ها هنگام نمایش در این محتوا قرار بگیرد، این گزینه را انتخاب کنید)</span>
+                                    </label>
+                                </div>
+                                <div class="mg-t-20 col-lg-6">
+                                    <button class="form-control btn btn-outline-secondary mg-b-10 btn-block" onclick="cmsJournal.m_show_tbl();">بازگشت </button>                
+                                </div><!-- col -->
+                                <div id="account_product_button" class="mg-t-20 col-lg-6">            
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
