@@ -295,17 +295,17 @@
                                                                             int yearAr = dateLableAr.getYear();
                                                                     %>
 
-                                                                    <li><a href="indexNews.jsp?idNews=<%=rowCategory.get(i).get(News._id)%>">
+                                                                    <li>
                                                                             <div class="thumb">
                                                                                 <img src="upload/<%=rowCategory.get(i).get(News._pic)%>" style='height:70px;width:70px'>
                                                                             </div>
                                                                             <div class="text">
                                                                                 <p><%=dayAr + "" + monthAr + "," + yearAr%></p>
                                                                                 <h6>
-                                                                                    <a href="#"><%=rowCategory.get(i).get(News._title)%></a>
+                                                                                    <a href="indexNews.jsp?idNews=<%=rowCategory.get(i).get(News._id)%>"><%=rowCategory.get(i).get(News._title)%></a>
                                                                                 </h6>
                                                                             </div>
-                                                                        </a>
+                                                                        
                                                                     </li>
                                                                     <%}%>
                                                                 </ul>
