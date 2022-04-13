@@ -1264,19 +1264,19 @@ public class News {
                 Map<String, Object> map = new HashMap<>();
                 int visit = Integer.parseInt(rowNews.get(0).get(News._visit).toString()) + 1;
                 map.put(News._visit, visit);
-                jjCalendar_IR dateLable = new jjCalendar_IR(rowNews.get(0).get(News._date).toString());
-                String month = dateLable.getMonthName();
-                int day = dateLable.getDay();
-                int year = dateLable.getYear();
                 db.update(tableName, map, News._id + "=" + rowNews.get(0).get(News._id).toString());
                 List<Map<String, Object>> rowComment = jjDatabaseWeb.separateRow(db.Select(Comment.tableName, Comment._refrenceId + " = " + rowNews.get(0).get(News._id)));
 
                 List<Map<String, Object>> rowCategory = jjDatabase.separateRow(db.Select(News.tableName, News._category_id + "=" + rowNews.get(0).get(News._category_id)));
                 for (int i = 0; i < rowNews.size(); i++) {
+                jjCalendar_IR dateLable = new jjCalendar_IR(rowNews.get(i).get(News._date).toString());
+                String month = dateLable.getMonthName();
+                int day = dateLable.getDay(); 
+                int year = dateLable.getYear();
                     html.append("<div class=\"post-wrap\">\n"
                             + "                                                            <article class=\"post clearfix\">\n"
                             + "                                                                <div class=\"featured-post\">\n"
-                            + "                                                                    <img src='upload/" + rowNews.get(0).get(News._pic) + "' alt=\"image\" style=\"width: 100%;height: 400px\">\n"
+                            + "                                                                    <img src='upload/" + rowNews.get(i).get(News._pic) + "' alt=\"image\" style=\"width: 100%;height: 400px\">\n"
                             + "                                                                        <ul class=\"post-comment\">\n"
                             + "                                                                            <li class=\"date\">\n"
                             + "                                                                                <span class=\"day\">" + day + "</span>\n"
@@ -1287,18 +1287,18 @@ public class News {
                             + "                                                                        </ul>\n"
                             + "                                                                </div>\n"
                             + "                                                                <div class=\"content-post\">\n"
-                            + "                                                                    <h2 class=\"title-post\"><a href=\"\">" + rowNews.get(0).get(News._title) + "></a></h2>\n"
+                            + "                                                                    <h2 class=\"title-post\"><a href=\"\">" + rowNews.get(i).get(News._title) + "></a></h2>\n"
                             + "                                                                    <ul class=\"meta-post clearfix\">\n"
                             + "                                                                        <li class=\"author\">\n"
                             + "                                                                            <a href=\"#\">admin</a>\n"
                             + "                                                                        </li>\n"
                             + "\n"
                             + "                                                                        <li class=\"vote\">\n"
-                            + "                                                                            <a href=\"#\">" + rowNews.get(0).get(News._visit) + "</a>\n"
+                            + "                                                                            <a href=\"#\">" + rowNews.get(i).get(News._visit) + "</a>\n"
                             + "                                                                        </li>\n"
                             + "                                                                    </ul>\n"
                             + "                                                                    <div class=\"entry-post excerpt\">\n"
-                            + "                                                                        <p>" + rowNews.get(0).get(News._content) + "</p>\n"
+                            + "                                                                        <p>" + rowNews.get(i).get(News._content) + "</p>\n"
                             + "                                                                    </div>\n"
                             + "                                                                </div>\n"
                             + "                                                            </article>\n"
@@ -1308,7 +1308,7 @@ public class News {
                 return "";
             }
 
-        } catch (Exception ex) {
+        } catch (Exception ex) { 
             return Server.ErrorHandler(ex);
         }
         return "";
