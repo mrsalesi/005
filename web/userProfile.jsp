@@ -270,11 +270,11 @@
                                                                             </div>
                                                                         </div>
                                                                     </li>
-                                                                    <li><a href="" onclick="new jj('do=Content.sw&panel=sw&text=تیم شرکت&jj=1').jjAjax2()">تیم شرکت</a></li>
-                                                                    <li><a href="" onclick="$('#sw').load('gallery.jsp')">گالری</a></li>
-                                                                    <li><a href="">خدمات</a> </li>
-                                                                    <li><a href="" onclick="new jj('do=Content.sw&panel=sw&text=درباره ی ما&jj=1').jjAjax2()">درباره ی شرکت </a></li>
-                                                                    <li><a href="" onclick="new jj('do=Content.sw&panel=sw&text=تماس با ما&jj=1').jjAjax2()">تماس با ما</a></li>
+                                                                    <li><a href="#" onclick="new jj('do=Content.sw&panel=sw&text=تیم شرکت&jj=1').jjAjax2()">تیم شرکت</a></li>
+                                                                    <li><a href="#" onclick="$('#sw').load('gallery.jsp')">گالری</a></li>
+                                                                    <li><a href="#">خدمات</a> </li>
+                                                                    <li><a href="#" onclick="new jj('do=Content.sw&panel=sw&text=درباره ی ما&jj=1').jjAjax2()">درباره ی شرکت </a></li>
+                                                                    <li><a href="#" onclick="new jj('do=Content.sw&panel=sw&text=تماس با ما&jj=1').jjAjax2()">تماس با ما</a></li>
 
                                                                 </ul>
                                                             </nav>
@@ -296,7 +296,7 @@
                                             </div>
                                         </div>
                                     </header>
-                                    <div id="sw"></div>
+                                    <div id="sw">
                                     <%List<Map<String, Object>> user = jjDatabase.separateRow(db.Select(Access_User.tableName, Access_User._token + "='" + user_token + "'"));
                                         List<Map<String, Object>> projectMe = null;
                                         List<Map<String, Object>> news = null;

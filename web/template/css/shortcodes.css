@@ -13,7 +13,7 @@
   * More-info
   * Flat portfolio
   * Flat map
-  * Flat-testimonials-slider
+  * Flat-testimonials-sliderG1428
   * Flat-client
   * flat-team
   * Testimonial
@@ -1426,8 +1426,8 @@ ul.portfolio-filter.style1 > li a:hover {
 
 /* V1 */
 .flat-portfolio .item {
-    width: 100%;
-    float: left;
+/*    width: 25%;
+    float: left;*/
     position: relative;
     padding: 5px;
 }

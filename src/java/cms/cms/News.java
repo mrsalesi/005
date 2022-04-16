@@ -318,7 +318,7 @@ public class News {
             html.append(Js.setVal("#" + _date, jjCalendar_IR.getViewFormat(row.get(0).get(_date))));
             html.append(Js.setValSummerNote("#" + _content, row.get(0).get(_content)));
             html.append(Js.setVal("#" + _parent, row.get(0).get(_parent)));
-               html.append(Js.setValSelectOption("#" + _privateUserId, row.get(0).get(_privateUserId).toString()));
+            html.append(Js.setValSelectOption("#" + _privateUserId, row.get(0).get(_privateUserId).toString()));
             html.append(Js.select2("#" + _privateUserId, ""));
             html.append(Js.setValSelectOption("#" + _privateGroupId, row.get(0).get(_privateGroupId).toString()));
             html.append(Js.select2("#" + _privateGroupId, ""));
@@ -710,6 +710,63 @@ public class News {
             String panel = jjTools.getParameter(request, "panel");
             if (panel.equals("")) {
                 panel = "jjSliderNews";
+            }
+            String html2 = Js.setHtml("#" + panel, html.toString());
+            Server.outPrinter(request, response, html2);
+            return "";
+        } catch (Exception ex) {
+            return Server.ErrorHandler(ex);
+        }
+    }
+
+    public static String getContentNews(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
+        try {
+            String lang = jjTools.getLangNum(request);
+            String id = jjTools.getParameter(request, "id");
+            List<Map<String, Object>> row = jjDatabaseWeb.separateRow(db.Select(tableName, _id + " = " + id));
+            StringBuilder html = new StringBuilder();
+            Map<String, Object> map = new HashMap<>();
+            int visit = Integer.parseInt(row.get(0).get(_visit).toString()) + 1;
+            map.put(_visit, visit);
+            db.update(Journal.tableName, map, _id + "=" + id);
+             jjCalendar_IR dateLable = new jjCalendar_IR(row.get(0).get(News._date).toString());
+                                                            String month = dateLable.getMonthName();
+                                                            int day = dateLable.getDay();
+                                                            int year = dateLable.getYear();
+            html.append("<div class='post-wrap'>");
+                     html.append("<article class='post clearfix'>");
+                     html.append("<div class='featured-post'>\n");
+                     html.append("<img src='upload/"+row.get(0).get(News._pic)+"' alt='"+row.get(0).get(News._title)+"' style='width: 100%;height: 400px'>");
+                     html.append("<ul class='post-comment'>");
+                     html.append("<li class='date'>");
+                     html.append("<span class='day'>"+day+"</span>");
+                     html.append("</li>");
+                     html.append("<li class='comment'>");
+                     html.append(month);
+                     html.append("</li>");
+                     html.append("</ul>");
+                     html.append("</div>");
+                     html.append("<div class='content-post'>\n");
+                     html.append("<h2 class='title-post'><a href=''>"+row.get(0).get(News._title)+"</a></h2>");
+                     html.append("<ul class='meta-post clearfix'>");
+                     html.append("<li class='author'>");
+                     html.append("<a href=''></a>");
+                     html.append("</li>");
+                     html.append("<li class='vote'>");
+                     html.append("<a href=''>"+row.get(0).get(News._visit)+"</a>");
+                     html.append("</li>");
+                     html.append("</ul>");
+                     html.append("<div class='entry-post excerpt'>\n");
+                     html.append("<p>"+row.get(0).get(News._content)+"</p>");
+                     html.append("</div>");
+                     html.append("</div>");
+                     html.append("</article>");
+                     html.append("</div>");
+
+            html.append("</div></div></div>");
+            String panel = jjTools.getParameter(request, "panel");
+            if (panel.equals("")) {
+                panel = "sw";
             }
             String html2 = Js.setHtml("#" + panel, html.toString());
             Server.outPrinter(request, response, html2);
@@ -1269,10 +1326,10 @@ public class News {
 
                 List<Map<String, Object>> rowCategory = jjDatabase.separateRow(db.Select(News.tableName, News._category_id + "=" + rowNews.get(0).get(News._category_id)));
                 for (int i = 0; i < rowNews.size(); i++) {
-                jjCalendar_IR dateLable = new jjCalendar_IR(rowNews.get(i).get(News._date).toString());
-                String month = dateLable.getMonthName();
-                int day = dateLable.getDay(); 
-                int year = dateLable.getYear();
+                    jjCalendar_IR dateLable = new jjCalendar_IR(rowNews.get(i).get(News._date).toString());
+                    String month = dateLable.getMonthName();
+                    int day = dateLable.getDay();
+                    int year = dateLable.getYear();
                     html.append("<div class=\"post-wrap\">\n"
                             + "                                                            <article class=\"post clearfix\">\n"
                             + "                                                                <div class=\"featured-post\">\n"
@@ -1308,7 +1365,7 @@ public class News {
                 return "";
             }
 
-        } catch (Exception ex) { 
+        } catch (Exception ex) {
             return Server.ErrorHandler(ex);
         }
         return "";
@@ -1351,6 +1408,7 @@ public class News {
         Server.outPrinter(request, response, Js.setHtml("#" + panel, html + Js.select2(panel, "width: '100%'")));
         return "";
     }
+
     public static String getNewsInfo(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isFromClient) throws Exception {
         try {
             StringBuilder html = new StringBuilder();
@@ -1358,29 +1416,29 @@ public class News {
             List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, _id + "=" + id));
             String panel = jjTools.getParameter(request, "panel");
             html.append("    <div class=\"post-wrap item electric\" >");
-                jjCalendar_IR dateLable = new jjCalendar_IR(row.get(0).get(_date).toString());
-                String month = dateLable.getMonthName();
-                int day = dateLable.getDay();
-                int year = dateLable.getYear();
-                html.append("<article class='post clearfix'>"
-                        + "    <div class='featured-post'>\n"
-                        + "        <img src='upload/" + row.get(0).get(_pic) + "' alt='' width='100%'>\n"
-                        + "            <ul class='post-comment'>"
-                        + "                <li class='date'>"
-                        + "                    <span class='day'>" + day + "</span>"
-                        + "                </li>"
-                        + "                <li class='comment'>"
-                        + "                    " + month + ""
-                        + "                </li>"
-                        + "            </ul>"
-                        + "    </div>"
-                        + "    <div class='content-post'>\n"
-                        + "        <h2 class='title-post'><a href=''>" + row.get(0).get(_title) + "</a></h2>                                                                   \n"
-                        + "        <div class='entry-post excerpt'>\n"
-                        + "            <p>" + row.get(0).get(_content) + "</p>"
-                        + "        </div>"
-                        + "    </div>"
-                        + "</article>");
+            jjCalendar_IR dateLable = new jjCalendar_IR(row.get(0).get(_date).toString());
+            String month = dateLable.getMonthName();
+            int day = dateLable.getDay();
+            int year = dateLable.getYear();
+            html.append("<article class='post clearfix'>"
+                    + "    <div class='featured-post'>\n"
+                    + "        <img src='upload/" + row.get(0).get(_pic) + "' alt='' width='100%'>\n"
+                    + "            <ul class='post-comment'>"
+                    + "                <li class='date'>"
+                    + "                    <span class='day'>" + day + "</span>"
+                    + "                </li>"
+                    + "                <li class='comment'>"
+                    + "                    " + month + ""
+                    + "                </li>"
+                    + "            </ul>"
+                    + "    </div>"
+                    + "    <div class='content-post'>\n"
+                    + "        <h2 class='title-post'><a href=''>" + row.get(0).get(_title) + "</a></h2>                                                                   \n"
+                    + "        <div class='entry-post excerpt'>\n"
+                    + "            <p>" + row.get(0).get(_content) + "</p>"
+                    + "        </div>"
+                    + "    </div>"
+                    + "</article>");
             html.append(" </div> ");
             Server.outPrinter(request, response, Js.setHtml("#" + panel, html.toString()));
             return "";

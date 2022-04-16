@@ -115,8 +115,8 @@
                                                 <div class="col-md-6">
                                                     <div class="social-links">
                                                         <a href="">
-                                                            <a  class="register_url flat-button button-color button-normal yellow " style="" onclick='$("#sw").load("login.html")'>ثبت نام/ورود</a>
-                                                            <a id="userNameAfterLogin" class="textlogin" style="display: none;"></a>
+                                                            <a  class="register_url flat-button button-color button-normal yellow " style="" onclick='$("#swLoginForm").load("login.html"), $("#sw").hide()'>ثبت نام/ورود</a>
+                                                            <a id="userNameAfterLogin" class="textlogin" style=""></a>
                                                         </a>
                                                         <a href=""><i class="fa fa-twitter"></i></a>
                                                         <a href=""><i class="fa fa-facebook"></i></a>
@@ -206,6 +206,7 @@
                                             </div>
                                         </div>
                                     </header>
+                                    <div id="swLoginForm"></div>
                                     <div id="sw">
                                         <!--start slider-->
 
@@ -412,107 +413,97 @@
                                                 </div>
                                             </div>
                                             <div class="flat-portfolio v4">
-                                                <!--<div class="portfolio-wrap clearfix">-->
-                                                <div id="" class="item All"  style="opacity: 0;height: 0px">
-                                                    <div class="flat-iconbox-carosuel-wrap">
-                                                        <div class="flat-iconbox-carosuel" data-item="4" data-nav="false" data-dots="false" data-auto="false">
-                                                            <%
-                                                                List<Map<String, Object>> rowAll = jjDatabase.separateRow(db.Select(Content.tableName, Content._category_id + " IN ('36', '37', '38')"));
+                                                <div class="portfolio-wrap clearfix">
+                                                    <div id="" class="item All"  style="width: 100%">
+                                                        <div class="flat-iconbox-carosuel-wrap">
+                                                            <div class="flat-iconbox-carosuel" data-item="4" data-nav="false" data-dots="false" data-auto="false">
+                                                                <%
+                                                                    List<Map<String, Object>> rowAll = jjDatabase.separateRow(db.Select(Content.tableName, Content._category_id + " IN ('36', '37', '38')"));
+                                                                    if (rowAll.size() != 0) {
+                                                                        for (int b = 0; rowAll.size() > b; b++) {
+                                                                %>
 
-                                                                for (int b = 0; rowAll.size() > b; b++) {
-                                                            %>
-
-                                                            <div class="iconbox-item">
-                                                                <div class="iconbox left style2" style="width: 100%;height: 300px;">
-                                                                    <img src="upload/<%=rowAll.get(b).get(Content._pic)%>" alt="serives">
-                                                                        <div class="box-content">
-                                                                            <div class="box-title">
-                                                                                <a href="#"><%=rowAll.get(b).get(Content._title)%></a>
+                                                                <div class="iconbox-item">
+                                                                    <div class="iconbox left style2" style="width: 100%;height: 300px;">
+                                                                        <img src="upload/<%=rowAll.get(b).get(Content._pic)%>" alt="serives">
+                                                                            <div class="box-content">
+                                                                                <div class="box-title">
+                                                                                    <a href="#"><%=rowAll.get(b).get(Content._title)%></a>
+                                                                                </div>
+                                                                                <%=rowAll.get(b).get(Content._content)%>
+                                                                                <a href="#" class="box-redmore">ارائه پیشنهاد برای پروژه</a>
                                                                             </div>
-                                                                            <%=rowAll.get(b).get(Content._content)%>
-                                                                            <a href="#" class="box-redmore">ارائه پیشنهاد برای پروژه</a>
-                                                                        </div>
-                                                                </div>
-                                                            </div><%}%>
+                                                                    </div>
+                                                                </div><%}
+                                                                    }%>
+                                                            </div> 
                                                         </div> 
                                                     </div> 
-                                                </div> 
-                                                <div id="" class="item builder"   style="opacity: 0;;height: 0px">
-                                                    <div class="flat-iconbox-carosuel-wrap">
-                                                        <div class="flat-iconbox-carosuel" data-item="4" data-nav="false" data-dots="false" data-auto="false">
-                                                            <%
-                                                                List<Map<String, Object>> row2 = jjDatabase.separateRow(db.Select(Content.tableName, Content._category_id + "=36"));
-                                                                for (int j = 0; row2.size() > j; j++) {
-                                                            %>
-
-                                                            <div class="iconbox-item">
-                                                                <div class="iconbox left style2" style="width: 100%;height: 300px;">
-                                                                    <img src="upload/<%=row2.get(j).get(Content._pic)%>" alt="serives">
-                                                                        <div class="box-content">
-                                                                            <div class="box-title">
-                                                                                <a href="#"><%=row2.get(j).get(Content._title)%></a>
-                                                                            </div>
-                                                                            <%=row2.get(j).get(Content._content)%>
-                                                                            <a href="#" class="box-redmore">ارائه پیشنهاد برای پروژه</a>
-                                                                        </div>
+                                                    <%
+                                                        List<Map<String, Object>> row2 = jjDatabase.separateRow(db.Select(Content.tableName, Content._category_id + "='36'"));
+                                                        if (row2.size() != 0) {
+                                                            for (int f = 0; row2.size() > f; f++) {
+                                                    %>
+                                                    <div id="" class="item builder" style="width: 25%">
+                                                        <div class="featured-images">
+                                                            <img src="upload/<%=row2.get(f).get(Content._pic)%>" alt="<%=row2.get(f).get(Content._title)%>">
+                                                                <h3 class="project-title"><%=row2.get(f).get(Content._title)%></h3>
+                                                                <div class="overlay">
+                                                                    <ul class="portfolio-details">
+                                                                        <li><a class="popup-gallery" href="">
+                                                                                <i class="fa fa-search"></i></a>
+                                                                        </li>
+                                                                        <li><a href="#"><i class="fa fa-external-link"></i></a></li>
+                                                                    </ul>
                                                                 </div>
-                                                            </div><%}%>
-                                                        </div> 
-                                                    </div> 
-                                                </div>    
+                                                        </div>    
+                                                    </div><%}
+                                                            }%>
+                                                    <%
+                                                        List<Map<String, Object>> row3 = jjDatabase.separateRow(db.Select(Content.tableName, Content._category_id + "=38"));
+                                                        if (row3.size() != 0) {
+                                                            for (int l = 0; row3.size() > l; l++) {
 
-                                                <div id="" class="item hammer"  style="opacity: 0;;height: 0px">
-                                                    <div class="flat-iconbox-carosuel-wrap">
-                                                        <div class="flat-iconbox-carosuel" data-item="4" data-nav="false" data-dots="false" data-auto="false">
-                                                            <%
-                                                                List<Map<String, Object>> row3 = jjDatabase.separateRow(db.Select(Content.tableName, Content._category_id + "=38"));
-                                                                for (int v = 0; row3.size() > v; v++) {
-
-                                                            %>
-
-                                                            <div class="iconbox-item">
-                                                                <div class="iconbox left style2" style="width: 100%;height: 300px;">
-                                                                    <img src="upload/<%=row3.get(v).get(Content._pic)%>" alt="serives" >
-                                                                        <div class="box-content">
-                                                                            <div class="box-title">
-                                                                                <a href="#"><%=row3.get(v).get(Content._title)%></a>
-                                                                            </div>
-                                                                            <%=row3.get(v).get(Content._content)%>
-                                                                            <a href="#" class="box-redmore">ارائه پیشنهاد برای پروژه</a>
-                                                                        </div>
+                                                    %>
+                                                    <div id="" class="item hammer" style="width: 25%">
+                                                        <div class="featured-images">
+                                                            <img src="upload/<%=row3.get(l).get(Content._pic)%>" alt="<%=row3.get(l).get(Content._title)%>">
+                                                                <h3 class="project-title"><%=row3.get(l).get(Content._title)%></h3>
+                                                                <div class="overlay">
+                                                                    <ul class="portfolio-details">
+                                                                        <li><a class="popup-gallery" href="">
+                                                                                <i class="fa fa-search"></i></a>
+                                                                        </li>
+                                                                        <li><a href="#"><i class="fa fa-external-link"></i></a></li>
+                                                                    </ul>
                                                                 </div>
-                                                            </div><%}%>
-                                                        </div> 
-                                                    </div> 
+                                                        </div>
+                                                    </div><%}
+                                                            }%>
+
+                                                    <%
+                                                        List<Map<String, Object>> row4 = jjDatabase.separateRow(db.Select(Content.tableName, Content._category_id + "=37"));
+                                                        if (row4.size() != 0) {
+
+                                                            for (int p = 0; row4.size() > p; p++) {
+
+                                                    %>
+                                                    <div id="" class="item electric"  style="width: 25%">
+                                                        <div class="featured-images">
+                                                            <img src="upload/<%=row4.get(p).get(Content._pic)%>" alt="<%=row4.get(p).get(Content._title)%>">
+                                                                <h3 class="project-title"><%=row4.get(p).get(Content._title)%></h3>
+                                                                <div class="overlay">
+                                                                    <ul class="portfolio-details">
+                                                                        <li><a class="popup-gallery" href="">
+                                                                                <i class="fa fa-search"></i></a>
+                                                                        </li>
+                                                                        <li><a href="#"><i class="fa fa-external-link"></i></a></li>
+                                                                    </ul>
+                                                                </div>
+                                                        </div>
+                                                    </div><%}
+                                                            }%>
                                                 </div>
-
-                                                <div id="" class="item electric"  style="opacity: 0;;height: 0px">
-                                                    <div class="flat-iconbox-carosuel-wrap">
-                                                        <div class="flat-iconbox-carosuel" data-item="4" data-nav="false" data-dots="false" data-auto="false">
-                                                            <%
-                                                                List<Map<String, Object>> row4 = jjDatabase.separateRow(db.Select(Content.tableName, Content._category_id + "=37"));
-                                                                for (int v = 0; row4.size() > v; v++) {
-
-                                                            %>
-
-                                                            <div class="iconbox-item">
-                                                                <div class="iconbox left style2" style="width: 100%;height: 300px;">
-                                                                    <img src="upload/<%=row4.get(v).get(Content._pic)%>" alt="serives" s>
-                                                                        <div class="box-content">
-                                                                            <div class="box-title">
-                                                                                <a href="#"><%=row4.get(v).get(Content._title)%></a> 
-                                                                            </div>
-                                                                            <%=row4.get(v).get(Content._content)%>
-                                                                            <a href="#" class="box-redmore">ارائه پیشنهاد برای پروژه</a>
-                                                                        </div>
-                                                                </div>
-                                                            </div><%}%>
-                                                        </div> 
-                                                    </div> 
-                                                </div>
-
-
-                                            </div>
                                         </section>
 
                                         <!--end projectMe-->
@@ -557,7 +548,7 @@
                                     <script src="template/js/bootstrap.min.js" type="text/javascript"></script>
                                     <script src="template/js/jj2.js" type="text/javascript"></script>
                                     <script src="template/js/index.js" type="text/javascript"></script>
-                                    <script src="template/js/jquery.easing.js" type="text/javascript"></script>
+                                    <script src="template/js/jquindex.jery.easing.js" type="text/javascript"></script>
                                     <script src="template/js/imagesloaded.min.js" type="text/javascript"></script>
                                     <script src="template/js/jquery.isotope.min.js" type="text/javascript"></script>
                                     <script src="template/js/jquery-waypoints.js" type="text/javascript"></script>
@@ -774,7 +765,6 @@
                                                                                 var content = $(this).html();
 
                                                                                 if (content.length > showChar) {
-
                                                                                     var c = content.substr(0, showChar);
                                                                                     var h = content.substr(showChar - 2, content.length - showChar);
 
@@ -810,54 +800,54 @@
                                                                             $container.isotope({filter: selector});
                                                                             return false;
                                                                         }());
-                                                                        $('.portfolio-filter li').on('click', function () {
-                                                                            var $container = $('.portfolio-wrap');
-                                                                            var selector = $(this).find("a").attr('data-filter');
-                                                                            if (selector == '.builder') {
-                                                                                $(selector).css("opacity", "1");
-                                                                                $(selector).css("height", "");
-                                                                                $(".All").css("opacity", "0");
-                                                                                $(".All").css("height", "0");
-                                                                                $(".electric").css("opacity", "0");
-                                                                                $(".electric").css("height", "0");
-                                                                                $(".hammer").css("opacity", "0");
-                                                                                $(".hammer").css("height", "0");
-                                                                            }
-                                                                            if (selector == '.All') {
-                                                                                $(selector).css("opacity", "1");
-                                                                                $(selector).css("height", "");
-                                                                                $(".builder").css("opacity", "0");
-                                                                                $(".builder").css("height", "0");
-                                                                                $(".electric").css("opacity", "0");
-                                                                                $(".electric").css("height", "0");
-                                                                                $(".hammer").css("opacity", "0");
-                                                                                $(".hammer").css("height", "0");
-                                                                            }
-                                                                            if (selector == '.electric') {
-                                                                                $(selector).css("opacity", "1");
-                                                                                $(selector).css("height", "");
-                                                                                $(".builder").css("opacity", "0");
-                                                                                $(".builder").css("height", "0");
-                                                                                $(".All").css("opacity", "0");
-                                                                                $(".All").css("height", "0");
-                                                                                $(".hammer").css("opacity", "0");
-                                                                                $(".hammer").css("height", "0");
-                                                                            }
-                                                                            if (selector == '.hammer') {
-                                                                                $(selector).css("opacity", "1");
-                                                                                $(selector).css("height", "");
-                                                                                $(".builder").css("opacity", "0");
-                                                                                $(".builder").css("height", "0");
-                                                                                $(".electric").css("opacity", "0");
-                                                                                $(".electric").css("height", "0");
-                                                                                $(".All").css("opacity", "0");
-                                                                                $(".All").css("height", "0");
-                                                                            }
-                                                                            $('.portfolio-filter li').removeClass('active');
-                                                                            $(this).addClass('active');
-                                                                            $container.isotope({filter: selector});
-                                                                            return false;
-                                                                        });
+//                                                                        $('.portfolio-filter li').on('click', function () {
+//                                                                            var $container = $('.portfolio-wrap');
+//                                                                            var selector = $(this).find("a").attr('data-filter');
+//                                                                            if (selector == '.builder') {
+//                                                                                $(selector).css("opacity", "1");
+//                                                                                $(selector).css("height", "");
+//                                                                                $(".All").css("opacity", "0");
+//                                                                                $(".All").css("height", "0");
+//                                                                                $(".electric").css("opacity", "0");
+//                                                                                $(".electric").css("height", "0");
+//                                                                                $(".hammer").css("opacity", "0");
+//                                                                                $(".hammer").css("height", "0");
+//                                                                            }
+//                                                                            if (selector == '.All') {
+//                                                                                $(selector).css("opacity", "1");
+//                                                                                $(selector).css("height", "");
+//                                                                                $(".builder").css("opacity", "0");
+//                                                                                $(".builder").css("height", "0");
+//                                                                                $(".electric").css("opacity", "0");
+//                                                                                $(".electric").css("height", "0");
+//                                                                                $(".hammer").css("opacity", "0");
+//                                                                                $(".hammer").css("height", "0");
+//                                                                            }
+//                                                                            if (selector == '.electric') {
+//                                                                                $(selector).css("opacity", "1");
+//                                                                                $(selector).css("height", "");
+//                                                                                $(".builder").css("opacity", "0");
+//                                                                                $(".builder").css("height", "0");
+//                                                                                $(".All").css("opacity", "0");
+//                                                                                $(".All").css("height", "0");
+//                                                                                $(".hammer").css("opacity", "0");
+//                                                                                $(".hammer").css("height", "0");
+//                                                                            }
+//                                                                            if (selector == '.hammer') {
+//                                                                                $(selector).css("opacity", "1");
+//                                                                                $(selector).css("height", "");
+//                                                                                $(".builder").css("opacity", "0");
+//                                                                                $(".builder").css("height", "0");
+//                                                                                $(".electric").css("opacity", "0");
+//                                                                                $(".electric").css("height", "0");
+//                                                                                $(".All").css("opacity", "0");
+//                                                                                $(".All").css("height", "0");
+//                                                                            }
+//                                                                            $('.portfolio-filter li').removeClass('active');
+//                                                                            $(this).addClass('active');
+//                                                                            $container.isotope({filter: selector});
+//                                                                            return false;
+//                                                                        });
 
 
 

@@ -206,114 +206,116 @@
                                             </div>
                                         </div>
                                     </header>
-                                    <div class="page-title parallax parallax1" style="background-position: 50% 7px;">
-                                        <div class="overlay"></div>
-                                        <div class="container">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="page-title-heading">
-                                                        <h1 class="title">به صفحه خبر ها خوش امدید</h1>
-                                                    </div>
-                                                    <div class="breadcrumbs">
-                                                        <ul>
-                                                            <li><a href="index.jsp">صفحه اصلی</a></li>
-                                                            <li><a href="indexNews.jsp">اخبار</a></li>
-                                                        </ul>
+                                    <div id="swLoginForm"></div>
+                                    <div class="" id="sw">
+                                        <div class="page-title parallax parallax1" style="background-position: 50% 7px;">
+                                            <div class="overlay"></div>
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="page-title-heading">
+                                                            <h1 class="title">به صفحه خبر ها خوش امدید</h1>
+                                                        </div>
+                                                        <div class="breadcrumbs">
+                                                            <ul>
+                                                                <li><a href="index.jsp">صفحه اصلی</a></li>
+                                                                <li><a href="indexNews.jsp">اخبار</a></li>
+                                                            </ul>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <section class="main-content blog-posts" style="background: #fff">
-                                            <div class="container">
-                                                <div class="row">
-                                                    <div class="col-md-8" id="sw">
-                                                        <%
-                                                            List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(News.tableName, News._id + "=" + idNews));
-                                                            Map<String, Object> map = new HashMap<>();
-                                                            int visit = Integer.parseInt(row.get(0).get(News._visit).toString()) + 1;
-                                                            map.put(News._visit, visit);
-                                                            jjCalendar_IR dateLable = new jjCalendar_IR(row.get(0).get(News._date).toString());
-                                                            String month = dateLable.getMonthName();
-                                                            int day = dateLable.getDay();
-                                                            int year = dateLable.getYear();
-                                                            db.update(News.tableName, map, News._id + "=" + idNews);
-                                                            List<Map<String, Object>> rowComment = jjDatabaseWeb.separateRow(db.Select(Comment.tableName, Comment._refrenceId + " = " + row.get(0).get(News._id)));
+                                        <div>
+                                            <section class="main-content blog-posts" style="background: #fff">
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-md-8" id="swNews">
+                                                            <%
+                                                                List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(News.tableName, News._id + "=" + idNews));
+                                                                Map<String, Object> map = new HashMap<>();
+                                                                int visit = Integer.parseInt(row.get(0).get(News._visit).toString()) + 1;
+                                                                map.put(News._visit, visit);
+                                                                jjCalendar_IR dateLable = new jjCalendar_IR(row.get(0).get(News._date).toString());
+                                                                String month = dateLable.getMonthName();
+                                                                int day = dateLable.getDay();
+                                                                int year = dateLable.getYear();
+                                                                db.update(News.tableName, map, News._id + "=" + idNews);
+                                                                List<Map<String, Object>> rowComment = jjDatabaseWeb.separateRow(db.Select(Comment.tableName, Comment._refrenceId + " = " + row.get(0).get(News._id)));
 
-                                                            List<Map<String, Object>> rowCategory = jjDatabase.separateRow(db.Select(News.tableName, News._category_id + "=" + row.get(0).get(News._category_id)));
-                                                        %>
-                                                        <div class="post-wrap">
-                                                            <article class="post clearfix">
-                                                                <div class="featured-post">
-                                                                    <img src="upload/<%=row.get(0).get(News._pic)%>" alt="image" style="width: 100%;height: 400px">
-                                                                        <ul class="post-comment">
-                                                                            <li class="date">
-                                                                                <span class="day"> <%=day%> </span>
+                                                                List<Map<String, Object>> rowCategory = jjDatabase.separateRow(db.Select(News.tableName, News._category_id + "=" + row.get(0).get(News._category_id)));
+                                                            %>
+                                                            <div class="post-wrap">
+                                                                <article class="post clearfix">
+                                                                    <div class="featured-post">
+                                                                        <img src="upload/<%=row.get(0).get(News._pic)%>" alt="image" style="width: 100%;height: 400px">
+                                                                            <ul class="post-comment">
+                                                                                <li class="date">
+                                                                                    <span class="day"> <%=day%> </span>
+                                                                                </li>
+                                                                                <li class="comment">
+                                                                                    <%=month%>
+                                                                                </li>
+                                                                            </ul>
+                                                                    </div>
+                                                                    <div class="content-post">
+                                                                        <h2 class="title-post"><a href=""><%=row.get(0).get(News._title)%></a></h2>
+                                                                        <ul class="meta-post clearfix">
+                                                                            <li class="author">
+                                                                                <a href="#">admin</a>
                                                                             </li>
-                                                                            <li class="comment">
-                                                                                <%=month%>
+
+                                                                            <li class="vote">
+                                                                                <a href="#"><%=row.get(0).get(News._visit)%></a>
                                                                             </li>
                                                                         </ul>
-                                                                </div>
-                                                                <div class="content-post">
-                                                                    <h2 class="title-post"><a href=""><%=row.get(0).get(News._title)%></a></h2>
-                                                                    <ul class="meta-post clearfix">
-                                                                        <li class="author">
-                                                                            <a href="#">admin</a>
-                                                                        </li>
-
-                                                                        <li class="vote">
-                                                                            <a href="#"><%=row.get(0).get(News._visit)%></a>
-                                                                        </li>
-                                                                    </ul>
-                                                                    <div class="entry-post excerpt">
-                                                                        <p><%=row.get(0).get(News._content)%></p>
+                                                                        <div class="entry-post excerpt">
+                                                                            <p><%=row.get(0).get(News._content)%></p>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </article>
+                                                                </article>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="sidebar">
-                                                            <div class="widget widget_search">
-                                                                <form role="search" method="get" class="search-form" action="#">
-                                                                    <label>
-                                                                        <input type="search" class="search-field" id="search_in" placeholder="جستجو..." value="" name="s">
-                                                                    </label>
-                                                                    <input type="submit" class="search-submit" value="جستجو">
-                                                                </form>
-                                                            </div>                                        
-                                                            <div class="widget widget-recent-news">
-                                                                <h5 class="widget-title">اخبار منتشر شده</h5>
-                                                                <ul class="popular-news clearfix">
-                                                                    <%for (int i = 0; i < rowCategory.size(); i++) {
+                                                        <div class="col-md-4">
+                                                            <div class="sidebar">
+                                                                <div class="widget widget_search">
+                                                                    <form role="search" method="get" class="search-form" action="#">
+                                                                        <label>
+                                                                            <input type="search" class="search-field" id="search_in" placeholder="جستجو..." value="" name="s">
+                                                                        </label>
+                                                                        <input type="submit" class="search-submit" value="جستجو">
+                                                                    </form>
+                                                                </div>                                        
+                                                                <div class="widget widget-recent-news">
+                                                                    <h5 class="widget-title">اخبار منتشر شده</h5>
+                                                                    <ul class="popular-news clearfix">
+                                                                        <%for (int i = 0; i < rowCategory.size(); i++) {
 
-                                                                            jjCalendar_IR dateLableAr = new jjCalendar_IR(row.get(0).get(News._date).toString());
-                                                                            String monthAr = dateLableAr.getMonthName();
-                                                                            int dayAr = dateLableAr.getDay();
-                                                                            int yearAr = dateLableAr.getYear();
-                                                                    %>
+                                                                                jjCalendar_IR dateLableAr = new jjCalendar_IR(row.get(0).get(News._date).toString());
+                                                                                String monthAr = dateLableAr.getMonthName();
+                                                                                int dayAr = dateLableAr.getDay();
+                                                                                int yearAr = dateLableAr.getYear();
+                                                                        %>
 
-                                                                    <li>
+                                                                        <li>
                                                                             <div class="thumb">
                                                                                 <img src="upload/<%=rowCategory.get(i).get(News._pic)%>" style='height:70px;width:70px'>
                                                                             </div>
                                                                             <div class="text">
                                                                                 <p><%=dayAr + "" + monthAr + "," + yearAr%></p>
                                                                                 <h6>
-                                                                                    <a href="indexNews.jsp?idNews=<%=rowCategory.get(i).get(News._id)%>"><%=rowCategory.get(i).get(News._title)%></a>
+                                                                                    <a onclick="getNews(<%=rowCategory.get(i).get(News._id)%>)"><%=rowCategory.get(i).get(News._title)%></a>
                                                                                 </h6>
                                                                             </div>
-                                                                        
-                                                                    </li>
-                                                                    <%}%>
-                                                                </ul>
-                                                            </div>
-                                                            <!--                                                            <div class="widget widget_archive">
-                                                                                                                            <h5 class="widget-title">ارشو اخبار</h5>
-                                                                                                                            <ul class="unstyled">-->
-                                                            <%--     <%for (int i = 0; i < rowCategory.size(); i++) {
+
+                                                                        </li>
+                                                                        <%}%>
+                                                                    </ul>
+                                                                </div>
+                                                                <!--                                                            <div class="widget widget_archive">
+                                                                                                                                <h5 class="widget-title">ارشو اخبار</h5>
+                                                                                                                                <ul class="unstyled">-->
+                                                                <%--     <%for (int i = 0; i < rowCategory.size(); i++) {
 
                                                                             jjCalendar_IR dateLableAr = new jjCalendar_IR(rowCategory.get(i).get(News._date).toString());
                                                                             String monthAr = dateLableAr.getMonthName();
@@ -373,15 +375,16 @@
                                                                             System.out.println("++++" + result);
                                                                     %>
                                                                     <%}%>--%>
-                                                            <!--                                                                    <li><a href="#"> </a></li>
-                                                                                                                            </ul>
-                                                                                                                        </div>
-                                                            
-                                                                                                                    </div>-->
+                                                                <!--                                                                    <li><a href="#"> </a></li>
+                                                                                                                                </ul>
+                                                                                                                            </div>
+                                                                
+                                                                                                                        </div>-->
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                        </section>
+                                            </section>
+                                        </div>
                                     </div>
                                     <!--end link-->
 
@@ -597,65 +600,67 @@
                                                                                         <i class="fa fa-angle-up"></i>
                                                                                     </a>
                                                                                     <script>
+                                                                                        function getNews(id) {
+                                                                                            new jj("do=News.getContentNews&id=" + id + "&panel=swNews").jjAjax2(false);
+                                                                                        }
+                                                                                        (function () {
+                                                                                            var token = window.localStorage.getItem('user_token');
+                                                                                            if (token === null || token === '' || token === 'undefined') {
+                                                                                                $('.register_url').show();
+                                                                                            } else {
+                                                                                                $('.textlogin').show();
 
-                                                                        (function () {
-                                                                            var token = window.localStorage.getItem('user_token');
-                                                                            if (token === null || token === '' || token === 'undefined') {
-                                                                                $('.register_url').show();
-                                                                            } else {
-                                                                                $('.textlogin').show();
+                                                                                                new jj("do=Access_User.loginUserInHome&user_token=" + token + "&panel=userNameAfterLogin").jjAjax2(false);
 
-                                                                                new jj("do=Access_User.loginUserInHome&user_token=" + token + "&panel=userNameAfterLogin").jjAjax2(false);
+                                                                                            }
+                                                                                        }());
+                                                                                        //                                                                        $('.flat-iconbox-carosuel').owlCarousel({
+                                                                                        //                                                                            items: 4,
+                                                                                        //                                                                            loop: true,
+                                                                                        //                                                                            pagination: false,
+                                                                                        //                                                                            slideSpeed: 700,
+                                                                                        //                                                                            paginationSpeed: 700,
+                                                                                        //                                                                            rewindSpeed: 700,
+                                                                                        //                                                                            lazyLoad: true
+                                                                                        //                                                                        });
 
-                                                                            }
-                                                                        }());
-                                                                        //                                                                        $('.flat-iconbox-carosuel').owlCarousel({
-                                                                        //                                                                            items: 4,
-                                                                        //                                                                            loop: true,
-                                                                        //                                                                            pagination: false,
-                                                                        //                                                                            slideSpeed: 700,
-                                                                        //                                                                            paginationSpeed: 700,
-                                                                        //                                                                            rewindSpeed: 700,
-                                                                        //                                                                            lazyLoad: true
-                                                                        //                                                                        });
+                                                                                        function loadNews(id) {
+                                                                                            new jj("do=News.showNews&panel=sw&jj=1&id=" + id).jjAjax2(true);
+                                                                                            $("html, body").animate({scrollTop: 0}, "slow");
 
-                                                                        function loadNews(id) {
-                                                                            new jj("do=News.showNews&panel=sw&jj=1&id=" + id).jjAjax2(true);
-                                                                            $("html, body").animate({scrollTop: 0}, "slow");
+                                                                                        }
+                                                                                        function loadinformation(id) {
+                                                                                            new jj("do=News.showInfo&panel=sw&jj=1&id=" + id).jjAjax2(true);
+                                                                                            $("html, body").animate({scrollTop: 0}, "slow");
 
-                                                                        }
-                                                                        function loadinformation(id) {
-                                                                            new jj("do=News.showInfo&panel=sw&jj=1&id=" + id).jjAjax2(true);
-                                                                            $("html, body").animate({scrollTop: 0}, "slow");
-
-                                                                        }
-                                                                        $(document).ready(function () {
-                                                                            persian = {0: '۰', 1: '۱', 2: '۲', 3: '۳', 4: '۴', 5: '۵', 6: '۶', 7: '۷', 8: '۸', 9: '۹'};
-                                                                            function traverse(el) {
-                                                                                if (el.nodeType == 3) {
-                                                                                    var list = el.data.match(/[0-9]/g);
-                                                                                    if (list != null && list.length != 0) {
-                                                                                        for (var i = 0; i < list.length; i++)
-                                                                                            el.data = el.data.replace(list[i], persian[list[i]]);
-                                                                                    }
-                                                                                }
-                                                                                for (var i = 0; i < el.childNodes.length; i++) {
-                                                                                    traverse(el.childNodes[i]);
-                                                                                }
-                                                                            }
-                                                                            traverse(document.body);
-                                                                            $("#search_in").on("keyup", function () {
+                                                                                        }
+                                                                                        $(document).ready(function () {
+                                                                                            persian = {0: '۰', 1: '۱', 2: '۲', 3: '۳', 4: '۴', 5: '۵', 6: '۶', 7: '۷', 8: '۸', 9: '۹'};
+                                                                                            function traverse(el) {
+                                                                                                if (el.nodeType == 3) {
+                                                                                                    var list = el.data.match(/[0-9]/g);
+                                                                                                    if (list != null && list.length != 0) {
+                                                                                                        for (var i = 0; i < list.length; i++)
+                                                                                                            el.data = el.data.replace(list[i], persian[list[i]]);
+                                                                                                    }
+                                                                                                }
+                                                                                                for (var i = 0; i < el.childNodes.length; i++) {
+                                                                                                    traverse(el.childNodes[i]);
+                                                                                                }
+                                                                                            }
+                                                                                            traverse(document.body);
+                                                                                            $("#search_in").on("keyup", function () {
 //                                                                                SearchBtn();
-                                                                                var value = $(this).val().toLowerCase();
-                                                                                if ($("#search_in").length > 0) {
+                                                                                                var value = $(this).val().toLowerCase();
+                                                                                                if ($("#search_in").length > 0) {
 
-                                                                                    var text = new jj("#search_in").jjVal();
-                                                                                    if (text.length >= 5) {
-                                                                                        new jj("do=News.SearchNews&panel=sw&text=" + text + "").jjAjax2(false);
-                                                                                    }
-                                                                                }
-                                                                            });
-                                                                        });
+                                                                                                    var text = new jj("#search_in").jjVal();
+                                                                                                    if (text.length >= 5) {
+                                                                                                        new jj("do=News.SearchNews&panel=sw&text=" + text + "").jjAjax2(false);
+                                                                                                    }
+                                                                                                }
+                                                                                            });
+                                                                                        });
                                                                                     </script>
                                                                                     </body>      
                                                                                     </html>

@@ -39,6 +39,7 @@ public class Access_User {
     public static String _shomareShenasname = "user_shomareShenasname";
     public static String _passwordReminder = "user_passwordReminder";
     public static String _grade = "user_grade";
+    public static String _DiscountCodes = "user_DiscountCodes";
     ////برای عکس پرسنلی
     ///توسط شیران1
     public static String _attachPicPersonal = "user_attachPicPersonal";

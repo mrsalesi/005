@@ -1273,16 +1273,6 @@ function signInSite1() {
  * @returns {Boolean}
  */
 function signInHome() {
-
-    if ($('#emailInHome').val() === ("")) {
-        $("#emailInHome").css("border", "red dashed");
-        $("#loginMessagePanel").html("ایمیل  نباید تهی باشد.");
-        return false;
-    } else if ($('#passInHome').val() === ("")) {
-        $("#passInHome").css("border", "red dashed");
-        $("#loginMessagePanel").html("رمز عبور نباید تهی باشد.");
-        return false;
-    }
     $("#emailInHome").css("border", "none");
     $("#passInHome").css("border", "none");
     var param = "";
@@ -1294,10 +1284,8 @@ function signInHome() {
 //    var c = url.searchParams.get("url");
 //    param += "&url=" + c;
     new jj(param).jjAjax2(false);
-    setTimeout(function () {
-        var script = "index.jsp";
-        window.location.href = script;
-    }, 1000);
+    $("#swLoginForm").hide();
+    $("#sw").show();
 
     $("html, body").animate({scrollTop: 0}, "slow");
     return false;
@@ -1435,11 +1423,9 @@ function  sendEmailForgetPass() {
     var param = "";
     param += "do=Access_User.sendEmailForgetPass";
     param += "&email=" + $('#email').val();
-    new jj(param).jjAjax2(false);
-    setTimeout(function () {
-        var script = "index.jsp";
-        window.location.href = script;
-    }, 1000);
+  new jj(param).jjAjax2(false);
+    $("#swLoginForm").hide();
+    $("#sw").show();
     $("html, body").animate({scrollTop: 0}, "slow");
     return false;
 }
