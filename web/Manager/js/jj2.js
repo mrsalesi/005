@@ -2348,21 +2348,19 @@ var jj = function (selector) {
             }
         });
     };
-    this.jjAjaxFileUpload2 = function (inputFileId, inputTextSelector, viewImgSelector) {
-
-
+    this.jjAjaxFileUpload2 = function (inputFileId, inputTextSelector, inputFiletitle, viewImgSelector) {
         var btn = this.selector;
         $(btn).click(function () {
-            if ($("#" + inputFileId.replace("#", "")).val() == "") {
+            if ($("#" + inputFileId.replace("#", "").replace(",", "")).val() == "") {
                 alert(".ابتدا فایلی را انتخاب نمایید");
                 return;
             } else {
                 $(this).parent().parent().find('.form-control').html("");
-alert();
                 $.ajaxFileUpload({
                     url: 'UploadServlet',
                     secureuri: false,
-                    fileElementId: inputFileId.replace("#", ""),
+                    fileElementId: inputFileId.replace("#", "").replace(",", ""),
+                    fileElementTitle: inputFiletitle.replace("#", "").replace(",", ""),
                     dataType: 'JSON',
                     cache: false,
                     success: function (data) {
@@ -2374,17 +2372,20 @@ alert();
                             $("#" + viewImgSelector.replace("#", "")).attr("src", "img/preview.jpg");// بازگرداندن عکس پیشفرض در محل تصویر
                             $(this).remove();// پاک کردن خود تصویر
                         });
-                        new jj(data).jjModal('فایل بدرستی بارگذاری شد');
-                        data = data == null ? "" : data;
+                        new jj(data.replace(",", "")).jjModal('فایل بدرستی بارگذاری شد');
+                        $(inputFiletitle).val(data.replace(",", ""));// گذاشتن اسم عکس مورد نظر
+                        data = data.replace(",", "") == null ? "" : data.replace(",", "");
+                        var param = "";
+                        param += "&title=" + $("#" + inputFiletitle.replace("#", "").replace(",", "")).val();
+                        param += "&filename=" + data.replace(",","");        
+                        param += "&do=Upload.setTitle";
+                        new jj(param).jjAjax2(false);
 //                                                                data = data.replace("<PRE>", '').replace("</PRE>", '').replace("<pre>", '').replace("</pre>", '').replace("upload/", '').replace("Upload/", '');
 //                                                                data = data.replace("/", '').replace("/", '').replace("\\", '');
                         if ((data != "")) {
                             $("#" + inputFileId.replace("#", "")).val('');
-
                             if (data != "big") {
                                 $(inputTextSelector).val(data);
-
-
                                 if (viewImgSelector != null) {
                                     $(viewImgSelector).attr('src', 'upload/' + data);
                                 }
