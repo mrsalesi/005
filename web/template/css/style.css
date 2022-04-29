@@ -145,7 +145,7 @@ textarea,input[type=text],input[type=submit],input[type=password],input[type=dat
 #mainnav-mobi .mega-menu .widget.widget_recent_entries .post-date:before{color:#333}
 #mainnav-mobi .mega-menu .flat-imagebox .imagebox{margin-left:50px}
 .page-title{position:relative;padding:100px 0}
-.page-title-heading h1{text-align:right;color:#fff;text-transform:uppercase;font-weight:700;letter-spacing:1px;font-size:42px}
+.page-title-heading h1{text-align:right;color:#fff;text-transform:uppercase;font-weight:700;letter-spacing:1px;font-size:2.3em}
 .page-title .overlay,.parallax .overlay{position:absolute;left:0;top:0;width:100%;height:100%;background: #333 url("../img/pattern.png") repeat 50% 22px;   
 ;-ms-filter:"alpha(opacity=80)";filter:alpha(opacity=80);opacity:.8}
 .breadcrumbs ul{padding-top:10px}

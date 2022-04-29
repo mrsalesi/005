@@ -169,7 +169,7 @@
                                                                         List<Map<String, Object>> row9 = jjDatabase.separateRow(db.Select(Content.tableName, Content._category_id + "=" + row10.get(o).get(Category_Content._id)));
                                                                         for (int b = 0; b < row9.size(); b++) {
                                                                     %>
-                                                                    <li><a  onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false"><%=row9.get(b).get(Content._title)%></a></li> 
+                                                                    <li><a  onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;"><%=row9.get(b).get(Content._title)%></a></li> 
                                                                         <%}%>
 
                                                                 </ul>
@@ -180,7 +180,7 @@
                                                     </div>
                                                 </div>
                                             </li>
-                                            <li><a  onclick="new jj('do=Content.sw&panel=sw&text=تیم شرکت&jj=1').jjAjax2();return false">تیم شرکت</a></li>
+                                            <li><a  onclick="new jj('do=Content.sw&panel=sw&text=تیم شرکت&jj=1').jjAjax2();return false;">تیم شرکت</a></li>
                                             <li><a  onclick="$('#sw').load('gallery.jsp')">گالری</a></li>
                                             <!--                                                                    <li><a >خدمات</a> </li>-->
                                             <li><a  onclick="new jj('do=Content.sw&panel=sw&text=درباره ی ما&jj=1').jjAjax2()">درباره ی شرکت </a></li>
@@ -277,7 +277,7 @@
                                                     <%if (j == 3) {%>
                                                     <i class="fa fa-building"></i>
                                                     <%}%>
-                                                    <div class="box-title"><a onclick="sw($(this).html());return false"><%=row.get(j).get(Content._title)%></a></div>
+                                                    <div class="box-title"><a onclick="sw($(this).html());return false;"><%=row.get(j).get(Content._title)%></a></div>
                                                 </div>
                                                 <%=row.get(j).get(Content._explain)%>                                                                    
                                             </div>
@@ -606,7 +606,7 @@
         <!--end footer-->
         <div class="switcher-container">
             <h2>
-                انتخاب رنگ<a href="" class="sw-click">
+                انتخاب رنگ<a class="sw-click">
                     <i class="fa fa-cog">
                     </i>
                 </a>
@@ -705,11 +705,10 @@
                     <h4 class="widget-title">صفحات</h4>
                     <ul>
                         <li><a href="index.jsp">صفحه اصلی</a></li>
-                        <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false">پروژه های شرکت</a></li>
-                        <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false">خدمات</a></li>
-                        <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false">گالری</a></li>
-                        <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false">تماس با ما</a></li>
-                        <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false">درباره ما</a></li>
+                        <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;">پروژه های شرکت</a></li>
+                        <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;">گالری</a></li>
+                        <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;">تماس با ما</a></li>
+                        <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;">درباره ما</a></li>
                     </ul>
                 </div>
             </div>

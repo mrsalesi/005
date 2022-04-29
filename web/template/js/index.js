@@ -3795,7 +3795,7 @@ function slidersite3() {
 //    picSlipprySlider(setting_pic_slider_responsive_panel, setting_pic_slider_delay);
 }
 function getNews() {
-    new jj("do=Content.getContentAsnews&panel=jjNews&jj=1").jjAjax2();
+    new jj("do=Content.getContentAsnews&panel=jjNews&jj=1").jjAjax2(true);
 }
 function login_mstid() {
     var name = $("#user_name").val();

@@ -729,39 +729,39 @@ public class News {
             int visit = Integer.parseInt(row.get(0).get(_visit).toString()) + 1;
             map.put(_visit, visit);
             db.update(Journal.tableName, map, _id + "=" + id);
-             jjCalendar_IR dateLable = new jjCalendar_IR(row.get(0).get(News._date).toString());
-                                                            String month = dateLable.getMonthName();
-                                                            int day = dateLable.getDay();
-                                                            int year = dateLable.getYear();
+            jjCalendar_IR dateLable = new jjCalendar_IR(row.get(0).get(News._date).toString());
+            String month = dateLable.getMonthName();
+            int day = dateLable.getDay();
+            int year = dateLable.getYear();
             html.append("<div class='post-wrap'>");
-                     html.append("<article class='post clearfix'>");
-                     html.append("<div class='featured-post'>\n");
-                     html.append("<img src='upload/"+row.get(0).get(News._pic)+"' alt='"+row.get(0).get(News._title)+"' style='width: 100%;height: 400px'>");
-                     html.append("<ul class='post-comment'>");
-                     html.append("<li class='date'>");
-                     html.append("<span class='day'>"+day+"</span>");
-                     html.append("</li>");
-                     html.append("<li class='comment'>");
-                     html.append(month);
-                     html.append("</li>");
-                     html.append("</ul>");
-                     html.append("</div>");
-                     html.append("<div class='content-post'>\n");
-                     html.append("<h2 class='title-post'><a href=''>"+row.get(0).get(News._title)+"</a></h2>");
-                     html.append("<ul class='meta-post clearfix'>");
-                     html.append("<li class='author'>");
-                     html.append("<a href=''></a>");
-                     html.append("</li>");
-                     html.append("<li class='vote'>");
-                     html.append("<a href=''>"+row.get(0).get(News._visit)+"</a>");
-                     html.append("</li>");
-                     html.append("</ul>");
-                     html.append("<div class='entry-post excerpt'>\n");
-                     html.append("<p>"+row.get(0).get(News._content)+"</p>");
-                     html.append("</div>");
-                     html.append("</div>");
-                     html.append("</article>");
-                     html.append("</div>");
+            html.append("<article class='post clearfix'>");
+            html.append("<div class='featured-post'>\n");
+            html.append("<img src='upload/" + row.get(0).get(News._pic) + "' alt='" + row.get(0).get(News._title) + "' style='width: 100%;height: 400px'>");
+            html.append("<ul class='post-comment'>");
+            html.append("<li class='date'>");
+            html.append("<span class='day'>" + day + "</span>");
+            html.append("</li>");
+            html.append("<li class='comment'>");
+            html.append(month);
+            html.append("</li>");
+            html.append("</ul>");
+            html.append("</div>");
+            html.append("<div class='content-post'>\n");
+            html.append("<h2 class='title-post'><a href=''>" + row.get(0).get(News._title) + "</a></h2>");
+            html.append("<ul class='meta-post clearfix'>");
+            html.append("<li class='author'>");
+            html.append("<a href=''></a>");
+            html.append("</li>");
+            html.append("<li class='vote'>");
+            html.append("<a href=''>" + row.get(0).get(News._visit) + "</a>");
+            html.append("</li>");
+            html.append("</ul>");
+            html.append("<div class='entry-post excerpt'>\n");
+            html.append("<p>" + row.get(0).get(News._content) + "</p>");
+            html.append("</div>");
+            html.append("</div>");
+            html.append("</article>");
+            html.append("</div>");
 
             html.append("</div></div></div>");
             String panel = jjTools.getParameter(request, "panel");
@@ -927,7 +927,7 @@ public class News {
             }
 
             //---------------one news post creation
-                 /*لیست اخبار را بر میگرداند*/
+            /*لیست اخبار را بر میگرداند*/
             StringBuilder temphtml = new StringBuilder();//for Div,Span and other Html elements
             temphtml.append("<div id='swTopNewsDiv' class='topNewsDiv'>");
             if (topNewsRow.isEmpty()) {
@@ -1333,7 +1333,7 @@ public class News {
                     html.append("<div class=\"post-wrap\">\n"
                             + "                                                            <article class=\"post clearfix\">\n"
                             + "                                                                <div class=\"featured-post\">\n"
-                            + "                                                                    <img src='upload/" + rowNews.get(i).get(News._pic) + "' alt=\"image\" style=\"width: 100%;height: 400px\">\n"
+                            + "                                                                    <img src='upload/" + rowNews.get(i).get(News._pic) + "' alt=\"" + rowNews.get(i).get(News._title) + "\" style=\"width: 10em;max-height: 400px\">\n"
                             + "                                                                        <ul class=\"post-comment\">\n"
                             + "                                                                            <li class=\"date\">\n"
                             + "                                                                                <span class=\"day\">" + day + "</span>\n"
@@ -1341,21 +1341,25 @@ public class News {
                             + "                                                                            <li class=\"comment\">\n"
                             + "                                                                                " + month + "\n"
                             + "                                                                            </li>\n"
+                            + "                                                                            <li class=\"comment\">\n"
+                            + "                                                                                " + year + ""
+                            + "                                                                            </li>\n"
                             + "                                                                        </ul>\n"
                             + "                                                                </div>\n"
                             + "                                                                <div class=\"content-post\">\n"
-                            + "                                                                    <h2 class=\"title-post\"><a href=\"\">" + rowNews.get(i).get(News._title) + "></a></h2>\n"
+                            + "                                                                    <h2 class=\"title-post\"><a href=\"indexNews.jsp?idNews=" + rowNews.get(i).get(News._id) + "\">" + rowNews.get(i).get(News._title) + "></a></h2>\n"
                             + "                                                                    <ul class=\"meta-post clearfix\">\n"
                             + "                                                                        <li class=\"author\">\n"
-                            + "                                                                            <a href=\"#\">admin</a>\n"
+                            + "                                                                            <a>admin</a>\n"
                             + "                                                                        </li>\n"
                             + "\n"
                             + "                                                                        <li class=\"vote\">\n"
-                            + "                                                                            <a href=\"#\">" + rowNews.get(i).get(News._visit) + "</a>\n"
+                            + "                                                                            <a>" + rowNews.get(i).get(News._visit) + "</a>\n"
                             + "                                                                        </li>\n"
                             + "                                                                    </ul>\n"
                             + "                                                                    <div class=\"entry-post excerpt\">\n"
-                            + "                                                                        <p>" + rowNews.get(i).get(News._content) + "</p>\n"
+                            + "                                                                        <p>" + rowNews.get(i).get(News._abstract) + "</p>\n"
+                            + "                                                                    <a href=\"indexNews.jsp?idNews=" + rowNews.get(i).get(News._id) + "\">بیشتر ...</a>\n"
                             + "                                                                    </div>\n"
                             + "                                                                </div>\n"
                             + "                                                            </article>\n"
