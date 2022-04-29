@@ -21,7 +21,7 @@ import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
 public class Content {
-
+    
     public static String tableName = "content";
     public static String _id = "id";
     public static String _title = "content_title";
@@ -269,7 +269,7 @@ public class Content {
             return Server.ErrorHandler(ex);
         }
     }
-
+    
     public static String add_new(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isFromClient) throws Exception {
         try {
             StringBuilder html = new StringBuilder();
@@ -289,7 +289,7 @@ public class Content {
             return Server.ErrorHandler(ex);
         }
     }
-
+    
     public static String getProjectInfo(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isFromClient) throws Exception {
         try {
             StringBuilder html = new StringBuilder();
@@ -327,7 +327,7 @@ public class Content {
             return Server.ErrorHandler(ex);
         }
     }
-
+    
     public static String insert(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isFromClient) throws Exception {
         try {
             if (!Access_User.hasAccess(request, db, rul_ins)) {
@@ -412,7 +412,7 @@ public class Content {
             return Server.ErrorHandler(ex);
         }
     }
-
+    
     public static String edit(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isFromClient) throws Exception {
         try {
             resetCatchContentTitle(request, _content, db, isFromClient);
@@ -426,7 +426,7 @@ public class Content {
             if ("1".equalsIgnoreCase(row.get(0).get(_isEditableOnlyByOwner).toString()) && !userId.equalsIgnoreCase(row.get(0).get(_ownerId).toString())) {
                 return Js.dialog("این محتوا فقط توسط ایجاد کننده قابل ویرایش است");
             }
-
+            
             resetCatchContentTitle(request, _content, db, isFromClient);
             Map<String, Object> map = new HashMap();
             System.out.println(jjTools.getParameter(request, _hasInContentAutoWiki));
@@ -499,7 +499,7 @@ public class Content {
             return Server.ErrorHandler(ex);
         }
     }
-
+    
     public static String delete(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isFromClient) throws Exception {
         try {
             resetCatchContentTitle(request, _content, db, isFromClient);
@@ -515,7 +515,7 @@ public class Content {
                 }
                 return Js.dialog(errorMessageId);
             }
-
+            
             List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, _id + "=" + id));
             if (!row.isEmpty()) {
                 String[] list = new File(request.getServletContext().getRealPath("/upload")).list();
@@ -535,7 +535,7 @@ public class Content {
             return Server.ErrorHandler(ex);
         }
     }
-
+    
     public static String select(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isFromClient) throws Exception {
         try {
             String id = jjTools.getParameter(request, _id);
@@ -555,7 +555,7 @@ public class Content {
                 return Js.dialog(errorMessage);
             }
             StringBuilder script = new StringBuilder();
-
+            
             script.append(Js.setVal("#" + tableName + "_" + _id, row.get(0).get(_id)));
             Object title = row.get(0).get(_title);
             if (title != null) {
@@ -583,7 +583,7 @@ public class Content {
             script.append(Js.setValSummerNote("#" + _content, row.get(0).get(_content)));
             Integer visit = Integer.valueOf(row.get(0).get(_visit).toString());
             script.append(Js.setVal("#" + _visit, visit));
-
+            
             if (visit < 0) {//That means it is disabled now and it has been enabled
                 script.append(Js.setVal("#" + _visit + "_checkbox", 0));
                 script.append(Js.setAttr("#" + _visit, "disabled", "true"));
@@ -609,12 +609,12 @@ public class Content {
                 script.append(Js.setVal("#" + _disLikes + "_checkbox", 1));
                 script.append(Js.removeAttr("#" + _disLikes, "disabled"));
             }
-
+            
             script.append(Js.setVal("#" + _userCommensIsActive, row.get(0).get(_userCommensIsActive)));
             script.append(Js.setVal("#" + _target, row.get(0).get(_target)));
             script.append(Js.setVal("#" + _isEditableOnlyByOwner, row.get(0).get(_isEditableOnlyByOwner)));
             script.append(Js.setVal("#" + _ownerId, row.get(0).get(_ownerId)));
-
+            
             script.append(Js.setVal("#" + _isAjax, row.get(0).get(_isAjax)));
             script.append(Js.setHtml("#" + _link, "Server?do=Content.sw&text=" + title));
             script.append(Js.setVal("#" + _hasLink, row.get(0).get(_hasLink)));
@@ -643,7 +643,7 @@ public class Content {
                 }
                 script.append(Js.setHtml("#Content_button", htmlBottons));
             }
-
+            
             Server.outPrinter(request, response, script.toString());
             return "";
         } catch (Exception ex) {
@@ -651,7 +651,7 @@ public class Content {
             return "";
         }
     }
-
+    
     public static String add_EN(HttpServletRequest request, jjDatabaseWeb db, boolean isFromClient) throws Exception {
         try {
             String id = jjTools.getParameter(request, _id);
@@ -693,7 +693,7 @@ public class Content {
             return Server.ErrorHandler(ex);
         }
     }
-
+    
     public static String add_Ar(HttpServletRequest request, jjDatabaseWeb db, boolean isFromClient) throws Exception {
         try {
             String id = jjTools.getParameter(request, _id);
@@ -800,7 +800,7 @@ public class Content {
             return Server.ErrorHandler(ex);
         }
     }
-
+    
     public static String getSomeTitle(HttpServletRequest request, jjDatabaseWeb db, boolean isFromClient) throws Exception {
         try {
             StringBuffer html = new StringBuffer();
@@ -819,7 +819,7 @@ public class Content {
             return Server.ErrorHandler(ex);
         }
     }
-
+    
     public static String searchTextInTitle(HttpServletRequest request, jjDatabaseWeb db, boolean isFromClient) throws Exception {
         try {
             StringBuffer html = new StringBuffer();
@@ -841,7 +841,7 @@ public class Content {
             return Server.ErrorHandler(ex);
         }
     }
-
+    
     public static String searchTextInAll(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isFromClient) throws Exception {
         try {
             StringBuffer html = new StringBuffer();
@@ -890,7 +890,7 @@ public class Content {
             return "";
         }
     }
-
+    
     public static String swtest(HttpServletRequest request, jjDatabaseWeb db, boolean isFromClient) throws Exception {
         return "0000000000000000000000000000000000000000";
     }
@@ -913,7 +913,7 @@ public class Content {
             ServerLog.Print("========== id" + text);
             ServerLog.Print(jjTools.getParameter(request, "jj"));
             String lang = jjTools.getSessionAttribute(request, "myLang");
-
+            
             List<Map<String, Object>> swContent = new ArrayList<Map<String, Object>>();
             if (jjNumber.isDigit(text)) {
                 swContent = jjDatabase.separateRow(db.Select(tableName, _id + "=" + text + " AND " + _lang + " = '" + lang + "'"));
@@ -938,7 +938,7 @@ public class Content {
             return Server.ErrorHandler(ex);
         }
     }
-
+    
     public static String sw(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean needHtml) throws Exception {
         try {
             System.out.println(".............0.............2.............");
@@ -976,7 +976,7 @@ public class Content {
                 if (!userAccess) {
                     List<Map<String, Object>> swGroup = jjDatabase.separateRow(db.Select(Access_Group_User.tableName, Access_Group_User._user_id + "=" + userId));
                     String swContentPriveteGroups = "," + swContent.get(0).get(_privateGroupId).toString() + ",";//
-                    if (swContentPriveteGroups.contains(",ALL,") && swGroup.size() > 0) {//اگر محتوای مورد نظر دسترسی همه گروه ها را داشت و کاربر جداقل عضو یک گروه باشد باید دسترسی بدهیم
+                    if ((swContentPriveteGroups.contains(",ALL,") && swGroup.size() > 0) || swContentPriveteGroups.contains(",0,")) {//اگر محتوای مورد نظر دسترسی همه گروه ها را داشت و کاربر جداقل عضو یک گروه باشد باید دسترسی بدهیم
                         userAccess = true;
                     }
                     for (int i = 0; i < swGroup.size() && userAccess == false; i++) {//وقتی نتیجه مثبت بود از جلقه حارج شود چون دسترسی مجاز است و ادامه لازم نیست
@@ -1034,7 +1034,7 @@ public class Content {
                     request.setAttribute(_userCommensIsActive, swContent.get(0).get(_userCommensIsActive).toString());
                     if (!needHtml) {
                         System.out.println(".............1.............1.............");
-
+                        
                         String page = swContent.get(0).get(_content_page).toString();
                         if (page.equals("")) {
                             request.getRequestDispatcher(Server.contentJSP).forward(request, Server.Publicresponse);
@@ -1075,7 +1075,7 @@ public class Content {
             return "";
         }
     }
-
+    
     public static String getDashbord(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean needHtml) throws Exception {
         try {
             String text;
@@ -1161,7 +1161,7 @@ public class Content {
             return "";
         }
     }
-
+    
     public static String swContentMobile(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean needHtml) throws Exception {
         try {
 //            if ((jjTools.getSessionAttribute(request, "#ID")).equals("")) {
@@ -1181,11 +1181,11 @@ public class Content {
             return "";
         }
     }
-
+    
     public static String swPrivate(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean needHtml) throws Exception {
         try {
             if ((jjTools.getSessionAttribute(request, "#ID")).equals("")) {
-
+                
             } else {
                 String text = "";
                 String panel = "";
@@ -1265,14 +1265,14 @@ public class Content {
 //        context.setAttribute("catchContentTitle", jjDatabase.separateRow(db.Select(tableName, _lang + " = " + lang + " AND " + _hasLink + " =1")));
         context.setAttribute("catchContentTitle", jjDatabase.separateRow(db.Select(tableName, _title + "," + _id + "," + _isAjax, _hasLink + "=1", "CHAR_LENGTH(" + _title + ")DESC")));
     }
-
+    
     public static void resetCatchProductTitle(HttpServletRequest request, String content, jjDatabaseWeb db, boolean isFromClient) {
         ServletContext context = request.getSession().getServletContext();//ست کردن متغیر هایی در اسکوپ اپلیکیشن برای اینکه همه کاربر ها بتوانند از این متغیر ها استفاده کنند
         ServerLog.Print("===>>>>>resetCatchProductTitle" + context.getContextPath() + context.getServerInfo());
         String lang = "1";// زبان را باید دقت کنیم بعدا درست باشد یعنی برای هر زبان یک متغیر در اسکوپ اپلیکیشن می خواهیم
         context.setAttribute("catchProductTitle", jjDatabase.separateRow(db.Select(Product.tableName, Product._lang + " = " + lang + " AND " + Product._hasLink + " =1")));
     }
-
+    
     public static List<Map<String, Object>> getCatchContentTitle(HttpServletRequest request, String content, jjDatabaseWeb db, boolean isFromClient) {
         ServletContext context = request.getSession().getServletContext();//ست کردن متغیر هایی در اسکوپ اپلیکیشن برای اینکه همه کاربر ها بتوانند از این متغیر ها استفاده کنند
         if (context.getAttribute("catchContentTitle") == null) {
@@ -1280,7 +1280,7 @@ public class Content {
         }
         return (List<Map<String, Object>>) context.getAttribute("catchContentTitle");
     }
-
+    
     public static List<Map<String, Object>> getCatchProductTitle(HttpServletRequest request, String content, jjDatabaseWeb db, boolean isFromClient) {
         ServletContext context = request.getSession().getServletContext();//ست کردن متغیر هایی در اسکوپ اپلیکیشن برای اینکه همه کاربر ها بتوانند از این متغیر ها استفاده کنند
         if (context.getAttribute("catchProductTitle") == null) {
@@ -1305,7 +1305,7 @@ public class Content {
         //این تابع خوب است تایمیر   داشته باشد که مثلا ده ثانیه صبر کند و بعد این عمل را انجام دهد که عمل ویرایرش در نظر کاربر کند نباشد
         System.out.println("");
     }
-
+    
     public static String ConvertToWiki(HttpServletRequest request, String content, jjDatabaseWeb db, boolean isFromClient) throws Exception {
         try {
             content = content.replaceAll("&lt;", "&_l_t_;");
@@ -1335,7 +1335,7 @@ public class Content {
                                         + "'  target='_blank' class='p jjLink hoverAutoWiki' >"
                                         + ti + "</a>"));
                             }
-
+                            
                         }
                     }
                 }
@@ -1374,7 +1374,7 @@ public class Content {
             while (matcher.find()) {
                 listMatches.add(matcher.group(0));
             }
-
+            
             for (int j = 0; j < listMatches.size(); j++) {
                 content = content.replace(listMatches.get(j), listMatches.get(j).replaceFirst("<a href=[\"'][a-zA-Z\\?=\\.&0-9'\"\\s\\(\\);>ا-ی]*>", "").replace("</a>", ""));
             }
@@ -1399,7 +1399,7 @@ public class Content {
             return Server.ErrorHandler(ex);
         }
     }
-
+    
     public static String searchTags(HttpServletRequest request, jjDatabaseWeb db, boolean isFromClient) throws Exception {
         try {
             StringBuilder html = new StringBuilder();
@@ -1523,7 +1523,7 @@ public class Content {
 //        Server.outPrinter(request, response, html.toString());
         return html.toString();
     }
-
+    
     public static String getNews(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
         try {
             StringBuffer html = new StringBuffer();
@@ -1553,7 +1553,7 @@ public class Content {
                         + "                    </div>");
                 html.append("</div>");
             }
-
+            
             html.append("<div class='col-12' style='margin-top: 10px;height:55px;'></div>");
             if (panel.equals("")) {
                 panel = "sw";
@@ -1644,11 +1644,11 @@ public class Content {
             return "";
         }
     }
-
+    
     public static String swPublicLearning(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean needHtml) throws Exception {
         try {
             StringBuilder html = new StringBuilder();
-
+            
             List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, _category_id + "=3"));
             html.append("<section class='page-section ' id='portfolio'>\n"
                     + "            <div class='container'>\n"
@@ -1678,19 +1678,19 @@ public class Content {
             return "";
         }
     }
-
+    
     public static String swPrivateLearning(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean needHtml) throws Exception {
         try {
             StringBuilder html = new StringBuilder();
             List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, "*", _category_id + "=4"));
-
+            
             html.append("<section class='page-section ' id='portfolio'>\n"
                     + "            <div class='container'>\n"
                     + "                <div class='text-center'>\n"
                     + "                    <h2 class='text-uppercase' style='color:white;text-shadow:0 0 10px #000'>مطالب ویژه شما</h2>\n"
                     + "                </div>\n"
                     + "                <div class='row'>");
-
+            
             for (int i = 0; i < row.size(); i++) {
                 boolean flag = false;
                 boolean flag2 = false;
@@ -1797,7 +1797,7 @@ public class Content {
      */
     public static String getHtml(HttpServletRequest request, HttpServletResponse response, String title, jjDatabaseWeb db) throws Exception {
         try {
-
+            
             String lang = jjTools.getLangNum(request);//'کد زبان اگر تهی بود یک بر میگرداند
             List<Map<String, Object>> swContent;
             if (jjNumber.isDigit(title)) {
@@ -1807,7 +1807,7 @@ public class Content {
                 swContent = jjDatabase.separateRow(db.Select(tableName, _title + "='" + title + "'" + " AND " + _lang + "='" + lang + "'"));
             }
             if (swContent.size() > 0) {
-
+                
                 String content;
                 if ("1".equals(swContent.get(0).get(_hasInContentAutoWiki).toString())) {// اگر در محتوایش بایدلینک های  اتو ویکی داشته باشد
                     if ("1".equals(swContent.get(0).get(_autoWikIsUpdate).toString())) {//اگر اتو ویکی اش آپدیت بود
@@ -1823,7 +1823,7 @@ public class Content {
                 } else {//اگر محتوا نباید حاوی لینک های اتو ویکی باشد
                     content = swContent.get(0).get(_content).toString();
                 }
-
+                
                 return content;
             } else {
                 String errorMessage = Language.getSentense(Language._recordNotAvalable, lang, db);

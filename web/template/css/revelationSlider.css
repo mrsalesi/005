@@ -2487,6 +2487,7 @@ zoom: 1;
 	/*font-family: "Poppins", sans-serif;*/
 	font-size: 4em;
     color: rgb(255, 255, 255);
+    background-color: #1e1c1c70;
     text-shadow: rgba(0, 0, 0, 0.247059) 0px 2px 3px;
     transition: none;
     line-height: 66px;

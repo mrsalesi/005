@@ -89,7 +89,7 @@
 }
 
 .flat-button.radius {
-    background-color: transparent;
+    background-color: #403e3e7d;
     padding: 15px 42px;
     border-radius: 50px;
     border-color: #eab702;

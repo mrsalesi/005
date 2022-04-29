@@ -97,8 +97,8 @@
             </style>
     </head>
     <body class="header_sticky" style="font-family: vazir3">
-        <section class="loading-overlay">
-            <div class="Loading-Page">
+        <section class="loading-overlay ajaxLoaderDiv" style="position: absolute; margin: auto; display: inline-flex">
+            <div class="Loading-Page" style="margin: auto;width: 100px;max-width: 100%;overflow: hidden;">
                 <h2 class="loader">درحال بارگیری</h2>
             </div>
         </section>
@@ -115,7 +115,7 @@
                         <div class="col-md-6">
                             <div class="social-links">
                                 <a href="">
-                                    <a  class="register_url flat-button button-color button-normal yellow " style="" onclick='$("#swLoginForm").load("login.html"), $("#sw").hide()'>ثبت نام/ورود</a>
+                                    <a  class="register_url flat-button button-color button-normal yellow " style="" onclick='$("#sw").load("login.html");'>ثبت نام/ورود</a>
                                     <a id="userNameAfterLogin" class="textlogin" style=""></a>
                                 </a>
                                 <a href=""><i class="fa fa-twitter"></i></a>
@@ -180,18 +180,18 @@
                                                     </div>
                                                 </div>
                                             </li>
-                                            <li><a href="#" onclick="new jj('do=Content.sw&panel=sw&text=تیم شرکت&jj=1').jjAjax2();return false">تیم شرکت</a></li>
-                                            <li><a href="#" onclick="$('#sw').load('gallery.jsp')">گالری</a></li>
-                                            <!--                                                                    <li><a href="#">خدمات</a> </li>-->
-                                            <li><a href="#" onclick="new jj('do=Content.sw&panel=sw&text=درباره ی ما&jj=1').jjAjax2()">درباره ی شرکت </a></li>
-                                            <li><a href="#" onclick="new jj('do=Content.sw&panel=sw&text=تماس با ما&jj=1').jjAjax2()">تماس با ما</a></li>
+                                            <li><a  onclick="new jj('do=Content.sw&panel=sw&text=تیم شرکت&jj=1').jjAjax2();return false">تیم شرکت</a></li>
+                                            <li><a  onclick="$('#sw').load('gallery.jsp')">گالری</a></li>
+                                            <!--                                                                    <li><a >خدمات</a> </li>-->
+                                            <li><a  onclick="new jj('do=Content.sw&panel=sw&text=درباره ی ما&jj=1').jjAjax2()">درباره ی شرکت </a></li>
+                                            <li><a  onclick="new jj('do=Content.sw&panel=sw&text=تماس با ما&jj=1').jjAjax2()">تماس با ما</a></li>
 
                                         </ul>
                                     </nav>
                                 </div>
                                 <ul class="menu menu-extra" style="">
                                     <li class="off-canvas-toggle">
-                                        <a href="#"><i class="fa fa-bars"></i></a>
+                                        <a ><i class="fa fa-bars"></i></a>
                                     </li>
 
                                 </ul><!--
@@ -207,12 +207,11 @@
                 </div>
             </header>
             <div id="swLoginForm"></div>
+            <div id="maincontent">
             <div id="sw">
                 <!--start slider-->
-
                 <%
                     List<Map<String, Object>> slider = jjDatabase.separateRow(db.Select(Pic.tableName, Pic._category_id + "=1"));
-
                 %>
                 <div class="tp-banner-container" id="home">
                     <div class="tp-banner">
@@ -227,8 +226,14 @@
                                 <div class="tp-caption sfr desc-slide center" data-x="40" data-y="240" data-speed="1000" data-start="1500" data-easing="Power3.easeInOut">
                                     <%=slider.get(i).get(Pic._discription)%>
                                 </div>
-                                <div class="tp-caption sfl flat-button-slider bg-button-slider-32bfc0" data-x="40" data-y="370" data-speed="1000" data-start="2000" data-easing="Power3.easeInOut"><a href="#">بیشتر بخوانید</a> &nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-chevron-right"></i></div>
-                                <div class="tp-caption sfr flat-button-slider" data-x="225" data-y="370" data-speed="1000" data-start="2000" data-easing="Power3.easeInOut"><a href="#">تماس با ما</a>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-chevron-right"></i></div>
+                                <%
+                                    if (!slider.get(i).get(Pic._title).toString().trim().isEmpty()) {
+                                %>
+                                <div class="tp-caption sfl flat-button-slider bg-button-slider-32bfc0" data-x="40" data-y="370" data-speed="1000" data-start="2000" data-easing="Power3.easeInOut"><a onclick="sw('<%=slider.get(i).get(Pic._title)%>');">بیشتر بخوانید</a> &nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-chevron-right"></i></div>
+                                    <%
+                                        }
+                                    %>
+                                <div class="tp-caption sfl flat-button-slider bg-button-slider-32bfc0" data-x="225" data-y="370" data-speed="1000" data-start="2000" data-easing="Power3.easeInOut"><a onclick="sw('تماس با ما')">تماس با ما</a>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-chevron-right"></i></div>
                             </li>
                             <%}%>
 
@@ -315,20 +320,20 @@
                                     if (count <= 2) {
                                         htmlNews.append("<div class='col-md-6 col-lg-6 col-sm-6 col-xs-12'>"
                                                 + "<a href='indexNews.jsp?idNews=" + journalNews.get(i).get(News._id) + "'><div class='post-wrap'   onclick='loadinformation(" + journalNews.get(i).get(News._id) + ")'>"
-                                                        + "<article class='post clearfix'><div class='featured-post' style='width:100%;height:200px'>"
-                                                        + "<img style='width:100% !important;height:200px !important' src='upload/" + journalNews.get(i).get(News._pic) + "' alt='image'>"
-                                                                + "</div><div class='content-post' style='display: grid;'><h3 class='title-post'>"
-                                                                + "<a href='indexNews.jsp?idNews=" + journalNews.get(i).get(News._id) + "'>" + journalNews.get(i).get(News._title) + "</a></h3><div class='entry-post excerpt' style='font-size: 12px !important;line-height: 23px !important;'><p >" + journalNews.get(i).get(News._abstract) + "</p></div></div></article></div></a></div>");
+                                                + "<article class='post clearfix'><div class='featured-post' style='width:100%;height:200px'>"
+                                                + "<img style='width:100% !important;height:200px !important' src='upload/" + journalNews.get(i).get(News._pic) + "' alt='image'>"
+                                                + "</div><div class='content-post' style='display: grid;'><h3 class='title-post'>"
+                                                + "<a href='indexNews.jsp?idNews=" + journalNews.get(i).get(News._id) + "'>" + journalNews.get(i).get(News._title) + "</a></h3><div class='entry-post excerpt' style='font-size: 12px !important;line-height: 23px !important;'><p >" + journalNews.get(i).get(News._abstract) + "</p></div></div></article></div></a></div>");
 
                                     } else {
                                         htmlNews2.append("<div class='col-md-12 col-lg-12 col-sm-6 col-xs-12'>"
                                                 + "<a href='indexNews.jsp?idNews=" + journalNews.get(i).get(News._id) + "'>"
                                                 + "<li class='information' onclick='textNews(" + journalNews.get(i).get(News._id) + ")'>"
-                                                        + "<div class='thumb' style='width:200px;height:120px'><img style='width:100%;height:120px' src='upload/" + journalNews.get(i).get(News._pic) + "' alt='image'>"
-                                                                + "</div>"
-                                                                + "<div class='text'><h3>" + journalNews.get(i).get(News._title) + "</h3><h6 style='font-size: 12px;'>" + journalNews.get(i).get(News._abstract) + "</h6>"
-                                                                        + "</div></li></a>"
-                                                                        + "</div>");
+                                                + "<div class='thumb' style='width:200px;height:120px'><img style='width:100%;height:120px' src='upload/" + journalNews.get(i).get(News._pic) + "' alt='image'>"
+                                                + "</div>"
+                                                + "<div class='text'><h3>" + journalNews.get(i).get(News._title) + "</h3><h6 style='font-size: 12px;'>" + journalNews.get(i).get(News._abstract) + "</h6>"
+                                                + "</div></li></a>"
+                                                + "</div>");
 
                                     }
                                 }
@@ -414,12 +419,12 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <ul class="portfolio-filter">
-                                    <li class="active"><a data-filter=".All" href="#">نمایش همه</a></li>
+                                    <li class="active"><a data-filter=".All" >نمایش همه</a></li>
                                         <%
                                             List<Map<String, Object>> rowCategouries = jjDatabase.separateRow(db.Select(Category_Content.tableName, Category_Content._parent + "=39"));
                                             String where = "";
                                             for (int b = 0; rowCategouries.size() > b; b++) {
-                                                where += ",'" + rowCategouries.get(b).get(Category_Content._id)+"'";
+                                                where += ",'" + rowCategouries.get(b).get(Category_Content._id) + "'";
                                         %>
                                     <li ><a data-filter=".categouryId<%=b%>"><%= rowCategouries.get(b).get(Category_Content._title)%></a></li>
                                         <%
@@ -521,7 +526,10 @@
                     </div>
                 </section>
             </div>
-            <!--end link-->
+            
+        </div>
+                                    <!--end maincontent-->
+                                    <!--end link-->
 
 
 
@@ -639,42 +647,42 @@
                 <div class="sw-even">
                     <h3>
                         لایه بندی:</h3>
-                    <a href="#" class="sw-light">
+                    <a  class="sw-light">
                         حاشیه</a>
-                    <a href="#" class="sw-dark">
+                    <a  class="sw-dark">
                         کامل</a>
                 </div>
                 <div class="sw-pattern pattern">
                     <h3>
                         پس زمینه:</h3>
-                    <a href="#" class="sw-pattern" data-image="template/img/1.png">
+                    <a  class="sw-pattern" data-image="template/img/1.png">
                         <img src="template/img/1.png" alt="image">
                     </a>
-                    <a href="#" class="sw-pattern" data-image="template/img/2.png">
+                    <a  class="sw-pattern" data-image="template/img/2.png">
                         <img src="template/img/2.png" alt="image">
                     </a>
-                    <a href="#" class="sw-pattern" data-image="template/img/3.png">
+                    <a  class="sw-pattern" data-image="template/img/3.png">
                         <img src="template/img/3.png" alt="image">
                     </a>
-                    <a href="#" class="sw-pattern" data-image="template/img/4.png">
+                    <a  class="sw-pattern" data-image="template/img/4.png">
                         <img src="template/img/4.png" alt="image">
                     </a>
-                    <a href="#" class="sw-pattern" data-image="template/img/5.png">
+                    <a  class="sw-pattern" data-image="template/img/5.png">
                         <img src="template/img/5.png" alt="image">
                     </a>
-                    <a href="#" class="sw-pattern" data-image="template/img/6.png">
+                    <a  class="sw-pattern" data-image="template/img/6.png">
                         <img src="template/img/6.png" alt="image">
                     </a>
-                    <a href="#" class="sw-pattern" data-image="template/img/7.png">
+                    <a  class="sw-pattern" data-image="template/img/7.png">
                         <img src="template/img/7.png" alt="image">
                     </a>
-                    <a href="#" class="sw-pattern" data-image="template/img/8.png">
+                    <a  class="sw-pattern" data-image="template/img/8.png">
                         <img src="template/img/8.png" alt="image">
                     </a>
-                    <a href="#" class="sw-pattern" data-image="template/img/9.png">
+                    <a  class="sw-pattern" data-image="template/img/9.png">
                         <img src="template/img/9.png" alt="image">
                     </a>
-                    <a href="#" class="sw-pattern" data-image="template/img/10.png">
+                    <a  class="sw-pattern" data-image="template/img/10.png">
                         <img src="template/img/10.png" alt="image">
                     </a>
                 </div>
@@ -697,11 +705,11 @@
                     <h4 class="widget-title">صفحات</h4>
                     <ul>
                         <li><a href="index.jsp">صفحه اصلی</a></li>
-                        <li><a href="#">پروژه های شرکت</a></li>
-                        <li><a href="#">خدمات</a></li>
-                        <li><a href="#">گالری</a></li>
-                        <li><a href="#">تماس با ما</a></li>
-                        <li><a href="#">درباره ما</a></li>
+                        <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false">پروژه های شرکت</a></li>
+                        <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false">خدمات</a></li>
+                        <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false">گالری</a></li>
+                        <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false">تماس با ما</a></li>
+                        <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false">درباره ما</a></li>
                     </ul>
                 </div>
             </div>
@@ -713,7 +721,7 @@
         <script src="template/js/jquery.min.js" type="text/javascript"></script>
         <script src="template/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="template/js/jquery.cookie.js" type="text/javascript"></script>
-        <script src="template/js/jj2.js" type="text/javascript"></script>
+        <script src="Manager/js/jj2.js" type="text/javascript"></script>
         <script src="template/js/index.js" type="text/javascript"></script>
         <script src="template/js/jquindex.jery.easing.js" type="text/javascript"></script>
         <script src="template/js/imagesloaded.min.js" type="text/javascript"></script>

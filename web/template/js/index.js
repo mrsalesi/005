@@ -567,7 +567,7 @@ function sw(titleTextOrId) {
         return false;
     }
     // ------------------  get data from content table  ------------------------
-    new jj("do=Content.sw&text=" + titleTextOrId.toString() + "&panel=sw&title=swTitle&jj=1").jjAjax2(true);
+    new jj("do=Content.sw&text=" + titleTextOrId.toString() + "&panel=sw&title=swTitle&jj=1").jjAjax(true,null);
     swRightClear();
 
     /*
