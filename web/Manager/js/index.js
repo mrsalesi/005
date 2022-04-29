@@ -293,11 +293,11 @@ function signInHome() {
     $("#passInHome").css("border", "none");
     var param = "";
     param += "do=Access_User.loginUserInHome&panel=" + setting_login_exit_panel.replace("#", "");
- param += "&StudentId=" + $("#emailInHome").val();
+    param += "&StudentId=" + $("#emailInHome").val();
     param += "&pass=" + $("#passInHome").val();
     new jj(param).jjAjax2(false);
-     var href = "";
-      window.location.href = href;
+    var href = "";
+    window.location.href = href;
 }
 function showFormForgetPass() {
 
@@ -385,7 +385,7 @@ function registMafad() {
         $("#loginMessagePanel").html("ایمیل  نباید تهی باشد.");
         return false;
     }
-   
+
     $("#user_pass").css("border", "none");
     $("#user_studentNumber").css("border", "none");
     $("#user_email").css("border", "none");
@@ -398,16 +398,16 @@ function registMafad() {
     param += "do=Access_User.registUserInSite&panel=" + setting_login_exit_panel.replace("#", "");
     param += "&" + new jj("#form_register").jjSerial();
     new jj(param).jjAjax2(false);
-     var href = "";
-      window.location.href = href;
-    
+    var href = "";
+    window.location.href = href;
+
 }
 function  sendEmailForgetPass() {
     var param = "";
     param += "do=Access_User.sendEmailForgetPass";
     param += "&email=" + $('#email').val();
     new jj(param).jjAjax2(false);
-          window.location.href = href;
+    window.location.href = href;
 
 }
 
@@ -1776,8 +1776,7 @@ function  validEmplye() {
     if (city !== "0") {
         $('#q813').css("border", "1px solid #e5e5e5");
         $("#msg").html('');
-    }
-    else {
+    } else {
         $("#q813").css("border", "1px solid red");
         $("#msg").html("");
         $("#msg").append("لطفا شهر خود را انتخاب کنید");

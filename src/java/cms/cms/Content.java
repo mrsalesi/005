@@ -297,29 +297,29 @@ public class Content {
             List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, _id + "=" + id));
             String panel = jjTools.getParameter(request, "panel");
             html.append("    <div class=\"post-wrap item electric\">");
-                jjCalendar_IR dateLable = new jjCalendar_IR(row.get(0).get(_date).toString());
-                String month = dateLable.getMonthName();
-                int day = dateLable.getDay();
-                int year = dateLable.getYear();
-                html.append("<article class='post clearfix'>"
-                        + "    <div class='featured-post'>\n"
-                        + "        <img src='upload/" + row.get(0).get(_pic) + "' alt='' width='100%'>\n"
-                        + "            <ul class='post-comment'>"
-                        + "                <li class='date'>"
-                        + "                    <span class='day'>" + day + "</span>"
-                        + "                </li>"
-                        + "                <li class='comment'>"
-                        + "                    " + month + ""
-                        + "                </li>"
-                        + "            </ul>"
-                        + "    </div>"
-                        + "    <div class='content-post'>\n"
-                        + "        <h2 class='title-post'><a href=''>" + row.get(0).get(_title) + "</a></h2>                                                                   \n"
-                        + "        <div class='entry-post excerpt'>\n"
-                        + "            <p>" + row.get(0).get(_content) + "</p>"
-                        + "        </div>"
-                        + "    </div>"
-                        + "</article>");
+            jjCalendar_IR dateLable = new jjCalendar_IR(row.get(0).get(_date).toString());
+            String month = dateLable.getMonthName();
+            int day = dateLable.getDay();
+            int year = dateLable.getYear();
+            html.append("<article class='post clearfix'>"
+                    + "    <div class='featured-post'>\n"
+                    + "        <img src='upload/" + row.get(0).get(_pic) + "' alt='' width='100%'>\n"
+                    + "            <ul class='post-comment'>"
+                    + "                <li class='date'>"
+                    + "                    <span class='day'>" + day + "</span>"
+                    + "                </li>"
+                    + "                <li class='comment'>"
+                    + "                    " + month + ""
+                    + "                </li>"
+                    + "            </ul>"
+                    + "    </div>"
+                    + "    <div class='content-post'>\n"
+                    + "        <h2 class='title-post'><a href=''>" + row.get(0).get(_title) + "</a></h2>                                                                   \n"
+                    + "        <div class='entry-post excerpt'>\n"
+                    + "            <p>" + row.get(0).get(_content) + "</p>"
+                    + "        </div>"
+                    + "    </div>"
+                    + "</article>");
             html.append(" </div> ");
             Server.outPrinter(request, response, Js.setHtml("#" + panel, html.toString()));
             return "";
@@ -963,6 +963,33 @@ public class Content {
                 swContent = jjDatabase.separateRow(db.Select(tableName, _title + "='" + text + "'"));
             }
             if (swContent.size() > 0) {
+                boolean userAccess = false;//فرض میکنیم کاربر دسترسی ندارد اگر خلافش ثابت شود یک میشود
+                String userId = jjTools.getSeassionUserId(request) + "";
+                String swContentPriveteUsers = "," + swContent.get(0).get(_privateUserId).toString() + ",";//
+                // بررسی دسترسی کاربر به محتوا که اگر محتوا اخصاصی کاربران خاصی بود به این کاربر نشان داده نمیشود
+                if (swContentPriveteUsers.contains("," + userId + ",")
+                        || swContentPriveteUsers.contains(",0,") //اگر محتوای برای مهمان ها قابل نمایش بود برای این کاربر هم قابل نمایش است
+                        || (swContentPriveteUsers.contains(",ALL,") && !userId.equals("0"))// اگر برای همه ی کاربران عضو بود و این کاربر مهمان نبود چون کاربر اگر مهمان باشد آی دی اش صفر است
+                        ) {
+                    userAccess = true;
+                }// 
+                if (!userAccess) {
+                    List<Map<String, Object>> swGroup = jjDatabase.separateRow(db.Select(Access_Group_User.tableName, Access_Group_User._user_id + "=" + userId));
+                    String swContentPriveteGroups = "," + swContent.get(0).get(_privateGroupId).toString() + ",";//
+                    if (swContentPriveteGroups.contains(",ALL,") && swGroup.size() > 0) {//اگر محتوای مورد نظر دسترسی همه گروه ها را داشت و کاربر جداقل عضو یک گروه باشد باید دسترسی بدهیم
+                        userAccess = true;
+                    }
+                    for (int i = 0; i < swGroup.size() && userAccess == false; i++) {//وقتی نتیجه مثبت بود از جلقه حارج شود چون دسترسی مجاز است و ادامه لازم نیست
+                        if (swContentPriveteGroups.contains("," + swGroup.get(i).get(Access_Group_User._group_id) + ",")) {
+                            userAccess = true;
+                        }
+                    }
+                }
+                if (!userAccess) {// اگر مشخص نشد که کاربر دسترسی دارد دستورات زیر اجرا و کاربر یک محتوای دیگر را مشاهده میکند
+                    String script = "sw('شما مجوز دسترسی به این محتوا را ندارید');";// ّباید در دیتابیس یک محتوا با این عنوان داشته باشیم
+                    Server.outPrinter(request, response, script);
+                    return "";
+                }
                 //////////////////////////update visit
                 Map<String, Object> mapVisit = new HashMap<>();
                 int visit = Integer.parseInt(swContent.get(0).get(_visit).toString());
@@ -1030,7 +1057,7 @@ public class Content {
                 script += "document.title = '" + title + "';";
                 script += Js.setHtml("title", title);
                 script += Js.append("head", swContent.get(0).get(_style).toString());
-                script += swContent.get(0).get(_script).toString();
+                script += Js.append("body", swContent.get(0).get(_script).toString());
                 script += Js.setAttr("meta[name=description]", "content", swContent.get(0).get(_description).toString());
                 String panell = jjTools.getParameter(request, "panel").toString();
 
@@ -1039,7 +1066,7 @@ public class Content {
                 Server.outPrinter(request, response, script);
                 return "";
             } else {
-                String errorMessage = "";
+                String errorMessage = "چنین محتوایی در سیستم وجود ندارد";
                 Server.outPrinter(request, response, Js.setHtml("#" + panel, errorMessage));
                 return "";
             }

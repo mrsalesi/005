@@ -41,7 +41,7 @@
         transition: 0.5s ease;
     }
     .tab-group li a:hover {
-        background: #179b77;
+        background: #eab60a;
         color: #ffffff;
     }
     .tab-group .active a {
@@ -116,7 +116,7 @@
 
     .field-wrap {
         position: relative;
-        margin-bottom: 40px;
+        margin-bottom: 10px;
     }
 
     .top-row:after {
@@ -251,35 +251,21 @@
 
     <div class="tab-content">
         <div id="login">   
-            <h1>ورود</h1>
-
             <div  id="form_login">
-
                 <div class="field-wrap">
-                    <label>
-                        شماره عضویت<span class="req">*</span>
-                    </label>
                     <input type="email"required autocomplete="off" id="emailInHome" name="user_email" placeholder="شماره عضویت"/>
                     <span id="WrongCaptchaError1" class="error"></span>
-
                 </div>
-
                 <div class="field-wrap">
-                    <label>
-                        رمز کاربری<span class="req">*</span>
-                    </label>
                     <input type="password"required autocomplete="off" id="passInHome" name="user_pass" placeholder="رمز کاربری"/>
                     <span id="WrongCaptchaError2" class="error"></span>
                 </div>
                 <div class="field-wrap">
-                    <label>
-                        تصویر رمز<span class="req">*</span>
-                    </label>
-                    <input type="text"required autocomplete="off" id="UserCaptchaCode" class="CaptchaTxtField" placeholder='کدتصویر زیر را وارد کنید'/>
+                    <input type="tel" required autocomplete="off" id="UserCaptchaCode" class="CaptchaTxtField" placeholder='کدتصویر زیر را وارد کنید'/>
                     <span id="WrongCaptchaError" class="error"></span>
                     <div class='CaptchaWrap'>
                         <div id="CaptchaImageCode" class="CaptchaTxtField">
-                            <canvas id="CapCode" class="capcode" width="300" height="80"></canvas>
+                            
                         </div> 
                         <!--<input type="button" class="ReloadBtn" >-->
                         <span class="" onclick='CreateCaptcha();'>کد مجدد</span>
@@ -306,10 +292,8 @@
 
         </div>
         <div id="signup">   
-            <h1>عضویت رایگان</h1>
-
+            <h1>ارسال درخواست بررسی عضویت </h1>
             <div id="swOneFormToCompleteForm">
-
                 <div class="top-row">
                     <div class="field-wrap">
                         <label>
@@ -597,7 +581,7 @@
 // Create Captcha
                     function CreateCaptcha() {
                         //$('#InvalidCapthcaError').hide();
-                        var alpha = new Array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+                        var alpha = new Array( '0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
 
                         var i;
                         for (i = 0; i < 6; i++) {
@@ -609,7 +593,7 @@
                             var f = alpha[Math.floor(Math.random() * alpha.length)];
                         }
                         cd = a + ' ' + b + ' ' + c + ' ' + d + ' ' + e + ' ' + f;
-                        $('#CaptchaImageCode').empty().append('<canvas id="CapCode" class="capcode" width="300" height="80"></canvas>')
+                        $('#CaptchaImageCode').empty().append('<canvas id="CapCode" class="capcode" width="300" height="50" dir="ltr"></canvas>')
 
                         var c = document.getElementById("CapCode"),
                                 ctx = c.getContext("2d"),
@@ -621,11 +605,11 @@
                             var pattern = ctx.createPattern(img, "repeat");
                             ctx.fillStyle = pattern;
                             ctx.fillRect(0, 0, c.width, c.height);
-                            ctx.font = "46px Roboto Slab";
+                            ctx.font = "0.8em Roboto Slab";
                             ctx.fillStyle = '#212121';
                             ctx.textAlign = 'center';
                             ctx.setTransform(1, -0.12, 0, 1, 0, 15);
-                            ctx.fillText(cd, x, 55);
+                            ctx.fillText(cd, x,40 );
                         };
                     }
 

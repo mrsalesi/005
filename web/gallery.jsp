@@ -96,106 +96,6 @@
                                     .textlogin1 {display: block; } ;   
                                 }
 
-                                @font-face {
-                                    font-family: vazir;
-                                    src: url(template/font/Vazir-Black.eot);
-                                }
-                                @font-face {
-                                    font-family: vazir;
-                                    src: url(template/font/Vazir-Black.ttf);
-                                }
-                                @font-face {
-                                    font-family: vazir;
-                                    src: url(template/font/Vazir-Black.woff);
-                                }
-                                @font-face {
-                                    font-family: vazir;
-                                    src: url(template/font/Vazir-Black.woff2);
-                                }
-                                @font-face {
-                                    font-family: vazir;
-                                    src: url(template/font/Vazir-Bold.eot);
-                                }
-                                @font-face {
-                                    font-family: vazir;
-                                    src: url(template/font/Vazir-Bold.ttf);
-                                }
-                                @font-face {
-                                    font-family: vazir;
-                                    src: url(template/font/Vazir-Bold.woff);
-                                }
-                                @font-face {
-                                    font-family: vazir;
-                                    src: url(template/font/Vazir-Bold.woff2);
-                                }
-                                @font-face {
-                                    font-family: vazir;
-                                    src: url(template/font/Vazir-Light (1).woff);
-                                }
-                                @font-face {
-                                    font-family: vazir;
-                                    src: url(template/font/Vazir-Light.eot);
-                                }
-                                @font-face {
-                                    font-family: vazir;
-                                    src: url(template/font/Vazir-Light.ttf);
-                                }
-                                @font-face {
-                                    font-family: vazir;
-                                    src: url(template/font/Vazir-Light.woff);
-                                }
-                                @font-face {
-                                    font-family: vazir;
-                                    src: url(template/font/Vazir-Light.woff2);
-                                }
-                                @font-face {
-                                    font-family: vazir;
-                                    src: url(template/font/Vazir-Medium.eot);
-                                }
-                                @font-face {
-                                    font-family: vazir;
-                                    src: url(template/font/Vazir-Medium.ttf);
-                                }
-                                @font-face {
-                                    font-family: vazir;
-                                    src: url(template/font/Vazir-Medium.woff);
-                                }
-                                @font-face {
-                                    font-family: vazir;
-                                    src: url(template/font/Vazir-Medium.woff2);
-                                }
-                                @font-face {
-                                    font-family: vazir;
-                                    src: url(template/font/Vazir-Thin.eot);
-                                }
-                                @font-face {
-                                    font-family: vazir;
-                                    src: url(template/font/Vazir-Thin.ttf);
-                                }
-                                @font-face {
-                                    font-family: vazir;
-                                    src: url(template/font/Vazir-Thin.woff);
-                                }
-                                @font-face {
-                                    font-family: vazir;
-                                    src: url(template/font/Vazir-Thin.woff2);
-                                }
-                                @font-face {
-                                    font-family: vazir2;
-                                    src: url(template/font/Vazir.eot);
-                                }
-                                @font-face {
-                                    font-family: vazir2;
-                                    src: url(template/font/Vazir.ttf);
-                                }
-                                @font-face {
-                                    font-family: vazir2;
-                                    src: url(template/font/Vazir.woff);
-                                }
-                                @font-face {
-                                    font-family: vazir2;
-                                    src: url(template/font/Vazir.woff2);
-                                }
                             </style></head>
                             <body class="header_sticky" style="font-family: vazir2">
                                 <section class="flat-row portfolio-style2" id="gallery" style="direction: ltr;margin-top: 5px">
@@ -203,50 +103,30 @@
                                         <div class="row">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <div class="title-section style2 style3">
-                                                        <h1 class="title">گالری</h1>
+                                                    <div class="title-section style3">
+                                                        <h3 class="title">گالری</h3>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="flat-testimonials-images">
-                                                    <div class="flat-testimonials-slider">
-                                                        <div id="flat-testimonials-flexslider">
-                                                            <ul class="slides">
-                                                                <%
-                                                                    List<Map<String, Object>> gallery = jjDatabase.separateRow(db.Select(Pic.tableName, Pic._category_id + "=11"));
-                                                                    for (int i = 0; i < gallery.size(); i++) {
-                                                                %>
-                                                                <li>
-                                                                    <img src="upload/<%=gallery.get(i).get(Pic._url_name) + "." + gallery.get(i).get(Pic._url_ex)%>" alt="gallery">
-                                                                </li>
-
-                                                                <%}%>
-                                                            </ul>
-                                                        </div>
-                                                        <div id="flat-testimonials-carousel">
-                                                            <ul class="slides">
-                                                                <%for (int i = 0; i < gallery.size(); i++) {%>
-                                                                <li>
-                                                                    <img alt="image" src="upload/<%=gallery.get(i).get(Pic._url_name) + "." + gallery.get(i).get(Pic._url_ex)%>">
-                                                                </li>
-
-                                                                <%}%>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
+                                            <%
+                                                List<Map<String, Object>> gallery = jjDatabase.separateRow(db.Select(Pic.tableName, Pic._category_id + "=11"));
+                                            %>                                            
+                                            <div class="col-md-12">
                                                 <div class="featured-post flat-blog-slider">
-                                                    <div class="flexslider">
+                                                    <div id="slider" class="flexslider" >
                                                         <ul class="slides">
                                                             <%for (int i = 0; i < gallery.size(); i++) {%>
                                                             <li>
                                                                 <a href="#"><img src="upload/<%=gallery.get(i).get(Pic._url_name) + "." + gallery.get(i).get(Pic._url_ex)%>" alt="image"></a>
                                                             </li>
+                                                            <%}%>
+                                                        </ul>
+                                                    </div>
+                                                    <div id="carousel" class="flexslider">
+                                                        <ul class="slides">
+                                                            <%for (int i = 0; i < gallery.size(); i++) {%>
                                                             <li>
-                                                                <a href=""><img src="upload/<%=gallery.get(i).get(Pic._url_name) + "." + gallery.get(i).get(Pic._url_ex)%>" alt="image"></a>
+                                                                <a href="#"><img src="upload/<%=gallery.get(i).get(Pic._url_name) +"_small"+ "." + gallery.get(i).get(Pic._url_ex)%>" alt="image"></a>
                                                             </li>
                                                             <%}%>
                                                         </ul>
@@ -256,29 +136,54 @@
                                         </div>
                                     </div>
                                 </section>
-                                                        <script src="template/js/jquery.min.js" type="text/javascript"></script>
-                                        <script src="template/js/bootstrap.min.js" type="text/javascript"></script>
-                                        <script src="template/js/jj2.js" type="text/javascript"></script>
-                                        <script src="template/js/index.js" type="text/javascript"></script>
-                                        <script src="template/js/jquery.easing.js" type="text/javascript"></script>
-                                        <script src="template/js/imagesloaded.min.js" type="text/javascript"></script>
-                                        <script src="template/js/jquery.isotope.min.js" type="text/javascript"></script>
-                                        <script src="template/js/jquery-waypoints.js" type="text/javascript"></script>
-                                        <script src="template/js/jquery.magnific-popup.min.js" type="text/javascript"></script>
-                                        <script src="template/js/jquery.cookie.js" type="text/javascript"></script>
-                                        <script src="template/js/jquery.fitvids.js" type="text/javascript"></script>
-                                        <script src="template/js/parallax.js" type="text/javascript"></script>
-                                        <script src="template/js/smoothscroll.js" type="text/javascript"></script>
-                                        <script src="template/js/jquery.flexslider-min.js" type="text/javascript"></script>
-                                        <script src='template/js/owl.carousel.js' type='text/javascript'></script>
-                                        <script src="template/js/jquery-validate.js" type="text/javascript"></script>
-                                        <script src="template/js/switcher.js" type="text/javascript"></script>
-                                        <script src="template/js/js.js" type="text/javascript"></script>
-                                        <script src="template/js/gmap3.min.js" type="text/javascript"></script>
-                                        <script src="template/js/main.js" type="text/javascript"></script>
-                                        <script src="template/js/jquery.themepunch.tools.min.js" type="text/javascript"></script>
-                                        <script src="template/js/jquery.themepunch.revolution.min.js" type="text/javascript"></script>
-                                        <script src="template/js/slider.js" type="text/javascript"></script>
-                                        <script src="template/js/util.js" type="text/javascript"></script>
+                                <script src="template/js/jquery.min.js" type="text/javascript"></script>
+                                <script src="template/js/bootstrap.min.js" type="text/javascript"></script>
+                                <script src="template/js/jj2.js" type="text/javascript"></script>
+                                <script src="template/js/index.js" type="text/javascript"></script>
+                                <!--                                        <script src="template/js/jquery.easing.js" type="text/javascript"></script>
+                                                                        <script src="template/js/imagesloaded.min.js" type="text/javascript"></script>
+                                                                        <script src="template/js/jquery.isotope.min.js" type="text/javascript"></script>
+                                                                        <script src="template/js/jquery-waypoints.js" type="text/javascript"></script>
+                                                                        <script src="template/js/jquery.magnific-popup.min.js" type="text/javascript"></script>
+                                                                        <script src="template/js/jquery.cookie.js" type="text/javascript"></script>
+                                                                        <script src="template/js/jquery.fitvids.js" type="text/javascript"></script>
+                                                                        <script src="template/js/parallax.js" type="text/javascript"></script>
+                                                                        <script src="template/js/smoothscroll.js" type="text/javascript"></script>-->
+                                <script src="template/js/jquery.flexslider-min.js" type="text/javascript"></script>
+                                <!--<script src='template/js/owl.carousel.js' type='text/javascript'></script>-->
+                                <!--<script src="template/js/jquery-validate.js" type="text/javascript"></script>-->
+                                <!--<script src="template/js/switcher.js" type="text/javascript"></script>-->
+                                <!--<script src="template/js/js.js" type="text/javascript"></script>-->
+                                <!--<script src="template/js/gmap3.min.js" type="text/javascript"></script>-->
+                                <!--<script src="template/js/main.js" type="text/javascript"></script>-->
+                                <!--                                        <script src="template/js/jquery.themepunch.tools.min.js" type="text/javascript"></script>
+                                                                        <script src="template/js/jquery.themepunch.revolution.min.js" type="text/javascript"></script>-->
+                                <!--                                        <script src="template/js/slider.js" type="text/javascript"></script>
+                                                                        <script src="template/js/util.js" type="text/javascript"></script>-->
+                                <script type="text/javascript">
+                                    // The slider being synced must be initialized first
+                                    $('#carousel').flexslider({
+                                        animation: "slide",
+                                        controlNav: true,
+                                        animationLoop: true,
+                                        slideshow: false,
+                                        itemWidth: 210,
+                                        itemMargin: 5,
+                                        asNavFor: '#slider',
+                                        prevText: '<i class="fa fa-angle-left"></i>',
+                                        nextText: '<i class="fa fa-angle-right"></i>',
+                                        smoothHeight: true
+                                    });
+
+                                    $('#slider').flexslider({
+                                        animation: "slide",
+                                        controlNav: false,
+                                        animationLoop: false,
+                                        slideshow: false,
+                                        sync: "#carousel",
+                                        prevText: '<i class="fa fa-angle-left"></i>',
+                                        nextText: '<i class="fa fa-angle-right"></i>',
+                                    });
+                                </script>
                             </body>
                             </html>

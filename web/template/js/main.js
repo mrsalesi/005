@@ -187,7 +187,7 @@
                     easing         :  "swing",
                     animationSpeed :  500,
                     slideshowSpeed :  5000,
-                    controlNav     :  false,
+                    controlNav     :  true,
                     directionNav   :  true,
                     slideshow      :  true,
                     prevText       :  '<i class="fa fa-angle-left"></i>',
@@ -553,13 +553,10 @@
 
             $('.flat-portfolio .load-more a').on('click', function(e) {
                 e.preventDefault();
-
                 var el = $(this),
                     url = el.attr('href'),
                     page = parseInt(el.attr('data-page'), 10);
-
                 el.addClass('loading').text('Loading...');
-
                 $.ajax({
                     type: "GET",
                     url: url,

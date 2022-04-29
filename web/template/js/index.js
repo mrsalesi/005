@@ -573,6 +573,9 @@ function sw(titleTextOrId) {
     /*
      *@augments if menu dosnt need , it must be empty
      **/
+    $([document.documentElement, document.body]).animate({
+        scrollTop: $("#sw").offset().top
+    }, 500);
 }
 ;
 function swRightClear() {
@@ -1237,8 +1240,7 @@ function signInSite() {
         $("#user_pass").css("border", "red dashed");
         $("#loginMessagePanel").html("رمز عبور نباید تهی باشد.");
         return false;
-    }
-    else {
+    } else {
         $("#user_email").css("border", "none");
         $("#user_pass").css("border", "none");
         var param = "";
@@ -1258,8 +1260,7 @@ function signInSite1() {
         $("#user_pass").css("border", "red dashed");
         $("#loginMessagePanel").html("رمز عبور نباید تهی باشد.");
         return false;
-    }
-    else {
+    } else {
         $("#user_email").css("border", "none");
         $("#user_pass").css("border", "none");
         var param = "";
@@ -1423,7 +1424,7 @@ function  sendEmailForgetPass() {
     var param = "";
     param += "do=Access_User.sendEmailForgetPass";
     param += "&email=" + $('#email').val();
-  new jj(param).jjAjax2(false);
+    new jj(param).jjAjax2(false);
     $("#swLoginForm").hide();
     $("#sw").show();
     $("html, body").animate({scrollTop: 0}, "slow");
@@ -2046,8 +2047,7 @@ function sendmassege(value) {
     value = $("#phonNumber").val();
     if ((new jj("#phonNumber").jjVal() == '')) {
         $("#loginMessagePanel").html("شماره موبایل خود را وارد کنید.");
-    }
-    else {
+    } else {
         $("#loginMessagePanel").html("");
 //    alert(value);
         var param = "";
@@ -2741,8 +2741,7 @@ function  validEmplye() {
     if (city !== "0") {
         $('#employe_info_city').css("border", "1px solid #e5e5e5");
         $("#msg14").html('');
-    }
-    else {
+    } else {
         $("#employe_info_city").css("border", "1px solid red");
         $("#msg14").html("");
         $("#msg14").append("لطفا شهر خود را انتخاب کنید");
@@ -3083,8 +3082,7 @@ function insertemploye2() {
     if (city !== "0") {
         $('#employe_info_city').css("border", "1px solid #e5e5e5");
         $("#msg14").html('');
-    }
-    else {
+    } else {
         $("#employe_info_city").css("border", "1px solid red");
         $("#msg14").html("");
         $("#msg14").append("لطفا شهر خود را انتخاب کنید");
