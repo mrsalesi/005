@@ -114,10 +114,25 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="social-links">
-                                            <a href="">
-                                                <a  class="register_url flat-button button-color button-normal yellow " style="" onclick='$("#sw").load("login.html");'>ثبت نام/ورود</a>
-                                                <a id="userNameAfterLogin" class="textlogin" style=""></a>
-                                            </a>
+                                            <% if (jjTools.getSeassionUserId(request) == 0) {
+
+                                            %>
+                                            <a  class="register_url flat-button button-color button-normal yellow " style="" onclick='$("#sw").load("login.html");'>ثبت نام/ورود</a>
+                                            <%                                    } else {
+                                                List<Map<String, Object>> user = jjDatabase.separateRow(db.Select(Access_User.tableName, Access_User._id + "=" + jjTools.getSeassionUserId(request)));
+
+                                            %>
+                                            <div id="userNameAfterLogin" class="textlogin" style="float: right;margin: 9px;">
+                                                <nav id="mainnav"><ul class="menu">
+                                                        <li class="userIcon"><i class="fa fa-user " style="margin: 7px;"></i>
+                                                            <ul class="submenu right-sub-menu">
+                                                                <li><a >سلام <%= jjTools.getSeassionUserNameAndFamily(request)%></a></li>
+                                                                <li><a href="userProfile.jsp?user_token=<%= user.get(0).get(Access_User._token)%>">پنل کاربری</a></li>
+                                                                <li><a href="" onclick="signOut();">خروج</a></li></ul></li></ul></nav>
+                                            </div>
+                                            <%
+                                                }
+                                            %>
                                             <a href=""><i class="fa fa-twitter"></i></a>
                                             <a href=""><i class="fa fa-facebook"></i></a>
                                             <a href=""><i class="fa fa-instagram"></i></a>
@@ -286,13 +301,13 @@
                                                 <div class="col-md-4">
                                                     <div class="sidebar">
                                                         <div class="widget widget_search">
-                                                            <div class="search-form">
+                                                                    <form role="search" method="get" class="search-form" action="#">
                                                                 <label>
                                                                     <input type="search" class="search-field" id="search_in" placeholder="جستجو..." value="" name="s">
                                                                 </label>
-                                                                <input type="button" class="btn-outline-warning" value="جستجو" onclick="var params = 'do=News.SearchNews&panel=sw&text=' + $('#search_in').val();new jj(params).jjAjax2(true, null);">
+                                                                        <input type="submit" class="search-submit" value="جستجو">
+                                                                    </form>
                                                             </div>
-                                                        </div>                                        
                                                         <div class="widget widget-recent-news">
                                                             <h5 class="widget-title">اخبار منتشر شده</h5>
                                                             <ul class="popular-news clearfix">
@@ -616,7 +631,7 @@
                                                                                     $('.register_url').show();
                                                                                 } else {
                                                                                     $('.textlogin').show();
-                                                                                    new jj("do=Access_User.loginUserInHome&user_token=" + token + "&panel=userNameAfterLogin").jjAjax2(false);
+//                                                                                    new jj("do=Access_User.loginUserInHome&user_token=" + token + "&panel=userNameAfterLogin").jjAjax2(false);
                                                                                 }
                                                                             }());
                                                                             //                                                                        $('.flat-iconbox-carosuel').owlCarousel({
@@ -637,7 +652,6 @@
                                                                             function loadinformation(id) {
                                                                                 new jj("do=News.showInfo&panel=sw&jj=1&id=" + id).jjAjax2(true);
                                                                                 $("html, body").animate({scrollTop: 0}, "slow");
-
                                                                             }
                                                                             $(document).ready(function () {
                                                                                 persian = {0: '۰', 1: '۱', 2: '۲', 3: '۳', 4: '۴', 5: '۵', 6: '۶', 7: '۷', 8: '۸', 9: '۹'};
@@ -654,17 +668,16 @@
                                                                                     }
                                                                                 }
                                                                                 traverse(document.body);
-//                                                                                            $("#search_in").on("keyup", function () {
-////                                                                                SearchBtn();
-//                                                                                                var value = $(this).val().toLowerCase();
-//                                                                                                if ($("#search_in").length > 3) {
-//
-//                                                                                                    var text = new jj("#search_in").jjVal();
-//                                                                                                    if (text.length >= 5) {
-//                                                                                                        new jj("do=News.SearchNews&panel=sw&text=" + text + "").jjAjax2(false);
-//                                                                                                    }
-//                                                                                                }
-//                                                                                            });
+                                                                                $("#search_in").on("keyup", function () {
+//                                                                                SearchBtn();
+                                                                                    var value = $(this).val().toLowerCase();
+                                                                                                if ($("#search_in").length > 2index.js) {
+                                                                                        var text = new jj("#search_in").jjVal();
+                                                                                        if (text.length >= 5) {
+                                                                                                        new jj("do=News.SearchNews&panel=swNews&text=" + text + "").jjAjax2(false);
+                                                                                        }
+                                                                                    }
+                                                                                });
                                                                             });
                                                                         </script>
                                                                         </body>      

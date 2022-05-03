@@ -64,8 +64,8 @@ public class ImageViewer extends HttpServlet {
             safePath += contxtPath[i] + System.getProperty("file.separator");
         } 
         ////
-//        String parentFolderName = contxtPath[contxtPath.length-1];//return 2 folder up(parent of parent)
-        String parentFolderName = contxtPath[contxtPath.length-2];//return 2 folder up(parent of parent)
+        String parentFolderName = contxtPath[contxtPath.length-1];//return 2 folder up(parent of parent)
+//        String parentFolderName = contxtPath[contxtPath.length-2];//return 2 folder up(parent of parent)
         int index = request.getServletContext().getRealPath("/").indexOf(parentFolderName);
         String str = request.getServletContext().getRealPath("/").substring(0, index);
 //        String path = str + Save_Folder_Name;// upload\ in windows and upload/ in linux

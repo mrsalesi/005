@@ -165,7 +165,7 @@ article .featured-post{position:relative;
 height: 160px;}*/}
 article .post-comment{position:absolute;left:20px;top:20px;z-index:20;background-color:#eab702;text-align:center;color:#fff}
 article .post-comment li.date span{display:block;font-size:14px}
-article .post-comment li.date .day{font-size:30px;font-weight:700;text-transform:uppercase;padding:10px 12px}
+article .post-comment li.date .day{font-size:1em;padding:10px 12px}
 article .post-comment li.comment{background-color:#333;font-size:14px;padding:3px 0}
 article .post-comment li{display:block}
 article .content-post .title-post{;margin-top:15px;margin-bottom:10px;color:#333;text-align: right}

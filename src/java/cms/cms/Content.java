@@ -1327,11 +1327,11 @@ public class Content {
                         String orig = tn.text();
                         if (ti.length() > 2) {//اگر طول کاراکتر ها کوچک باشد اتوویکی نمی شود
                             if (catchContentTitle.get(i).get(_isAjax).equals("1")) {
-                                tn.text(orig.replaceAll(ti, "<a href='Server?do=Content.sw&panel=" + panel + "&text=" + ti
+                                tn.text(orig.replaceAll(ti, "<a href='"+Server.contentJSP+"?text=" + ti
                                         + "' onclick='sw(" + catchContentTitle.get(i).get(_id) + ");return false;' class='p jjLink hoverAutoWiki'>"
                                         + ti + "</a>"));
                             } else {
-                                tn.text(orig.replaceAll(ti, "<a href='Server?do=Content.sw&panel=" + panel + "&text=" + ti
+                                tn.text(orig.replaceAll(ti, "<a href='"+Server.contentJSP+"?text=" + ti
                                         + "'  target='_blank' class='p jjLink hoverAutoWiki' >"
                                         + ti + "</a>"));
                             }

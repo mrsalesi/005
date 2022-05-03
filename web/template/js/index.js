@@ -573,9 +573,7 @@ function sw(titleTextOrId) {
     /*
      *@augments if menu dosnt need , it must be empty
      **/
-    $([document.documentElement, document.body]).animate({
-        scrollTop: $("#sw").offset().top
-    }, 500);
+    $('html').scrollTop(100);
 }
 ;
 function swRightClear() {

@@ -1311,7 +1311,7 @@ public class News {
             StringBuilder html = new StringBuilder();
             String title = "نتایج جستجو";
             String text = jjTools.getParameter(request, "text");
-            String panel = "sw";
+            String panel = jjTools.getParameter(request, "panel").isEmpty() ? "sw" : jjTools.getParameter(request, "panel");
             List<Map<String, Object>> rowNews = jjDatabase.separateRow(db.Select(tableName, _title + " LIKE '%" + text + "%'"));
             if (rowNews.isEmpty()) {
                 html.append("<h6 style='text-align:center'>نتیجه ای دریافت نشد</h6>");
@@ -1363,6 +1363,7 @@ public class News {
                             + "                                                                    </div>\n"
                             + "                                                                </div>\n"
                             + "                                                            </article>\n"
+                            + "                                                                <hr/>\n"
                             + "                                                        </div>");
                 }
                 Server.outPrinter(request, response, Js.setHtml("#" + panel, html.toString()));

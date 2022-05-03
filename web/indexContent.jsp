@@ -39,6 +39,7 @@
 //    request.setAttribute("text", "تعاونی دادگستری");
 //    Content.sw(request, response, Server.db, true);
     String categuryId = jjTools.getParameter(request, "category");
+    String text = jjTools.getParameter(request, "text");
     System.out.println("categuryId====" + categuryId);
     StringBuilder html1 = new StringBuilder();
     jjDatabaseWeb db;
@@ -119,7 +120,7 @@
                                 %>
                                 <a  class="register_url flat-button button-color button-normal yellow " style="" onclick='$("#sw").load("login.html");'>ثبت نام/ورود</a>
                                 <%                                    } else {
-                                        List<Map<String, Object>> user = jjDatabase.separateRow(db.Select(Access_User.tableName, Access_User._id + "=" + jjTools.getSeassionUserId(request)));                                    
+                                    List<Map<String, Object>> user = jjDatabase.separateRow(db.Select(Access_User.tableName, Access_User._id + "=" + jjTools.getSeassionUserId(request)));
 
                                 %>
                                 <div id="userNameAfterLogin" class="textlogin" style="float: right;margin: 9px;">
@@ -127,7 +128,7 @@
                                             <li class="userIcon"><i class="fa fa-user " style="margin: 7px;"></i>
                                                 <ul class="submenu right-sub-menu">
                                                     <li><a >سلام <%= jjTools.getSeassionUserNameAndFamily(request)%></a></li>
-                                                    <li><a href="userProfile.jsp?user_token=<%= user.get(0).get(Access_User._token) %>">پنل کاربری</a></li>
+                                                    <li><a href="userProfile.jsp?user_token=<%= user.get(0).get(Access_User._token)%>">پنل کاربری</a></li>
                                                     <li><a href="" onclick="signOut();">خروج</a></li></ul></li></ul></nav>
                                 </div>
                                 <%
@@ -176,12 +177,8 @@
                                                             <%
                                                                 List<Map<String, Object>> row10 = jjDatabase.separateRow(db.Select(Category_Content.tableName, Category_Content._parent + "=39"));
                                                                 for (int o = 0;
-
-                                                                o< row10.size ();
-                                                                o
-
-                                                                
-                                                                    ++) {
+                                                                        o < row10.size();
+                                                                        o++) {
                                                             %>
                                                             <div class="col-md-4">
                                                                 <h2 style="text-align: right"><%=row10.get(o).get(Category_Content._title)%></h2>
@@ -230,370 +227,56 @@
             <div id="swLoginForm"></div>
             <div id="maincontent">
                 <div id="sw">
-                    <!--start slider-->
+
                     <%
-                        List<Map<String, Object>> slider = jjDatabase.separateRow(db.Select(Pic.tableName, Pic._category_id + "=1"));
+                        List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(Content.tableName, Content._title + "='" + text +"'"));
+                        Map<String, Object> map = new HashMap<>();
+                        int visit = Integer.parseInt(row.get(0).get(Content._visit).toString()) + 1;
+                        map.put(News._visit, visit);
+                        jjCalendar_IR dateLable = new jjCalendar_IR(row.get(0).get(Content._date).toString());
+                        String month = dateLable.getMonthName();
+                        int day = dateLable.getDay();
+                        int year = dateLable.getYear();
+                        db.update(Content.tableName, map, Content._id + "=" + row.get(0).get(Content._id));
+//                        List<Map<String, Object>> rowComment = jjDatabaseWeb.separateRow(db.Select(Comment.tableName, Comment._refrenceId + " = " + row.get(0).get(News._id)));
+
+//                        List<Map<String, Object>> rowCategory = jjDatabase.separateRow(db.Select(Content.tableName, Content._category_id + "=" + row.get(0).get(News._category_id)));
                     %>
-                    <div class="tp-banner-container" id="home">
-                        <div class="tp-banner">
-                            <ul>
-                                <%for (int i = 0;
-
-                                    i< slider.size ();
-                                    i
-
-                                    
-                                        ++) {
-                                %>
-                                <li data-transition="random-static" data-slotamount="7" data-masterspeed="1000" data-saveperformance="on">
-                                    <img src="upload/<%=slider.get(i).get(Pic._url_name) + "." + slider.get(i).get(Pic._url_ex)%>" alt="slider-image" />
-                                    <div class="tp-caption sfl title-slide center" data-x="40" data-y="100" data-speed="1000" data-start="1000" data-easing="Power3.easeInOut">
-                                        <%=slider.get(i).get(Pic._title)%>
-                                    </div>
-                                    <div class="tp-caption sfr desc-slide center" data-x="40" data-y="240" data-speed="1000" data-start="1500" data-easing="Power3.easeInOut">
-                                        <%=slider.get(i).get(Pic._discription)%>
-                                    </div>
-                                    <%
-                                        if (!slider.get(i).get(Pic._title).toString().trim().isEmpty()) {
-                                    %>
-                                    <div class="tp-caption sfl flat-button-slider bg-button-slider-32bfc0" data-x="40" data-y="370" data-speed="1000" data-start="2000" data-easing="Power3.easeInOut"><a onclick="sw('<%=slider.get(i).get(Pic._title)%>');">بیشتر بخوانید</a> &nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-chevron-right"></i></div>
-                                        <%
-                                            }
-                                        %>
-                                    <div class="tp-caption sfl flat-button-slider bg-button-slider-32bfc0" data-x="225" data-y="370" data-speed="1000" data-start="2000" data-easing="Power3.easeInOut"><a onclick="sw('تماس با ما')">تماس با ما</a>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-chevron-right"></i></div>
-                                </li>
-                                <%}%>
-
-                            </ul>
-                        </div>
-                    </div>
-                    <!--end slider-->
-
-                    <!--start slider samaneh-->
-
-                    <section class="flat-row about what-we-do " id="services" style="direction: ltr !important;">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="title-section style3">
-                                        <h1 class="title">سامانه ها</h1>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="flat-iconbox-carosuel-wrap">
-                                        <div class="flat-iconbox-carosuel" data-item="4" data-nav="false" data-dots="false" data-auto="false">
-                                            <%
-                                                List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(Content.tableName, Content._category_id + "=40"));
-                                                for (int j = 0;
-
-                                                j< row.size ();
-                                                j
-
-                                                
-                                                    ++) {
-                                            %>
-
-                                            <div class="iconbox-item root-back" style="padding: 5px 10px;text-align: right">
-                                                <div class="iconbox  left square">
-                                                    <div class="box-header">
-                                                        <%if (j == 0) {%>
-                                                        <i class="fa fa-user"></i>
-                                                        <%}%>
-                                                        <%if (j == 1) {%>
-                                                        <i class="fa fa-registered"></i>
-                                                        <%}%>
-                                                        <%if (j == 2) {%>
-                                                        <i class="fa fa-list"></i>
-                                                        <%}%>
-                                                        <%if (j == 3) {%>
-                                                        <i class="fa fa-building"></i>
-                                                        <%}%>
-                                                        <div class="box-title"><a onclick="sw($(this).html());return false;"><%=row.get(j).get(Content._title)%></a></div>
-                                                    </div>
-                                                    <%=row.get(j).get(Content._explain)%>                                                                    
-                                                </div>
-                                            </div>
-                                            <%}%>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    <!--end slider samaneh-->
-
-                    <!--start slider information-->
-                    <section class="flat-row about background-color" id="about" style="background: #fff">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="title-section style3">
-                                        <h1 class="title">اطلاعیه ها</h1>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <%
-                                    StringBuilder htmlNews = new StringBuilder();
-                                    StringBuilder htmlNews2 = new StringBuilder();
-                                    List<Map<String, Object>> journalNews = jjDatabase.separateRow(db.Select(News.tableName, News._category_id + "=2  order by " + News._date));
-                                    int h = 0;
-                                    int count = 0;
-
-                                    if (journalNews.size () 
-                                        >= 6) {
-                                        h = journalNews.size() - 6;
-                                    }
-
-                                    
-                                        else {
-                                        h = 0;
-                                    }
-                                %> 
-                                <%
-                                    for (int i = (journalNews.size() - 1);
-                                    i >= h ;
-                                    i
-
-                                    
-                                        --) {
-                                        count += 1;
-                                        if (count <= 2) {
-                                            htmlNews.append("<div class='col-md-6 col-lg-6 col-sm-6 col-xs-12'>"
-                                                    + "<a href='indexNews.jsp?idNews=" + journalNews.get(i).get(News._id) + "'><div class='post-wrap'   onclick='loadinformation(" + journalNews.get(i).get(News._id) + ")'>"
-                                                    + "<article class='post clearfix'><div class='featured-post' style='width:100%;height:200px'>"
-                                                    + "<img style='width:100% !important;height:200px !important' src='upload/" + journalNews.get(i).get(News._pic) + "' alt='image'>"
-                                                    + "</div><div class='content-post' style='display: grid;'><h3 class='title-post'>"
-                                                    + "<a href='indexNews.jsp?idNews=" + journalNews.get(i).get(News._id) + "'>" + journalNews.get(i).get(News._title) + "</a></h3><div class='entry-post excerpt' style='font-size: 12px !important;line-height: 23px !important;'><p >" + journalNews.get(i).get(News._abstract) + "</p></div></div></article></div></a></div>");
-
-                                        } else {
-                                            htmlNews2.append("<div class='col-md-12 col-lg-12 col-sm-6 col-xs-12'>"
-                                                    + "<a href='indexNews.jsp?idNews=" + journalNews.get(i).get(News._id) + "'>"
-                                                    + "<li class='information' onclick='textNews(" + journalNews.get(i).get(News._id) + ")'>"
-                                                    + "<div class='thumb' style='width:200px;height:120px'><img style='width:100%;height:120px' src='upload/" + journalNews.get(i).get(News._pic) + "' alt='image'>"
-                                                    + "</div>"
-                                                    + "<div class='text'><h3>" + journalNews.get(i).get(News._title) + "</h3><h6 style='font-size: 12px;'>" + journalNews.get(i).get(News._abstract) + "</h6>"
-                                                    + "</div></li></a>"
-                                                    + "</div>");
-
-                                        }
-                                    }
-                                %> 
-                                <div class="col-md-5 col-lg-5 col-sm-12 col-xs-12">
-                                    <div class="widget widget-recent-news">
-                                        <ul class="popular-news clearfix">
-                                            <%=htmlNews2%>                                                                           
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-md-7 col-lg-7 col-sm-12 col-xs-12"><%=htmlNews%>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    <!--end slider samaneh-->
-                    <!--start about-->
-
-                    <div  style='font-size: 12px !important;line-height: 23px !important;'>
-                        <%=Content.getHtml(request, response, "درباره تعاون مسکن دادگستری", Server.db)%></div>
-
-                    <section class="flat-row what-we-do" id="services">
-                        <div class="container">
-                            <div class="col-md-12">
-                                <div class="title-section style3">
-                                    <h1 class="title">اخرین اخبار تعاونی</h1>
-                                </div>
-                            </div>
-                            <div class="row"  style=''>
-                                <div class="col-md-12">
-                                    <div class="flat-iconbox-carosuel-wrap">
-                                        <div class="flat-iconbox-carosuel" data-item="4" data-nav="true" data-dots="false" data-auto="false">
-                                            <%
-                                                List<Map<String, Object>> rowNews = jjDatabase.separateRow(db.Select(News.tableName, News._category_id + "=3"));
-                                                jjCalendar_IR dateLable = new jjCalendar_IR(rowNews.get(0).get(News._date).toString());
-                                                String month = dateLable.getMonthName();
-                                                int day = dateLable.getDay();
-                                                int year = dateLable.getYear();
-                                                for (int j = 0;
-
-                                                j< rowNews.size ();
-                                                j
-
-                                                
-                                                    ++) {
-                                            %>
-                                            <div class="iconbox-item">
-                                                <div class="iconbox left style1">
-                                                    <div class="box-header">
-                                                        <img src="upload/<%=rowNews.get(j).get(News._pic)%>" width='100%' style="height:160px !important"  alt="serives">
-
-                                                            <div class="box-number">
-                                                                <%=rowNews.get(j).get(News._visit)%>
-                                                            </div>
-                                                            <div class="dateNews" style="direction: rtl;padding:0px 7px" >
-                                                                <%=day%><%=month%><%=year%>
-                                                            </div>
-
-                                                            <div class="box-title" style="height: 10vh">
-                                                                <a href="indexNews.jsp?idNews=<%=rowNews.get(j).get(News._id)%>" style=""><%=rowNews.get(j).get(News._title)%></a>
-                                                            </div>
-                                                    </div>
-                                                    <div class="box-content" style="padding: 0px 10px !important;height: 15vh;color: #303030;">
-                                                        <%=rowNews.get(j).get(News._abstract)%>
-                                                    </div>
-                                                    <a href="indexNews.jsp?idNews=<%=rowNews.get(j).get(News._id)%>" class="box-redmore" style="padding: 5px 10px !important;text-align: left !important">ادامه خبر</a>
-                                                </div>
-                                            </div>
-                                            <%}%>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    <!--end about-->
-                    <!--start projectMe-->
-
-                    <section class="flat-row about  portfolio-style2" id="work">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="title-section style2 style3">
-                                        <h1 class="title">پروژه های شرکت</h1>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <ul class="portfolio-filter">
-                                        <li class="active"><a data-filter=".All" >نمایش همه</a></li>
-                                            <%
-                                                List<Map<String, Object>> rowCategouries = jjDatabase.separateRow(db.Select(Category_Content.tableName, Category_Content._parent + "=39"));
-                                                String where = "";
-                                                for (int b = 0;
-
-                                                rowCategouries.size ()
-                                                > b; b
-
-                                                
-                                                    ++) {
-                                                    where += ",'" + rowCategouries.get(b).get(Category_Content._id) + "'";
-                                            %>
-                                        <li ><a data-filter=".categouryId<%=b%>"><%= rowCategouries.get(b).get(Category_Content._title)%></a></li>
-                                            <%
-                                                }
-                                            %>
+                    <div class="post-wrap">
+                        <article class="post clearfix">
+                            <!-- <div class="featured-post">
+                                <img src="upload/<%=row.get(0).get(Content._pic)%>" alt="image" style="width: 100%;height: 400px">
+                                    <ul class="post-comment">
+                                        <li class="date">
+                                            <span class="day"> <%=day%> </span>
+                                        </li>
+                                        <li class="comment">
+                                            <%=month%>
+                                        </li>
+                                        <li class="comment">
+                                            <%=year%>
+                                        </li>
                                     </ul>
+                            </div> -->
+                            <div class="content-post">
+<!--                                <ul class="meta-post clearfix">
+                                    <li class="author">
+                                        <p>admin</p>
+                                    </li>
+                                    <li class="date">
+                                        <p><%= jjCalendar_IR.getViewFormat(row.get(0).get(Content._date).toString())%></p>
+                                    </li>
+                                    <li class="vote">
+                                        <p><%=row.get(0).get(Content._visit)%></p>
+                                    </li>
+                                </ul>-->
+                                <div class="entry-post excerpt">
+                                    <p><%=row.get(0).get(Content._hasInContentAutoWiki).toString().equals("1")? row.get(0).get(Content._contentWithWikiLinks) : row.get(0).get(Content._content)%></p>
+                                    <hr/>
                                 </div>
                             </div>
-                        </div>
-                        <div class="flat-portfolio v4">
-                            <div class="portfolio-wrap clearfix">
-                                <div class="item All"  col-md-3 col-sm-12"  >
-                                    <div class="flat-iconbox-carosuel-wrap">
-                                        <div class="flat-iconbox-carosuel" data-item="4" data-nav="false" data-dots="false" data-auto="false">
-                                            <%
-                                                List<Map<String, Object>> rowAll = jjDatabase.separateRow(db.Select(Content.tableName, Content._category_id + " IN (" + where.replaceFirst(",", "") + ")"));
-                                                for (int b = 0;rowAll.size ()> b; b++) {
-                                            %>
-                                            <div class="iconbox-item">
-                                                <div class="iconbox left style2" style="width: 100%;height: 300px;">
-                                                    <img src="upload/<%=rowAll.get(b).get(Content._pic)%>" alt="serives">
-                                                        <div class="box-content">
-                                                            <div class="box-title">
-                                                                <a href="indexContent.jsp?text=<%=rowAll.get(b).get(Content._title)%>" 
-                                                                   <% if(rowAll.get(b).get(Content._isAjax).toString().equals("1")){ %>
-                                                                   onclick="sw('<%=rowAll.get(b).get(Content._title)%>');return false;" <%}%>><%=rowAll.get(b).get(Content._title)%></a>
-                                                            </div>
-                                                            <%=rowAll.get(b).get(Content._explain)%>                                                        
-                                                        </div>
-                                                        <ul class="portfolio-details">
-                                                            <li><a href="indexContent.jsp?text=<%=rowAll.get(b).get(Content._title)%>" 
-                                                                   <% if(rowAll.get(b).get(Content._isAjax).toString().equals("1")){ %>
-                                                                   onclick="sw('<%=rowAll.get(b).get(Content._title)%>');return false;" <%}%> ><i class="fa fa-external-link"></i></a></li>
-                                                        </ul>
-                                                </div>
-                                            </div><%
-                                                }
-                                            %>
-                                        </div> 
-                                    </div> 
-                                </div>
-                                <%
-                                    for (int j = 0;
-
-                                    rowCategouries.size ()
-                                    > j; j
-                                        ++) {
-                                        List<Map<String, Object>> row2 = jjDatabase.separateRow(db.Select(Content.tableName, Content._category_id + "=" + rowCategouries.get(j).get(Category_Content._id)));
-                                        for (int b = 0; row2.size() > b; b++) {
-                                %>
-                                <div class="item categouryId<%=j%> col-md-3 col-sm-6"  >
-                                    <div class="iconbox-item">
-                                        <div class="iconbox left style2" style="width: 100%;height: 300px;">
-                                            <img src="upload/<%=row2.get(b).get(Content._pic)%>" alt="<%=row2.get(b).get(Content._title).toString().replaceAll("\"", "")%>" >
-                                                <div class="box-content">
-                                                    <div class="box-title">
-                                                        <a  onclick="sw('<%=row2.get(b).get(Content._title)%>')"><%=row2.get(b).get(Content._title)%></a>
-                                                    </div>
-                                                    <%=row2.get(b).get(Content._explain)%>                                                        
-                                                </div>
-                                                <ul class="portfolio-details">
-                                                    <li><a class="" onclick="sw('<%=row2.get(b).get(Content._title)%>')"><i class="fa fa-external-link"></i></a></li>
-                                                </ul>
-                                        </div> 
-                                    </div>
-                                </div>
-                                <%
-                                        }
-                                    }
-                                %>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!--end projectMe-->
-                    <!--start link-->
-
-                    <section class="flat-row about  what-we-do " id="services" style="direction: ltr">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="title-section style3">
-                                        <h1 class="title">پیوندها</h1>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="flat-iconbox-carosuel-wrap">
-                                        <div class="flat-iconbox-carosuel" data-item="4" data-nav="false" data-dots="false" data-auto="false">
-                                            <%
-                                                List<Map<String, Object>> row5 = jjDatabase.separateRow(db.Select(Product.tableName, Product._category_id + "=105"));
-                                                for (int j = 0;
-
-                                                j< row5.size ();
-                                                j
-
-                                                
-                                                    ++) {
-                                            %>
-                                            <div class="iconbox-item root-back">
-                                                <div class="iconbox  left square">
-                                                    <div class="box-header">
-                                                        <div class="box-title"><img width="100%" src="upload/<%=row5.get(j).get(Product._pic1)%>"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <%}%>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+                        </article>
+                    </div>
                 </div>
 
             </div>

@@ -2530,6 +2530,7 @@ public class Access_User {
 //                    + "<i class=\"fa fa-user-circle\"></i></a></li>") + ";\n");  
             html.append(Js.setHtml("#userNameAfterLogin1", "<li class='   ' style='color:black'>" + user.get(Access_User._name).toString() + "&nbsp;" + user.get(Access_User._family).toString() + "&nbsp;"
                     + "<a  style='cursor:pointer;' href='userProfile.jsp?user_token=" + user.get(Access_User._token).toString() + "''><i class=\"fa fa-user-circle\"></i></a></li>") + ";\n");
+                html.append("sw('خوش آمدید'); " );
             String script = "";
             script += " var href =index.jsp;\n"
                     + "      window.location.href = href;";

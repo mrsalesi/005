@@ -48,9 +48,9 @@ public class Server extends HttpServlet {
     public static String passEmail = "sepahan901614003";
     public static String smtpAcount = "smtp.gmail.com";
     public static String mainPage = "ZarinpalResult.jsp";
-    public static String mainPageJSP = "products.jsp?category=1";
-    public static String contentJSP = "content.jsp";
-    public static String newsJSP = "index_news.jsp";
+    public static String mainPageJSP = "index.jsp";
+    public static String contentJSP = "indexContent.jsp";
+    public static String newsJSP = "indexNews.jsp";
     public static String productJSP = "index_1.html";
     public static String currentPath = "";
     //********************************************************************
