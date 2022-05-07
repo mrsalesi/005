@@ -95,8 +95,8 @@ public class UploadServlet extends HttpServlet {
         String pattern = Pattern.quote(System.getProperty("file.separator"));
         String[] contxtPath = request.getServletContext().getRealPath("/").split(pattern);
         String safePath = "";
-//        for (int i = 0; i < contxtPath.length - 1; i++) {//return 2 folder up(parent of parent)
-        for (int i = 0; i < contxtPath.length - 2; i++) {//return 2 folder up(parent of parent)
+        for (int i = 0; i < contxtPath.length - 1; i++) {//return 2 folder up(parent of parent)
+//        for (int i = 0; i < contxtPath.length - 2; i++) {//return 2 folder up(parent of parent)
             safePath += contxtPath[i] + System.getProperty("file.separator");
         }
         String path = safePath + Save_Folder_Name;// upload\ in windows and upload/ in linux

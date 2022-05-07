@@ -84,20 +84,20 @@
                                 }
                                 ;
                                 cmsContent.tabSizeTbl();
-                                cmsContent.loadForm();">مدیریت محتوای سازمانی</a></li>
+                                cmsContent.loadForm(); return false;">مدیریت محتوای سازمانی</a></li>
                         <!--                        <li class="nav-item" id="managmentKanoon" style="display: block;"><a href="#swKanoon" class="nav-link ShowOneDiv" onclick="if ($('#swKanoonTbl').html() == '') {
                                                             cmsKanoon.m_refresh();
                                                         }
                                                         ;
                                                         cmsKanoon.tabSizeTbl();
-                                                        cmsKanoon.loadForm();">مدیریت محتوای کانونها</a></li>-->
+                                                        cmsKanoon.loadForm(); return false;">مدیریت محتوای کانونها</a></li>-->
                         <li class="nav-item" id="managmentContentCategory" style="display: none;"><a href="#swCategoryContent" onclick="if ($('#swCategoryContentTbl').html() == '') {
                                     cmsCategoryContent.m_refresh();
                                     back();
                                 }
                                 ;
                                 cmsCategoryContent.tabSizeTbl();
-                                cmsCategoryContent.loadForm();" class="nav-link ShowOneDiv" >دسته بندی مدیریت محتوای سازمانی</a></li>
+                                cmsCategoryContent.loadForm(); return false;" class="nav-link ShowOneDiv" >دسته بندی مدیریت محتوای سازمانی</a></li>
                         <li class="nav-item" id="managmentPic" style="display: none;"><a href="#swPic" onclick="if ($('#swPicTbl').html() == '') {
                                     cmsPic.m_refresh();
                                     back();
@@ -111,21 +111,21 @@
                                 }
                                 ;
                                 cmsCategoryGallery.tabSizeTbl();
-                                cmsCategoryGallery.loadForm();" class="nav-link ShowOneDiv" >دسته بندی تصاویر</a></li>
+                                cmsCategoryGallery.loadForm(); return false;" class="nav-link ShowOneDiv" >دسته بندی تصاویر</a></li>
                         <li class="nav-item" id="mujole_content_news" style="display: block"><a href="#swNews" onclick="if ($('#swNewsTbl').html() == '') {
                                     cmsNews.m_refresh();
                                     back();
                                 }
                                 ;
                                 cmsNews.tabSizeTbl();
-                                cmsNews.loadForm();" class="nav-link ShowOneDiv">اخبار سازمانی</a></li>
+                                cmsNews.loadForm(); return false;" class="nav-link ShowOneDiv">اخبار سازمانی</a></li>
                         <li class="nav-item" id="mujole_content_GroupingNews" style="display: block"><a href="#swCategoryNews" onclick="if ($('#swCategoryNewsTbl').html() == '') {
                                     cmsCategoryNews.m_refresh();
                                     back();
                                 }
                                 ;
                                 cmsCategoryNews.tabSizeTbl();
-                                cmsCategoryNews.loadForm();" class="nav-link ShowOneDiv">دسته بندی اخبار سازمانی</a></li>
+                                cmsCategoryNews.loadForm(); return false;" class="nav-link ShowOneDiv">دسته بندی اخبار سازمانی</a></li>
                     </ul>
                 </li><!-- nav-item -->
 
@@ -140,8 +140,7 @@
                                     back();
                                     ;
                                 }
-                                hmisForms.loadForm();
-                                return false;" class="nav-link ShowOneDiv">فرم ها </a></li>
+                                hmisForms.loadForm(); return false;                                return false;" class="nav-link ShowOneDiv">فرم ها </a></li>
 
                         <li id="managmentFormsMe" class="nav-item" style="display: none;"><a href="#swMyForms" target="_blank" onclick="hmisFormAnswerSets.showMyForms();
                                 return false;" class="nav-link ShowOneDiv">تکمیل فرم های من</a></li>
@@ -161,49 +160,53 @@
 <!--                                                <li class="nav-item"><a href="#swRecivedMessages"  class="nav-link ShowOneDiv" onclick="
                                                         cmsComment.m_refresh();
                                                         cmsComment.mainTabSetSize();
-                                                        cmsComment.loadForm();
-                        
-                                                                        ">پیام های دریافتی</a></li>
+                                                        cmsComment.loadForm(); return false;                        
+                        ">پیام های دریافتی</a></li>
                                                 <li class="nav-item"><a href="#swSentMessages"  class="nav-link ShowOneDiv" onclick="
                                                         cmsComment.m_refresh();
                                                         cmsComment.mainTabSetSize();
-                                                        cmsComment.loadForm();
-                        
-                                                                        ">پیام های ارسالی</a></li>
+                                                        cmsComment.loadForm(); return false;                        
+                        ">پیام های ارسالی</a></li>
                                                 <li class="nav-item"><a href="#swMyMessages"  class="nav-link ShowOneDiv" onclick="
                                                         cmsComment.m_refresh();
                                                         cmsComment.mainTabSetSize();
-                                                        cmsComment.loadForm();
-                        
-                                                                        ">پیام های من</a></li>
+                                                        cmsComment.loadForm(); return false;                        
+                        ">پیام های من</a></li>
                                                 <li class="nav-item"><a href="#swDeletedMessages"  class="nav-link ShowOneDiv" onclick="
                                                         hmisDeletedMessages.m_refresh();
                                                         hmisDeletedMessages.mainTabSetSize();
-                                                        hmisDeletedMessages.loadForm();
-                                                                        ">پیام های حذف شده</a></li>-->
-                        <li class="nav-item"><a href="#swMessages"  class="nav-link ShowOneDiv" onclick="if ($('#swCommentTbl').html() == '') {
-                                    cmsComment.m_refresh();
-                                    cmsComment.mainTabSetSize();
-                                    back();
-                                }
-                                ;
-                                cmsComment.loadForm();
-                                                ">پیام ها</a></li>
+                                                        hmisDeletedMessages.loadForm(); return false;                        ">پیام های حذف شده</a></li>-->
+                        <li class="nav-item"><a href="#swRecivedMessages"  class="nav-link ShowOneDiv" onclick="
+                                hmisRecivedMessages.m_refresh();
+                                hmisRecivedMessages.mainTabSetSize();
+                                hmisRecivedMessages.loadForm(); return false">پیام های دریافتی</a></li>
+                        <li class="nav-item"><a href="#swSentMessages"  class="nav-link ShowOneDiv" onclick="
+                                hmisSentMessages.m_refresh();
+                                hmisSentMessages.mainTabSetSize();
+                                hmisSentMessages.loadForm(); return false">پیام های ارسالی</a></li>
+                        <li class="nav-item"><a href="#swMyMessages"  class="nav-link ShowOneDiv" onclick="
+                                hmisMyMessages.m_refresh();
+                                hmisMyMessages.mainTabSetSize();
+                                hmisMyMessages.loadForm(); return false">پیام های من</a></li>
+                        <li class="nav-item"><a href="#swDeletedMessages"  class="nav-link ShowOneDiv" onclick="
+                                hmisDeletedMessages.m_refresh();
+                                hmisDeletedMessages.mainTabSetSize();
+                                hmisDeletedMessages.loadForm(); return false">پیام های حذف شده</a></li>
+                        <li class="nav-item"><a href="#swMessages"  class="nav-link ShowOneDiv" onclick="
+                                hmisMessages.m_refresh();
+                                hmisMessages.mainTabSetSize();
+                                hmisMessages.loadForm(); return false">پیام ها</a></li>
                         <li class="nav-item"><a href="#swEmail"  class="nav-link ShowOneDiv" onclick="if ($('#swEmailTbl').html() == '') {
                                     cmsEmail.m_refresh();
-                                    back();
                                 }
                                 ;
-                                cmsEmail.loadForm();
-                                                ">ایمیل</a></li>
+                                cmsEmail.loadForm(); return false">ایمیل</a></li>
                         <li class="nav-item"><a href="#swSMS"  class="nav-link ShowOneDiv" onclick="if ($('#swSMSTbl').html() == '') {
                                     //                                   
                                     cmsSMS.m_refresh();
-                                    back();
                                 }
                                 ;
-                                cmsSMS.loadForm();
-                                                ">پیامک</a></li>
+                                cmsSMS.loadForm(); return false">پیامک</a></li>
                     </ul>
                 </li><!-- nav-item -->
 
@@ -219,41 +222,40 @@
                                 }
                                 ;
                                 cmsProduct.tabSizeTbl();
-                                cmsProduct.loadForm();" class="nav-link ShowOneDiv">محصولات</a></li>                        
+                                cmsProduct.loadForm(); return false;" class="nav-link ShowOneDiv">محصولات</a></li>                        
                         <li class="nav-item" id="managmentCategoryProduct" style=""><a href="#swCategoryProduct" onclick="if ($('#swCategoryProductTbl').html() == '') {
                                     cmsCategoryProducts.m_refresh();
                                 }
                                 ;
                                 cmsCategoryProducts.tabSizeTbl();
-                                cmsCategoryProducts.loadForm();" class="nav-link ShowOneDiv">دسته بندی محصولات</a></li>
+                                cmsCategoryProducts.loadForm(); return false;" class="nav-link ShowOneDiv">دسته بندی محصولات</a></li>
 
                         <li class="nav-item" id="managmentTags" style=""><a href="#swTags" onclick="if ($('#swTagsTbl').html() == '') {
                                     cmsTagsm_refresh();
                                 }
                                 ;
                                 cmsTagstabSizeTbl();
-                                cmsTagsloadForm();" class="nav-link ShowOneDiv">دسته برچسب ها</a></li>
+                                cmsTagsloadForm(); return false;" class="nav-link ShowOneDiv">دسته برچسب ها</a></li>
                         <li class="nav-item" id="managmentTags" style=""><a href="#swFactor" onclick="if ($('#swFactorTbl').html() == '') {
                                     cmsFactor.m_refresh();
                                     back();
                                 }
                                 ;
-                                cmsFactor.loadForm();
-                                                                            " class="nav-link ShowOneDiv">فاکتورها</a></li>
+                                cmsFactor.loadForm(); return false;                            " class="nav-link ShowOneDiv">فاکتورها</a></li>
                         <li class="nav-item" id="managmentTags" style=""><a href="#swPayment" onclick="if ($('#swPaymentTbl').html() == '') {
                                     cmsPayment.m_refresh();
                                     back();
                                 }
                                 ;
                                 cmsPayment.tabSizeTbl();
-                                cmsPayment.loadForm();" class="nav-link ShowOneDiv">پرداخت ها</a></li>
+                                cmsPayment.loadForm(); return false;" class="nav-link ShowOneDiv">پرداخت ها</a></li>
                         <li class="nav-item" id="managmentTags" style=""><a href="#swFactorItem" onclick="if ($('#swFactorItemTbl').html() == '') {
                                     cmsFactorItem.m_refresh();
                                     back();
                                 }
                                 ;
                                 cmsFactorItem.tabSizeTbl();
-                                cmsFactorItem.loadForm();" class="nav-link ShowOneDiv">آیتم های سفارش داده شده من</a></li>
+                                cmsFactorItem.loadForm(); return false;" class="nav-link ShowOneDiv">آیتم های سفارش داده شده من</a></li>
                     </ul>
                 </li><!-- nav-item -->              
                 <li class="nav-item" id="accessli" style="display: none;cursor: pointer;">
@@ -268,9 +270,8 @@
                                                         }
                                                         ;
                                                         hmisDepartment.mainTabSetSize();
-                                                        hmisDepartment.loadForm();
-                        
-                                                                                                                   ">بخش ها</a></li>-->
+                                                        hmisDepartment.loadForm(); return false;                        
+                   ">بخش ها</a></li>-->
 
                         <li class="nav-item" id="swUserli" style="display: none;">  <a href="#swUser" class="nav-link ShowOneDiv" onclick="if ($('#swUserTbl').html() == '') {
                                     cmsUser.m_refresh();
@@ -279,13 +280,12 @@
                                 }
                                 ;
                                 cmsUser.mainTabSetSize();
-                                cmsUser.loadForm();
-                                                                                       ">کاربران</a>
+                                cmsUser.loadForm(); return false;">کاربران</a>
                         </li>
                         <!--                        <li class="nav-item" id="swUploadExcelUserli" style="display: none;">  <a href="#swUploadExcelUser" class="nav-link ShowOneDiv" onclick="
                         
                                                         cmsUploadExcelUser.mainTabSetSize();
-                                                        cmsUploadExcelUser.loadForm();">ثبت کاربر جدید با بارگذاری فایل </a>
+                                                        cmsUploadExcelUser.loadForm(); return false;">ثبت کاربر جدید با بارگذاری فایل </a>
                                                 </li>-->
 
 
@@ -296,9 +296,8 @@
                                                         }
                                                         ;
                                                         hmisRole.mainTabSetSize();
-                                                        hmisRole.loadForm();
-                        
-                                                                                                             ">جدول نقش ها</a></li>-->
+                                                        hmisRole.loadForm(); return false;                        
+             ">جدول نقش ها</a></li>-->
                         <!--<li class="nav-item"><a href="#" onclick=" $('.sh-mainpanel').load('13userGroup.html', null, function () {});return false;" class="nav-link">جدول گروه های کاربری</a></li>-->
                         <li  class="nav-item" id="swGroupli" style="display: none;"><a href="#swGroup"  class="nav-link ShowOneDiv" onclick="if ($('#swGroupTbl').html() == '') {
                                     cmsGroup.m_refresh();
@@ -307,8 +306,7 @@
                                 }
                                 ;
                                 cmsGroup.mainTabSetSize();
-                                cmsGroup.loadForm();
-                                                                                       ">جدول گروه های کاربری</a></li>
+                                cmsGroup.loadForm(); return false;">جدول گروه های کاربری</a></li>
                     </ul>
                 </li><!-- nav-item -->
                 <li class="nav-item" id="maduleSitteng"  style="display: none;">
@@ -323,7 +321,7 @@
                                         back();
                                     }
                                     ;
-                                    hmisTiceConfig.loadForm();" class="nav-link ShowOneDiv">تنظیمات </a>
+                                    hmisTiceConfig.loadForm(); return false;" class="nav-link ShowOneDiv">تنظیمات </a>
                         </li>
 
                     </ul>
@@ -336,8 +334,7 @@
             <a href="#swMyMessages"  class="sh-icon-link ShowOneDiv" onclick="
                     hmisMyMessages.m_refresh();
                     hmisMyMessages.mainTabSetSize();
-                    hmisMyMessages.loadForm();
-
+                    hmisMyMessages.loadForm(); return false;
                ">
                 <div>
                     <i class="fa fa-envelope" style='color: #ffd15c;font-size:42px;margin-top: 14px;'></i><br>
@@ -357,8 +354,7 @@
                                 <a href="#swMyMessages"  class="ShowOneDiv dropdown-menu-link" onclick="
                                         hmisMyMessages.m_refresh();
                                         hmisMyMessages.mainTabSetSize();
-                                        hmisMyMessages.loadForm();
-
+                                        hmisMyMessages.loadForm(); return false;
                                    ">
                                     <div>
                                         <i class="fa fa-envelope" style='color: #ffd15c;font-size:42px;margin-top: 16px;'></i><br>
@@ -381,15 +377,14 @@
                         <div class="media align-items-center">
                             <img id="picUserProfile1" src="./Manager/img1.jpg" class="wd-60 ht-60 rounded-circle bd pd-5" alt="">
                             <div class="media-body">
-                                <h6 class="tx-inverse tx-15 mg-b-5" id="nameUserProfile">مجید شریعتی</h6>
-                                <p class="mg-b-0 tx-12" id="emailUserProfile">majid.shariat@gmail.com</p>
+                                <h6 class="tx-inverse tx-15 mg-b-5" id="nameUserProfile"></h6>
+                                <p class="mg-b-0 tx-12" id="emailUserProfile"></p>
                             </div><!-- media-body -->
                         </div><!-- media -->
                         <hr>
                         <ul class="dropdown-profile-nav">
                             <li><a href="#swUserProfile" class="ShowOneDiv" onclick="
-                                    hmisUserProfile.loadForm();
-                                    hmisUserProfile.m_select();
+                                    hmisUserProfile.loadForm(); return false;                                    hmisUserProfile.m_select();
                                     hmisUserProfile.mainTabSetSize();"><i class="icon ion-ios-person"></i>ویرایش پروفایل</a></li>
                             <li><a href="CMS.html"><i class="icon ion-ios-gear"></i> تنظیمات</a></li>
                             <li><a href="CMS.html" onclick="signOut();

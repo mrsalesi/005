@@ -29,7 +29,7 @@ var cmsComment = {
         param += "&panel=" + (containerId==null ? "swCommentTbl" : containerId);
         param += "&sort=" + (sortField==null ? "0" : sortField);
         param += "&height=" + (tableHeight==null ? PanelHeight : tableHeight);
-        jj(param).jjAjax2(false);
+        new jj(param).jjAjax2(false);
         cmsComment.tabSizeTbl();
     },
     m_show_form:function(){
@@ -71,7 +71,7 @@ var cmsComment = {
         var param = "";
         param += "do="+cmsComment.tableName+".delete";
         param += "&" + cmsComment.f_id + "=" + (id==null ? "" : id);
-        jj(param).jjAjax2(false);
+        new jj(param).jjAjax2(false);
         cmsComment.m_show_tbl();
         cmsComment.m_clean();
     },
@@ -79,7 +79,7 @@ var cmsComment = {
         var param = "";
         param += "do="+cmsComment.tableName+".select";
         param += "&" + cmsComment.f_id + "=" + (id==null ? "" : id);
-        jj(param).jjAjax2(false);
+        new jj(param).jjAjax2(false);
         cmsComment.m_show_form();
         
     },

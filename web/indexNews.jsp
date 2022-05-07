@@ -301,13 +301,13 @@
                                                 <div class="col-md-4">
                                                     <div class="sidebar">
                                                         <div class="widget widget_search">
-                                                                    <form role="search" method="get" class="search-form" action="#">
+                                                            <form role="search" method="get" class="search-form" action="#">
                                                                 <label>
                                                                     <input type="search" class="search-field" id="search_in" placeholder="جستجو..." value="" name="s">
                                                                 </label>
-                                                                        <input type="submit" class="search-submit" value="جستجو">
-                                                                    </form>
-                                                            </div>
+                                                                <input type="submit" class="search-submit" value="جستجو">
+                                                            </form>
+                                                        </div>
                                                         <div class="widget widget-recent-news">
                                                             <h5 class="widget-title">اخبار منتشر شده</h5>
                                                             <ul class="popular-news clearfix">
@@ -451,234 +451,235 @@
                                             <h4 class="widget-title">ادرس</h4>
                                             <div class="textwidget">
                                                 <ul class="footer-info">
-                                                    <li class="address">اصفهان<br><br>خیابان نیکبخت<br>
-                                                                    <br>تعاونی دادگستری اصفهان</li>
-                                                                        <li class="phone">تلفن:031-323652650</li>
-                                                                        <li class="email">Info@example.com</li>
-                                                                        </ul>
-                                                                        </div>
-                                                                        </div>
-                                                                        </div>
-                                                                        <div class="col-md-3">
-                                                                            <div class="widget widget_text widget_info">
-                                                                                <h4 class="widget-title">منو</h4>
-                                                                                <div class="textwidget">
-                                                                                    <ul class="footer-info">
-                                                                                        <li class="footer-home arrow"><a>صفحه اصلی</a></li>
+                                                    <li class="address">اصفهان<br/><br/>خیابان نیکبخت<br/>
+                                                        <br/>تعاونی دادگستری اصفهان</li>
+                                                    <li class="phone">تلفن:031-323652650</li>
+                                                    <li class="email">Info@example.com</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="widget widget_text widget_info">
+                                            <h4 class="widget-title">منو</h4>
+                                            <div class="textwidget">
+                                                <ul class="footer-info">
+                                                    <li class="footer-home arrow"><a>صفحه اصلی</a></li>
 
-                                                                                        <li class="footer-Allproject arrow"><a>درباره ی ما</a></li>
-                                                                                        <li class="footer-Allproject arrow"><a>پروژه ها</a></li>
-                                                                                    </ul>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-3">
-                                                                            <div class="widget widget_text widget_info">
-                                                                                <h4 class="widget-title">خدمات</h4>
-                                                                                <div class="textwidget">
-                                                                                    <ul class="footer-info">
-                                                                                        <li class="footer-home arrow"><a>پرداخت ها و صورتحساب ها</a></li>
-                                                                                        <li class="footer-about arrow"><a>پروژه ها من</a></li>
-                                                                                        <li class="footer-Allproject arrow"><a>پروژه های شرکت</a></li>
-                                                                                        <li class="footer-Allproject arrow"><a>پیام ها</a></li>
-                                                                                        <li class="footer-Allproject arrow"><a>گزارش پروژه ها</a></li>
-                                                                                    </ul>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-3">
-                                                                            <div class="widget widget_text widget_info">
-                                                                                <h4 class="widget-title">تعاونی دادگستری اصفهان</h4>
-                                                                                <div class="textwidget">
-                                                                                    <ul class="">
-                                                                                        <li class="footer-home"><a>تعاون برای کار شایسته</a></li>
-                                                                                        <li class="footer-about">  <div class="social-links">
-                                                                                                <a href="" class="root-blue"><i class="fa fa-twitter"></i></a>
-                                                                                                <a href="" class="root-blue"><i class="fa fa-facebook"></i></a>
-                                                                                                <a href="" class="root-blue"><i class="fa fa-instagram"></i></a>
-                                                                                                <a href="" class="root-blue"><i class="fa fa-linkedin"></i></a>
-                                                                                                <a href="" class="root-blue"><i class="fa fa-skype"></i></a>
-                                                                                            </div></li>
-                                                                                    </ul>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
+                                                    <li class="footer-Allproject arrow"><a>درباره ی ما</a></li>
+                                                    <li class="footer-Allproject arrow"><a>پروژه ها</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="widget widget_text widget_info">
+                                            <h4 class="widget-title">خدمات</h4>
+                                            <div class="textwidget">
+                                                <ul class="footer-info">
+                                                    <li class="footer-home arrow"><a>پرداخت ها و صورتحساب ها</a></li>
+                                                    <li class="footer-about arrow"><a>پروژه ها من</a></li>
+                                                    <li class="footer-Allproject arrow"><a>پروژه های شرکت</a></li>
+                                                    <li class="footer-Allproject arrow"><a>پیام ها</a></li>
+                                                    <li class="footer-Allproject arrow"><a>گزارش پروژه ها</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="widget widget_text widget_info">
+                                            <h4 class="widget-title">تعاونی دادگستری اصفهان</h4>
+                                            <div class="textwidget">
+                                                <ul class="">
+                                                    <li class="footer-home"><a>تعاون برای کار شایسته</a></li>
+                                                    <li class="footer-about">  <div class="social-links">
+                                                            <a href="" class="root-blue"><i class="fa fa-twitter"></i></a>
+                                                            <a href="" class="root-blue"><i class="fa fa-facebook"></i></a>
+                                                            <a href="" class="root-blue"><i class="fa fa-instagram"></i></a>
+                                                            <a href="" class="root-blue"><i class="fa fa-linkedin"></i></a>
+                                                            <a href="" class="root-blue"><i class="fa fa-skype"></i></a>
+                                                        </div></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                                                        </div>
-                                                                        </div>
-                                                                        </div>
-                                                                        </footer>
-                                                                        <!--end footer-->
-                                                                        <div class="switcher-container">
-                                                                            <h2>
-                                                                                انتخاب رنگ<a class="sw-click">
-                                                                                    <i class="fa fa-cog">
-                                                                                    </i>
-                                                                                </a>
-                                                                            </h2>
-                                                                            <div class="selector-box">
-                                                                                <div class="clearfix">
-                                                                                </div>
-                                                                                <div class="sw-odd">
-                                                                                    <h3>
-                                                                                        انتخاب رنگ</h3>
-                                                                                    <div class="ws-colors">
-                                                                                        <a href="#color1" class="styleswitch current" id="color1">
-                                                                                            &nbsp;<span class="cl1">
-                                                                                            </span>
-                                                                                        </a>
-                                                                                        <a href="#color2" class="styleswitch" id="color2">
-                                                                                            &nbsp;<span class="cl2">
-                                                                                            </span>
-                                                                                        </a>
-                                                                                        <a href="#color3" class="styleswitch" id="color3">
-                                                                                            &nbsp;<span class="cl3">
-                                                                                            </span>
-                                                                                        </a>
-                                                                                        <a href="#color4" class="styleswitch" id="color4">
-                                                                                            &nbsp;<span class="cl4">
-                                                                                            </span>
-                                                                                        </a>
-                                                                                        <a href="#color5" class="styleswitch" id="color5">
-                                                                                            &nbsp;<span class="cl5">
-                                                                                            </span>
-                                                                                        </a>
-                                                                                        <a href="#color6" class="styleswitch" id="color6">
-                                                                                            &nbsp;<span class="cl6">
-                                                                                            </span>
-                                                                                        </a>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="sw-even">
-                                                                                    <h3>
-                                                                                        لایه بندی:</h3>
-                                                                                    <a  class="sw-light">
-                                                                                        حاشیه</a>
-                                                                                    <a  class="sw-dark">
-                                                                                        کامل</a>
-                                                                                </div>
-                                                                                <div class="sw-pattern pattern">
-                                                                                    <h3>
-                                                                                        پس زمینه:</h3>
-                                                                                    <a  class="sw-pattern" data-image="template/img/1.png">
-                                                                                        <img src="template/img/1.png" alt="image">
-                                                                                    </a>
-                                                                                    <a  class="sw-pattern" data-image="template/img/2.png">
-                                                                                        <img src="template/img/2.png" alt="image">
-                                                                                    </a>
-                                                                                    <a  class="sw-pattern" data-image="template/img/3.png">
-                                                                                        <img src="template/img/3.png" alt="image">
-                                                                                    </a>
-                                                                                    <a  class="sw-pattern" data-image="template/img/4.png">
-                                                                                        <img src="template/img/4.png" alt="image">
-                                                                                    </a>
-                                                                                    <a  class="sw-pattern" data-image="template/img/5.png">
-                                                                                        <img src="template/img/5.png" alt="image">
-                                                                                    </a>
-                                                                                    <a  class="sw-pattern" data-image="template/img/6.png">
-                                                                                        <img src="template/img/6.png" alt="image">
-                                                                                    </a>
-                                                                                    <a  class="sw-pattern" data-image="template/img/7.png">
-                                                                                        <img src="template/img/7.png" alt="image">
-                                                                                    </a>
-                                                                                    <a  class="sw-pattern" data-image="template/img/8.png">
-                                                                                        <img src="template/img/8.png" alt="image">
-                                                                                    </a>
-                                                                                    <a  class="sw-pattern" data-image="template/img/9.png">
-                                                                                        <img src="template/img/9.png" alt="image">
-                                                                                    </a>
-                                                                                    <a  class="sw-pattern" data-image="template/img/10.png">
-                                                                                        <img src="template/img/10.png" alt="image">
-                                                                                    </a>
-                                                                                </div>
-                                                                                <div class="clearfix">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div id="site-off-canvas">
-                                                                            <span class="close"></span>
-                                                                            <div class="wrapper">
-                                                                                <div class="widget widget_search">
-                                                                                    <form role="search" method="get" class="search-form" action="#">
-                                                                                        <label>
-                                                                                            <input type="search" class="search-field" placeholder="جستجو" value="" name="s">
-                                                                                        </label>
-                                                                                        <input type="submit" class="search-submit" value="پیدا کردن">
-                                                                                    </form>
-                                                                                </div>
-                                                                                <div id="nav_menu-2" class="widget widget-categories">
-                                                                                    <h4 class="widget-title">صفحات</h4>
-                                                                                    <ul>
-                                                                                        <li><a href="index.jsp">صفحه اصلی</a></li>
-                                                                                        <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;">پروژه های شرکت</a></li>
-                                                                                        <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;">گالری</a></li>
-                                                                                        <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;">تماس با ما</a></li>
-                                                                                        <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;">درباره ما</a></li>
-                                                                                    </ul>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <a class="go-top show">
-                                                                            <i class="fa fa-angle-up"></i>
-                                                                        </a>
-                                                                        <script>
-                                                                            function getNews(id) {
-                                                                                new jj("do=News.getContentNews&id=" + id + "&panel=swNews").jjAjax2(true);
-                                                                            }
-                                                                            (function () {
-                                                                                var token = window.localStorage.getItem('user_token');
-                                                                                if (token === null || token === '' || token === 'undefined') {
-                                                                                    $('.register_url').show();
-                                                                                } else {
-                                                                                    $('.textlogin').show();
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                    <!--end footer-->
+                    <div class="switcher-container">
+                        <h2>
+                            انتخاب رنگ<a class="sw-click">
+                                <i class="fa fa-cog">
+                                </i>
+                            </a>
+                        </h2>
+                        <div class="selector-box">
+                            <div class="clearfix">
+                            </div>
+                            <div class="sw-odd">
+                                <h3>
+                                    انتخاب رنگ</h3>
+                                <div class="ws-colors">
+                                    <a href="#color1" class="styleswitch current" id="color1">
+                                        &nbsp;<span class="cl1">
+                                        </span>
+                                    </a>
+                                    <a href="#color2" class="styleswitch" id="color2">
+                                        &nbsp;<span class="cl2">
+                                        </span>
+                                    </a>
+                                    <a href="#color3" class="styleswitch" id="color3">
+                                        &nbsp;<span class="cl3">
+                                        </span>
+                                    </a>
+                                    <a href="#color4" class="styleswitch" id="color4">
+                                        &nbsp;<span class="cl4">
+                                        </span>
+                                    </a>
+                                    <a href="#color5" class="styleswitch" id="color5">
+                                        &nbsp;<span class="cl5">
+                                        </span>
+                                    </a>
+                                    <a href="#color6" class="styleswitch" id="color6">
+                                        &nbsp;<span class="cl6">
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="sw-even">
+                                <h3>
+                                    لایه بندی:</h3>
+                                <a  class="sw-light">
+                                    حاشیه</a>
+                                <a  class="sw-dark">
+                                    کامل</a>
+                            </div>
+                            <div class="sw-pattern pattern">
+                                <h3>
+                                    پس زمینه:</h3>
+                                <a  class="sw-pattern" data-image="template/img/1.png">
+                                    <img src="template/img/1.png" alt="image">
+                                </a>
+                                <a  class="sw-pattern" data-image="template/img/2.png">
+                                    <img src="template/img/2.png" alt="image">
+                                </a>
+                                <a  class="sw-pattern" data-image="template/img/3.png">
+                                    <img src="template/img/3.png" alt="image">
+                                </a>
+                                <a  class="sw-pattern" data-image="template/img/4.png">
+                                    <img src="template/img/4.png" alt="image">
+                                </a>
+                                <a  class="sw-pattern" data-image="template/img/5.png">
+                                    <img src="template/img/5.png" alt="image">
+                                </a>
+                                <a  class="sw-pattern" data-image="template/img/6.png">
+                                    <img src="template/img/6.png" alt="image">
+                                </a>
+                                <a  class="sw-pattern" data-image="template/img/7.png">
+                                    <img src="template/img/7.png" alt="image">
+                                </a>
+                                <a  class="sw-pattern" data-image="template/img/8.png">
+                                    <img src="template/img/8.png" alt="image">
+                                </a>
+                                <a  class="sw-pattern" data-image="template/img/9.png">
+                                    <img src="template/img/9.png" alt="image">
+                                </a>
+                                <a  class="sw-pattern" data-image="template/img/10.png">
+                                    <img src="template/img/10.png" alt="image">
+                                </a>
+                            </div>
+                            <div class="clearfix">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="site-off-canvas">
+                        <span class="close"></span>
+                        <div class="wrapper">
+                            <div class="widget widget_search">
+                                <form role="search" method="get" class="search-form" action="#">
+                                    <label>
+                                        <input type="search" class="search-field" placeholder="جستجو" value="" name="s">
+                                    </label>
+                                    <input type="submit" class="search-submit" value="پیدا کردن">
+                                </form>
+                            </div>
+                            <div id="nav_menu-2" class="widget widget-categories">
+                                <h4 class="widget-title">صفحات</h4>
+                                <ul>
+                                    <li><a href="index.jsp">صفحه اصلی</a></li>
+                                    <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;">پروژه های شرکت</a></li>
+                                    <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;">گالری</a></li>
+                                    <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;">تماس با ما</a></li>
+                                    <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;">درباره ما</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="go-top show">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                    <script>
+                        function getNews(id) {
+                            new jj("do=News.getContentNews&id=" + id + "&panel=swNews").jjAjax2(true);
+                        }
+                        (function () {
+                            var token = window.localStorage.getItem('user_token');
+                            if (token === null || token === '' || token === 'undefined') {
+                                $('.register_url').show();
+                            } else {
+                                $('.textlogin').show();
 //                                                                                    new jj("do=Access_User.loginUserInHome&user_token=" + token + "&panel=userNameAfterLogin").jjAjax2(false);
-                                                                                }
-                                                                            }());
-                                                                            //                                                                        $('.flat-iconbox-carosuel').owlCarousel({
-                                                                            //                                                                            items: 4,
-                                                                            //                                                                            loop: true,
-                                                                            //                                                                            pagination: false,
-                                                                            //                                                                            slideSpeed: 700,
-                                                                            //                                                                            paginationSpeed: 700,
-                                                                            //                                                                            rewindSpeed: 700,
-                                                                            //                                                                            lazyLoad: true
-                                                                            //                                                                        });
+                            }
+                        }());
+                        //                                                                        $('.flat-iconbox-carosuel').owlCarousel({
+                        //                                                                            items: 4,
+                        //                                                                            loop: true,
+                        //                                                                            pagination: false,
+                        //                                                                            slideSpeed: 700,
+                        //                                                                            paginationSpeed: 700,
+                        //                                                                            rewindSpeed: 700,
+                        //                                                                            lazyLoad: true
+                        //                                                                        });
 
-                                                                            function loadNews(id) {
-                                                                                new jj("do=News.showNews&panel=sw&jj=1&id=" + id).jjAjax2(true);
-                                                                                $("html, body").animate({scrollTop: 0}, "slow");
+                        function loadNews(id) {
+                            new jj("do=News.showNews&panel=sw&jj=1&id=" + id).jjAjax2(true);
+                            $("html, body").animate({scrollTop: 0}, "slow");
 
-                                                                            }
-                                                                            function loadinformation(id) {
-                                                                                new jj("do=News.showInfo&panel=sw&jj=1&id=" + id).jjAjax2(true);
-                                                                                $("html, body").animate({scrollTop: 0}, "slow");
-                                                                            }
-                                                                            $(document).ready(function () {
-                                                                                persian = {0: '۰', 1: '۱', 2: '۲', 3: '۳', 4: '۴', 5: '۵', 6: '۶', 7: '۷', 8: '۸', 9: '۹'};
-                                                                                function traverse(el) {
-                                                                                    if (el.nodeType == 3) {
-                                                                                        var list = el.data.match(/[0-9]/g);
-                                                                                        if (list != null && list.length != 0) {
-                                                                                            for (var i = 0; i < list.length; i++)
-                                                                                                el.data = el.data.replace(list[i], persian[list[i]]);
-                                                                                        }
-                                                                                    }
-                                                                                    for (var i = 0; i < el.childNodes.length; i++) {
-                                                                                        traverse(el.childNodes[i]);
-                                                                                    }
-                                                                                }
-                                                                                traverse(document.body);
-                                                                                $("#search_in").on("keyup", function () {
+                        }
+                        function loadinformation(id) {
+                            new jj("do=News.showInfo&panel=sw&jj=1&id=" + id).jjAjax2(true);
+                            $("html, body").animate({scrollTop: 0}, "slow");
+
+                        }
+                        $(document).ready(function () {
+                            persian = {0: '۰', 1: '۱', 2: '۲', 3: '۳', 4: '۴', 5: '۵', 6: '۶', 7: '۷', 8: '۸', 9: '۹'};
+                            function traverse(el) {
+                                if (el.nodeType == 3) {
+                                    var list = el.data.match(/[0-9]/g);
+                                    if (list != null && list.length != 0) {
+                                        for (var i = 0; i < list.length; i++)
+                                            el.data = el.data.replace(list[i], persian[list[i]]);
+                                    }
+                                }
+                                for (var i = 0; i < el.childNodes.length; i++) {
+                                    traverse(el.childNodes[i]);
+                                }
+                            }
+                            traverse(document.body);
+                            $("#search_in").on("keyup", function () {
 //                                                                                SearchBtn();
-                                                                                    var value = $(this).val().toLowerCase();
-                                                                                                if ($("#search_in").length > 2index.js) {
-                                                                                        var text = new jj("#search_in").jjVal();
-                                                                                        if (text.length >= 5) {
-                                                                                                        new jj("do=News.SearchNews&panel=swNews&text=" + text + "").jjAjax2(false);
-                                                                                        }
-                                                                                    }
-                                                                                });
-                                                                            });
-                                                                        </script>
-                                                                        </body>      
-                                                                        </html>
+                                var value = $(this).val().toLowerCase();
+                                if ($("#search_in").length > 0) {
+                                    var text = new jj("#search_in").jjVal();
+                                    if (text.length >= 3) {
+                                        new jj("do=News.SearchNews&panel=swNews&text=" + text + "").jjAjax2(false);
+                                    }
+                                }
+                            });
+                        });
+                    </script>
+                </body>      
+                </html>

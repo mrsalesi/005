@@ -49,7 +49,7 @@ public class Messenger {
     public static String _logStatus = "messenger_logStatus";///روند وضعیت پیام
     public static String _email = "messenger_email";///ایمیل
     public static String _sendingMethod = "messenger_sendingMethod";///روش ارسال
-    public static String _file = "messenger_file";///
+    public static String _file = "messenger_attachFile";///
     public static String _type = "messenger_type";///
 
     public static String status_created = "ایجاد شده";///برای  وضعیت پیام نوشته شده است 
