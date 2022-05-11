@@ -567,7 +567,7 @@ function sw(titleTextOrId) {
         return false;
     }
     // ------------------  get data from content table  ------------------------
-    new jj("do=Content.sw&text=" + titleTextOrId.toString() + "&panel=sw&title=swTitle&jj=1").jjAjax(true,null);
+    new jj("do=Content.sw&text=" + titleTextOrId.toString() + "&panel=sw&title=swTitle&jj=1").jjAjax(true, null);
     swRightClear();
 
     /*
@@ -3841,7 +3841,6 @@ function samane3() {
 }
 
 function m_sendMassege() {
-    alert(9009);
     var param = "";
     param += new jj("#formMassege").jjSerial();
     param += "&do=Messenger.sendMesseage";
@@ -3860,3 +3859,31 @@ function insertComment() {
     new jj("do=Comment.insert&" + param).jjAjax2(false);
     new jj("#swCommentForm").jjFormClean();
 }
+function sendTicket() {
+    if (new jj('#messenger_title').jjVal() < 5) {
+        new jj("عنوان را مختصر و واضح وارد کنید").jjModal("پیام سیستم");
+        $("#messenger_title").css("border","dashed red thin");
+        return false;        
+    }else{
+        $("#messenger_textMessage").css("border","unset");        
+    }
+    if (new jj('#messenger_textMessage').jjVal() < 10) {
+        new jj("متن را وارد کنید").jjModal("پیام سیستم");
+        $("#messenger_textMessage").css("border","dashed red thin");
+        return false;        
+    }else{
+        $("#messenger_textMessage").css("border","unset");        
+    }
+    var params = new jj('#formMassege').jjSerial() + '&do=Messenger.sendMessageTicket&jj=1';
+    new jj(params).jjAjax(false);
+}
+function selectTicket(id) {
+    var params = "id=" + id + "&do=Messenger.select&jj=1";
+    new jj(params).jjAjax(false);
+}
+function afterSendMessage(message) {
+    $('#newTicket').slideUp();
+    $('#ticketTable').show();
+    new jj(message).jjModal_Yes_No("صفحه رقرش بشود ؟" , "location.reload();");
+}
+//

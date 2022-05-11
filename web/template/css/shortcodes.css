@@ -3524,7 +3524,6 @@ table thead th {
 table tbody tr td,
 table tbody tr th {
     padding: 15px 20px;
-    text-align: left;
     font-weight: normal;
 }
 

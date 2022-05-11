@@ -675,7 +675,7 @@
                                 if ($("#search_in").length > 0) {
                                     var text = new jj("#search_in").jjVal();
                                     if (text.length >= 3) {
-                                        new jj("do=News.SearchNews&panel=swNews&text=" + text + "").jjAjax2(false);
+                                        new jj("do=News.SearchNews&panel=swNews&text=" + text + "").jjAjax(false);
                                     }
                                 }
                             });

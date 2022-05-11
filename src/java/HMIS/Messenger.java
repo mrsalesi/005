@@ -1828,7 +1828,74 @@ public class Messenger {
         Server.outPrinter(request, response, Js.modal(errorMessage, "پیام سامانه"));
         return "";
     }
+    /**
+     * تابع درج date 1397/12/19 shiran1
+     *
+     * @param request
+     * @param db
+     * @param isPost
+     * @return
+     * @throws Exception
+     */
+    public static String sendMessageTicket(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
+        try {
+            if (jjTools.getSeassionUserId(request)<1) {
+                Server.outPrinter(request, response, "برای ارسال پیام باید ثبت نام کنید");
+                return "";
+            }
+//            Map<String, Object> map = new HashMap<String, Object>();
+//            map.put(_sender, jjTools.getSeassionUserId(request));
+//            map.put(_title, jjTools.getParameter(request, _title));
+//            map.put(_textMessage, jjTools.getParameter(request, _textMessage));
+//            map.put(_dateOfCreation, jjTools.getParameter(request, _dateOfCreation));
+//            map.put(_file, jjTools.getParameter(request, _file));
+//            map.put(_sendingMethod, jjTools.getParameter(request, _sendingMethod));
+//            map.put(_displayed, jjTools.getParameter(request, _displayed));
+//            map.put(_receiver, jjTools.getParameter(request, _receiver));
+//            if (db.insert(tableName, map).getRowCount() == 0) {
+//                String errorMessege = "عملیات درج بدرستی صورت نگرفت";
+//                Server.outPrinter(request, response, Js.modal("پیام سامانه", errorMessege));
+//            }
+            StringBuilder html = new StringBuilder();
+            String attachFiles = jjTools.getParameter(request, _file);
+            String[] attachFilesArray = attachFiles.split(",");
+            for (int l = 0; l < attachFilesArray.length; l++) {
+                List<Map<String, Object>> fileRow = jjDatabase.separateRow(db.Select(UploadServlet.tableName, UploadServlet._file_name + "='" + attachFilesArray[l] + "'"));
+                if (!fileRow.isEmpty()) {
+                    String idUpload = fileRow.get(0).get(UploadServlet._id).toString();
+                    String titleUpload = fileRow.get(0).get(UploadServlet._title).toString();
+                    String extension2 = attachFilesArray[l].substring(attachFilesArray[l].lastIndexOf(".") + 1, attachFilesArray[l].length());
+                    if (extension2.toLowerCase().equals("jpg")
+                            || extension2.toLowerCase().equals("png")
+                            || extension2.toLowerCase().equals("gif")
+                            || extension2.toLowerCase().equals("svg")) {
+                        html.append("<div class='col-lg-12  mg-l-15'>"
+                                + "<img class='wd-40  mg-r-20' src='upload/" + attachFilesArray[l] + "'/>"
+                                + "<a  href='upload/" + attachFilesArray[l] + "'> " + "<i class='fa fa-download'></i>" + titleUpload + "</a>"
+                                + "</div>"
+                        );
+                    } else {
+                        html.append("<div class='col-lg-12   mg-l-15'>"
+                                + "<i class='icon ion-ios-paper-outline'></i>"
+                                + "<a  href='upload/" + attachFilesArray[l] + "'>" + "<i class='fa fa-download'></i>" + titleUpload + "</a>"
+                                + "</div>"
+                        );
+                    }
+                } else {
+                    //@ToDo  //کی از فایل ها اشتباها از سامانه حذف شده
+                }
+            }
+            String reciversId = jjTools.getParameter(request, _receiver);
+            sendMesseage(request, db, reciversId, "" + jjTools.getSeassionUserId(request) + "", jjTools.getParameter(request, _sendingMethod), jjTools.getParameter(request, _postageDate).replaceAll("/", ""), jjTools.getParameter(request, _title), jjTools.getParameter(request, _textMessage), jjTools.getParameter(request, _textHTML) + html, "پشتیبانی","1","1");
+            Server.outPrinter(request, response, "afterSendMessage('پیام با موفقیت ارسال شد');");
+            return "";
 
+        } catch (Exception ex) {
+            Server.outPrinter(request, response, Server.ErrorHandler(ex));
+            return "";
+
+        }
+    }
     /* 
      /**
      * ارسال پیام توسط توابع سیستمی

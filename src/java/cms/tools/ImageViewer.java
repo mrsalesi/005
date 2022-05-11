@@ -59,8 +59,8 @@ public class ImageViewer extends HttpServlet {
 	   System.out.println(">>>>>-2: " + request.getServletContext().getRealPath("/"));
         ////به علت صحیح نبودن مسیر اپلود تغییر یافت
         String safePath = "";
-//        for (int i = 0; i < contxtPath.length - 1; i++) {//return 2 folder up(parent of parent)
-        for (int i = 0; i < contxtPath.length - 2; i++) {//return 2 folder up(parent of parent)
+        for (int i = 0; i < contxtPath.length - 1; i++) {//return 2 folder up(parent of parent)
+//        for (int i = 0; i < contxtPath.length - 2; i++) {//return 2 folder up(parent of parent)
             safePath += contxtPath[i] + System.getProperty("file.separator");
         } 
         ////
