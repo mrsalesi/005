@@ -1453,11 +1453,11 @@ public class Steps {
                             String tice_configMessage = Tice_config.getValue(db,  Tice_config._config_communicateofPlanSteps_name);
                             if (!tice_configMessage.equals("")) {//اگر در تنظیمات پیام ها چنین عنوانی  یافت شد اگر فعال بود پیامی که در تنظیمات ما تعریف شده را بیاور
                                 text = tice_configMessage;
-                                Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(ExeRoleId[i], db), "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(0).get(_title), text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                                Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(ExeRoleId[i], db), "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(0).get(_title), text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
 
                             } else {
                                 text = "شما به عنوان مسئول اجرا انتخاب شده اید";
-                                Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(ExeRoleId[i], db), "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(0).get(_title), text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                                Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(ExeRoleId[i], db), "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(0).get(_title), text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
                             }
                         }
                     }
@@ -1468,10 +1468,10 @@ public class Steps {
                     String tice_configMessage = Tice_config.getValue(db,  Tice_config._config_communicateofPlanSteps_name);
                     if (!tice_configMessage.equals("")) {//اگر در تنظیمات پیام ها چنین عنوانی  یافت شد اگر فعال بود پیامی که در تنظیمات ما تعریف شده را بیاور
                         text = tice_configMessage;
-                        Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(row.get(0).get(_trackerId).toString(), db), "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(0).get(_title), text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                        Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(row.get(0).get(_trackerId).toString(), db), "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(0).get(_title), text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
                     } else {
                         text = "شما به عنوان مسئول پیگیری انتخاب شده اید";
-                        Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(row.get(0).get(_trackerId).toString(), db), "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(0).get(_title), text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                        Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(row.get(0).get(_trackerId).toString(), db), "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(0).get(_title), text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
                     }
                 }
             } else if (!ExecutorUserId.equals("")) {
@@ -1516,11 +1516,11 @@ public class Steps {
                             String tice_configMessage = Tice_config.getValue(db,  Tice_config._config_communicateofPlanSteps_name);
                             if (!tice_configMessage.equals("")) {//اگر در تنظیمات پیام ها چنین عنوانی  یافت شد اگر فعال بود پیامی که در تنظیمات ما تعریف شده را بیاور
                                 text = tice_configMessage;
-                                Messenger.sendMesseage(null, db, ExeUserId[i], "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(0).get(_title) + "شما به عنوان مسئول اجرا انتخاب شده اید", text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                                Messenger.sendMesseage(null, db, ExeUserId[i], "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(0).get(_title) + "شما به عنوان مسئول اجرا انتخاب شده اید", text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
 
                             } else {
                                 text = "شما به عنوان مسئول اجرا انتخاب شده اید";
-                                Messenger.sendMesseage(null, db, ExeUserId[i], "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(0).get(_title) + "شما به عنوان مسئول اجرا انتخاب شده اید", text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                                Messenger.sendMesseage(null, db, ExeUserId[i], "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(0).get(_title) + "شما به عنوان مسئول اجرا انتخاب شده اید", text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
                             }
                         }
                     }
@@ -1530,11 +1530,11 @@ public class Steps {
                     String tice_configMessage = Tice_config.getValue(db,  Tice_config._config_communicateofPlanSteps_name);
                     if (!tice_configMessage.equals("")) {//اگر در تنظیمات پیام ها چنین عنوانی  یافت شد اگر فعال بود پیامی که در تنظیمات ما تعریف شده را بیاور
                         text = tice_configMessage;
-                        Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(row.get(0).get(_trackerId).toString(), db), "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(0).get(_title) + "شما به عنوان مسئول پیگیری انتخاب شده اید", text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                        Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(row.get(0).get(_trackerId).toString(), db), "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(0).get(_title) + "شما به عنوان مسئول پیگیری انتخاب شده اید", text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
 
                     } else {
                         text = "شما به عنوان مسئول پیگیری انتخاب شده اید";
-                        Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(row.get(0).get(_trackerId).toString(), db), "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(0).get(_title) + "شما به عنوان مسئول پیگیری انتخاب شده اید", text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                        Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(row.get(0).get(_trackerId).toString(), db), "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(0).get(_title) + "شما به عنوان مسئول پیگیری انتخاب شده اید", text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
 
                     }
                 }
@@ -1620,11 +1620,11 @@ public class Steps {
                                     String tice_configMessage = Tice_config.getValue(db,  Tice_config._config_communicateofPlanSteps_name);
                                     if (!tice_configMessage.equals("")) {//اگر در تنظیمات پیام ها چنین عنوانی  یافت شد اگر فعال بود پیامی که در تنظیمات ما تعریف شده را بیاور
                                         text = tice_configMessage;
-                                        Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(ExeRoleId[j], db), "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(i).get(_title), text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                                        Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(ExeRoleId[j], db), "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(i).get(_title), text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
 
                                     } else {
                                         text = "شما به عنوان مسئول اجرا انتخاب شده اید";
-                                        Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(ExeRoleId[j], db), "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(i).get(_title), text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                                        Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(ExeRoleId[j], db), "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(i).get(_title), text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
                                     }
                                 }
                             }
@@ -1634,11 +1634,11 @@ public class Steps {
                             String tice_configMessage = Tice_config.getValue(db,  Tice_config._config_communicateofPlanSteps_name);
                             if (!tice_configMessage.equals("")) {//اگر در تنظیمات پیام ها چنین عنوانی  یافت شد اگر فعال بود پیامی که در تنظیمات ما تعریف شده را بیاور
                                 text = tice_configMessage;
-                                Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(row.get(i).get(_trackerId).toString(), db), "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(i).get(_title), text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                                Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(row.get(i).get(_trackerId).toString(), db), "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(i).get(_title), text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
 
                             } else {
                                 text = "شما به عنوان مسئول پیگیری انتخاب شده اید";
-                                Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(row.get(i).get(_trackerId).toString(), db), "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(i).get(_title), text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                                Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(row.get(i).get(_trackerId).toString(), db), "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(i).get(_title), text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
 
                             }
                         }
@@ -1684,11 +1684,11 @@ public class Steps {
                                     String tice_configMessage = Tice_config.getValue(db,  Tice_config._config_communicateofPlanSteps_name);
                                     if (!tice_configMessage.equals("")) {//اگر در تنظیمات پیام ها چنین عنوانی  یافت شد اگر فعال بود پیامی که در تنظیمات ما تعریف شده را بیاور
                                         text = tice_configMessage;
-                                        Messenger.sendMesseage(null, db, ExeUserId[j], "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(i).get(_title), text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                                        Messenger.sendMesseage(null, db, ExeUserId[j], "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(i).get(_title), text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
 
                                     } else {
                                         text = "شما به عنوان مسئول اجرا انتخاب شده اید";
-                                        Messenger.sendMesseage(null, db, ExeUserId[j], "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(i).get(_title), text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                                        Messenger.sendMesseage(null, db, ExeUserId[j], "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(i).get(_title), text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
                                     }
                                 }
                             }
@@ -1698,10 +1698,10 @@ public class Steps {
                             String tice_configMessage = Tice_config.getValue(db,  Tice_config._config_communicateofPlanSteps_name);
                             if (!tice_configMessage.equals("")) {//اگر در تنظیمات پیام ها چنین عنوانی  یافت شد اگر فعال بود پیامی که در تنظیمات ما تعریف شده را بیاور
                                 text = tice_configMessage;
-                                Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(row.get(i).get(_trackerId).toString(), db), "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(i).get(_title), text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                                Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(row.get(i).get(_trackerId).toString(), db), "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(i).get(_title), text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
                             } else {
                                 text = "شما به عنوان مسئول پیگیری انتخاب شده اید";
-                                Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(row.get(i).get(_trackerId).toString(), db), "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(i).get(_title), text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                                Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(row.get(i).get(_trackerId).toString(), db), "1", "sms,app,email", "", "عنوان برنامه عملیاتی:" + plansRow.get(0).get(Plans._title) + " عنوان گام:" + row.get(i).get(_title), text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
                             }
                         }
 

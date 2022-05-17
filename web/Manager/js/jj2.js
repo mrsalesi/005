@@ -65,7 +65,7 @@ var jj = function (selector) {
                 $(".ajaxLoaderDiv").hide(); // hide ajax loader
             },
             error: function () {
-                alert("در انجام عملیات مشکلی پیش آمده است....");
+                alert("اتصال به اینترنت را بررسی کنید....");
                 $(".ajaxLoaderDiv").hide(); // hide ajax loader
             }
         });
@@ -142,7 +142,7 @@ var jj = function (selector) {
                     error: function () {
                         $('html, body').css("cursor", "auto");
                         if (LANGUAGE == "1") {
-                            alert("در انجام عملیات مشکلی پیش آمده است.");
+                            alert("اتصال به اینترنت را بررسی کنید.");
                         } else {
                             alert("accur a problem in opration");
                         }
@@ -201,7 +201,7 @@ var jj = function (selector) {
                     error: function () {
                         $('html, body').css("cursor", "auto");
                         if (LANGUAGE == "1") {
-                            alert("در انجام عملیات مشکلی پیش آمده است.");
+                            alert("اتصال به اینترنت را بررسی کنید.");
                         } else {
                             alert("accur a problem in opration");
                         }
@@ -251,7 +251,7 @@ var jj = function (selector) {
                     error: function () {
                         $('html, body').css("cursor", "auto");
                         if (LANGUAGE == "1") {
-                            alert("در انجام عملیات مشکلی پیش آمده است.");
+                            alert("اتصال به اینترنت را بررسی کنید.");
                         } else {
                             alert("accur a problem in opration");
                         }
@@ -2584,10 +2584,10 @@ var jj = function (selector) {
             error: function () {
                 $('html, body').css("cursor", "auto");
                 if (LANGUAGE == "1") {
-                    alert("در انجام عملیات مشکلی پیش آمده است.");
+                    alert("اتصال به اینترنت را بررسی کنید.");
                 } else {
                     alert("accur a problem in opration");
-                    new jj("در انجام عملیات مشکلی پیش آمده است.").jjDialog();
+                    new jj("اتصال به اینترنت را بررسی کنید.").jjDialog();
                 }
             }
         });

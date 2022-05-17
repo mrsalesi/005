@@ -1065,6 +1065,7 @@ function registInSitePardakht() {
 //
 //
 
+
     if (!flag) {
         return;
     }
@@ -1075,6 +1076,11 @@ function registInSitePardakht() {
 
 //    jj("do=Access_User.registUser&" + new jj("#registForm").jjSerial()).jjAjax2(false);
 }
+var cmsChat = {// برای اینکه از سمت سرور این تابع فراخوانی مشود و خطا ندهد
+    refreshChat: function () {
+    }
+}
+
 function signOut() {
     USER_NAME = "";
     USER_FAMILY = "";
@@ -3859,31 +3865,46 @@ function insertComment() {
     new jj("do=Comment.insert&" + param).jjAjax2(false);
     new jj("#swCommentForm").jjFormClean();
 }
+function add_newTicket() {
+    $("#ticketHeader").show();//این قسمت فقط برای اولین پیام فعال باشد
+    $("#message_chat").html("");//اگر قبلا یک چت را سلکت کرده باشد باید آنها را پاک کنیم
+    $('#newTicket').slideDown();
+    $('#ticketTable').hide();
+    $('#messenger_chatID').val("");
+    new jj('#formMassege').jjFormClean();
+
+
+}
 function sendTicket() {
     if (new jj('#messenger_title').jjVal() < 5) {
         new jj("عنوان را مختصر و واضح وارد کنید").jjModal("پیام سیستم");
-        $("#messenger_title").css("border","dashed red thin");
-        return false;        
-    }else{
-        $("#messenger_textMessage").css("border","unset");        
+        $("#messenger_title").css("border", "dashed red thin");
+        return false;
+    } else {
+        $("#messenger_textMessage").css("border", "unset");
     }
     if (new jj('#messenger_textMessage').jjVal() < 10) {
         new jj("متن را وارد کنید").jjModal("پیام سیستم");
-        $("#messenger_textMessage").css("border","dashed red thin");
-        return false;        
-    }else{
-        $("#messenger_textMessage").css("border","unset");        
+        $("#messenger_textMessage").css("border", "dashed red thin");
+        return false;
+    } else {
+        $("#messenger_textMessage").css("border", "unset");
     }
-    var params = new jj('#formMassege').jjSerial() + '&do=Messenger.sendMessageTicket&jj=1';
+    var params = new jj('#formMassege').jjSerial() + '&do=Messenger.insertChat&jj=1';
+    params += "&messenger_attachFile=";// چون ممکن است چند فایل بارگذاری کرده باشند در حلقه از دیو نگهدارنده ی فایل های بارگذاری شده میخوانیم
+    var messenger_attachFile = $(".messenger_attachFile");
+    for (var i = 0; i < messenger_attachFile.length; i++) {
+        params += $(messenger_attachFile[i]).val() + ",";
+    }
     new jj(params).jjAjax(false);
+    new jj("بعد از ارسال پیام میتوانید با رفرش کردن صفحه وضعیت پیام را در جدول ببینید").jjModal_Yes_No("صفحه رفرش بشود ؟", "location.reload();");
 }
 function selectTicket(id) {
-    var params = "id=" + id + "&do=Messenger.select&jj=1";
+    $("#ticketHeader").hide();//این قسمت فقط برای اولین پیام فعال باشد
+    new jj('#formMassege').jjFormClean();
+    $('#newTicket').slideDown();
+    $('#ticketTable').hide();
+    var params = "messenger_chatID=" + id + "&do=Messenger.refreshChat&jj=1";
     new jj(params).jjAjax(false);
-}
-function afterSendMessage(message) {
-    $('#newTicket').slideUp();
-    $('#ticketTable').show();
-    new jj(message).jjModal_Yes_No("صفحه رقرش بشود ؟" , "location.reload();");
 }
 //

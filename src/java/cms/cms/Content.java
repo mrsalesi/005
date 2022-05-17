@@ -432,6 +432,7 @@ public class Content {
             System.out.println(jjTools.getParameter(request, _hasInContentAutoWiki));
             String needToAutoWiki = jjTools.getParameter(request, _hasInContentAutoWiki);
             if ("1".equalsIgnoreCase(needToAutoWiki)) {//اگر تیک خورده که محتوایش شامل اتو ویکی باشد که در اکثر مواقع اینطور است
+                System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<");
                 String autoWikeContent = ConvertToWiki(request, jjTools.getParameter(request, _content), db, false);
                 map.put(_contentWithWikiLinks, autoWikeContent);
             } else {//اگر تیک اتوویکی ندارد نیاز نیست محتوایش اتوویکی داشته باشد

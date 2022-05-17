@@ -120,9 +120,18 @@ public class jjCalendar_IR {
         return new jjCalendar_IR(dbDate).getViewFormat_10length();
     }
     
-    public static String getViewFormatTim_5length(String date) {
-        if (date.length() == 4) {
-            return date.substring(0, 2) + ":" + date.substring(2, 4);
+    public static String getViewFormatTim_5length(String time) {
+        if (time.length() == 4) {
+            return time.substring(0, 2) + ":" + time.substring(2, 4);
+        }
+        return "";
+    }
+    public static String getViewFormatTime_8length(String time) {
+        if (time.length() == 5) {      
+            time="0"+time;
+        }
+        if (time.length() == 6) {      
+            return time.substring(0, 2) + ":" + time.substring(2, 4)+":"+ time.substring(4, 6);
         }
         return "";
     }

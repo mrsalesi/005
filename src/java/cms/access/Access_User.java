@@ -1219,7 +1219,7 @@ public class Access_User {
                         }
                     }
                     //////////////////////////////مدیریت پیام ها///////////////////////////
-                    if (Access_User.hasAccess(request, db, Messenger.rul_rfs_karshenas)) {
+                    if (Access_User.hasAccess(request, db, Messenger.rul_rfs_All)) {
                         html.append("$('#maduleSms').show();\n");
                         if (Access_User.hasAccess(request, db, Messenger.rul_rfs)) {
                             html.append("$( '#managmentContent' ).show();\n");
@@ -1337,7 +1337,7 @@ public class Access_User {
                 //در موقع ورود به سامانه برای کاربری که وارد سامانه شده یک پیامک و ایمیل ارسال میشود
                 System.out.println("//////////////////////////////////////");
                 String errorMessage = user.get(0).get(_jensiat).toString() + " " + user.get(0).get(_name).toString() + " " + user.get(0).get(_family).toString() + " " + " به سامانه وارد شدید";
-                Messenger.sendMesseage(request, db, user.get(0).get(_id).toString(), "0", "sms,email", "", "ورود به سامانه", errorMessage, "", "امنیتی", Tice_config.getValue(db, Tice_config._config_activeSmsLogin_name), Tice_config.getValue(db, Tice_config._config_activeEmailLogin_name));
+                Messenger.sendMesseage(request, db, user.get(0).get(_id).toString(), "0", "sms,email", "", "ورود به سامانه", errorMessage, "","", "امنیتی", Tice_config.getValue(db, Tice_config._config_activeSmsLogin_name), Tice_config.getValue(db, Tice_config._config_activeEmailLogin_name));
                 System.out.println("//////////////////////////////////////");
             } else {
                 List<Map<String, Object>> user = jjDatabase.separateRow(db.Select(
@@ -1371,7 +1371,7 @@ public class Access_User {
                         }
                     }
                     //////////////////////////////مدیریت پیام ها///////////////////////////
-                    if (Access_User.hasAccess(request, db, Messenger.rul_rfs_karshenas)) {
+                    if (Access_User.hasAccess(request, db, Messenger.rul_rfs_All)) {
                         html.append("$('#maduleSms').show();\n");
                         if (Access_User.hasAccess(request, db, Messenger.rul_rfs)) {
                             html.append("$( '#managmentContent' ).show();\n");
@@ -1518,7 +1518,7 @@ public class Access_User {
                 //در موقع ورود به سامانه برای کاربری که وارد سامانه شده یک پیامک و ایمیل ارسال میشود
                 System.out.println("//////////////////////////////////////");
                 String errorMessage = user.get(0).get(_jensiat).toString() + " " + user.get(0).get(_name).toString() + " " + user.get(0).get(_family).toString() + " " + " به سامانه وارد شدین";
-                Messenger.sendMesseage(request, db, user.get(0).get(_id).toString(), "0", "sms,email", "", "ورود به سامانه", errorMessage, "", "امنیتی", Tice_config.getValue(db, Tice_config._config_activeSmsLogin_name), Tice_config.getValue(db, Tice_config._config_activeEmailLogin_name));
+                Messenger.sendMesseage(request, db, user.get(0).get(_id).toString(), "0", "sms,email", "", "ورود به سامانه", errorMessage, "","", "امنیتی", Tice_config.getValue(db, Tice_config._config_activeSmsLogin_name), Tice_config.getValue(db, Tice_config._config_activeEmailLogin_name));
                 System.out.println("//////////////////////////////////////");
                 List<Map<String, Object>> groups = jjDatabase.separateRow(
                         db.Select(Access_Group_User.tableName, Access_Group_User._user_id + "=" + user.get(0).get(Access_User._id)));
@@ -1941,7 +1941,7 @@ public class Access_User {
                         + (jjTools.isLangFa(request) ? "خروج" : "SignOut") + ")</a>") + ";\n");
             }
 //            html.append("swPrivate('swPrivate');");
-            Server.outPrinter(request, response, html.toString() + "$('#button_login').hide() ," + "$('#sw').html('')");
+            Server.outPrinter(request, response, html.toString() + "$('#button_login').hide() ," + "$('#sw').html('');");
             return "";
         } catch (Exception e) {
             Server.outPrinter(request, response, Server.ErrorHandler(e));
@@ -1957,7 +1957,7 @@ public class Access_User {
         jjTools.setSessionAttribute(request, "#" + Access_User._email.toUpperCase(), "");
         request.getSession().invalidate();
 
-        Server.outPrinter(request, response, "window.localStorage.setItem('user_token','');");
+        Server.outPrinter(request, response, "window.localStorage.setItem('user_token','');"+"window.location.href = '/';");
         return "";
     }
 

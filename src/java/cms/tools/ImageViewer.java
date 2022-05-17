@@ -34,7 +34,7 @@ public class ImageViewer extends HttpServlet {
     private ServletFileUpload uploader = null;
     int width = 150;
     int height = 50;
-    private static final String Save_Folder_Name = "upload"+File.separator;//seperator is / in linux and is \ in windows
+    private static final String Save_Folder_Name = "upload" + File.separator;//seperator is / in linux and is \ in windows
 
 //    static final long serialVersionUID = 1L;
 //        private static final int BUFSIZE = 4096;
@@ -55,21 +55,21 @@ public class ImageViewer extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         String pattern = Pattern.quote(System.getProperty("file.separator"));//seperator is / in linux and is \ in windows
-        String[] contxtPath= request.getServletContext().getRealPath("/").split(pattern);
-	   System.out.println(">>>>>-2: " + request.getServletContext().getRealPath("/"));
+        String[] contxtPath = request.getServletContext().getRealPath("/").split(pattern);
+        System.out.println(">>>>>-2: " + request.getServletContext().getRealPath("/"));
         ////به علت صحیح نبودن مسیر اپلود تغییر یافت
         String safePath = "";
-        for (int i = 0; i < contxtPath.length - 1; i++) {//return 2 folder up(parent of parent)
-//        for (int i = 0; i < contxtPath.length - 2; i++) {//return 2 folder up(parent of parent)
+//        for (int i = 0; i < contxtPath.length - 1; i++) {//return 2 folder up(parent of parent)
+        for (int i = 0; i < contxtPath.length - 2; i++) {//return 2 folder up(parent of parent)
             safePath += contxtPath[i] + System.getProperty("file.separator");
-        } 
+        }
         ////
-        String parentFolderName = contxtPath[contxtPath.length-1];//return 2 folder up(parent of parent)
+        String parentFolderName = contxtPath[contxtPath.length - 1];//return 2 folder up(parent of parent)
 //        String parentFolderName = contxtPath[contxtPath.length-2];//return 2 folder up(parent of parent)
         int index = request.getServletContext().getRealPath("/").indexOf(parentFolderName);
         String str = request.getServletContext().getRealPath("/").substring(0, index);
 //        String path = str + Save_Folder_Name;// upload\ in windows and upload/ in linux
-	  String path = safePath + Save_Folder_Name;// upload\ in windows and upload/ in linux
+        String path = safePath + Save_Folder_Name;// upload\ in windows and upload/ in linux
         File filesDir = new File(path);
         DiskFileItemFactory fileFactory = new DiskFileItemFactory();
         fileFactory.setRepository(filesDir);
@@ -87,7 +87,7 @@ public class ImageViewer extends HttpServlet {
         File file = new File(filesDir + File.separator + fileName);
         System.out.println("*********************!!!!>>>" + filesDir + File.separator + fileName);
         if (!file.exists()) {
-            throw new ServletException("File doesn't exists on server:"+filesDir + File.separator + fileName);
+            throw new ServletException("File doesn't exists on server:" + filesDir + File.separator + fileName);
         }
         System.out.println("File location on server:" + file.getAbsolutePath());
         String mimetype = new MimetypesFileTypeMap().getContentType(file);
@@ -111,6 +111,8 @@ public class ImageViewer extends HttpServlet {
         response.setContentType(mimeType != null ? mimeType : "application/octet-stream");
         response.setContentLength((int) file.length());
         response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+        response.setHeader("Cache-Control", "public, max-age=604800"); // HTTP 1.1.        
+        response.setDateHeader("Expires", 10000); // Proxies.
 
         ServletOutputStream os = response.getOutputStream();
         byte[] bufferData = new byte[1024];

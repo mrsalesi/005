@@ -979,10 +979,10 @@ public class Sessions {
                     String tice_configMessage = Tice_config.getValue(db, Tice_config._config_sendSessionToCommunicatorRole_name);
                     if (!tice_configMessage.equals("")) {//اگر در تنظیمات پیام ها چنین عنوانی  یافت شد اگر فعال بود پیامی که در تنظیمات ما تعریف شده را بیاور
                         String text = tice_configMessage;
-                        Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(jjTools.getParameter(request, _communicatorRoleId), db), "1", "sms,app,email", "", "صورتجلسه" + Row.get(0).get(_title) + "", text, html.toString(), "یادآوری", Tice_config.getValue(db, Tice_config._config_activeSmsModuleCommittee_name), Tice_config.getValue(db, Tice_config._config_activeEmailModuleCommittee_name));
+                        Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(jjTools.getParameter(request, _communicatorRoleId), db), "1", "sms,app,email", "", "صورتجلسه" + Row.get(0).get(_title) + "", text, html.toString(), "", "یادآوری", Tice_config.getValue(db, Tice_config._config_activeSmsModuleCommittee_name), Tice_config.getValue(db, Tice_config._config_activeEmailModuleCommittee_name));
                     } else {
                         String text = "لطفا وارد سامانه مدیار شوید و صورتجلسه را ابلاغ کنید";
-                        Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(jjTools.getParameter(request, _communicatorRoleId), db), "1", "sms,app,email", "", "صورتجلسه" + Row.get(0).get(_title) + "", text, html.toString(), "یادآوری", Tice_config.getValue(db, Tice_config._config_activeSmsModuleCommittee_name), Tice_config.getValue(db, Tice_config._config_activeEmailModuleCommittee_name));
+                        Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(jjTools.getParameter(request, _communicatorRoleId), db), "1", "sms,app,email", "", "صورتجلسه" + Row.get(0).get(_title) + "", text, html.toString(), "", "یادآوری", Tice_config.getValue(db, Tice_config._config_activeSmsModuleCommittee_name), Tice_config.getValue(db, Tice_config._config_activeEmailModuleCommittee_name));
                     }
                 } else {
                     script += Js.modal(".ارسال به مسئول ابلاغ انجام نشد", "پیام سامانه");
@@ -1147,7 +1147,7 @@ public class Sessions {
                 }
 
 //                html.append("<a href=upload/" + insertedSessionsRow.get(0).get(_InviteesFile) + ">فایل </a>");
-                Messenger.sendMesseage(null, db, reciver, "1", "sms,app,email", invitationDate, "دعوتنامه کمیته ی " + ComemttesRow.get(0).get(Commettes._title) + " : " + insertedSessionsRow.get(0).get(_title), text, html.toString(), "یادآوری", Tice_config.getValue(db, Tice_config._config_activeSmsModuleCommittee_name), Tice_config.getValue(db, Tice_config._config_activeEmailModuleCommittee_name));
+                Messenger.sendMesseage(null, db, reciver, "1", "sms,app,email", invitationDate, "دعوتنامه کمیته ی " + ComemttesRow.get(0).get(Commettes._title) + " : " + insertedSessionsRow.get(0).get(_title), text, html.toString(), "", "یادآوری", Tice_config.getValue(db, Tice_config._config_activeSmsModuleCommittee_name), Tice_config.getValue(db, Tice_config._config_activeEmailModuleCommittee_name));
                 System.out.println("<<<<<<<ارسال پیام به به دعوتشدگانSend MESSAGE()");
                 System.out.println("#################################################");
 //                }

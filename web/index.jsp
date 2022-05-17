@@ -109,7 +109,7 @@
                         <div class="col-md-6">
                             <ul class="flat-information">
                                 <li class="phone"><a href="tel:031-36639871">تلفن تماس:031-36639871-2</a></li>
-                                <li class="email"><a href="">ایمیل: taavoni@gmail.com</a></li>
+                                <li class="email"><a >ایمیل: taavoni@gmail.com</a></li>
                             </ul>
                         </div>
                         <div class="col-md-6">
@@ -128,16 +128,16 @@
                                                 <ul class="submenu right-sub-menu">
                                                     <li><a >سلام <%= jjTools.getSeassionUserNameAndFamily(request)%></a></li>
                                                     <li><a href="userProfile.jsp?user_token=<%= user.get(0).get(Access_User._token) %>">پنل کاربری</a></li>
-                                                    <li><a href="" onclick="signOut();">خروج</a></li></ul></li></ul></nav>
+                                                    <li><a  onclick="signOut();">خروج</a></li></ul></li></ul></nav>
                                 </div>
                                 <%
                                     }
                                 %>
-                                <a href=""><i class="fa fa-twitter"></i></a>
-                                <a href=""><i class="fa fa-facebook"></i></a>
-                                <a href=""><i class="fa fa-instagram"></i></a>
-                                <a href=""><i class="fa fa-linkedin"></i></a>
-                                <!--<a href=""><a id="userNameAfterLogin1" class="textlogin1" style="display: none"></a></a>-->
+                                <a ><i class="fa fa-twitter"></i></a>
+                                <a ><i class="fa fa-facebook"></i></a>
+                                <a ><i class="fa fa-instagram"></i></a>
+                                <a ><i class="fa fa-linkedin"></i></a>
+                                <!--<a ><a id="userNameAfterLogin1" class="textlogin1" style="display: none"></a></a>-->
 
                                 <!--                                                        <a class="register_url" style='display: none' onclick='$("#sw").load("login.html")'><i class="fa fa-user menu-extra-mobile"></i></a>-->
                                 <!--<a id="userNameAfterLogin" class="prof textlogin flat-button button-color button-normal yellow " style="display: none;margin: 0px 5px;"></a>-->
@@ -153,7 +153,7 @@
                         <div class="header-wrap clearfix">
                             <div class="col-md-3">
                                 <div id="logo" class="logo">
-                                    <a href="" rel="home">
+                                    <a  rel="home">
                                         <img src="template/img/logo.png" alt="image">
                                     </a>
                                 </div>
@@ -658,11 +658,11 @@
                                     <ul class="">
                                         <li class="footer-home"><a>تعاون برای کار شایسته</a></li>
                                         <li class="footer-about">  <div class="social-links">
-                                                <a href="" class="root-blue"><i class="fa fa-twitter"></i></a>
-                                                <a href="" class="root-blue"><i class="fa fa-facebook"></i></a>
-                                                <a href="" class="root-blue"><i class="fa fa-instagram"></i></a>
-                                                <a href="" class="root-blue"><i class="fa fa-linkedin"></i></a>
-                                                <a href="" class="root-blue"><i class="fa fa-skype"></i></a>
+                                                <a  class="root-blue"><i class="fa fa-twitter"></i></a>
+                                                <a  class="root-blue"><i class="fa fa-facebook"></i></a>
+                                                <a  class="root-blue"><i class="fa fa-instagram"></i></a>
+                                                <a  class="root-blue"><i class="fa fa-linkedin"></i></a>
+                                                <a  class="root-blue"><i class="fa fa-skype"></i></a>
                                             </div></li>
                                     </ul>
                                 </div>
@@ -826,7 +826,7 @@
                                         var c = content.substr(0, showChar);
                                         var h = content.substr(showChar - 2, content.length - showChar);
 
-                                        var html = c + '<span class="moreellipses">' + ellipsestext + '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
+                                        var html = c + '<span class="moreellipses">' + ellipsestext + '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a  class="morelink">' + moretext + '</a></span>';
 
                                         $(this).html(html);
                                     }

@@ -9,6 +9,7 @@ import cms.access.Access_User;
 import cms.cms.Tice_config;
 import cms.tools.Js;
 import cms.tools.Server;
+import cms.tools.UploadServlet;
 import cms.tools.jjTools;
 import cms.tools.jjValidation;
 import java.util.HashMap;
@@ -31,7 +32,9 @@ public class CreateDocumentary {
 
     public static String tableName = "hmis_createDocumentary";
     public static String _id = "id";
+    public static String _departmentId = "createDocumentary_departmentId";//14000423 shiran2
     public static String _title = "createDocumentary_title";
+    public static String _createDate = "createDocumentary_createDate";
     public static String _date = "createDocumentary_date";
     public static String _summary = "createDocumentary_summary";
     public static String _file1 = "createDocumentary_file1";//فایل پیوست
@@ -47,6 +50,8 @@ public class CreateDocumentary {
     public static String _status = "createDocumentary_status";//وضعیت امضا
     public static String _logStatus = "createDocumentary_logStatus";//جزییات امضا
     public static String _revisionDate = "createDocumentary_revisionDate";//تاریخ بازنگری
+    public static String _revisionDateNext = "createDocumentary_revisionDateNext";//تاریخ بازنگری بعدی
+    public static String _code = "createDocumentary_code";//تاریخ بازنگری بعدی
     public static String _responsibleDocumentary = "createDocumentary_responsibleDocumentary";//مسئول مستند
     public static String _communicator = "createDocumentary_communicator";//ابلاغ کننده 
     public static String _reciversRoles = "createDocumentary_reciversRoles";// گیرندگان بر اساس نقش آنها
@@ -172,7 +177,7 @@ public class CreateDocumentary {
 
     public static String refresh(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
         try {
-           if (!Access_User.hasAccess(request, db, rul_rfs)) {
+            if (!Access_User.hasAccess(request, db, rul_rfs)) {
                 Server.outPrinter(request, response, "شما اجازه ی دسترسی به این قسمت را ندارید");
                 return "";
             }
@@ -188,17 +193,57 @@ public class CreateDocumentary {
                     + "    <a  class='btn btn-success pd-sm-x-20 mg-sm-r-5' style='color: white;' onclick='hmisCreateDocumentary.m_add_new();' > مستند جدید</a>"
                     + "</p>");
 
-            html.append("<table class='table display responsive nowrap' id='refreshCreateDocumentary' dir='rtl'><thead>");
+            html.append("<div class='col-lg mg-10'>"
+                    //                    + "<a href='#' class='sh-pagetitle-icon' style='float:right'>"
+                    //                    + "<div style='font-size: 33px'><i class='fa fa-refresh mg-t-30' onclick='hmisDocumentary.m_refresh();'></i>"
+                    //                    + "</div>"
+                    //                    + "</a>"
+                    + "<a href='#' id='learnCreateDocumentaryIcon' class='sh-pagetitle-icon' style='float:left' title='آموزش ماژول مستندات'>"
+                    + "<div style='font-size: 33px'><i class='fa fa-desktop mg-t-30'></i>"
+                    + "</div>"
+                    + "</a>"
+                    + "<span  style='display:block;' class='col-lg-2 mg-t-10'>"
+                    + "<div id='createDocumentary_learn' style='display:none;text-align:left'>"
+                    + "<a href='http://94.184.89.113/upload/learnHMIS/Modiriat_Mostanadat.mp4'>فیلم آموزشی</a>"
+                    + "<br/>"
+                    + "<a target='_blank' href=''>فایل آموزشی</a>"
+                    + "</div>"
+                    + "</span>"
+                    + "</div>"
+                    + "");
+
+            html.append("<div style='width: 100%; padding-left: -10px;'><div class='table-responsive'>");
+            html.append("<table class='table display responsive' id='refreshCreateDocumentary' dir='rtl'><thead>");
             html.append("<th class='c' width='5%'>کد</th>");
-            html.append("<th class='c' width='30%'>عنوان مستند</th>");
-            html.append("<th class='c' width='30%'>تاییدامضا </th>");
+            html.append("<th class='c' width='5%'>کد فرم</th>");
+            html.append("<th class='c' width='20%'>عنوان مستند</th>");
+            html.append("<th class='c' width='20%'>تاریخ</th>");
+            html.append("<th class='c' width='30%'>بخش</th>");
+            html.append("<th class='c' width='30%'>تاییدامضا</th>");
+            html.append("<th class='c' width='10%'>مشاهده دستورالعمل</th>");
+            html.append("<th class='c' width='5%'>وضعیت</th>");
             html.append("<th class='c' width='5%'>عملیات</th>");
-            html.append("</thead><tbody>");
+            html.append(""
+                    + "            <tr>"
+                    + "                <th></th>"
+                    + "                <th></th>"
+                    + "                <th></th>"
+                    + "                <th></th>"
+                    + "                <th></th>"
+                    + "                <th></th>"
+                    + "                <th></th>"
+                    + "                <th></th>"
+                    + "                <th></th>"
+                    + "            </tr>\n"
+                    + "        </thead>" + "<tbody>");
 
             for (int i = 0; i < row.size(); i++) {
                 html.append("<tr>");
                 html.append("<td class='c'>" + (row.get(i).get(_id).toString()) + "</td>");
+                html.append("<td class='c'>" + (row.get(i).get(_code).toString()) + "</td>");
                 html.append("<td class='r'>" + (row.get(i).get(_title).toString()) + "</td>");
+                html.append("<td class='r'>" + (jjCalendar_IR.getViewFormat(row.get(i).get(_date).toString())) + "</td>");
+                html.append("<td class='r'>" + (Department.getDepartmentName(row.get(i).get(_departmentId).toString(), db)) + "</td>");
                 html.append("<td class='c'>");
                 ///این forبرای این است که کسانی که امضا کردند تیک سبز میخورد
                 for (int j = 1; j <= 20; j++) {
@@ -216,29 +261,195 @@ public class CreateDocumentary {
                     }
                 }
                 html.append("</td >");
-                html.append("<td class='c'><a onclick='hmisCreateDocumentary.m_select(" + row.get(i).get(_id) + ");' ><i class='p icon ion-ios-gear-outline'></i></a></td>");
+                html.append("<td class='c'><a  href='Server?do=CreateDocumentary.showHtmlContentDocumentary&createDocumentary_id=" + row.get(i).get(_id) + "' target='_blank' ><i class=\"fa fa-eye\"></i></a></td>");
+                html.append("<td class='r'>" + row.get(i).get(_status).toString() + "</td>");
+                html.append("<td class='c'><a onclick='hmisCreateDocumentary.m_select(" + row.get(i).get(_id) + ");' ><i class='p icon ion-ios-gear'></i></a></td>");
                 html.append("</tr>");
             }
             html.append("</tbody></table>");
-            html.append("</div></div>");
+            html.append("</div>"
+                    + "</div>"
+                    + "</div>"
+                    + "</div>"
+                    + "");
 
             String height = jjTools.getParameter(request, "height");
             String panel = jjTools.getParameter(request, "panel");
             if (!jjNumber.isDigit(height)) {
-                height = "400";
+                height = "auto";
             }
             if (panel.equals("")) {
                 panel = "swCreateDocumentaryTbl";
             }
-            String html2 = "$('#" + panel + "').html(\"" + html.toString() + "\");\n";
-            html2 += Js.table("#refreshCreateDocumentary", height, 0, Access_User.getAccessDialog(request, db, rul_ins).equals("") ? "14" : "", "لیست مستندات");
+            String html2 = Js.setHtml("#" + panel, html);
+
             String script = "hmisSignDocumentary.m_refresh();";
+            script += "$('#learnCreateDocumentaryIcon').click(function(){"
+                    + "if($('#createDocumentary_learn').css('display')=='none'){"
+                    + "$('#createDocumentary_learn').slideDown();"
+                    + "}else{"
+                    + "$('#createDocumentary_learn').slideUp();"
+                    + "}"
+                    + "});";
+//                        html2 += Js.table("#refreshCreateDocumentary", height, 0, Access_User.getAccessDialog(request, db, rul_ins).equals("") ? "14" : "", "لیست مستندات");
+            html2 += "  $('#refreshCreateDocumentary').DataTable( {\n"
+                    + "        initComplete: function () {\n"
+                    + "            this.api().columns([2,3,4]).every( function () {\n"
+                    + "                var column = this;\n"
+                    + "                var select = $('<select><option value=\"\"></option></select>')\n"
+                    + "                    .appendTo( $(column.header()).empty() )\n"
+                    + "                    .on( 'change', function () {\n"
+                    + "                        var val = $.fn.dataTable.util.escapeRegex(\n"
+                    + "                            $(this).val()\n"
+                    + "                        );\n"
+                    + " \n"
+                    + "                        column\n"
+                    + "                            .search( val ? '^'+val+'$' : '', true, false )\n"
+                    + "                            .draw();\n"
+                    + "                    } );\n"
+                    + " \n"
+                    + "                column.data().unique().sort().each( function ( d, j ) {\n"
+                    + "                    select.append( '<option value=\"'+d+'\">'+d+'</option>' )\n"
+                    + "                } );\n"
+                    + "            } );\n"
+                    + "        },paging:false"
+                    + "    } );"
+                    + "$('select').select2({\n"
+                    + "                    width: '100%'\n"
+                    + "                });";
+
             Server.outPrinter(request, response, html2 + script);
             return "";
         } catch (Exception e) {
             Server.outPrinter(request, response, Server.ErrorHandler(e));
             return "";
         }
+    }
+
+    public static String refreshMyDocumentCommunications(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
+        try {
+//            if (!Access_User.hasAccess(request, db, rul_rfs)) {
+//                Server.outPrinter(request, response, "شما اجازه ی دسترسی به این قسمت را ندارید");
+//                return "";
+//            }
+            String condition2 = "";
+            String condition1 = "";
+            int userId = jjTools.getSeassionUserId(request);
+            condition2 += "  (" + CreateDocumentary._reciversUsers + " like '%," + userId + ",%') ";
+            String roles = jjTools.getSeassionUserRole(request);
+            if (!roles.equals("")) {
+                condition1 += " OR ";
+                String[] role = roles.split(",");
+                for (int i = 0; i < role.length; i++) {
+                    System.out.println("role" + role[i]);
+                    if (i == role.length - 1) {// برای آخری  OR نمیخواهیم
+                        condition1 += " (" + CreateDocumentary._reciversRoles + " like '%," + role[i] + ",%' ) ";
+                    } else {
+                        condition1 += " (" + CreateDocumentary._reciversRoles + " like '%," + role[i] + ",%' )OR ";
+                    }
+                }
+            }
+            StringBuilder html = new StringBuilder();
+            DefaultTableModel dtm = db.Select(CreateDocumentary.tableName, condition2 + condition1 + " AND " + CreateDocumentary._status + "='" + status_communicated + "'");
+            List<Map<String, Object>> row = jjDatabase.separateRow(dtm);
+            html.append(" <div class='card bd-primary mg-t-20'>"
+                    + "<div class='card-header bg-primary tx-white'>مستندات ابلاغ شده به من</div>"
+                    + "<div class='card-body pd-sm-30'>");
+            html.append("<div style='width: 100%; padding-left: -10px;'><div class='table-responsive'>");
+            html.append("<table class='table display responsive' id='refreshMyDocumentCommunications' dir='rtl'><thead>");
+            html.append("<th class='c' width='10%'>کد</th>");
+            html.append("<th class='c' width='20%'>کد فرم</th>");
+            html.append("<th class='c' width='20%'>عنوان مستند</th>");
+            html.append("<th class='c' width='20%'>تاریخ</th>");
+            html.append("<th class='c' width='20%'>بخش</th>");
+            html.append("<th class='c' width='10%'>مشاهده</th>");
+            html.append(""
+                    + "            <tr>"
+                    + "                <th></th>"
+                    + "                <th></th>"
+                    + "                <th></th>"
+                    + "                <th></th>"
+                    + "                <th></th>"
+                    + "                <th></th>"
+                    + "            </tr>\n"
+                    + "        </thead>" + "<tbody>");
+            for (int i = 0; i < row.size(); i++) {
+                html.append("<tr>");
+                html.append("<td class='c'>" + (row.get(i).get(_id).toString()) + "</td>");
+                html.append("<td class='c'>" + (row.get(i).get(_code).toString()) + "</td>");
+                html.append("<td class='r'>" + (row.get(i).get(_title).toString()) + "</td>");
+                html.append("<td class='r'>" + (jjCalendar_IR.getViewFormat(row.get(i).get(_date).toString())) + "</td>");
+                html.append("<td class='r'>" + (Department.getDepartmentName(row.get(i).get(_departmentId).toString(), db)) + "</td>");
+                html.append("<td class='r'><a target='_blank' href='Server?do=CreateDocumentary.printDocumentary&id=" + row.get(i).get(_id) + "'><i class=\"fa fa-eye\" style='color:blue'></i></a>"
+                        + "</td>");
+                html.append("</tr>");
+            }
+            html.append("</tbody></table>");
+            html.append("</div>"
+                    + "</div>"
+                    + "</div>"
+                    + "</div>"
+                    + "");
+
+            String height = jjTools.getParameter(request, "height");
+            String panel = jjTools.getParameter(request, "panel");
+            if (!jjNumber.isDigit(height)) {
+                height = "auto";
+            }
+            if (panel.equals("")) {
+                panel = "swMyDocumentCommunicationsTbl";
+            }
+            String html2 = Js.setHtml("#" + panel, html);
+//            html2 += Js.table("#refreshMyDocumentCommunications", height, 0, "", "لیست مستندات من");
+ html2 += "  $('#refreshMyDocumentCommunications').DataTable( {\n"
+                    + "        initComplete: function () {\n"
+                    + "            this.api().columns([1,2,3,4]).every( function () {\n"  
+                    + "                var column = this;\n"
+                    + "                var select = $('<select><option value=\"\"></option></select>')\n"
+                    + "                    .appendTo( $(column.header()).empty() )\n"
+                    + "                    .on( 'change', function () {\n"
+                    + "                        var val = $.fn.dataTable.util.escapeRegex(\n"
+                    + "                            $(this).val()\n"
+                    + "                        );\n"
+                    + " \n"
+                    + "                        column\n"
+                    + "                            .search( val ? '^'+val+'$' : '', true, false )\n"
+                    + "                            .draw();\n"
+                    + "                    } );\n"
+                    + " \n"
+                    + "                column.data().unique().sort().each( function ( d, j ) {\n"
+                    + "                    select.append( '<option value=\"'+d+'\">'+d+'</option>' )\n"
+                    + "                } );\n"
+                    + "            } );\n"
+                    + "        },paging:false"
+                    + "        ,order:[],aaSorting:[]"
+                    + "    } );"
+                    + "$('select').select2({\n"
+                    + "                    width: '100%'\n"
+                    + "                });";
+            Server.outPrinter(request, response, html2);
+            return "";
+        } catch (Exception e) {
+            Server.outPrinter(request, response, Server.ErrorHandler(e));
+            return "";
+        }
+    }
+
+    /**
+     * نمایش دستورالعمل
+     *
+     * @param request
+     * @param response
+     * @param db
+     * @param isPost
+     * @return
+     * @throws Exception
+     */
+    public static String showHtmlContentDocumentary(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
+        request.setAttribute("db", db);
+        System.out.println("------->>>>>template/createDocumentaryHtmlContent.jsp");
+        request.getRequestDispatcher("template/createDocumentaryHtmlContent.jsp").forward(request, response);
+        return "";
     }
 
     ////////    این تابع برای تغییر وضعیت پیام ونشان دادن روند وضعیت ایجاد شده توسظ شیران1
@@ -269,10 +480,10 @@ public class CreateDocumentary {
 
         }
     }
+
     /*
      این تابع برای نمایش جدول امضا وتایید مستندات من نوشته شده توسط شیران1
      */
-
     public static String refreshSignatureMyDocumentation(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
         try {
 // if (!Access_User.hasAccess(request, db, rul_rfs)) {
@@ -292,6 +503,13 @@ public class CreateDocumentary {
             html.append("<th class='c' width='30%'>عنوان مستند </th>");
             html.append("<th class='c' width='30%'>تایید امضا </th>");
             html.append("<th class='c' width='5%'>عملیات</th>");
+
+            html.append("<tr>");
+            html.append("<th></th>");
+            html.append("<th></th>");
+            html.append("<th></th>");
+            html.append("<th></th>");
+            html.append("</tr>");
             html.append("</thead><tbody>");
 //            DefaultTableModel dtm = db.Select(CreateDocumentary.tableName);///////////////برای کسانی که در setlectoption هستند والان لاگین شدن
             for (int j = 1; j <= 20; j++) {
@@ -335,7 +553,33 @@ public class CreateDocumentary {
                 panel = "swSignDocumentaryTbl";
             }
             String html2 = "$('#" + panel + "').html(\"" + html.toString() + "\");\n";
-            html2 += Js.table("#refreshSignatureMyDocumentation", height, 0, "", "لیست مستندات");
+//            html2 += Js.table("#refreshSignatureMyDocumentation", height, 0, "", "لیست مستندات");
+            html2 += "  $('#refreshSignatureMyDocumentation').DataTable( {\n"
+                    + "        initComplete: function () {\n"
+                    + "            this.api().columns([1]).every( function () {\n"
+                    + "                var column = this;\n"
+                    + "                var select = $('<select><option value=\"\"></option></select>')\n"
+                    + "                    .appendTo( $(column.header()).empty() )\n"
+                    + "                    .on( 'change', function () {\n"
+                    + "                        var val = $.fn.dataTable.util.escapeRegex(\n"
+                    + "                            $(this).val()\n"
+                    + "                        );\n"
+                    + " \n"
+                    + "                        column\n"
+                    + "                            .search( val ? '^'+val+'$' : '', true, false )\n"
+                    + "                            .draw();\n"
+                    + "                    } );\n"
+                    + " \n"
+                    + "                column.data().unique().sort().each( function ( d, j ) {\n"
+                    + "                    select.append( '<option value=\"'+d+'\">'+d+'</option>' )\n"
+                    + "                } );\n"
+                    + "            } );\n"
+                    + "        },paging:false"
+                    + "        ,order:[],aaSorting:[]"
+                    + "    } );"
+                    + "$('select').select2({\n"
+                    + "                    width: '100%'\n"
+                    + "                });";
             Server.outPrinter(request, response, html2);
             return "";
         } catch (Exception e) {
@@ -353,11 +597,11 @@ public class CreateDocumentary {
             StringBuilder html3 = new StringBuilder();
 
             html.append(" <div class='card bd-primary mg-t-20'>"
-                    + "<div class='card-header bg-primary tx-white'>تایید وامضا مستندات من</div>"
+                    + "<div class='card-header bg-primary tx-white'>ابلاغ مستندات</div>"
                     + "<div class='card-body pd-sm-30'>"
             );
 
-            html.append("<table class='table display responsive nowrap' id='swCommunicationsTbl' dir='rtl'><thead>");
+            html.append("<table class='table display responsive nowrap' id='refreshCommunicationsMyDocumentation' dir='rtl'><thead>");
             html.append("<th class='c' width='5%'>کد</th>");
             html.append("<th class='c' width='30%'>عنوان مستند </th>");
             html.append("<th class='c' width='30%'>تایید امضا </th>");
@@ -381,7 +625,22 @@ public class CreateDocumentary {
                 html.append("<tr class='" + getClassByStatus(row.get(i).get(_status).toString()) + "'>");
                 html.append("<td class='c'>" + (row.get(i).get(_id).toString()) + "</td>");
                 html.append("<td class='c'>" + row.get(i).get(CreateDocumentary._title).toString() + "</td>");
-                html.append("<td class='c'>" + row.get(i).get(CreateDocumentary._title).toString() + "</td>");
+                html.append("<td class='c'>");
+                for (int j = 1; j <= 20; j++) {
+                    if (!row.get(i).get("createDocumentary_signatory_user_" + j).equals("")) {
+                        if (row.get(i).get("createDocumentary_signatory_signature_" + j).equals("1")) {
+                            html.append("<img src='template/tick.png' style='height:15px;'/>");
+                        } else if (row.get(i).get("createDocumentary_signatory_signature_" + j).equals("0")) {
+
+                            html.append("<img src='template/remove.png' style='height:19px;'/>");
+                        } else if (row.get(i).get("createDocumentary_signatory_signature_" + j).equals("-1")) {
+
+                            html.append("<img src='template/icons8-help-48.png' style='height:20px;'/>");
+                        }
+                    }
+                }
+                html.append("</td>");
+
                 html.append("<td style='c'><a href='Server?do=CreateDocumentary.selectOneDocuementToSign&id=" + row.get(i).get(_id) + "' target='_blank'><i class='fa fa-pencil'></i></a>" + "</td>");
                 html.append("</tr>");
             }
@@ -468,8 +727,10 @@ public class CreateDocumentary {
 //            script.append("$('.form-group').select2({ width: '100%'});\n");
             boolean accIns = Access_User.hasAccess(request, db, rul_ins);
 
+            script.append(Js.setVal("#createDocumentary_createDate", jjCalendar_IR.getViewFormat(new jjCalendar_IR().getDBFormat_8length())));
+
             if (accIns) {
-                script.append(Js.setHtml("#CreateDocumentary_button", "<div class='col-lg-6'><input type='button' id='insert_CreateDocumentary_new'  value=\"" + lbl_insert + "\" class='btn btn-outline-success active btn-block mg-b-10'></div>"));
+                script.append(Js.setHtml("#CreateDocumentary_button", "<div class='col-lg-6'><input type='button' id='insert_CreateDocumentary_new'  value=\"" + lbl_insert + "\" class='btn btn-success active btn-block mg-b-10'></div>"));
                 script.append(Js.click("#insert_CreateDocumentary_new", Js.jjCreateDocumentary.insert()));
             }
             Server.outPrinter(request, response, html.toString() + script);
@@ -488,10 +749,14 @@ public class CreateDocumentary {
             }
             Map<String, Object> map = new HashMap<String, Object>();
             map.put(_title, jjTools.getParameter(request, _title));
+            map.put(_departmentId, jjTools.getParameter(request, _departmentId));
             map.put(_summary, jjTools.getParameter(request, _summary));
             map.put(_category, jjTools.getParameter(request, _category));
             map.put(_date, jjCalendar_IR.getDatabaseFormat_8length(jjTools.getParameter(request, _date).toString(), true));
+            map.put(_createDate, new jjCalendar_IR().getDBFormat_8length());
             map.put(_revisionDate, jjCalendar_IR.getDatabaseFormat_8length(jjTools.getParameter(request, _revisionDate).toString(), true));
+            map.put(_revisionDateNext, jjCalendar_IR.getDatabaseFormat_8length(jjTools.getParameter(request, _revisionDateNext).toString(), true));
+            map.put(_code, jjTools.getParameter(request, _code));
             map.put(_titleFile1, jjTools.getParameter(request, _titleFile1));
             map.put(_titleFile2, jjTools.getParameter(request, _titleFile2));
             map.put(_titleFile3, jjTools.getParameter(request, _titleFile3));
@@ -503,8 +768,8 @@ public class CreateDocumentary {
             map.put(_file3, jjTools.getParameter(request, _file3));
             map.put(_responsibleDocumentary, jjTools.getParameter(request, _responsibleDocumentary));
             map.put(_communicator, jjTools.getParameter(request, _communicator));
-            map.put(_reciversRoles, jjTools.getParameter(request, _reciversRoles));
-            map.put(_reciversUsers, jjTools.getParameter(request, _reciversUsers));
+            map.put(_reciversRoles, "," + jjTools.getParameter(request, _reciversRoles) + ",");
+            map.put(_reciversUsers, "," + jjTools.getParameter(request, _reciversUsers) + ",");
 
             map.put(_htmlContent, jjTools.getParameter(request, _htmlContent));
             map.put(_signatory_user_1, jjTools.getParameter(request, _signatory_user_1));
@@ -628,6 +893,8 @@ public class CreateDocumentary {
             script.append(Js.setVal("#" + _titleFile1, row.get(0).get(_titleFile1)));
             script.append(Js.setVal("#" + _titleFile2, row.get(0).get(_titleFile2)));
             script.append(Js.setVal("#" + _titleFile3, row.get(0).get(_titleFile3)));
+            script.append(Js.setVal("#" + _departmentId, row.get(0).get(_departmentId)));
+            script.append(Js.select2("#" + _departmentId, ""));
             script.append(Js.setVal("#" + _responsibleDocumentary, row.get(0).get(_responsibleDocumentary)));
             script.append(Js.select2("#" + _responsibleDocumentary, ""));
             script.append(Js.setVal("#" + _communicator, row.get(0).get(_communicator)));
@@ -671,6 +938,7 @@ public class CreateDocumentary {
             StringBuilder script3 = new StringBuilder();
             StringBuilder script4 = new StringBuilder();
             StringBuilder script5 = new StringBuilder();
+            StringBuilder script6 = new StringBuilder();
             String html3 = "";
             String html4 = "";
             String htmlRole = "";///برای در آوردن نقش ها
@@ -684,76 +952,82 @@ public class CreateDocumentary {
                 if (!row.get(0).get("createDocumentary_signatory_user_" + i).toString().isEmpty()) {//این ifاگر امضا کرده باشدو داخل امضا کننده خالی بود
                     List<Map<String, Object>> UserRow = jjDatabase.separateRow(db.Select(Access_User.tableName, _id + "=" + row.get(0).get("createDocumentary_signatory_user_" + i).toString()));///برای در اوردن نام وفامیلی امضا کننده
                     System.out.println(">>>>>>>>>>>>>>>>>>>" + i);
-                    if ((row.get(0).get("createDocumentary_signatory_signature_" + i).equals("0") || row.get(0).get("createDocumentary_signatory_signature_" + i).equals("1"))) {///اگر امضا کننده 0یا 1 باشد و همچنین یوزر امضا کننده خالی باشد این if میشود
-                        html3 += "<div class='row col-lg-12 ' id='row" + i + "'>\n"
-                                + "<div class=\"col-lg-3\">\n"
-                                + "عنوان امضا کننده\n"
-                                + "<input class='form-control'  id='signatory_title_" + i + "' name='createDocumentary_signatory_title_" + i + "' disabled='disabled' value='" + row.get(0).get("createDocumentary_signatory_title_" + i).toString() + "' />"
-                                + "</div>\n"
-                                + "<div class=\"col-lg-3\">\n"
-                                + "فرد امضا کننده\n"
-                                + "<input id='createDocumentary_signatory_user_" + (i) + "' name=id='createDocumentary_signatory_user_" + (i) + "'  disabled='disabled'  class='signerDiv form-control' value='" + UserRow.get(0).get(Access_User._name).toString() + " " + UserRow.get(0).get(Access_User._family).toString() + "' />"
-                                + "</div>\n"
-                                + "<div class=\"col-lg-3\">\n"
-                                + "سمت امضا کننده\n"
-                                + "<input id='signatory_role_" + i + "' name='createDocumentary_signatory_role_" + i + "' class='form-control' disabled='disabled' value='" + row.get(0).get("createDocumentary_signatory_role_" + i).toString() + "'  />";
-                        List<Map<String, Object>> UserRowRole = jjDatabase.separateRow(db.Select(Role.tableName, Role._user_id + "=" + row.get(0).get("createDocumentary_signatory_user_" + i).toString()));
-                        for (int k = 0; k < UserRowRole.size(); k++) {
+                    if (!UserRow.isEmpty()) {
+                        if ((row.get(0).get("createDocumentary_signatory_signature_" + i).equals("0") || row.get(0).get("createDocumentary_signatory_signature_" + i).equals("1"))) {///اگر امضا کننده 0یا 1 باشد و همچنین یوزر امضا کننده خالی باشد این if میشود
+                            html3 += "<div class='row col-lg-12 ' id='row" + i + "'>\n"
+                                    + "<div class=\"col-lg-3\">\n"
+                                    + "عنوان امضا کننده\n"
+                                    + "<input class='form-control'  id='signatory_title_" + i + "' name='createDocumentary_signatory_title_" + i + "' disabled='disabled' value='" + row.get(0).get("createDocumentary_signatory_title_" + i).toString() + "' />"
+                                    + "</div>\n"
+                                    + "<div class=\"col-lg-3\">\n"
+                                    + "فرد امضا کننده\n"
+                                    + "<input id='createDocumentary_signatory_user_" + (i) + "' name=id='createDocumentary_signatory_user_" + (i) + "'  disabled='disabled'  class='signerDiv form-control' value='" + UserRow.get(0).get(Access_User._name).toString() + " " + UserRow.get(0).get(Access_User._family).toString() + "' />"
+                                    + "</div>\n"
+                                    + "<div class=\"col-lg-3\">\n"
+                                    + "سمت امضا کننده\n"
+                                    + "<input id='signatory_role_" + i + "' name='createDocumentary_signatory_role_" + i + "' class='form-control' disabled='disabled' value='" + row.get(0).get("createDocumentary_signatory_role_" + i).toString() + "'  />";
+                            List<Map<String, Object>> UserRowRole = jjDatabase.separateRow(db.Select(Role.tableName, Role._user_id + "=" + row.get(0).get("createDocumentary_signatory_user_" + i).toString()));
+                            for (int k = 0; k < UserRowRole.size(); k++) {
 //
-                            htmlRole += "<option value='" + UserRowRole.get(k).get(Role._title) + "'"
-                                    + (UserRowRole.get(k).get(Role._title).equals(Role._title) ? " selected='selected'>" : ">")
-                                    + UserRowRole.get(k).get(Role._title) + "</option>\n";//'option' and 'value' for this fild is same('value' is not necessary)
+                                htmlRole += "<option value='" + UserRowRole.get(k).get(Role._title) + "'"
+                                        + (UserRowRole.get(k).get(Role._title).equals(Role._title) ? " selected='selected'>" : ">")
+                                        + UserRowRole.get(k).get(Role._title) + "</option>\n";//'option' and 'value' for this fild is same('value' is not necessary)
 //
-                        }
-                        //                                + "<select id='signatory_role_" + i + "' name='createDocumentary_signatory_role_" + i + "' class='form-control' disabled='disabled' value='" + row.get(0).get("createDocumentary_signatory_role_" + i).toString() + "' onchange='$(this).parent.find($(this).val());'  />"
-                        html3 += "<select id='signatory_role_" + i + "'  name='createDocumentary_signatory_role_" + i + "' class='form-control'  value='" + row.get(0).get("createDocumentary_signatory_role_" + i).toString() + "' onchange='$(this).parent()'  /></select>"
-                                + "</div>";
+                            }
+                            //                                + "<select id='signatory_role_" + i + "' name='createDocumentary_signatory_role_" + i + "' class='form-control' disabled='disabled' value='" + row.get(0).get("createDocumentary_signatory_role_" + i).toString() + "' onchange='$(this).parent.find($(this).val());'  />"
+                            html3 += "<select id='signatory_role_" + i + "'  name='createDocumentary_signatory_role_" + i + "' class='form-control'  value='" + row.get(0).get("createDocumentary_signatory_role_" + i).toString() + "' onchange='$(this).parent()'  /></select>"
+                                    + "</div>"
+                                    + "<div class='col-lg-2'>"
+                                    + "توضیحات"
+                                    + "<div id='createDocumentary_signatory_comment_" + i + "'>" + row.get(0).get("createDocumentary_signatory_comment_" + i).toString() + "</div>"
+                                    + "</div>";
 
-                        if (row.get(0).get("createDocumentary_signatory_signature_" + i).equals("0")) {
-                            html3 += "<div class='col-lg-3'><img src='template/remove.png' style='height:34px;margin-top: 21px; '/></div>";
-                        }
-                        if (row.get(0).get("createDocumentary_signatory_signature_" + i).equals("1")) {
-                            html3 += "<div class='col-lg-3'><img src='template/tick.png' style='height:30px;margin-top: 22px;'/></div>";
-                        }
-                        html3 += "</div>";
-                        html6 += Js.setHtml("#signatory_role_" + i, htmlRole);
-                    } else {
-                        html3 += "<div class='row col-lg-12 ' id='row'>"
-                                + "<div class='col-lg-3'>"
-                                + "عنوان امضا کننده"
-                                + "<input class='form-control c'  id='signatory_title_" + i + "' "
-                                + "name='createDocumentary_signatory_title_" + i + "' "
-                                + "value='" + row.get(0).get("createDocumentary_signatory_title_" + i).toString() + "' />"
-                                + "</div>"
-                                + "<div class='col-lg-3'>"
-                                + "فرد امضا کننده"
-                                + "<select id='createDocumentary_signatory_user_" + (i) + "' "
-                                + "name='createDocumentary_signatory_user_" + (i) + "' class='signerDiv form-control' > "
-                                + "<option value='" + UserRow.get(0).get(_id) + "' >"
-                                + UserRow.get(0).get(Access_User._name).toString() + " " + UserRow.get(0).get(Access_User._family).toString()
-                                + "</option>"
-                                + "</select>"
-                                + "</div>"
-                                + "<div class='col-lg-3'>"
-                                + "سمت امضا کننده"
-                                + "<input id='signatory_role_" + i + "' name='createDocumentary_signatory_role_" + i + "' class='form-control'  value='" + row.get(0).get("createDocumentary_signatory_role_" + i).toString() + "'  />";
-                        List<Map<String, Object>> UserRowRole = jjDatabase.separateRow(db.Select(Role.tableName, Role._user_id + "=" + row.get(0).get("createDocumentary_signatory_user_" + i).toString()));
-                        for (int k = 0; k < UserRowRole.size(); k++) {
+                            if (row.get(0).get("createDocumentary_signatory_signature_" + i).equals("0")) {
+                                html3 += "<div class='col-lg-1'><img src='template/remove.png' style='height:34px;margin-top: 21px; '/></div>";
+                            }
+                            if (row.get(0).get("createDocumentary_signatory_signature_" + i).equals("1")) {
+                                html3 += "<div class='col-lg-1'><img src='template/tick.png' style='height:30px;margin-top: 22px;'/></div>";
+                            }
+                            html3 += "</div>";
+                            html6 += Js.setHtml("#signatory_role_" + i, htmlRole);
+                        } else {
+                            html3 += "<div class='row col-lg-12 ' id='row'>"
+                                    + "<div class='col-lg-3'>"
+                                    + "عنوان امضا کننده"
+                                    + "<input class='form-control c'  id='signatory_title_" + i + "' "
+                                    + "name='createDocumentary_signatory_title_" + i + "' "
+                                    + "value='" + row.get(0).get("createDocumentary_signatory_title_" + i).toString() + "' />"
+                                    + "</div>"
+                                    + "<div class='col-lg-3'>"
+                                    + "فرد امضا کننده"
+                                    + "<select id='createDocumentary_signatory_user_" + (i) + "' "
+                                    + "name='createDocumentary_signatory_user_" + (i) + "' class='signerDiv form-control' > "
+                                    + "<option value='" + UserRow.get(0).get(_id) + "' >"
+                                    + UserRow.get(0).get(Access_User._name).toString() + " " + UserRow.get(0).get(Access_User._family).toString()
+                                    + "</option>"
+                                    + "</select>"
+                                    + "</div>"
+                                    + "<div class='col-lg-3'>"
+                                    + "سمت امضا کننده"
+                                    + "<input id='signatory_role_" + i + "' name='createDocumentary_signatory_role_" + i + "' class='form-control'  value='" + row.get(0).get("createDocumentary_signatory_role_" + i).toString() + "'  />";
+                            List<Map<String, Object>> UserRowRole = jjDatabase.separateRow(db.Select(Role.tableName, Role._user_id + "=" + row.get(0).get("createDocumentary_signatory_user_" + i).toString()));
+                            for (int k = 0; k < UserRowRole.size(); k++) {
 //
-                            htmlRole += "<option value='" + UserRowRole.get(k).get(Role._title) + "'"
-                                    + (UserRowRole.get(k).get(Role._title).equals(Role._title) ? " selected='selected'>" : ">")
-                                    + UserRowRole.get(k).get(Role._title) + "</option>\n";//'option' and 'value' for this fild is same('value' is not necessary)
+                                htmlRole += "<option value='" + UserRowRole.get(k).get(Role._title) + "'"
+                                        + (UserRowRole.get(k).get(Role._title).equals(Role._title) ? " selected='selected'>" : ">")
+                                        + UserRowRole.get(k).get(Role._title) + "</option>\n";//'option' and 'value' for this fild is same('value' is not necessary)
 //
+                            }
+                            html3 += "<select id='signatory_roles_" + i + "'  name='createDocumentary_signatory_role_" + i + "' class='form-control'  value='" + row.get(0).get("createDocumentary_signatory_role_" + i).toString() + "' "
+                                    + "onchange='hmisCreateDocumentary.setRolInTextField(this);'/></select>"
+                                    //                        html3 += "<select id='signatory_roles_" + i + "'  name='createDocumentary_signatory_role_" + i + "' class='form-control'  value='" + row.get(0).get("createDocumentary_signatory_role_" + i).toString() + "' onchange='hmisCreateDocumentary.selectRole($(this).val(),signatory_role_"+ i+");'/></select>"
+                                    + "</div>"
+                                    + "<div class='col-lg-3'>"
+                                    + "<button class='btn btn-danger btn-block mg-t-20 mg-b-20  buttonRemove'>حذف</button>"
+                                    + "<button class='btn btn btn-block mg-t-20 mg-b-20' id='payam' onclick='hmisMessenger.sendMesseageToSignatory(" + UserRow.get(0).get(Access_User._id) + "," + row.get(0).get(_id) + ")'>ارسال پیام</button>"
+                                    + "</div>"
+                                    + "</div>";
                         }
-                        html3 += "<select id='signatory_roles_" + i + "'  name='createDocumentary_signatory_role_" + i + "' class='form-control'  value='" + row.get(0).get("createDocumentary_signatory_role_" + i).toString() + "' "
-                                + "onchange='hmisCreateDocumentary.setRolInTextField(this);'/></select>"
-                                //                        html3 += "<select id='signatory_roles_" + i + "'  name='createDocumentary_signatory_role_" + i + "' class='form-control'  value='" + row.get(0).get("createDocumentary_signatory_role_" + i).toString() + "' onchange='hmisCreateDocumentary.selectRole($(this).val(),signatory_role_"+ i+");'/></select>"
-                                + "</div>"
-                                + "<div class='col-lg-3'>"
-                                + "<button class='btn btn-outline-danger btn-block mg-t-20 mg-b-20  buttonRemove'>حذف</button>"
-                                + "<button class='btn btn-outline btn-block mg-t-20 mg-b-20' id='payam' onclick='hmisMessenger.sendMesseageToSignatory(" + UserRow.get(0).get(Access_User._id) + "," + row.get(0).get(_id) + ")'>ارسال پیام</button>"
-                                + "</div>"
-                                + "</div>";
                     }
                 }
 //                script4.append(Js.setVal("signatory_roles_" + i, html));
@@ -762,8 +1036,11 @@ public class CreateDocumentary {
             }
             script4.append(Js.setHtml("#signatorys", html3));
             script.append(Js.setVal("#" + _date, jjCalendar_IR.getViewFormat(row.get(0).get(_date).toString())));
-            script.append(Js.setVal("#" + _revisionDate,jjCalendar_IR.getViewFormat(row.get(0).get(_revisionDate).toString())));    
-            
+            script.append(Js.setVal("#" + _createDate, jjCalendar_IR.getViewFormat(row.get(0).get(_createDate).toString())));
+            script.append(Js.setVal("#" + _revisionDate, jjCalendar_IR.getViewFormat(row.get(0).get(_revisionDate).toString())));
+            script.append(Js.setVal("#" + _revisionDateNext, jjCalendar_IR.getViewFormat(row.get(0).get(_revisionDateNext).toString())));
+            script.append(Js.setVal("#" + _departmentId, row.get(0).get(_departmentId).toString()));
+            script.append(Js.setVal("#" + _code, row.get(0).get(_code).toString()));
             script.append(Js.setVal("#" + _summary, row.get(0).get(_summary).toString()));
             script.append(Js.setVal("#" + _category, row.get(0).get(_category).toString()));
 
@@ -782,19 +1059,22 @@ public class CreateDocumentary {
             } else {
                 boolean accEdit = Access_User.hasAccess(request, db, rul_edt);
                 if (accEdit && row.get(0).get(_status).equals(status_created)) {// اگر وضعیت ابلاغ شده یا در انتظار ابلاغ بود دکمه ابلاغ را نشان ندهیم
-                    htmlBottons += "<div class='col-lg'><button title='" + lbl_edit + "' class='btn btn-outline-warning btn-block mg-b-10' onclick='" + Js.jjCreateDocumentary.edit() + "' id='edit_CreateDocumentary'>" + lbl_edit + "</button></div>";
-                    htmlBottons += "<div class='col-lg'><button title='ارسال جهت ابلاغ' class='btn btn-outline-purple btn-block mg-b-10' onclick='hmisCreateDocumentary.sendForCommunication(" + id + ");' id='edit_CreateDocumentary'>ارسال جهت ابلاغ</button></div>";
+                    htmlBottons += "<div class='col-lg'><button title='" + lbl_edit + "' class='btn btn-warning btn-block mg-b-10' onclick='" + Js.jjCreateDocumentary.edit() + "' id='edit_CreateDocumentary'>" + lbl_edit + "</button></div>";
+                    htmlBottons += "<div class='col-lg'><button title='ارسال جهت ابلاغ' class='btn btn-purple btn-block mg-b-10' onclick='hmisCreateDocumentary.sendForCommunication(" + id + ");' id='edit_CreateDocumentary'>ارسال جهت ابلاغ</button></div>";
                 }
                 script1.append(Js.setHtml("#CreateDocumentary_button", htmlBottons));
+                script6.append("<div class='sh-pagetitle-icon'>"
+                        + "<a href='Server?do=CreateDocumentary.printDocumentary&id=" + id + "' title='چاپ مستند' target='_blank'  class='active btn-block mg-r-9'><i class='fa fa-print mg-t-3'></i></a>"
+                        + "</div>");
             }
 
             boolean accDelete = Access_User.hasAccess(request, db, rul_dlt);
             if (accDelete) {
-                htmlBottons += "<div class='col-lg'><button title='" + lbl_delete + "' class='btn btn-outline-danger btn-block mg-b-10' onclick='" + Js.jjCreateDocumentary.delete(id) + "' id='delete_CreateDocumentary'>" + lbl_delete + "</button></div>";
+                htmlBottons += "<div class='col-lg'><button title='" + lbl_delete + "' class='btn btn-danger btn-block mg-b-10' onclick='" + Js.jjCreateDocumentary.delete(id) + "' id='delete_CreateDocumentary'>" + lbl_delete + "</button></div>";
             }
             script1.append(Js.setHtml("#CreateDocumentary_button", htmlBottons));
-
-            Server.outPrinter(request, response, html.toString() + script + script2 + script3 + script4 + script1 + html6);
+            String html2 = Js.setHtml("#printBtnDoc", script6);
+            Server.outPrinter(request, response, html.toString() + script + script2 + script3 + script4 + script1 + html6 + html2);
             return "";
 //
 //           
@@ -815,7 +1095,7 @@ public class CreateDocumentary {
             boolean accIns = Access_User.hasAccess(request, db, rul_ins);
 
             if (accIns) {
-                script.append(Js.setHtml("#CreateDocumentary_button", "<div class='col-lg-6'><input type='button' id='insert_CreateDocumentary_new'  value=\"" + lbl_insert + "\" class='btn btn-outline-success active btn-block mg-b-10'></div>"));
+                script.append(Js.setHtml("#CreateDocumentary_button", "<div class='col-lg-6'><input type='button' id='insert_CreateDocumentary_new'  value=\"" + lbl_insert + "\" class='btn btn-success active btn-block mg-b-10'></div>"));
                 script.append(Js.click("#insert_CreateDocumentary_new", Js.jjCreateDocumentary.insert()));
             }
             Server.outPrinter(request, response, html.toString() + script);
@@ -828,7 +1108,7 @@ public class CreateDocumentary {
 
     public static String edit(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean needString) throws Exception {
         try {
-          if (!Access_User.hasAccess(request, db, rul_edt)) {
+            if (!Access_User.hasAccess(request, db, rul_edt)) {
                 Server.outPrinter(request, response, "شما اجازه ی دسترسی به این قسمت را ندارید");
                 return "";
             }
@@ -837,9 +1117,12 @@ public class CreateDocumentary {
             List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, _id + "=" + id));
             Map<String, Object> map = new HashMap();
             map.put(_title, jjTools.getParameter(request, _title));
-            map.put(_date, jjTools.getParameter(request, _date));
-            map.put(_revisionDate, jjTools.getParameter(request, _revisionDate));
+            map.put(_departmentId, jjTools.getParameter(request, _departmentId));
+            map.put(_date, jjCalendar_IR.getDatabaseFormat_8length(jjTools.getParameter(request, _date).toString(), true));
+            map.put(_revisionDate, jjCalendar_IR.getDatabaseFormat_8length(jjTools.getParameter(request, _revisionDate).toString(), true));
+            map.put(_revisionDateNext, jjCalendar_IR.getDatabaseFormat_8length(jjTools.getParameter(request, _revisionDateNext).toString(), true));
             map.put(_category, jjTools.getParameter(request, _category));
+            map.put(_code, jjTools.getParameter(request, _code));
             map.put(_summary, jjTools.getParameter(request, _summary));
             map.put(_titleFile1, jjTools.getParameter(request, _titleFile1));
             map.put(_titleFile2, jjTools.getParameter(request, _titleFile2));
@@ -849,8 +1132,8 @@ public class CreateDocumentary {
             map.put(_attachmentfile3, jjTools.getParameter(request, _attachmentfile3));
             map.put(_responsibleDocumentary, jjTools.getParameter(request, _responsibleDocumentary));
             map.put(_communicator, jjTools.getParameter(request, _communicator));
-            map.put(_reciversRoles, jjTools.getParameter(request, _reciversRoles));
-            map.put(_reciversUsers, jjTools.getParameter(request, _reciversUsers));
+            map.put(_reciversRoles, "," + jjTools.getParameter(request, _reciversRoles) + ",");
+            map.put(_reciversUsers, "," + jjTools.getParameter(request, _reciversUsers) + ",");
 ////////////////////اگرuserخالی بود
 ///////////////هیچ کاری نکند یعنی هرچی داخل دیتا بیس هست را نشان بدهد در غیر این صورت 
 /////////////داخلش map می شود
@@ -951,6 +1234,14 @@ public class CreateDocumentary {
                     if (userid.equals(row.get(0).get("createDocumentary_signatory_user_" + j))) {
                         if (jjTools.getParameter(request, "createDocumentary_signatory_signature_" + j).equals("0")) {
                             script.append("alert('مستند مورد نظر  رد  و باطل شد')");
+                            String text = "لطفا نسبت به اصلاح  مستند " + row.get(0).get(CreateDocumentary._title).toString() + " "
+                                    + " طبق توضیحات اقدام فرمایید ";
+                            StringBuilder html = new StringBuilder();
+                            html.append("<h1>عنوان مستند:" + row.get(0).get(CreateDocumentary._title) + "</h1>");
+                            html.append("<h3>مستند توسط" + Access_User.getUserName(userid, db) + "  " + " رد شد</h3>");
+                            String reciver = Role.getUeserIdByUserRole(row.get(0).get(CreateDocumentary._responsibleDocumentary).toString(), db);
+                            Messenger.sendMesseage(null, db, reciver, "1", "sms,app,email", "", "رد مستند: " + row.get(0).get(CreateDocumentary._title).toString(), text, html.toString(), "", "یادآوری", Tice_config.getValue(db, Tice_config._config_activeSmsModuleDocumentary_name), Tice_config.getValue(db, Tice_config._config_activeEmailModuleDocumentary_name));
+
                             Server.outPrinter(request, response, script);
                         } else if (jjTools.getParameter(request, "createDocumentary_signatory_signature_" + j).equals("1")) {
                             script.append(Js.setHtml("#formSign" + j, ""));
@@ -1005,14 +1296,87 @@ public class CreateDocumentary {
             Map<String, Object> map = new HashMap<>();
             map.put(_reciversRoles, jjTools.getParameter(request, _reciversRoles));
             map.put(_reciversUsers, jjTools.getParameter(request, _reciversUsers));
-            db.update(tableName, map, id);//گیرندگانی که ابلاغ کننده مشحص کرده را بروز رسانی می کنیم
+            db.update(tableName, map, _id + "=" + id);//گیرندگانی که ابلاغ کننده مشحص کرده را بروز رسانی می کنیم
             List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, _id + "=" + id));
             String communicatorUserId = "" + jjTools.getSeassionUserId(request);//برای امنیت آی دی شخصی که درسشن است به عنوان ابلاغ کننده ثبت میشود
             StringBuilder html = new StringBuilder();
-            html.append("<a href='" + Server.siteName + "/Server?do=CreateDocumentary.selectOneDocuementToSign&id=77' >");
-            html.append(row.get(0).get(_title).toString());
-            html.append("لینک مستند");
-            html.append("</a>");
+
+            html.append("<br/>");
+            html.append("<a href='" + Server.mainSite + "/Server?do=CreateDocumentary.printDocumentary&id=" + id + "'>لینک مستند</a>");
+            html.append("<br/>");
+            html.append("<br/>");
+            String attachFiles1 = row.get(0).get(_attachmentfile1).toString();
+            String attachFiles2 = row.get(0).get(_attachmentfile2).toString();
+            String attachFiles3 = row.get(0).get(_attachmentfile3).toString();
+            List<Map<String, Object>> file1Row = jjDatabase.separateRow(db.Select(UploadServlet.tableName, UploadServlet._file_name + "='" + attachFiles1 + "'"));
+            if (!file1Row.isEmpty()) {
+                String idUpload = file1Row.get(0).get(UploadServlet._id).toString();
+                String titleUpload = file1Row.get(0).get(UploadServlet._title).toString();
+                String extension2 = attachFiles1.substring(attachFiles1.lastIndexOf(".") + 1, attachFiles1.length());
+                if (extension2.toLowerCase().equals("jpg")
+                        || extension2.toLowerCase().equals("png")
+                        || extension2.toLowerCase().equals("gif")
+                        || extension2.toLowerCase().equals("svg")) {
+                    html.append(""
+                            + "<img class='wd-40  mg-r-20' src='" + Server.mainSite + "/upload/" + attachFiles1 + "'/>"
+                            + "<a  href='" + Server.mainSite + "/upload/" + attachFiles1 + "'>" + titleUpload + "</a>"
+                    );
+                } else {
+                    html.append(""
+                            + "<div>"
+                            + "<a  href='" + Server.mainSite + "/upload/" + attachFiles1 + "'>" + titleUpload + "</a>"
+                            + "</div>"
+                    );
+                }
+            } else {
+                //@ToDo  //کی از فایل ها اشتباها از سامانه حذف شده
+            }
+            List<Map<String, Object>> file2Row = jjDatabase.separateRow(db.Select(UploadServlet.tableName, UploadServlet._file_name + "='" + attachFiles2 + "'"));
+            if (!file2Row.isEmpty()) {
+                String idUpload = file2Row.get(0).get(UploadServlet._id).toString();
+                String titleUpload = file2Row.get(0).get(UploadServlet._title).toString();
+                String extension2 = attachFiles2.substring(attachFiles2.lastIndexOf(".") + 1, attachFiles2.length());
+                if (extension2.toLowerCase().equals("jpg")
+                        || extension2.toLowerCase().equals("png")
+                        || extension2.toLowerCase().equals("gif")
+                        || extension2.toLowerCase().equals("svg")) {
+                    html.append(""
+                            + "<img class='wd-40  mg-r-20' src='" + Server.mainSite + "/upload/" + attachFiles2 + "'/>"
+                            + "<a  href='" + Server.mainSite + "/upload/" + attachFiles2 + "'>" + titleUpload + "</a>"
+                    );
+                } else {
+                    html.append(""
+                            + "<div>"
+                            + "<a  href='" + Server.mainSite + "/upload/" + attachFiles2 + "'>" + titleUpload + "</a>"
+                            + "</div>"
+                    );
+                }
+            } else {
+                //@ToDo  //کی از فایل ها اشتباها از سامانه حذف شده
+            }
+            List<Map<String, Object>> file3Row = jjDatabase.separateRow(db.Select(UploadServlet.tableName, UploadServlet._file_name + "='" + attachFiles3 + "'"));
+            if (!file3Row.isEmpty()) {
+                String idUpload = file3Row.get(0).get(UploadServlet._id).toString();
+                String titleUpload = file3Row.get(0).get(UploadServlet._title).toString();
+                String extension2 = attachFiles3.substring(attachFiles3.lastIndexOf(".") + 1, attachFiles3.length());
+                if (extension2.toLowerCase().equals("jpg")
+                        || extension2.toLowerCase().equals("png")
+                        || extension2.toLowerCase().equals("gif")
+                        || extension2.toLowerCase().equals("svg")) {
+                    html.append(""
+                            + "<img class='wd-40  mg-r-20' src='" + Server.mainSite + "/upload/" + attachFiles3 + "'/>"
+                            + "<a  href='" + Server.mainSite + "/upload/" + attachFiles3 + "'>" + titleUpload + "</a>"
+                    );
+                } else {
+                    html.append(""
+                            + "<div>"
+                            + "<a  href='" + Server.mainSite + "/upload/" + attachFiles3 + "'>" + titleUpload + "</a>"
+                            + "</div>"
+                    );
+                }
+            } else {
+                //@ToDo  //کی از فایل ها اشتباها از سامانه حذف شده
+            }
 //            if(jjTools.getParameter(request, _reciversRoles).contains("ALL")){// اگر همه ی نقش ها را تیک زده بود
 //                List<Map<String, Object>> row = jjDatabase.separateRow(db.JoinLeft(Role.tableName, Access_User.tableName,Access_User._id, Role._commentd, _title, _category))
 //            String reciverRoles[] = jjTools.getParameter(request, _reciversRoles).split(",");
@@ -1025,10 +1389,10 @@ public class CreateDocumentary {
                 }
             }
             receiversUserIDs += jjTools.getParameter(request, _reciversUsers);
-            Messenger.sendMesseage(request, db, receiversUserIDs, communicatorUserId, "app,sms,email", null, "ابلاغیه", row.get(0).get(_title).toString(), html.toString(),"یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModuleDocumentary_name),Tice_config.getValue(db, Tice_config._config_activeEmailModuleDocumentary_name));
+            Messenger.sendMesseage(request, db, receiversUserIDs, communicatorUserId, "app,sms,email", null, "ابلاغیه ", "مستند :" + " " + row.get(0).get(_title).toString() + " " + "جهت آگاهی و اجرا به شما ابلاغ می گردد", html.toString(), "", "یادآوری", Tice_config.getValue(db, Tice_config._config_activeSmsModuleDocumentary_name), Tice_config.getValue(db, Tice_config._config_activeEmailModuleDocumentary_name));
             changeStatus(request, response, db, id, status_communicated);// تغییر وضعیت به ایلاغ شده
             //@ToDo ارسال پیام برای ابلاغ کننده
-            Server.outPrinter(request, response, Js.modal("مستند ابلاغ و به گیرندگان پیام مشاهده ی مشتند ارسال شد", "پیام سامانه"));
+            Server.outPrinter(request, response, Js.modal("مستند ابلاغ و به گیرندگان پیام مشاهده ی مستند ارسال شد", "پیام سامانه"));
             return "";
         } catch (Exception ex) {
             Server.outPrinter(request, response, Server.ErrorHandler(ex));
@@ -1066,6 +1430,62 @@ public class CreateDocumentary {
         } catch (Exception ex) {
             Server.outPrinter(request, response, Server.ErrorHandler(ex));
             return "";
+        }
+    }
+
+    /**
+     * نمایش و پرینت مستند
+     *
+     * @param request
+     * @param response
+     * @param db
+     * @param needString
+     * @return
+     * @throws Exception
+     */
+    public static String printDocumentary(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean needString) throws Exception {
+        try {
+            String id = jjTools.getParameter(request, Sessions._id);// ای دی جلسه
+
+            request.setAttribute("db", db);
+            System.out.println("------->>>>>template/printDocumentary.jsp");
+            request.getRequestDispatcher("template/printDocumentary.jsp").forward(request, response);
+
+            return "";
+        } catch (Exception ex) {
+            Server.outPrinter(request, response, Server.ErrorHandler(ex));
+            return "";
+        }
+    }
+
+    /**
+     * یادآوری بازنگری مستند
+     *
+     * @throws Exception
+     */
+    public static void taskDocumentaryRevisionDateNextReminder() throws Exception {
+        System.out.println("#################################################");
+        System.out.println("######>>>>>RUN:taskDocumentaryRevisionDateNextReminder###########");
+        Server.Connect();
+        jjDatabaseWeb db = Server.db;
+        List<Map<String, Object>> rows = jjDatabaseWeb.separateRow(db.Select(CreateDocumentary.tableName, CreateDocumentary._revisionDateNext));
+        System.out.println("size=" + rows.size());
+        for (int i = 0; i < rows.size(); i++) {
+            System.out.println("rows.get(i).get(_date).toString()=" + rows.get(i).get(CreateDocumentary._revisionDateNext).toString());
+            jjCalendar_IR date = new jjCalendar_IR(rows.get(i).get(CreateDocumentary._revisionDateNext).toString());
+            int period = Integer.valueOf(Tice_config.getValue(db, Tice_config._config_reminderDayBeforeNextCreateDocumentary_name).toString());
+            int today = jjCalendar_IR.getDatabaseFormat_8length(null, true);
+            while (today < date.getDBFormat_8length()) {
+                date.addDay(period);//عدد منفی باید واردشود
+            }
+            if (date.getDBFormat_8length() == today) {
+                System.out.println(">>>>>>>" + today);
+                String responsibleDocumentary = rows.get(i).get(CreateDocumentary._responsibleDocumentary).toString();
+                String text = Access_User.getUserName(responsibleDocumentary, db) + "  " + rows.get(i).get(CreateDocumentary._title).toString() + "لطفا نسبت به بازنگری مستند اقدام فرمایید";
+                Messenger.sendMesseage(null, db, responsibleDocumentary, "1", "sms,app,email", null, "یاد آوری سامانه : بازنگری مستند " + rows.get(i).get(CreateDocumentary._title), text, text, "", "یادآوری", Tice_config.getValue(db, Tice_config._config_activeSmsModuleDocumentary_name), Tice_config.getValue(db, Tice_config._config_activeEmailModuleDocumentary_name));
+                System.out.println("<<<<<<<ارسال پیام برای  مسئول مستندSend MESSAGE()");
+                System.out.println("#################################################");
+            }
         }
     }
 

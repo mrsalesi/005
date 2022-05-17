@@ -3510,23 +3510,25 @@ table {
 }
 
 table thead {
-    text-align: left;
-    text-transform: uppercase;
-    letter-spacing: 3px;
+    text-align: center;
 }
-
-table thead th {
-    padding: 15px 20px;
-    font-weight: normal;
-    color: #333;
+table thead th {    
+    text-align: center;
 }
 
 table tbody tr td,
 table tbody tr th {
-    padding: 15px 20px;
-    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
 }
-
+table tbody tr:nth-child(even)
+{
+    background-color: #e8f0f6;
+}
+table tbody tr:hover {
+    color: #3f60f3;
+    font-weight: 700;
+}
 table tr.style1 {
     background-color: #ffffff;
 }

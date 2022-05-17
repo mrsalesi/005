@@ -47,7 +47,7 @@ public class Server extends HttpServlet {
     public static String emailAccount = "ebrahemimorteza@gmail.com";
     public static String passEmail = "sepahan901614003";
     public static String smtpAcount = "smtp.gmail.com";
-    public static String mainPage = "ZarinpalResult.jsp";
+    public static String mainPage = "index.jsp";
     public static String mainPageJSP = "index.jsp";
     public static String contentJSP = "indexContent.jsp";
     public static String newsJSP = "indexNews.jsp";

@@ -5,16 +5,19 @@
  */
 package HMIS;
 
+import cms.access.Access_Group;
 import cms.access.Access_User;
 import cms.cms.Tice_config;
 import cms.tools.Call;
 import cms.tools.Js;
 import cms.tools.Server;
+import cms.tools.ServerLog;
 import cms.tools.UploadServlet;
 import cms.tools.jjTools;
 import cms.tools.jjValidation;
 import cms.tools.sms;
 import java.io.IOException;
+import java.rmi.ServerError;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -49,19 +52,27 @@ public class Messenger {
     public static String _logStatus = "messenger_logStatus";///روند وضعیت پیام
     public static String _email = "messenger_email";///ایمیل
     public static String _sendingMethod = "messenger_sendingMethod";///روش ارسال
-    public static String _file = "messenger_attachFile";///
+    public static String _attachFile = "messenger_attachFile";///
+    public static String _file = "messenger_file";///
     public static String _type = "messenger_type";///
+    public static String _notificationFlag = "messenger_notificationFlag";///
+    public static String _time = "messenger_time";///
+    public static String _chatID = "messenger_chatID";///
 
     public static String status_created = "ایجاد شده";///برای  وضعیت پیام نوشته شده است 
     public static String status_displayed = "دیده شده";
     public static String status_posted = "ارسال شده";
     public static String status_postQueue = "درصف ارسال";
     public static String status_deleted = "حذف شده";
+    public static String message_Advice = "مشاوره";
     public static String lbl_insert = "ارسال پیام";
     public static String lbl_delete = "حذف";
     public static String lbl_edit = "ثبت ویرایش";
+    public static String lblOpen = "open";
+    public static String lblClose = "close";
 
-    public static int rul_rfs_karshenas = 291;//برای اینکه تشخیص دهیم کاربر مجوز دیدن پیامهای کارشناس را دارد یا نه
+    public static int rul_MessengerModule = 291;//برای اینکه تشخیص دهیم کاربر مجوز دیدن پیامهای کارشناس را دارد یا نه
+    public static int rul_rfs_All = 291;//برای اینکه تشخیص دهیم کاربر مجوز دیدن پیامهای کارشناس را دارد یا نه
     public static int rul_rfs = 292;
     public static int rul_dlt = 295;
     public static int rul_edt = 294;
@@ -72,10 +83,10 @@ public class Messenger {
     public static String refresh(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
         try {
             String id = jjTools.getParameter(request, _id);
-// if (!Access_User.hasAccess(request, db, rul_rfs)) {
-//                Server.outPrinter(request, response, "شما اجازه ی دسترسی به این قسمت را ندارید");
-//                return "";
-//            }
+            if (!Access_User.hasAccess(request, db, rul_rfs)) {
+                Server.outPrinter(request, response, "شما اجازه ی دسترسی به این قسمت را ندارید");
+                return "";
+            }
             StringBuilder html = new StringBuilder();
 
             List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName));
@@ -88,13 +99,13 @@ public class Messenger {
                     + "        <p class='mg-b-20 mg-sm-b-30'>"
                     + "            <a  class='btn btn-success pd-sm-x-20 mg-sm-r-5' style='color: white;' onclick='hmisMessenger.m_add_new();' > پیام جدید</a>"
                     + "        </p>");
-
-            html.append("<table class='table display' id='refreshMessenger' dir='rtl'><thead>");
-            html.append("<th width='5%' style='text-align:center'>کد</th>");
-            html.append("<th width='5%' style='text-align:center'>ارسال در</th>");
-            html.append("<th width='5%' style='text-align:center'>فرستنده و گیرنده </th>");
-            html.append("<th width='15%' style='text-align:center'>متن پیام</th>");
-            html.append("<th width='5%' style='text-align:center'>وضعیت پیام</th>");
+            html.append("<div style='width: 100%; padding-left: -10px;'><div class='table-responsive'>");
+            html.append("<table id='refreshMessenger' class='table table-striped table-hover dt-responsive display nowrap' cellspacing='0' style='direction: rtl;'><thead>");
+            html.append("<th style='text-align:center'>کد</th>");
+            html.append("<th style='text-align:center'>ارسال در</th>");
+            html.append("<th style='text-align:center'>فرستنده و گیرنده </th>");
+            html.append("<th style='text-align:center'>متن پیام</th>");
+            html.append("<th style='text-align:center'>وضعیت پیام</th>");
             boolean accDel = Access_User.hasAccess(request, db, rul_dlt);
             if (accDel) {
                 html.append("<th style='text-align:center' width='5%'>حذف</th>");
@@ -125,11 +136,11 @@ public class Messenger {
                 }
                 html.append("</tr>");
             }
-            html.append("</tbody></table>");
+            html.append("</tbody></table></div></div></div>");
             String height = jjTools.getParameter(request, "height");
             String panel = jjTools.getParameter(request, "panel");
             if (!jjNumber.isDigit(height)) {
-                height = "400";
+                height = "auto";
             }
             if (panel.equals("")) {
                 panel = "swMessengerTbl";
@@ -208,7 +219,7 @@ public class Messenger {
             String height = jjTools.getParameter(request, "height");
             String panel = jjTools.getParameter(request, "panel");
             if (!jjNumber.isDigit(height)) {
-                height = "400";
+                height = "auto";
             }
             if (panel.equals("")) {
                 panel = "swDeletedMessagesTbl";
@@ -242,8 +253,8 @@ public class Messenger {
                     + "    <div class='card-body pd-sm-30'>"
                     + "        <p class='mg-b-20 mg-sm-b-30'>"
                     + "        </p>");
-
-            html.append("<table class='table display responsive' id='refreshMyMessages' dir='rtl'><thead>");
+            html.append("<div style='width: 100%; padding-left: -10px;'><div class='table-responsive'>");
+            html.append("<table id='refreshMyMessages' class='table table-striped table-hover dt-responsive' cellspacing='0' style='direction: rtl;'><thead>");
             html.append("<th width='10%' style='text-align:center'>کد</th>");
             html.append("<th width='10%' style='text-align:center'>ارسال در</th>");
             html.append("<th width='30%' style='text-align:center'>متن پیام</th>");
@@ -275,14 +286,66 @@ public class Messenger {
                 }
                 html.append("</tr>");
             }
-            html.append("</tbody></table>");
+            html.append("</tbody></table></div></div></div></div>");
             String height = jjTools.getParameter(request, "height");
             String panel = jjTools.getParameter(request, "panel");
             if (!jjNumber.isDigit(height)) {
-                height = "400";
+                height = "auto";
             }
             if (panel.equals("")) {
                 panel = "swMyMessagesTbl";
+            }
+            String html2 = Js.setHtml("#" + panel, html.toString());
+            html2 += Js.table("#refreshMyMessages", height, 0, "", "لیست پیام های من");
+            Server.outPrinter(request, response, html2);
+            return "";
+        } catch (Exception e) {
+            Server.outPrinter(request, response, Server.ErrorHandler(e));
+            return "";
+        }
+    }
+
+    public static String refreshMyMessagesAppPatient(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
+        try {
+            StringBuilder html = new StringBuilder();
+            int id = jjTools.getSeassionUserId(request);
+            List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(Messenger.tableName, _receiver + "=" + id));
+            html.append(" <div class='card bd-primary'>"
+                    + "    <div class='card-header bg-primary tx-white'>پیام های من</div>"
+                    + "    <div class='card-body pd-sm-30'>");
+            html.append("<div style='width: 100%; padding-left: -10px;'><div class='table-responsive'>");
+            html.append("<table id='refreshMyMessages' class='table table-striped table-hover dt-responsive display nowrap' cellspacing='0' style='direction: rtl;'><thead>");
+            html.append("<th class='c'>کد</th>");
+            html.append("<th class='c'>ارسال در</th>");
+            html.append("<th class='c'>جزئیات</th>");
+            html.append("<th class='c'>مشاهده پیام</th>");
+            html.append("</thead><tbody>");
+            for (int i = 0; i < row.size(); i++) {
+
+                html.append("<tr class='" + getClassCssForStatus((row.get(i).get(_status).toString())) + "'>");
+                html.append("<td class='c" + " " + getClassCssForStatus((row.get(i).get(_status).toString())) + "'>" + (row.get(i).get(_id).toString()) + "</td>");
+                html.append("<td class='c'>" + jjCalendar_IR.getViewFormat(row.get(i).get(_postageDate)) + "</td>");
+                html.append("<td class='c'>");
+                html.append("گیرنده : <br/>" + Access_User.getUserName(row.get(i).get(_receiver).toString(), db) + "<br/>");
+                html.append("فرستنده : <br/>" + (Access_User.getUserName(row.get(i).get(_sender).toString(), db)) + "<br/>");
+                String statuss = "";
+                if (row.get(i).get(_status).toString().equals(status_posted)) {
+                    statuss = "دریافت شد";
+                } else {
+                    statuss = row.get(i).get(_status).toString();
+                }
+                html.append("وضعیت پیام : <br/>" + (statuss) + "</td>");
+                html.append("<td class='c' onclick='hmisMyMessages.m_select(" + row.get(i).get(_id) + ");' ><i class='fas fa-envelope-open-text' style='font-size:25px;'></i></td>");
+                html.append("</tr>");
+            }
+            html.append("</tbody></table></div></div></div></div>");
+            String height = jjTools.getParameter(request, "height");
+            String panel = jjTools.getParameter(request, "panel");
+            if (!jjNumber.isDigit(height)) {
+                height = "auto";
+            }
+            if (panel.equals("")) {
+                panel = "sw";
             }
             String html2 = Js.setHtml("#" + panel, html.toString());
             html2 += Js.table("#refreshMyMessages", height, 0, "", "لیست پیام های من");
@@ -313,8 +376,8 @@ public class Messenger {
                     + " <a  class='btn btn-success pd-sm-x-20 mg-sm-r-5' style='color: white;' onclick='hmisMessages.m_refreshMessagesAll();' > کل پیام ها</a>"
                     + "        </p>"
             );
-
-            html.append("<table class='table display' id='refreshMessages' dir='rtl'><thead>");
+            html.append("<div style='width: 100%; padding-left: -10px;'><div class='table-responsive'>");
+            html.append("<table id='refreshMessages' class='table table-striped table-hover dt-responsive display nowrap' cellspacing='0' style='direction: rtl;'><thead>");
             html.append("<th width='5%' style='text-align:center'>کد</th>");
             html.append("<th width='10%' style='text-align:center'>ارسال در</th>");
             html.append("<th width='15%' style='text-align:center'>متن پیام</th>");
@@ -346,11 +409,11 @@ public class Messenger {
                 }
                 html.append("</tr>");
             }
-            html.append("</tbody></table>");
+            html.append("</tbody></table></div></div></div></div>");
             String height = jjTools.getParameter(request, "height");
             String panel = jjTools.getParameter(request, "panel");
             if (!jjNumber.isDigit(height)) {
-                height = "400";
+                height = "auto";
             }
             if (panel.equals("")) {
                 panel = "swMessagesTbl";
@@ -385,8 +448,8 @@ public class Messenger {
                     + "    <div class='card-body pd-sm-30'>"
                     + "        <p class='mg-b-20 mg-sm-b-30'>"
                     + "        </p>");
-
-            html.append("<table class='table display responsive' id='refreshMessagesAll' dir='rtl'><thead>");
+            html.append("<div style='width: 100%; padding-left: -10px;'><div class='table-responsive'>");
+            html.append("<table id='refreshMessagesAll' class='table table-striped table-hover dt-responsive display nowrap' cellspacing='0' style='direction: rtl;'><thead>");
 
             html.append("<th width='5%' style='text-align:center'>کد</th>");
             html.append("<th width='10%' style='text-align:center'>ارسال در</th>");
@@ -421,11 +484,11 @@ public class Messenger {
                 }
                 html.append("</tr>");
             }
-            html.append("</tbody></table>");
+            html.append("</tbody></table></div></div></div></div>");
             String height = jjTools.getParameter(request, "height");
             String panel = jjTools.getParameter(request, "panel");
             if (!jjNumber.isDigit(height)) {
-                height = "400";
+                height = "auto";
             }
             if (panel.equals("")) {
                 panel = "swMessagesTbl";
@@ -457,20 +520,24 @@ public class Messenger {
                 html.append(" <div class='card-header bg-primary tx-white'>پیام های ارسالی</div>"
                         + " <div class='card-body pd-sm-30'>"
                 );
-                html.append(" <div class='col-lg-12'>"
+                html.append(" "
+                        //                        + "<div class='col-lg-12'>"
                         + "<a href='#' class='sh-pagetitle-icon'>"
                         + "<div style='font-size: 33px'><i class='fa fa-refresh mg-t-30' onclick='hmisSentMessages.m_refresh();'></i>"
                         + "</div>"
                         + "</a>"
-                        + "</div>"
+                //                        + "</div>"  
                 );
 
-                html.append("<div class='col-lg-12  mg-t-20'>"
+                html.append(""
+                        //                        + "<div class='col-lg-12  mg-t-20'>"
                         + " <p class=\"mg-b-20 mg-sm-b-30\">\n"
                         + " <a class=\"btn btn-success pd-sm-x-20 mg-sm-r-5 tx-white\" style='color:#fff' onclick=\"hmisSentMessages.m_add_new();\" >پیام جدید</a>\n"
                         + "  </p>"
-                        + "</div>");
+                        //                        + "</div>"
+                        + "");
             }
+            html.append("<div style='width: 100%; padding-left: -10px;'><div class='table-responsive'>");
             html.append("<table class='table display responsive' id='refreshSentMessages' dir='rtl'><thead>");
             html.append("<th width='5%' style='text-align:center'>کد</th>");
             html.append("<th width='10%' style='text-align:center'>ارسال در</th>");
@@ -500,10 +567,12 @@ public class Messenger {
             }
             html.append("</tbody></table>");
             html.append("</div>");
+            html.append("</div>");
+            html.append("</div>");
             String height = jjTools.getParameter(request, "height");
             String panel = jjTools.getParameter(request, "panel");
             if (!jjNumber.isDigit(height)) {
-                height = "400";
+                height = "auto";
             }
             if (panel.equals("")) {
                 panel = "swSentMessagesTbl";
@@ -522,27 +591,21 @@ public class Messenger {
     public static String refreshRecivedMessages(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
         try {
             int id = jjTools.getSeassionUserId(request);
-//            if (!hasAccess.equals("")) {
-//                return hasAccess;
-//            }
             StringBuilder html = new StringBuilder();
-            List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(Messenger.tableName, _status + "='" + status_posted + "' AND " + _receiver + "=" + jjTools.getSeassionUserId(request)));
+            List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, _status + "='" + status_posted + "' AND " + _receiver + "=" + jjTools.getSeassionUserId(request)));
             StringBuilder html3 = new StringBuilder();
             html.append(" <div class='card bd-primary mg-t-20'>"
                     + "    <div class='card-header bg-primary tx-white'>پیام های دریافتی</div>"
-                    + "<div class='col-lg-12 mg-b-20'>"
                     + "<a href='#' class='sh-pagetitle-icon'>"
                     + "<div style='font-size: 33px'><i class='fa fa-refresh mg-t-30' onclick='hmisRecivedMessages.m_refresh();'></i>"
                     + "</div>"
                     + "</a>"
-                    + "</div>"
-                    + "    <div class='card-body pd-sm-30'>"
-                    + "        <p class='mg-b-20 mg-sm-b-30'>"
-                    + "        </p>");
-            html.append("<table class='table display responsive' id='refreshRecivedMessages' dir='rtl'><thead>");
+            );
+            html.append("<div style='width: 100%; padding-left: -10px;'><div class='table-responsive'>");
+            html.append("<table id='refreshRecivedMessages' class='table table-striped table-hover dt-responsive display ' cellspacing='0' style='direction: rtl;'><thead>");
             html.append("<th width='5%' style='text-align:center'>کد</th>");
-            html.append("<th width='10%' style='text-align:center'>ارسال در</th>");
-            html.append("<th width='10%' style='text-align:center'> گیرنده و فرستنده</th>");
+            html.append("<th width='30%' style='text-align:center'>ارسال در</th>");
+            html.append("<th width='30%' style='text-align:center'> گیرنده و فرستنده</th>");
             html.append("<th width='15%' style='text-align:center'>متن پیام</th>");
             html.append("<th width='15%' style='text-align:center'>وضعیت پیام</th>");
             html.append("<th width='5%' style='text-align:center'>عملیات</th>");
@@ -564,11 +627,14 @@ public class Messenger {
                 }
                 html.append("</tr>");
             }
-            html.append("</tbody></table>");
+            html.append("</tbody></table>"
+                    + "</div>"
+                    + "</div>"
+                    + "</div>");
             String height = jjTools.getParameter(request, "height");
             String panel = jjTools.getParameter(request, "panel");
             if (!jjNumber.isDigit(height)) {
-                height = "400";
+                height = "auto";
             }
             if (panel.equals("")) {
                 panel = "swRecivedMessagesTbl";
@@ -615,7 +681,7 @@ public class Messenger {
             if (accIns) {//@ToDo 
                 script += Js.setHtml("#Messenger_button", "<div class='col-lg-6'>"
                         + "<input type='button' id='insert_Messenger_new' onclick='hmisMessenger.m_insert();' "
-                        + " value=\"" + lbl_insert + "\" class='btn btn-outline-success active btn-block mg-b-10'>"
+                        + " value=\"" + lbl_insert + "\" class='btn btn-success active btn-block mg-b-10'>"
                         + "</div>");
             } else {
                 script += Js.setHtml("#Messenger_button", "");
@@ -635,7 +701,7 @@ public class Messenger {
             }
             html.append("</div>");
             script += Js.setHtml("#sendingMetod", html);
-            script += Js.setVal("#" + _sender, jjTools.getSeassionUserNameAndFamily(request));
+            script += Js.setVal("#sentMessages_sender", jjTools.getSeassionUserNameAndFamily(request));
             Server.outPrinter(request, response, script);
             return "";
 
@@ -903,26 +969,15 @@ public class Messenger {
      */
     public static String insert(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
         try {
-            if (!Access_User.hasAccess(request, db, rul_ins)) {
-                Server.outPrinter(request, response, "شما اجازه ی دسترسی به این قسمت را ندارید");
-                return "";
-            }
-//            Map<String, Object> map = new HashMap<String, Object>();
-//            map.put(_sender, jjTools.getSeassionUserId(request));
-//            map.put(_title, jjTools.getParameter(request, _title));
-//            map.put(_textMessage, jjTools.getParameter(request, _textMessage));
-//            map.put(_dateOfCreation, jjTools.getParameter(request, _dateOfCreation));
-//            map.put(_file, jjTools.getParameter(request, _file));
-//            map.put(_sendingMethod, jjTools.getParameter(request, _sendingMethod));
-//            map.put(_displayed, jjTools.getParameter(request, _displayed));
-//            map.put(_receiver, jjTools.getParameter(request, _receiver));
-//            if (db.insert(tableName, map).getRowCount() == 0) {
-//                String errorMessege = "عملیات درج بدرستی صورت نگرفت";
-//                Server.outPrinter(request, response, Js.modal("پیام سامانه", errorMessege));
+//            if (!Access_User.hasAccess(request, db, rul_ins)) {
+//                Server.outPrinter(request, response, "شما اجازه ی دسترسی به این قسمت را ندارید");
+//                return "";
 //            }
+            String textHTML = jjTools.getParameter(request, _textHTML);
+            String attachFile = jjTools.getParameter(request, _attachFile);
+            String reciversId = jjTools.getParameter(request, _receiver) + ",";
             StringBuilder html = new StringBuilder();
-            String attachFiles = jjTools.getParameter(request, _file);
-            String[] attachFilesArray = attachFiles.split(",");
+            String[] attachFilesArray = attachFile.split(",");
             for (int l = 0; l < attachFilesArray.length; l++) {
                 List<Map<String, Object>> fileRow = jjDatabase.separateRow(db.Select(UploadServlet.tableName, UploadServlet._file_name + "='" + attachFilesArray[l] + "'"));
                 if (!fileRow.isEmpty()) {
@@ -933,27 +988,73 @@ public class Messenger {
                             || extension2.toLowerCase().equals("png")
                             || extension2.toLowerCase().equals("gif")
                             || extension2.toLowerCase().equals("svg")) {
-                        html.append("<div class='col-lg-12  mg-l-15'>"
-                                + "<img class='wd-40  mg-r-20' src='upload/" + attachFilesArray[l] + "'/>"
-                                + "<a  href='upload/" + attachFilesArray[l] + "'> " + "<i class='fa fa-download'></i>" + titleUpload + "</a>"
-                                + "</div>"
+                        html.append(""
+                                + "<img class='wd-40  mg-r-20' src='" + Server.mainSite + "/upload/" + attachFilesArray[l] + "'/>"
+                                + "<a  href='" + Server.mainSite + "/upload/" + attachFilesArray[l] + "'> نام فایل: دانلود:" + titleUpload + "</a>"
                         );
                     } else {
-                        html.append("<div class='col-lg-12   mg-l-15'>"
-                                + "<i class='icon ion-ios-paper-outline'></i>"
-                                + "<a  href='upload/" + attachFilesArray[l] + "'>" + "<i class='fa fa-download'></i>" + titleUpload + "</a>"
+                        html.append(""
+                                + "<div>"
+                                + "<a  href='" + Server.mainSite + "/upload/" + attachFilesArray[l] + "'>نام فایل: دانلود :" + titleUpload + "</a>"
                                 + "</div>"
                         );
                     }
-                } else {
-                    //@ToDo  //کی از فایل ها اشتباها از سامانه حذف شده
+
                 }
             }
-            String reciversId = jjTools.getParameter(request, _receiver);
-            sendMesseage(request, db, reciversId, "" + jjTools.getSeassionUserId(request) + "", jjTools.getParameter(request, _sendingMethod), jjTools.getParameter(request, _postageDate).replaceAll("/", ""), jjTools.getParameter(request, _title), jjTools.getParameter(request, _textMessage), jjTools.getParameter(request, _textHTML) + html, "یادآوری","1","1");
-            Server.outPrinter(request, response, Js.jjMessenger.refresh());
+
+            String GroupId = jjTools.getParameter(request, "sentMessages_receiverGroupId").replaceAll("#A#", ",");
+            String[] GroupIdArray = (GroupId).split(",");
+            if (GroupIdArray.length >= 1) {
+                for (int i = 0; i < GroupIdArray.length; i++) {
+//                    reciversId += Access_Group.getUserIdByGroupId(GroupIdArray[i], db);
+                }
+            }
+            System.out.println("reciversssssssss/////////////////////////+" + reciversId);
+            sendMesseage(request, db, reciversId, "" + jjTools.getSeassionUserId(request) + "", jjTools.getParameter(request, _sendingMethod), jjTools.getParameter(request, _postageDate).replaceAll("/", ""), jjTools.getParameter(request, _title), jjTools.getParameter(request, _textMessage), jjTools.getParameter(request, _textHTML) + html, attachFile, jjTools.getParameter(request, _type), Tice_config.getValue(db, Tice_config._config_activeSms_name), Tice_config.getValue(db, Tice_config._config_activeEmail_name));
+            Server.outPrinter(request, response, Js.modal("پیام با موفقیت ارسال شد", "ارسال پیام"));
+            return "";
+        } catch (Exception ex) {
+            Server.outPrinter(request, response, Server.ErrorHandler(ex));
             return "";
 
+        }
+    }
+
+    /**
+     * این تابع جواب پیام را در دیتابیس ذخیره میکند
+     *
+     * @param request
+     * @param response
+     * @param db
+     * @param isPost
+     * @return
+     * @throws Exception
+     */
+    public static String insertAnswerMesseges(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
+        try {
+            if (!Access_User.hasAccess(request, db, rul_ins)) {
+                Server.outPrinter(request, response, "شما اجازه ی دسترسی به این قسمت را ندارید");
+                return "";
+            }
+            jjCalendar_IR date = new jjCalendar_IR();
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put(_sender, jjTools.getSeassionUserId(request));
+            map.put(_title, jjTools.getParameter(request, _title));
+            map.put(_textMessage, jjTools.getParameter(request, _textMessage));
+            map.put(_time, date.getTimeFormat_4length() + date.getSeconds_2length());
+            map.put(_postageDate, date.getDBFormat_8length());
+            map.put(_attachFile, jjTools.getParameter(request, _attachFile));
+            map.put(_sendingMethod, "app");
+            map.put(_status, jjTools.getParameter(request, status_posted));
+            map.put(_receiver, jjTools.getParameter(request, _receiver));
+            map.put(_type, jjTools.getParameter(request, _type));
+            map.put(_chatID, jjTools.getParameter(request, _chatID));
+            if (db.insert(tableName, map).getRowCount() == 0) {
+                String errorMessege = "عملیات درج بدرستی صورت نگرفت";
+                Server.outPrinter(request, response, Js.modal("پیام سامانه", errorMessege));
+            }
+            return "";
         } catch (Exception ex) {
             Server.outPrinter(request, response, Server.ErrorHandler(ex));
             return "";
@@ -1102,22 +1203,22 @@ public class Messenger {
             if (row.get(0).get(_status).equals(status_postQueue)) {
                 if (row.get(0).get(Messenger._sender).equals(jjTools.getSessionAttribute(request, "#ID"))) {
                     if (accEdit) {
-                        htmlBottons += "<div class='col-lg'><button title='" + lbl_edit + "' class='btn btn-outline-warning btn-block mg-b-10' onclick='" + Js.jjMessenger.edit() + "' id='edit_Messenger'>" + lbl_edit + "</button></div>";
+                        htmlBottons += "<div class='col-lg'><button title='" + lbl_edit + "' class='btn btn-warning btn-block mg-b-10' onclick='" + Js.jjMessenger.edit() + "' id='edit_Messenger'>" + lbl_edit + "</button></div>";
 //               
                     }
                     boolean accDelete = Access_User.hasAccess(request, db, rul_dlt);
                     if (accDelete) {
-                        htmlBottons += "<div class='col-lg'><button title='" + lbl_delete + "' class='btn btn-outline-danger btn-block mg-b-10' onclick='" + Js.jjMessenger.delete(id) + "' id='delete_Messenger'>" + lbl_delete + "</button></div>";
+                        htmlBottons += "<div class='col-lg'><button title='" + lbl_delete + "' class='btn btn-danger btn-block mg-b-10' onclick='" + Js.jjMessenger.delete(id) + "' id='delete_Messenger'>" + lbl_delete + "</button></div>";
                     }
                     script1.append(Js.setHtml("#Messenger_button", htmlBottons));
                 } else {
                     if (accEdit) {
-                        htmlBottons += "<div class='col-lg'><button title='" + lbl_edit + "' class='btn btn-outline-warning btn-block mg-b-10' onclick='" + Js.jjMessenger.edit() + "' id='edit_Messenger'>" + lbl_edit + "</button></div>";
+                        htmlBottons += "<div class='col-lg'><button title='" + lbl_edit + "' class='btn btn-warning btn-block mg-b-10' onclick='" + Js.jjMessenger.edit() + "' id='edit_Messenger'>" + lbl_edit + "</button></div>";
 //               
                     }
                     boolean accDelete = Access_User.hasAccess(request, db, rul_dlt);
                     if (accDelete) {
-                        htmlBottons += "<div class='col-lg'><button title='" + lbl_delete + "' class='btn btn-outline-danger btn-block mg-b-10' onclick='" + Js.jjMessenger.delete(id) + "' id='delete_Messenger'>" + lbl_delete + "</button></div>";
+                        htmlBottons += "<div class='col-lg'><button title='" + lbl_delete + "' class='btn btn-danger btn-block mg-b-10' onclick='" + Js.jjMessenger.delete(id) + "' id='delete_Messenger'>" + lbl_delete + "</button></div>";
                     }
                     script1.append(Js.setHtml("#Messenger_button", htmlBottons));
                 }
@@ -1163,9 +1264,15 @@ public class Messenger {
         }
     }
 
-    /*
-     selectپیام های من
-     این تابع برای select پیام های خوانده نشده نوشته شده است
+    /**
+     * نشان دادن پیام دریافتی در فرم
+     *
+     * @param request
+     * @param response
+     * @param db
+     * @param isPost
+     * @return
+     * @throws Exception
      */
     public static String selectRecivedMessages(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
         try {
@@ -1180,78 +1287,52 @@ public class Messenger {
             }
             StringBuilder script = new StringBuilder();
             StringBuilder script1 = new StringBuilder();
-            StringBuilder script6 = new StringBuilder();
+            String script6 = "";
             String script2 = "";
 
             List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, _id + "=" + id));
 
             StringBuilder html = new StringBuilder();
-            StringBuilder html2 = new StringBuilder();
-            StringBuilder html3 = new StringBuilder();
             String script3 = "";
             script.append(Js.setVal("#recivedMessages_" + _id, row.get(0).get(_id)));
-
             script.append(Js.setVal("#recivedMessages_title", row.get(0).get(_title)));
             script.append(Js.setVal("#recivedMessages_textMessage", row.get(0).get(_textMessage)));
-//        
-            String receiver = row.get(0).get(_receiver).toString();
-
-            String[] receiverArray = receiver.split(",");//آی دی  ها با این رشته از هم جدا می شود
-            String temp = "";
-            for (int j = 0; j < receiverArray.length; j++) {
-                temp += "'" + receiverArray[j] + "',";
-                System.out.println("receiverArray=" + temp);
-            }
-
-            script.append("$('#recivedMessages_receiver').val([" + temp + "]);"
-                    + "$('#recivedMessages_receiver').select2({ width: '100%'});");
-
-//            
             script.append(Js.setVal("#recivedMessages_status", row.get(0).get(_status)));
             String ravand = row.get(0).get(_logStatus).toString();
             ravand = ravand.replace("%23A%23", "\\n");
             System.out.println(ravand.replace("%23A%23", "\\n"));
             script.append(Js.setVal("#recivedMessages_logStatus", ravand));
+            String[] attachFile = row.get(0).get(_attachFile).toString().split(",");
+            String file = "";
+            if (attachFile.length > 0) {
+                for (int i = 0; i < attachFile.length; i++) {
+                    file += "<a href='upload/" + attachFile[i] + "'>" + row.get(0).get(_title).toString() + "</a><br/>";
+                }
+            } else {
+                file += "<a href='upload/" + row.get(0).get(_attachFile).toString() + "'>" + row.get(0).get(_title).toString() + "</a><br/>";
+            }
+            script.append(Js.setHtml("#attachFileMe", file));
 
-            script.append(Js.setVal("#recivedMessages_sender", jjTools.getSessionAttribute(request, "#USER_NAME") + " " + jjTools.getSessionAttribute(request, "#USER_FAMILY")));
+            script.append(Js.setVal("#recivedMessages_sender", Access_User.getUserName(row.get(0).get(_sender).toString(), db)));
             script.append(Js.setVal("#recivedMessages_dateOfCreation", row.get(0).get(_dateOfCreation)));
             script.append(Js.setVal("#recivedMessages_postageDate", jjCalendar_IR.getViewFormat(row.get(0).get(_postageDate))));
 
             if ((row.get(0).get(_receiver).equals(jjTools.getSessionAttribute(request, "#ID")) && (!row.get(0).get(_status).equals(status_displayed)))) {
-
                 changeStatus(request, response, db, id, status_displayed);
-
             }
-            boolean accDel = Access_User.hasAccess(request, db, rul_dlt);
-            boolean accEdt = Access_User.hasAccess(request, db, rul_edt);
-
-            String htmlBottons = "";
-            boolean accEdit = Access_User.hasAccess(request, db, rul_edt);
-            if (accEdit) {
-//                htmlBottons += "<div class='col-lg'><button title='" + lbl_edit + "' class='btn btn-outline-warning btn-block mg-b-10' onclick='" + Js.jjMessenger.editRecived() + "' id='edit_Messenger'>" + lbl_edit + "</button></div>";
-//               
-            }
-            boolean accDelete = Access_User.hasAccess(request, db, rul_dlt);
-            if (accDelete) {
-//                htmlBottons += "<div class='col-lg'><button title='" + lbl_delete + "' class='btn btn-outline-danger btn-block mg-b-10' onclick='" + Js.jjMessenger.deleteRecived(id) + "' id='delete_Messenger'>" + lbl_delete + "</button></div>";
-            }
-            script1.append(Js.setHtml("#RecivedMessages_button", htmlBottons));
-            boolean accEmail = Access_User.hasAccess(request, db, rul_ins);
-            if (row.get(0).get(_status).equals(status_posted)) {
-
+            if ((row.get(0).get(_type).equals("مشاوره") || (row.get(0).get(_status).equals("یادآوری")))) {
+                script.append(Js.setVal(_type + 1, row.get(0).get(_type)));
+                script.append(Js.setVal(_chatID + 1, row.get(0).get(_chatID)));
+                script.append(Js.setVal(_receiver + 1, Access_User.getUserName(row.get(0).get(_sender).toString(), db)));
+                script.append(Js.setVal(_receiver + 2, row.get(0).get(_sender).toString()));
+                String htmlBottons = "";
+                htmlBottons = "<div class='col-lg-6'><button title='ارسال جواب' class='btn btn-success btn-block mg-b-10' onclick='hmisRecivedMessages.m_insert();' id='edit_Messenger'>ارسال جواب</button></div>";
+                htmlBottons += "<div class='col-lg-6'><button title='اتمام مشاوره' class='btn btn-danger btn-block mg-b-10' data-toggle='modal' data-target='#myModal' id='finish_Messenger'>اتمام مشاوره</button></div>";
+                script1.append(Js.setHtml("#RecivedMessages_button", htmlBottons));
+                script6 = "$('#answerMesseg').show();";
             } else {
-
-                boolean accSms = Access_User.hasAccess(request, db, rul_ins);
-                String html5 = "<div >روش ارسال";
-                if (accEmail) {//@ToDo 
-                    html5 += "<input  type='checkbox' id='messenger_sendToEmail' name='messenger_sendToEmail'  value='1'  class='form-control'/>ایمیل";
-                }
-
-                if (accSms) {//@ToDo 
-                    html5 += "<input type='checkbox' id='messenger_sendToSms' name='messenger_sendToSms'  value='1'   class='form-control'  />sms";
-                }
-                html5 += "</div>";
-                script6.append(Js.setHtml("#sendingMetod", html5));
+                script1.append(Js.setHtml("#RecivedMessages_button", ""));
+                script6 = "$('#answerMesseg').hide();";
             }
 
             Server.outPrinter(request, response, html.toString() + script + script1 + script3 + script2 + script6);
@@ -1393,11 +1474,11 @@ public class Messenger {
             if (row.get(0).get(_status).equals(status_postQueue)) {
                 boolean accEdit = Access_User.hasAccess(request, db, rul_edt);
                 if (accEdit) {
-                    htmlBottons += "<div class='col-lg'><button title='" + lbl_edit + "' class='btn btn-outline-warning btn-block mg-b-10' onclick='" + Js.jjMessenger.editMyMessages() + "' id='edit_Messenger'>" + lbl_edit + "</button></div>";
+                    htmlBottons += "<div class='col-lg'><button title='" + lbl_edit + "' class='btn btn-warning btn-block mg-b-10' onclick='" + Js.jjMessenger.editMyMessages() + "' id='edit_Messenger'>" + lbl_edit + "</button></div>";
                 }
                 boolean accDelete = Access_User.hasAccess(request, db, rul_dlt);
                 if (accDelete) {
-                    htmlBottons += "<div class='col-lg'><button title='" + lbl_delete + "' class='btn btn-outline-danger btn-block mg-b-10' onclick='" + Js.jjMessenger.deleteMyMessages(id) + "' id='delete_Messenger'>" + lbl_delete + "</button></div>";
+                    htmlBottons += "<div class='col-lg'><button title='" + lbl_delete + "' class='btn btn-danger btn-block mg-b-10' onclick='" + Js.jjMessenger.deleteMyMessages(id) + "' id='delete_Messenger'>" + lbl_delete + "</button></div>";
                 }
                 script1.append(Js.setHtml("#myMessages_button", htmlBottons));
             }
@@ -1412,13 +1493,18 @@ public class Messenger {
             boolean accApp = Access_User.hasAccess(request, db, rul_ins);
             html5 += ("<div >روش ارسال");
             if (accEmail) {//@ToDo 
-                html5 += ("<input  type='checkbox' id='messenger_sendToEmailMyMessages' name='messenger_sendMethod'  value='email'  class='form-control'/>ایمیل");
+                html5 += ("<label class=\"ckbox\">"
+                        + "                                        <input type='checkbox' id='messenger_sendToEmailMyMessages' name='messenger_sendMethod'  value='email'><span>Email</span>"
+                        + "                                    </label>");
             }
             if (accSms) {//@ToDo 
-                html5 += ("<input type='checkbox' id='messenger_sendToSmsMyMessages' name='messenger_sendMethod'  value='sms'  class='form-control' />sms");
+                html5 += ("<label class=\"ckbox\">"
+                        + "                                        <input type='checkbox' id='messenger_sendToSmsMyMessages' name='messenger_sendMethod'  value='sms'><span>Sms</span>"
+                        + "                                    </label>");
             }
             if (accApp) {//@ToDo 
-                html5 += ("<input type='checkbox' id='messenger_sendToAppMyMessages' name='messenger_sendMethod'  value='app'   class='form-control' />app");
+                html5 += ("<label class=\"ckbox\">"
+                        + "                                        <input type='checkbox' id='messenger_sendToAppMyMessages' name='messenger_sendMethod'  value='app'><span>App</span></label>");
             }
             html5 += ("</div>");
 
@@ -1437,6 +1523,303 @@ public class Messenger {
             }
 
             Server.outPrinter(request, response, html.toString() + script + script1 + script3 + script2 + script6);
+            return "";
+        } catch (Exception e) {
+            Server.outPrinter(request, response, Server.ErrorHandler(e));
+            return "";
+        }
+    }
+
+    /*
+     موقعی که روی نوتیفیکیشن کلیک میکنیم و ان پیام را  کامل ببینیم این تابع را صدا میزنیم
+     */
+    public static String selectMyMessagesAppMedYar(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
+        try {
+            String id = jjTools.getParameter(request, _id);
+            String errorMessageId = jjValidation.isDigitMessageFa(id, "کد");
+            if (!errorMessageId.equals("")) {
+                if (jjTools.isLangEn(request)) {
+                    errorMessageId = jjValidation.isDigitMessageEn(id, "ID");
+                }
+                Server.outPrinter(request, response, Js.modal(errorMessageId, "پیام سامانه"));
+                return "";
+
+            }
+            StringBuilder script = new StringBuilder();
+            StringBuilder script1 = new StringBuilder();
+            StringBuilder script6 = new StringBuilder();
+            String script2 = "";
+            String html5 = "";
+
+            List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, _id + "=" + id));
+
+            StringBuilder html = new StringBuilder();
+            StringBuilder html2 = new StringBuilder();
+            StringBuilder html3 = new StringBuilder();
+            String script3 = "";
+            script.append(Js.setVal("#myMessages_" + _id, row.get(0).get(_id)));
+            script.append(Js.setVal("#myMessages_title", row.get(0).get(_title)));
+            script.append(Js.setHtml("#myMessages_textMessage", row.get(0).get(_textMessage)));
+            script.append(Js.setHtml("#myMessenger_textHTML", row.get(0).get(_textHTML)));
+            String receiver = row.get(0).get(_receiver).toString();
+
+            String[] receiverArray = receiver.split(",");//آی دی  ها با این رشته از هم جدا می شود
+            String temp = "";
+            for (int j = 0; j < receiverArray.length; j++) {
+                temp += "'" + receiverArray[j] + "',";
+                System.out.println("receiverArray=" + temp);
+            }
+            script.append("$('#myMessages_receiver').val([" + temp + "]);"
+                    + "$('#myMessages_receiver').select2({width: '100%'});");
+            script.append(Js.setVal("#myMessages_status", row.get(0).get(_status)));
+            String ravand = row.get(0).get(_logStatus).toString();
+            ravand = ravand.replace("%23A%23", "<br/>");
+            System.out.println(ravand.replace("%23A%23", "\\n"));
+            script.append(Js.setVal("#myMessages_logStatus", ravand));
+            script.append(Js.setVal("#myMessages_sender", Access_User.getUserName(row.get(0).get(_sender).toString(), db)));
+            script.append(Js.setVal("#myMessages_reciver", Access_User.getUserName(row.get(0).get(_receiver).toString(), db)));
+            script.append(Js.setVal("#myMessages_dateOfCreation", row.get(0).get(_dateOfCreation)));
+            script.append(Js.setVal("#myMessages_postageDate", jjCalendar_IR.getViewFormat(row.get(0).get(_postageDate))));
+            script2 += Js.setHtml(".inputAfterSelectManager", html2);
+
+            if ((row.get(0).get(_receiver).equals(jjTools.getSessionAttribute(request, "#ID")) && (!row.get(0).get(_status).equals(status_displayed)))) {
+
+                changeStatus(request, response, db, id, status_displayed);
+
+            }
+            boolean accDel = Access_User.hasAccess(request, db, rul_dlt);
+            boolean accEdt = Access_User.hasAccess(request, db, rul_edt);
+            String htmlBottons = "";
+            boolean accEmail = Access_User.hasAccess(request, db, rul_ins);
+            if (row.get(0).get(_status).equals(status_postQueue)) {
+                boolean accEdit = Access_User.hasAccess(request, db, rul_edt);
+                if (accEdit) {
+                    htmlBottons += "<div class='col-lg'><button title='" + lbl_edit + "' class='btn btn-warning btn-block mg-b-10' onclick='" + Js.jjMessenger.editMyMessages() + "' id='edit_Messenger'>" + lbl_edit + "</button></div>";
+                }
+                boolean accDelete = Access_User.hasAccess(request, db, rul_dlt);
+                if (accDelete) {
+                    htmlBottons += "<div class='col-lg'><button title='" + lbl_delete + "' class='btn btn-danger btn-block mg-b-10' onclick='" + Js.jjMessenger.deleteMyMessages(id) + "' id='delete_Messenger'>" + lbl_delete + "</button></div>";
+                }
+                script1.append(Js.setHtml("#myMessages_button", htmlBottons));
+            }
+
+            if (row.get(0).get(_status).equals(status_displayed)) {
+                script1.append(Js.setHtml("#myMessages_button", ""));
+            }
+            if (row.get(0).get(_status).equals(status_posted)) {
+                script1.append(Js.setHtml("#myMessages_button", ""));
+            }
+            boolean accSms = Access_User.hasAccess(request, db, rul_ins);
+            boolean accApp = Access_User.hasAccess(request, db, rul_ins);
+            html5 += ("<div >روش ارسال");
+            if (accEmail) {//@ToDo 
+                html5 += ("<label class=\"ckbox\">"
+                        + "                                        <input type='checkbox' id='messenger_sendToEmailMyMessages' name='messenger_sendMethod'  value='email'><span>Email</span>"
+                        + "                                    </label>");
+            }
+            if (accSms) {//@ToDo 
+                html5 += ("<label class=\"ckbox\">"
+                        + "                                        <input type='checkbox' id='messenger_sendToSmsMyMessages' name='messenger_sendMethod'  value='sms'><span>Sms</span>"
+                        + "                                    </label>");
+            }
+            if (accApp) {//@ToDo 
+                html5 += ("<label class=\"ckbox\">"
+                        + "                                        <input type='checkbox' id='messenger_sendToAppMyMessages' name='messenger_sendMethod'  value='app'><span>App</span></label>");
+            }
+            html5 += ("</div>");
+
+            script6.append(Js.setHtml("#sendingMetodMymessages", html5));
+            String[] arrayMethod = row.get(0).get(_sendingMethod).toString().split(",");
+            for (int i = 0; i < arrayMethod.length; i++) {
+                if (arrayMethod[i].equals("sms")) {
+                    script6.append(Js.setAttr("#messenger_sendToSmsMyMessages", "checked", "checked"));
+                }
+                if (arrayMethod[i].equals("app")) {
+                    script6.append(Js.setAttr("#messenger_sendToAppMyMessages", "checked", "checked"));
+                }
+                if (arrayMethod[i].equals("email")) {
+                    script6.append(Js.setAttr("#messenger_sendToEmailMyMessages", "checked", "checked"));
+                }
+            }
+
+            Server.outPrinter(request, response, html.toString() + script + script1 + script3 + script2 + script6);
+            return "";
+        } catch (Exception e) {
+            Server.outPrinter(request, response, Server.ErrorHandler(e));
+            return "";
+        }
+    }
+
+    /*
+     selectپیام های من
+     این تابع برای select پیام های من برای اپلیکیشن بیمار نوشته شده است
+     */
+    public static String selectMyMessagesAppPatient(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
+        try {
+            String id = jjTools.getParameter(request, _id);
+            StringBuilder html = new StringBuilder();
+            List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, _id + "=" + id));
+            html.append(" <div class='card'>"
+                    + "    <div class='card-header bg-primary tx-white' style='text-align:center;'>مشاهده پیام</div>"
+                    + "<div class='card-body pd-sm-30'>");
+            html.append("<input type=\"hidden\" name=\"id\" value=\"" + row.get(0).get(_id) + "\"/>");
+            html.append("<input type=\"hidden\" name=\"" + _sender + "\" id=\"" + _sender + "\" value=\"" + row.get(0).get(_sender) + "\"/>");
+            html.append("<div class='row'>"
+                    + "         <div class='col-6'>"
+                    + "                <label class=\"form-control-label\">فرستنده : </label>"
+                    + "                <input type=\"text\" class=\"form-control\" value=\"" + Access_User.getUserName(row.get(0).get(_sender).toString(), db) + "\" disabled=\"disabled\"/>"
+                    + "         </div>"
+                    + "         <div class='col-6'>"
+                    + "                <label class=\"form-control-label\">تاریخ : </label>"
+                    + "                <input type=\"text\" class=\"form-control\" value=\"" + jjCalendar_IR.getViewFormat(row.get(0).get(_postageDate)) + "\" disabled=\"disabled\"/>"
+                    + "         </div>"
+                    + "</div>");
+            html.append("<div class='row'>"
+                    + "         <div class='col-12' >"
+                    + "                <label class=\"form-control-label\">موضوع : </label>\n"
+                    + "                <input type=\"text\" class=\"form-control\" value=\"" + row.get(0).get(_title).toString() + "\" disabled=\"disabled\"/>"
+                    + "         </div>"
+                    + "</div>");
+            html.append("<div class='row'>"
+                    + "         <div class='col-12'>"
+                    + "                <label class=\"form-control-label\">متن پیام : </label>\n"
+                    + "                <div style='height:auto;border:1px solid;'>" + row.get(0).get(_textMessage).toString() + "</div>"
+                    + "         </div>"
+                    + "</div>");
+            html.append("<div class='row'>"
+                    + "         <div class='col-12'>"
+                    + "                <label class=\"form-control-label\">متن : </label>\n"
+                    + "                <div style='height:auto;border:1px solid;'>" + row.get(0).get(_textHTML).toString() + "</div>"
+                    + "         </div>"
+                    + "</div>");
+            html.append("</div></div>");
+            if ((row.get(0).get(_receiver).equals(jjTools.getSessionAttribute(request, "#ID")) && (!row.get(0).get(_status).equals(status_displayed)))) {
+                changeStatus(request, response, db, id, status_displayed);
+            }
+            Server.outPrinter(request, response, Js.setHtml("#" + jjTools.getParameter(request, "panel"), html.toString()));
+            return "";
+        } catch (Exception e) {
+            Server.outPrinter(request, response, Server.ErrorHandler(e));
+            return "";
+        }
+    }
+
+    /**
+     * ارسال نوتیفیکیشن به اپ بیمار و قسمت دیتا اسکریپتی که میخواهیم اجرا کنیم
+     * را اجرا میکند
+     *
+     * @param request
+     * @param response
+     * @param db
+     * @param isPost
+     * @return
+     * @throws Exception
+     */
+    public static String notificationAppPatient(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
+        try {
+            if ((jjTools.getSessionAttribute(request, "#ID")).equals("")) {
+                Server.outPrinter(request, response, "");
+                return "";
+            }
+            StringBuilder html = new StringBuilder();
+            List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, _receiver + "=" + jjTools.getSeassionUserId(request) + " AND " + _notificationFlag + "=0"));
+            for (int i = 0; i < row.size(); i++) {
+                html.append("cordova.plugins.notification.local.schedule({"
+                        + "id: " + row.get(i).get(_id) + ","
+                        + "						title: '" + row.get(i).get(_title) + "',"
+                        + "						text: '" + row.get(i).get(_textMessage) + "',"
+                        + "						vibrate: true,"
+                        + "						foreground: true,"
+                        + "                                             data:{script:'hmisMyMessages.m_refresh();'}"
+                        + "					});");
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put(_notificationFlag, 1);
+                db.update(tableName, map, _id + "=" + row.get(i).get(_id));
+            }
+            int Notification = Integer.parseInt(jjTools.getParameter(request, "Notification").toString());
+            Notification += row.size();
+            html.append("window.localStorage.setItem('Notification', '" + Notification + "');");
+            String script = "$('#NotificationBottom').html(" + Notification + ");";
+            script += "$('#NotificationTop').html(" + Notification + ");";
+
+            Server.outPrinter(request, response, html + script);
+            return "";
+        } catch (Exception e) {
+            Server.outPrinter(request, response, Server.ErrorHandler(e));
+            return "";
+        }
+    }
+
+    /**
+     * notifacation
+     *
+     * در اپ بیمار جدید shohre
+     *
+     * @param request
+     * @param response
+     * @param db
+     * @param isPost
+     * @return
+     * @throws Exception
+     */
+    public static String notificationAppPatient2(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
+        try {
+            if ((jjTools.getSessionAttribute(request, "#ID")).equals("")) {
+                Server.outPrinter(request, response, "");
+                return "";
+            }
+            StringBuilder html = new StringBuilder();
+            List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, _receiver + "=" + jjTools.getSeassionUserId(request) + " AND " + _notificationFlag + "=0"));
+            for (int i = 0; i < row.size(); i++) {
+                html.append("cordova.plugins.notification.local.schedule({"
+                        + "id: " + row.get(i).get(_id) + ","
+                        + "						title: '" + row.get(i).get(_title) + "',"
+                        + "						text: '" + row.get(i).get(_textMessage) + "',"
+                        + "						vibrate: true,"
+                        + "						foreground: true,"
+                        + "                                             data:{script:'hmisMyMessages.m_refresh();'}"
+                        + "					});");
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put(_notificationFlag, 1);
+                db.update(tableName, map, _id + "=" + row.get(i).get(_id));
+            }
+            int Notification = Integer.parseInt(jjTools.getParameter(request, "Notification").toString());
+            Notification += row.size();
+            html.append("window.localStorage.setItem('Notification', '" + Notification + "');");
+            String script = "$('#NotificationBottom').html(" + Notification + ");";
+            script += "$('#NotificationTop').html(" + Notification + ");";
+
+            Server.outPrinter(request, response, html + script);
+            return "";
+        } catch (Exception e) {
+            Server.outPrinter(request, response, Server.ErrorHandler(e));
+            return "";
+        }
+    }
+
+    public static String notificationAppMedYar(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
+        try {
+            if ((jjTools.getSessionAttribute(request, "#ID")).equals("")) {
+                Server.outPrinter(request, response, "");
+                return "";
+            }
+            StringBuilder html = new StringBuilder();
+            List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, _receiver + "=" + jjTools.getSeassionUserId(request) + " AND " + _notificationFlag + "=0"));
+            for (int i = 0; i < row.size(); i++) {
+                html.append("cordova.plugins.notification.local.schedule({"
+                        + "id: " + row.get(i).get(_id) + ","
+                        + "						title: '" + row.get(i).get(_title) + "',"
+                        + "						text: '" + row.get(i).get(_textMessage) + "',"
+                        + "						vibrate: true,"
+                        + "						foreground: true,"
+                        + "                                             data:{script:'$(\".Alldiv\").hide();$(\"#swMyMessages\").show();hmisMyMessages.loadForm();hmisMyMessages.m_selectNotification(notification.id);'}"
+                        + "					});");
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put(_notificationFlag, 1);
+                db.update(tableName, map, _id + "=" + row.get(i).get(_id));
+            }
+
+            Server.outPrinter(request, response, html);
             return "";
         } catch (Exception e) {
             Server.outPrinter(request, response, Server.ErrorHandler(e));
@@ -1493,49 +1876,12 @@ public class Messenger {
             script2 += Js.setHtml(".inputAfterSelectManager", html2);
 
             if ((row.get(0).get(_receiver).equals(jjTools.getSessionAttribute(request, "#ID")) && (!row.get(0).get(_status).equals(status_displayed)))) {
-
                 changeStatus(request, response, db, id, status_displayed);
-
             }
-            boolean accDel = Access_User.hasAccess(request, db, rul_dlt);
-            boolean accEdt = Access_User.hasAccess(request, db, rul_edt);
-
-            String htmlBottons = "";
-            String html5 = "";
-            boolean accSms = Access_User.hasAccess(request, db, rul_ins);
-            boolean accApp = Access_User.hasAccess(request, db, rul_ins);
-            boolean accEmail = Access_User.hasAccess(request, db, rul_ins);
-            if (row.get(0).get(_status).equals(status_posted)) {
-            } else {
-
-            }
-/////////////////////////////////////////////
-            html5 += ("<div >روش ارسال");
-            if (accEmail) {//@ToDo 
-                html5 += ("<input  type='checkbox' id='messenger_sendToEmailSeen' name='messenger_sendMethodSeen'  value='email'  class='form-control'/>ایمیل");
-            }
-            if (accSms) {//@ToDo 
-                html5 += ("<input type='checkbox' id='messenger_sendToSmsSeen' name='messenger_sendMethodSeen'  value='sms'  class='form-control' />sms");
-            }
-            if (accApp) {//@ToDo 
-                html5 += ("<input type='checkbox' id='messenger_sendToAppSeen' name='messenger_sendMethodSeen'  value='app'   class='form-control' />app");
-            }
-            html5 += ("</div>");
-
-            script6.append(Js.setHtml("#sendMethodSentMessages", html5));
-            String[] arrayMethod = row.get(0).get(_sendingMethod).toString().split(",");
-            for (int i = 0; i < arrayMethod.length; i++) {
-                if (arrayMethod[i].equals("sms")) {
-                    script6.append(Js.setAttr("#messenger_sendToSmsSeen", "checked", "checked"));
-                }
-                if (arrayMethod[i].equals("app")) {
-                    script6.append(Js.setAttr("#messenger_sendToAppSeen", "checked", "checked"));
-                }
-                if (arrayMethod[i].equals("email")) {
-                    script6.append(Js.setAttr("#messenger_sendToEmailSeen", "checked", "checked"));
-                }
-            }
-
+            String arrayMethod = row.get(0).get(_sendingMethod).toString();
+            script6.append(Js.setValSelectOption("#messenger_type", row.get(0).get(_type).toString()));
+            script6.append(Js.setValSelectOption("#messenger_sendingMethod", arrayMethod));
+            script6.append(Js.select2("#messenger_sendingMethod", ""));
             Server.outPrinter(request, response, html.toString() + script + script1 + script3 + script2 + script6);
             return "";
 
@@ -1638,10 +1984,10 @@ public class Messenger {
                     }
                     script6.append(" $('#messagesUploadFileDiv').show();");
                     if (accEdit) {
-                        htmlBottons += "<div class='col-lg'><button title='" + lbl_edit + "' class='btn btn-outline-warning btn-block mg-b-10' onclick='" + Js.jjMessenger.editMessages() + "' id='edit_Messenger'>" + lbl_edit + "</button></div>";
+                        htmlBottons += "<div class='col-lg'><button title='" + lbl_edit + "' class='btn btn-warning btn-block mg-b-10' onclick='" + Js.jjMessenger.editMessages() + "' id='edit_Messenger'>" + lbl_edit + "</button></div>";
                     }
                     if (accDelete) {
-                        htmlBottons += "<div class='col-lg'><button title='" + lbl_delete + "' class='btn btn-outline-danger btn-block mg-b-10' onclick='" + Js.jjMessenger.deleteMessages(id) + "' id='delete_Messenger'>" + lbl_delete + "</button></div>";
+                        htmlBottons += "<div class='col-lg'><button title='" + lbl_delete + "' class='btn btn-danger btn-block mg-b-10' onclick='" + Js.jjMessenger.deleteMessages(id) + "' id='delete_Messenger'>" + lbl_delete + "</button></div>";
                     }
                 }
 //               
@@ -1787,115 +2133,6 @@ public class Messenger {
 
     }
 
-    //* 
-    /**
-     * ارسال پیام
-     *
-     * @param db
-     * @param receiver//گیرنده یا گیرنده ها که با کاما انگلیسی از هم جدا میشوند
-     * ','
-     * @param sender // اگر یک باشد میشود سیستم
-     * @param sendingMethod//روش ارسال پیام sms,app,email,phone
-     * @param postageDate//تاریخ ارسال اگر نگذاریم تاریخ امروز است
-     * @param موضوع پیام//متن پیام
-     * @param textMessage//متن پیام
-     * @return
-     */
-    public static String sendMesseage(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, String receiver, String sender, String sendingMethod, String postageDate, String textMessage) throws IOException {
-        Map<String, Object> map = new HashMap<>();
-
-        //این تابع برای دریافت گیرنده ها نوشته شده 
-        ///شیران1
-        String[] receiverMessageArray = receiver.split(",");//آی دی گیرنده  ها با این رشته از هم جدا می شود
-        for (int j = 0; j < receiverMessageArray.length; j++) {
-            List<Map<String, Object>> userRow = jjDatabaseWeb.separateRow(db.Select(Access_User.tableName, Access_User._id + "=" + receiverMessageArray[j]));
-            for (int i = 0; i < userRow.size(); i++) {
-                map.put(_receiver, receiverMessageArray[j]);
-                map.put(_sender, sender);
-                map.put(_sendingMethod, sendingMethod);
-                map.put(_postageDate, postageDate);
-                map.put(_textMessage, textMessage);
-//        map.put(_postageDate, jjCalendar_IR.getDatabaseFormat_8length(null, true));
-//                    html7.append(" " + userRow.get(0).get(_nam) + " " + userRow.get(0).get(_family) + "/");
-            }
-//                script7 = Js.setVal("#darkhastha_pishnahadkargroh", html7);
-        }
-
-        if (db.insert(tableName, map).getRowCount() > 0) {
-            return "";
-        }
-        String errorMessage = "ارسال پیام با خطایی مواجه شده است";
-        Server.outPrinter(request, response, Js.modal(errorMessage, "پیام سامانه"));
-        return "";
-    }
-    /**
-     * تابع درج date 1397/12/19 shiran1
-     *
-     * @param request
-     * @param db
-     * @param isPost
-     * @return
-     * @throws Exception
-     */
-    public static String sendMessageTicket(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
-        try {
-            if (jjTools.getSeassionUserId(request)<1) {
-                Server.outPrinter(request, response, "برای ارسال پیام باید ثبت نام کنید");
-                return "";
-            }
-//            Map<String, Object> map = new HashMap<String, Object>();
-//            map.put(_sender, jjTools.getSeassionUserId(request));
-//            map.put(_title, jjTools.getParameter(request, _title));
-//            map.put(_textMessage, jjTools.getParameter(request, _textMessage));
-//            map.put(_dateOfCreation, jjTools.getParameter(request, _dateOfCreation));
-//            map.put(_file, jjTools.getParameter(request, _file));
-//            map.put(_sendingMethod, jjTools.getParameter(request, _sendingMethod));
-//            map.put(_displayed, jjTools.getParameter(request, _displayed));
-//            map.put(_receiver, jjTools.getParameter(request, _receiver));
-//            if (db.insert(tableName, map).getRowCount() == 0) {
-//                String errorMessege = "عملیات درج بدرستی صورت نگرفت";
-//                Server.outPrinter(request, response, Js.modal("پیام سامانه", errorMessege));
-//            }
-            StringBuilder html = new StringBuilder();
-            String attachFiles = jjTools.getParameter(request, _file);
-            String[] attachFilesArray = attachFiles.split(",");
-            for (int l = 0; l < attachFilesArray.length; l++) {
-                List<Map<String, Object>> fileRow = jjDatabase.separateRow(db.Select(UploadServlet.tableName, UploadServlet._file_name + "='" + attachFilesArray[l] + "'"));
-                if (!fileRow.isEmpty()) {
-                    String idUpload = fileRow.get(0).get(UploadServlet._id).toString();
-                    String titleUpload = fileRow.get(0).get(UploadServlet._title).toString();
-                    String extension2 = attachFilesArray[l].substring(attachFilesArray[l].lastIndexOf(".") + 1, attachFilesArray[l].length());
-                    if (extension2.toLowerCase().equals("jpg")
-                            || extension2.toLowerCase().equals("png")
-                            || extension2.toLowerCase().equals("gif")
-                            || extension2.toLowerCase().equals("svg")) {
-                        html.append("<div class='col-lg-12  mg-l-15'>"
-                                + "<img class='wd-40  mg-r-20' src='upload/" + attachFilesArray[l] + "'/>"
-                                + "<a  href='upload/" + attachFilesArray[l] + "'> " + "<i class='fa fa-download'></i>" + titleUpload + "</a>"
-                                + "</div>"
-                        );
-                    } else {
-                        html.append("<div class='col-lg-12   mg-l-15'>"
-                                + "<i class='icon ion-ios-paper-outline'></i>"
-                                + "<a  href='upload/" + attachFilesArray[l] + "'>" + "<i class='fa fa-download'></i>" + titleUpload + "</a>"
-                                + "</div>"
-                        );
-                    }
-                } else {
-                    //@ToDo  //کی از فایل ها اشتباها از سامانه حذف شده
-                }
-            }
-            String reciversId = jjTools.getParameter(request, _receiver);
-            sendMesseage(request, db, reciversId, "" + jjTools.getSeassionUserId(request) + "", jjTools.getParameter(request, _sendingMethod), jjTools.getParameter(request, _postageDate).replaceAll("/", ""), jjTools.getParameter(request, _title), jjTools.getParameter(request, _textMessage), jjTools.getParameter(request, _textHTML) + html, "پشتیبانی","1","1");
-            Server.outPrinter(request, response, "afterSendMessage('پیام با موفقیت ارسال شد');");
-            return "";
-
-        } catch (Exception ex) {
-            Server.outPrinter(request, response, Server.ErrorHandler(ex));
-            return "";
-
-        }
-    }
     /* 
      /**
      * ارسال پیام توسط توابع سیستمی
@@ -1911,21 +2148,45 @@ public class Messenger {
      * @param textHTML متن html پیام
      * @return
      */
-    public static String sendMesseage(HttpServletRequest request, jjDatabaseWeb db, String receiver, String sender, String sendingMethod, String postageDate, String subject, String textMessage, String textHTML, String type, String statusSms, String statusEmail) throws IOException, SQLException, Exception {
+    public static String sendMesseage(HttpServletRequest request, jjDatabaseWeb db, String receiver, String sender, String sendingMethod, String postageDate, String subject, String textMessage, String textHTML, String attachFile, String type, String statusSms, String statusEmail) throws IOException, SQLException, Exception {
         Map<String, Object> map = new HashMap<>();
+        String messageOne = textMessage;//متن اولیه   
+        jjCalendar_IR date = new jjCalendar_IR();
         String[] receiverMessageArray = receiver.split(",");//آی دی گیرنده  ها با این رشته از هم جدا می شود
         //اگر تاریخ امروز یا روزهای قبل بود همین الان بر اساس گیرنده ها و روش ارسال جدا بکند و ارسال بکند در غیر اینصورت برای اینکه قابل ویرایش باشد جدا نمی کنیم
-        if (postageDate == null || postageDate.equals("") || Integer.valueOf(postageDate) <= jjCalendar_IR.getDatabaseFormat_8length(null, true)) {
-            for (int j = 0; j < receiverMessageArray.length; j++) {// به تعداد دریافت کننده ها
+        if (postageDate == null || postageDate.equals("") || Integer.valueOf(postageDate) == jjCalendar_IR.getDatabaseFormat_8length(null, true)) {
+            for (int j = 0; j < receiverMessageArray.length; j++) {// به تعداد دریافت کننده ه
                 if (jjNumber.isDigit(receiverMessageArray[j])) {// اگر آی دی داده شده عدد بود
+                    textMessage = messageOne;//برای اینکه اسم قیلی داخلش نماند
                     List<Map<String, Object>> userRow = jjDatabaseWeb.separateRow(db.Select(Access_User.tableName, Access_User._id + "=" + receiverMessageArray[j] + " AND " + Access_User._isActive + "=1"));// پیام فقط برای کابران فعال میرود : ویژگی
                     if (userRow.size() == 1) {// اگر چنین کاربری وجود داشت
+                        textMessage = userRow.get(0).get(Access_User._jensiat).toString() + " " + userRow.get(0).get(Access_User._name).toString() + " "
+                                + userRow.get(0).get(Access_User._family).toString() + " " + textMessage;
+                        if (type.contains("مشاوره")) {
+                            int i = 1;
+                            String random = "1";
+                            while (i > 0) {
+                                random += jjNumber.getRandom(10);
+                                random += jjNumber.getRandom(5);
+                                List<Map<String, Object>> chatIdRow = jjDatabaseWeb.separateRow(db.Select(StatuseMessenger.tableName, StatuseMessenger._chatID + "=" + random));
+                                if (chatIdRow.size() < 1) {
+                                    i = 0;
+                                }
+                            }
+                            Map<String, Object> mapStatuse = new HashMap<>();
+                            mapStatuse.put(StatuseMessenger._chatID, random);
+                            mapStatuse.put(StatuseMessenger._status, lblOpen);
+                            db.insert(StatuseMessenger.tableName, mapStatuse);
+                            map.put(_chatID, random);
+                        }
                         map.put(_receiver, receiverMessageArray[j]);
                         map.put(_sender, sender);
+                        map.put(_attachFile, attachFile);
                         map.put(_sendingMethod, sendingMethod);
                         map.put(_type, type);//نوع پیام
                         map.put(_postageDate, jjCalendar_IR.getDatabaseFormat_8length(postageDate, true));
-                        map.put(_textMessage, textMessage);
+                        map.put(_time, date.getTimeFormat_4length() + date.getSeconds_2length());
+                        map.put(_textMessage, messageOne);
                         map.put(_textHTML, textHTML);
                         map.put(_title, subject);
                         String logStatus = "";
@@ -1939,11 +2200,11 @@ public class Messenger {
                                 if (statusSms.equals("1")) {
                                     if (mobileArray.length > 1) {
                                         for (int i = 0; i < mobileArray.length; i++) {
-                                            logStatus += sms.sendMessageByApi(request, db, mobileArray[i], textMessage, "", "", "");
+//                                            logStatus += sms.sendMessageByApi(request, db, mobileArray[i], sender, textMessage, "", "", "");
                                         }
                                     } else {
                                         if (mobileArray.length == 1) {
-                                            logStatus += sms.sendMessageByApi(null, db, mobile, textMessage, "", "", "");
+//                                            logStatus += sms.sendMessageByApi(null, db, mobile, sender, textMessage, "", "", "");
                                         }
                                     }
                                 }
@@ -1956,7 +2217,6 @@ public class Messenger {
                             if (mobileArray.length > 1) {
                                 for (int i = 0; i < mobileArray.length; i++) {
                                     logStatus += Call.sendCallByApi(request, db, mobileArray[i], textMessage, "", "", "");
-
                                 }
                             } else {
                                 if (mobileArray.length == 1) {
@@ -1978,7 +2238,11 @@ public class Messenger {
                         }
                         map.put(_logStatus, logStatus);
                         List<Map<String, Object>> messageRow = jjDatabaseWeb.separateRow(db.insert(tableName, map));
-                        changeStatus(null, null, db, messageRow.get(0).get(_id).toString(), status_posted);
+                        if (!messageRow.isEmpty()) {
+                            changeStatus(null, null, db, messageRow.get(0).get(_id).toString(), status_posted);
+                        } else {
+                            return "خطای شماره 7619 پیام بدرستی ارسال نشد";
+                        }
                     }
                 }
             }
@@ -2039,7 +2303,7 @@ public class Messenger {
 //                return "";
 //            }
 //            List<Map<String, Object>> insertedRow = jjDatabase.separateRow(db.insert(tableName, map));
-            Messenger.sendMesseage(null, db, userId, "1", "sms,app,email", "", "درخواست امضابرای" + " " + "مستند" + " " + title, "مستند" + " " + title + "برای امضا به شمابه عنوان " + " " + titleSign + " " + "ارسال شده است" + " " + "لطفا مستند را امضا نمایید", "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModuleDocumentary_name),Tice_config.getValue(db, Tice_config._config_activeEmailModuleDocumentary_name));
+            Messenger.sendMesseage(null, db, userId, "1", "sms,app,email", "", "درخواست امضابرای" + " " + "مستند" + " " + title, "مستند" + " " + title + "برای امضا به شمابه عنوان " + " " + titleSign + " " + "ارسال شده است" + " " + "لطفا مستند را امضا نمایید", "", "", "یادآوری", Tice_config.getValue(db, Tice_config._config_activeSmsModuleDocumentary_name), Tice_config.getValue(db, Tice_config._config_activeEmailModuleDocumentary_name));
 //            changeStatus(request, response, db, insertedRow.get(0).get(_id).toString(), status_created);
             String errorMessage1 = "ارسال پیام به کاربر مورد نظر انجام گردید";
             Server.outPrinter(request, response, Js.modal(errorMessage1, "پیام سامانه"));
@@ -2101,13 +2365,237 @@ public class Messenger {
             jjCalendar_IR date = new jjCalendar_IR(rows.get(i).get(_postageDate).toString());
             int today = jjCalendar_IR.getDatabaseFormat_8length(null, true);
             if (date.getDBFormat_8length() == today) {
-                sendMesseage(null, db, rows.get(i).get(_receiver).toString(), rows.get(i).get(_sender).toString(), rows.get(i).get(_sendingMethod).toString(), rows.get(i).get(_postageDate).toString(), rows.get(i).get(_title).toString(), rows.get(i).get(_textMessage).toString(), rows.get(i).get(_textHTML).toString(), "یادآوری","1","1");
+                sendMesseage(null, db, rows.get(i).get(_receiver).toString(), rows.get(i).get(_sender).toString(), rows.get(i).get(_sendingMethod).toString(), rows.get(i).get(_postageDate).toString(), rows.get(i).get(_title).toString(), rows.get(i).get(_textMessage).toString(), rows.get(i).get(_textHTML).toString(), "", "یادآوری", "1", "1");
                 db.delete(tableName, _id + "=" + rows.get(i).get(_id));
             }
         }
-
         System.out.println("#################################################");
     }
 
+    /**
+     * این تابع چت های من را که باز است را در موبایل نشان میدهد
+     *
+     * @param request
+     * @param response
+     * @param db
+     * @param isPost
+     * @return
+     * @throws Exception
+     */
+    public static String myChatsApp(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
+        try {
+            StringBuilder html = new StringBuilder();
+            StringBuilder script = new StringBuilder();
+            String panel = jjTools.getParameter(request, "panel");
+            List<Map<String, Object>> rowStatus = jjDatabaseWeb.separateRow(db.Select(StatuseMessenger.tableName, StatuseMessenger._status + "='" + lblOpen + "'"));
+            List<Map<String, Object>> row = jjDatabaseWeb.separateRow(db.otherSelect("SELECT * FROM " + tableName + " Where " + _receiver + "=" + jjTools.getSeassionUserId(request) + " GROUP BY " + _chatID + ";"));
+            html.append("<div class='card border-left-primary shadow mb-4' style='margin:10px;'>");
+            html.append("<div class='card-header py-3'>");
+            html.append("<h6 class='m-0 font-weight-bold text-primary' style='text-align:center'>مشاوره های من</h6></div>");
+            for (int i = 0; i < row.size(); i++) {
+                for (int j = 0; j < rowStatus.size(); j++) {
+                    if (row.get(i).get(_chatID).equals(rowStatus.get(j).get(StatuseMessenger._chatID))) {
+                        List<Map<String, Object>> rowUser = jjDatabaseWeb.separateRow(db.Select(Access_User.tableName, Access_User._id + "=" + row.get(i).get(_sender)));
+                        if (rowUser.isEmpty()) {
+                            Server.outPrinter(request, response, Js.modal("مشاوره خریداری شده مشاور ندارد", "هشدار"));
+                            return "";
+                        } else {
+                            html.append("<div class='col-12' style='height: auto;border-bottom: 1px solid #868ba159;overflow: hidden;'>\n"
+                                    + "    <div class='row' style='margin-left: 0px;margin-right: 0px;background-color: #000;' onclick='cmsChat.showChat(" + rowUser.get(0).get(Access_User._id) + "," + row.get(i).get(_chatID).toString() + ");'>\n"
+                                    + "        <div style='text-align: center;'>\n"
+                                    + "            <img src='upload/" + rowUser.get(0).get(Access_User._attachPicPersonal) + "' width='70' height='70' alt='trumpet' style='border-radius: 100%;margin-top: 10px;margin-bottom: 10px;'/>\n"
+                                    + "        </div>\n"
+                                    + "                    <h6 style='line-height:90px;margin-right:5%;color:#fed136'>"
+                                    + rowUser.get(0).get(Access_User._name)
+                                    + " "
+                                    + rowUser.get(0).get(Access_User._family) + "</h6>\n"
+                                    + "        </div>\n");
+                            html.append("</div>");
+                        }
+                    }
+                }
+            }
+            html.append("</div>\n"
+                    + "</div>"
+            );
+            html.append("</div>");
+            html.append("<div class='col-12' style='height:40px;'></div>");
+            script.append(Js.setHtml("#" + panel, html.toString()));
+//            String script1 = "$('#myChatsApp').DataTable( {"
+//                    + "        'paging':   false,"
+//                    + "        'ordering': false,"
+//                    + "        'info':     false,"
+//                    + "        'searching': false"
+//                    + "    } );";
+            Server.outPrinter(request, response, script + "window.localStorage.setItem('Notification', '0');" + "$('#NotificationBottom').html(0);");
+            return "";
+        } catch (Exception e) {
+            Server.outPrinter(request, response, Server.ErrorHandler(e));
+            return "";
+        }
+    }
+
+    /**
+     * این تابع برای ثبت چت در قسمت چت استفاده میشود
+     *
+     * @param request
+     * @param response
+     * @param db
+     * @param isPost
+     * @return
+     * @throws Exception
+     */
+    public static String insertChat(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
+        try {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put(_sender, jjTools.getSeassionUserId(request));
+            map.put(_title, jjTools.getParameter(request, _title));
+            map.put(_textMessage, jjTools.getParameter(request, _textMessage));
+            map.put(_attachFile, jjTools.getParameter(request, _attachFile));
+            map.put(_type, message_Advice);
+            map.put(_status, status_posted);
+            map.put(_receiver, jjTools.getParameter(request, _receiver));
+            String chatID = jjTools.getParameter(request, _chatID).isEmpty() ? jjNumber.getRandom(8) : jjTools.getParameter(request, _chatID);
+            map.put(_chatID, chatID);
+            jjCalendar_IR dateIR = new jjCalendar_IR();
+            map.put(_time, dateIR.getTimeFormat_4length() + dateIR.getSeconds_2length());
+            map.put(_postageDate, dateIR.getDBFormat_8length());
+            if (db.insert(tableName, map).getRowCount() == 0) {
+                String errorMessege = "ارسال پیام با مشکل مواجه شده است";
+                Server.outPrinter(request, response, Js.modal("پیام سامانه", errorMessege));
+            }
+            Server.outPrinter(request, response, "cmsChat.refreshChat(" + jjTools.getParameter(request, _receiver) + "," + chatID + ");");
+            return "";
+
+        } catch (Exception ex) {
+            Server.outPrinter(request, response, Server.ErrorHandler(ex));
+            return "";
+
+        }
+    }
+
+    //
+    /**
+     * برای نشان دادن چت به صورت کاملا زیبا از این تابع استفاده میشود
+     *
+     * @param request
+     * @param response
+     * @param db
+     * @param isPost
+     * @return
+     * @throws Exception
+     */
+    public static String refreshChat(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
+        try {
+            if (jjTools.getSeassionUserId(request) < 1) {// کاربر مهمان اجازه ی دیدن تیکت و .. را ندارد
+                Server.outPrinter(request, response, Js.modal("مدت زیادی با سیستم تعامل نداشته اید، مجددا وارد شوید", "وارد شوید"));
+                return "";
+            }
+            int sender = jjTools.getSeassionUserId(request);
+            String chatId = jjTools.getParameter(request, _chatID);
+            StringBuilder html = new StringBuilder();
+            List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, "*", "(" + _receiver + "=" + jjTools.getSeassionUserId(request) + " OR " + _sender + "=" + sender + ")  AND " + _chatID + "=" + chatId, _time));
+            html.append("<p class='ticketTitle'>" + row.get(0).get(_title).toString() + "</p>");
+            String reciver = row.get(0).get(_receiver).toString().equals("" + jjTools.getSeassionUserId(request)) ? row.get(0).get(_sender).toString() : row.get(0).get(_receiver).toString();//اگر فرستنده و کاربر در سشن یکی بود گیرنده کاربر دیگیری است 
+            for (int i = 0; i < row.size(); i++) {
+                if (Integer.parseInt(row.get(i).get(_sender).toString()) == sender) {
+                    html.append("<div class='yourTicket''>"
+                            + "<div class='''>"
+                            + "    <div class='p-2' >");
+
+                } else {
+                    html.append("<div class='ticketResponse''>"
+                            + "<div class='''>"
+                            + "    <div class='p-2' >");
+
+                }
+                html.append("<div class='ticketHeader' >");
+                html.append("<span class='TicketSender' ><i class='fa fa-user '></i>" + Access_User.getUserName(row.get(i).get(_sender).toString(), db) + "</span>");
+                html.append("<span class='date_time' >" + jjCalendar_IR.getViewFormat_10length(Integer.parseInt(row.get(i).get(_postageDate).toString()))
+                        + " " + jjCalendar_IR.getViewFormatTime_8length(row.get(i).get(_time).toString()) + "</span>");
+                html.append("</div>");
+                html.append("<hr/>");
+                html.append("<p class='mx-2'>" + row.get(i).get(_textMessage).toString() + "</p>");
+                html.append("</div>");
+                if (!row.get(i).get(_attachFile).toString().isEmpty()) {
+                    String[] picName = row.get(i).get(_attachFile).toString().split(",");
+                    for (int j = 0; j < picName.length; j++) {
+                        String extension = "";
+                        String namePic = picName[j];
+                        int dot = namePic.lastIndexOf(".");
+                        if (dot > 0) {
+                            extension = namePic.substring(dot + 1, namePic.length());
+                        }
+                        if (extension.toLowerCase().equals("jpg") || extension.toLowerCase().equals("png") || extension.toLowerCase().equals("gif")) {
+                            html.append("<a href='upload/" + picName[j] + "' download='pictur'><img class='mx-2'  width='200' height='200' alt='عکس با مشکل مواجه شده است' style='border-radius: 10px;border: 4px solid #fff;' src='upload/" + picName[j] + "'></a>");
+                        } else if (extension.toLowerCase().equals("mp3")) {
+                            html.append("<a href='upload/" + picName[j] + "' download='audio'>" + row.get(i).get(_title) + "</a>");
+                            html.append("<audio controls>"
+                                    + "  <source src='upload/" + picName[j] + "' type='audio/mpeg'>"
+                                    + "Your browser does not support the audio element."
+                                    + "</audio>");
+                        } else {
+                            html.append("<a href='upload/" + picName[j] + "' download='" + row.get(i).get(_title) + "'>" + row.get(i).get(_title) + "</a>");
+                        }
+                    }
+                }
+
+                html.append("</div>");
+                html.append("</div>");
+
+            }
+            String panel = "message_chat";
+            String script = Js.setHtml("#" + panel, html.toString()) + "\n";
+            script += Js.setVal("#" + _chatID, chatId) + "\n";
+            script += Js.setVal("#" + _title, row.get(0).get(_title).toString()) + "\n";
+            script += Js.setVal("#" + _receiver, reciver) + "\n";
+            Server.outPrinter(request, response, script);
+            return "";
+        } catch (Exception e) {
+            Server.outPrinter(request, response, Server.ErrorHandler(e));
+            return "";
+        }
+    }
+
+    /**
+     * این تابع برای ست کردن قسمت هایی از صفحه چت هست مثل عکس و نام و در صورت
+     * بسته نبودن چت همه ی تاریخچه چت را نشان میدهد
+     *
+     * @param request
+     * @param response
+     * @param db
+     * @param isPost
+     * @return
+     * @throws Exception
+     */
+    public static String setMessengerReciver(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
+        try {
+            List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(Access_User.tableName, Access_User._id + "=" + jjTools.getParameter(request, Access_User._id)));
+            String script = "$('#messenger_receiver').val('" + jjTools.getParameter(request, Access_User._id) + "');";
+            script += "$('#messenger_chatID').val('" + jjTools.getParameter(request, _chatID).toString() + "');";
+            script += "$('#nameAndFamily').html('" + row.get(0).get(Access_User._name) + " " + row.get(0).get(Access_User._family) + "');";
+            script += "$('#picPersonal').attr('src','upload/" + row.get(0).get(Access_User._attachPicPersonal) + "');";
+            script += "cmsChat.refreshChat(" + jjTools.getParameter(request, Access_User._id) + "," + jjTools.getParameter(request, _chatID).toString() + ");";
+            Server.outPrinter(request, response, script);
+            return "";
+        } catch (Exception e) {
+            Server.outPrinter(request, response, Server.ErrorHandler(e));
+            return "";
+        }
+    }
+
+    public static String finishConsulting(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
+        try {
+            Map<String, Object> map = new HashMap<>();
+            map.put(StatuseMessenger._status, StatuseMessenger.lbl_close);
+            map.put(StatuseMessenger._ratin_patient, jjTools.getParameter(request, StatuseMessenger._ratin_patient));
+            db.update(StatuseMessenger.tableName, map, StatuseMessenger._chatID + "=" + jjTools.getParameter(request, StatuseMessenger._chatID));
+            Server.outPrinter(request, response, Js.modal("شما به این مشاوره خاتمه دادید", "اتمام مشاوره"));
+            return "";
+        } catch (Exception e) {
+            Server.outPrinter(request, response, Server.ErrorHandler(e));
+            return "";
+        }
+    }
 //}
 }

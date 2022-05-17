@@ -45,6 +45,17 @@
     StringBuilder html1 = new StringBuilder();
     jjDatabaseWeb db;
     db = Server.db;
+    if (user_token.isEmpty() && jjTools.getSeassionUserId(request) > 0) {
+        List<Map<String, Object>> user = jjDatabase.separateRow(db.Select(Access_User.tableName, Access_User._id + "=" + jjTools.getSeassionUserId(request)));;
+        user_token = user.get(0).get(Access_User._token).toString();
+
+    }
+    if (jjTools.getSeassionUserId(request) == 0 && user_token.isEmpty()) {
+        System.out.println("response.sendRedirect>>>" + Server.mainPage);
+        response.sendRedirect(Server.mainPage);
+        return;
+    }
+//    List<Map<String, Object>> user = jjDatabase.separateRow(db.Select(Access_User.tableName, Access_User._id + "=" + jjTools.getSeassionUserId(request) + " OR " + Access_User._token + "='" + user_token + "'"));;
 %>
 <!DOCTYPE html>
 <!-- saved from url=(0047)http://themesflat.com/html/arch/latestpost.html -->
@@ -71,9 +82,12 @@
     <link href="Manager/font-tahoma.css" rel="stylesheet" type="text/css"/>
     <link href="Manager/ionicons.css" rel="stylesheet"/>
     <link href="StyleBody.css" rel="stylesheet" type="text/css"/>
-    <link href="template/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>
     <link href="template/css/dataTables.responsive.css" rel="stylesheet" type="text/css"/>
+    <link href="template/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>
     <style>
+        #showFileMessengerDiv img {
+            max-width: 100px;
+        }
         .main-body {
             padding: 15px;
         }
@@ -292,14 +306,17 @@
             </div>
         </header>
         <div id="sw">
-            <%List<Map<String, Object>> user = jjDatabase.separateRow(db.Select(Access_User.tableName, Access_User._token + "='" + user_token + "'"));
+
+            <%
+
+                List<Map<String, Object>> user = jjDatabase.separateRow(db.Select(Access_User.tableName, Access_User._token + "='" + user_token + "'" + " OR " + Access_User._id + "=" + jjTools.getSeassionUserId(request)));
                 List<Map<String, Object>> projectMe = null;
                 List<Map<String, Object>> news = null;
                 List<Map<String, Object>> rowFactor = null;
                 String groups = "";
                 List<Map<String, Object>> groupId = jjDatabase.separateRow(db.Select(Access_Group_User.tableName, Access_Group_User._user_id + "='" + user.get(0).get(Access_User._id) + "'"));
                 List<Map<String, Object>> rowMessageTiket = jjDatabase.separateRow(db.Select(Messenger.tableName, "(" + Messenger._receiver + "=" + user.get(0).get(Access_User._id) + " OR "
-                        + Messenger._sender + "=" + user.get(0).get(Access_User._id) + ") AND " + Messenger._type + "='پشتیبانی' "));
+                        + Messenger._sender + "=" + user.get(0).get(Access_User._id) + ") AND " + Messenger._type + "='" + Messenger.message_Advice + "' GROUP BY  " + Messenger._chatID + " ORDER BY id desc"));
                 System.out.print(groupId.size());
                 if (!groupId.isEmpty()) {
                     for (int z = 0; z < groupId.size(); z++) {
@@ -394,7 +411,7 @@
                                             <div class="title">اطلاعیه ها</div>
                                             <div class="highlight bg-color-green"></div>
                                         </a>
-                                    </div>
+                                    </div>                                    
                                     <div class="col-sm-3 col-xs-6 tile portfolio-filter" onclick="">
                                         <a  data-filter=".AllSms">
                                             <div class="icon"><i class="fa fa-comments"></i></div>
@@ -425,9 +442,24 @@
                                             <div class="highlight bg-color-gold"></div>
                                         </a>
                                     </div>
-                                </div>
+                                </div>                                 
                             </div>
                             <div id="swContent" ></div>
+                            <div class="" onclick="">
+                                <%
+                                    List<Map<String, Object>> rowWelcome = jjDatabase.separateRow(db.Select(Content.tableName, Content._id + "=" + 2));
+                                    for (int b = 0; b < rowWelcome.size(); b++) {
+                                %>
+                                <div class="col-lg-12 panel panel-default panel-accent-gold" onclick="">
+                                    <div>
+                                        <a href="Server?do=Content.sw&panel=sw&text=<%=rowWelcome.get(b).get(Content._title)%>" target="_blank"><i class="fa fa-flag"></i><%=rowWelcome.get(b).get(Content._title)%></a>
+                                        <p><%=rowWelcome.get(b).get(Content._explain)%></p>
+                                    </div>
+                                </div> 
+                                <%
+                                    }
+                                %>                               
+                            </div>  
                             <div class="AllProject" style="display: none">
                                 <div class="col-xs-12 main-content">           
                                     <h2>پروژه ها</h2>
@@ -459,7 +491,7 @@
                                             <span class="label label-default">
                                                 <%=day%><%=month%><%=year%>
                                             </span>
-                                                <a  href="http://localhost:9095/005/Server?do=Content.sw&panel=sw&text=<%=projectMe.get(i).get(Content._title)%>" target="_blank"><%=projectMe.get(i).get(Content._title)%></a>
+                                            <a  href="Server?do=Content.sw&panel=sw&text=<%=projectMe.get(i).get(Content._title)%>" target="_blank"><%=projectMe.get(i).get(Content._title)%></a>
                                         </h3>                                        
                                     </div>
                                     <%}%>
@@ -485,7 +517,7 @@
                                         </blockquote>
                                     </div>
                                     <%} else {%>
-                                    <%System.out.print("////8" + projectMe + "//" + news + "//" + rowFactor);
+                                    <%
                                         for (int i = 0; i < news.size(); i++) {
                                             jjCalendar_IR dateLableNews = new jjCalendar_IR(news.get(i).get(News._date).toString());
                                             String monthNews = dateLableNews.getMonthName();
@@ -511,28 +543,27 @@
                             </div>
                             <div class="AllSms" style="display: none">
                                 <div class="col-xs-12">                                               
-                                    <button class="btn btn-success pd-sm-x-20 mg-sm-r-5" style="color: white;" onclick="$('#newTicket').slideDown();$('#ticketTable').hide();"> ثبت تیکت جدید</button>        
                                     <div class="card rounded-0" id='ticketTable'>
+                                        <button class="btn btn-success pd-sm-x-20 mg-sm-r-5 col-lg-3" style="color: white;" onclick="add_newTicket();"> ثبت تیکت جدید</button>        
                                         <table id="ticketDataTable"  style="width:100%;">
                                             <thead class="card-header bg-primary tx-white">
                                                 <tr>
                                                     <th>موضوع</th>
-                                                    <th>فرستنده</th>
+                                                    <th>آی دی فرستنده</th>
                                                     <th>تاریخ</th>
                                                     <th>وضعیت</th>
-                                                    <th>مشاهده</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <%
                                                     for (int i = 0; i < rowMessageTiket.size(); i++) {
                                                 %>
-                                                <tr >
-                                                    <td><%=rowMessageTiket.get(i).get(Messenger._title)%></td>
+                                                <tr onclick="selectTicket(<%=rowMessageTiket.get(i).get(Messenger._chatID)%>);" style="cursor: pointer">
+                                                    <td><%=rowMessageTiket.get(i).get(Messenger._title)%><br/>#<%=rowMessageTiket.get(i).get(Messenger._chatID)%></td>
                                                     <td><%=rowMessageTiket.get(i).get(Messenger._sender)%> </td>
-                                                    <td><%=rowMessageTiket.get(i).get(Messenger._postageDate)%> </td>
+                                                    <td><%= jjCalendar_IR.getViewFormat(rowMessageTiket.get(i).get(Messenger._postageDate).toString())%>
+                                                        (<%=jjCalendar_IR.getViewFormatTime_8length(rowMessageTiket.get(i).get(Messenger._time).toString() )%>) </td>
                                                     <td><%=rowMessageTiket.get(i).get(Messenger._status)%></td>
-                                                    <td><a onclick="selectTicket(<%=rowMessageTiket.get(i).get(Messenger._id)%>)"><i class="fa fa-cog cog-table"></i></a></td>
                                                 </tr>
                                                 <%
                                                     }
@@ -546,16 +577,20 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="card rounded-0">
+                                                    <div id="message_chat">
+                                                    </div><!-- card-header -->
                                                     <div class="card-header bg-primary tx-white">
                                                         ارسال تیکت
                                                     </div><!-- card-header -->
                                                     <div class="card-body" id='formMassege'>
                                                         <div id="messengerForm">
                                                             <input type="hidden" id="messenger_id" name="id" />
-                                                            <div class="row">
+                                                            <input type="hidden" id="messenger_chatID" name="messenger_chatID" />
+                                                            <div class="row" id="ticketHeader">
                                                                 <div class="col-lg" style="">
                                                                     عنوان 
                                                                     <input class="form-control" id="messenger_title" name="messenger_title"  placeholder="عنوان پیام" type="text" />
+                                                                    <input id="messenger_type" name="messenger_type"  type="hidden" value="پشتیبانی"/>
                                                                 </div>
                                                                 <div class="row">
                                                                     <div class="col-lg-3 col-sm-6">
@@ -576,7 +611,7 @@
                                                                     </div>
                                                                     <div class="col-lg-3 col-sm-6">
                                                                         تاریخ ارسال
-                                                                        <input class="form-control" id="messenger_postageDate" name="messenger_postageDate"  disabled="disabled" 
+                                                                        <input class="form-control" id="messenger_postageDate"   disabled="disabled" 
                                                                                value="<%=jjCalendar_IR.getViewFormat_10length(jjCalendar_IR.getDatabaseFormat_8length(null, true))%>"  />
 
                                                                     </div>
@@ -592,36 +627,34 @@
                                                                     <textarea  class="form-control" id="messenger_textMessage" name="messenger_textMessage"  rows="7" ></textarea>
                                                                 </div>
                                                             </div>                                                                                    
-                                                            <div id="filePdfLoader" class="col-lg-12 mg-t-20" style="">                        
+                                                            <div id="filePdfLoader" class="col-lg-12 mg-t-20" style="">                                                                                        
                                                                 <div class="col-lg-12">پیوست کردن فایل 
                                                                     <div class="" id="showFileMessengerDiv"></div>
                                                                 </div>
                                                                 <div class="input-group col-lg-12">
                                                                     <div class=""> عنوان فایل</div>
-                                                                    <span id="user_pic" class="form-control" /></span>
                                                                     <input class="form-control" id="messenger_titleFile" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" />
-                                                                    <input  id="messenger_attachFile" name="messenger_attachFile" type="hidden" />
                                                                     <input id="attachFileMessenger" name="attachFileMessenger" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file" />
-                                                                    <input class="btn btn-primary" id="sendFileMessenger" type="submit" value="ارسال" />
-                                                                    <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                                                    <span id="sendFileMessenger" class="btn flat-button button-color button-normal green">ارسال فایل ری سرور<i class="fa fa-upload"></i></span>
+                                                                    <span class="btn btn-primary" onclick=" $(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
                                                                 </div>
                                                                 <div class="inputAfterSelectManager" ></div>
                                                             </div>
                                                             <div class="col-lg-4" id="sendingMetod"></div>
-<!--                                                            <div class="col-lg-4" style="" id="logStatus" >
-                                                                فرایند تیکت :
-                                                                <div style="display: initial;" onclick="if ($('#messenger_logStatusDiv').css('display') == 'none') {
-                                                                            $('#messenger_logStatusDiv').show('fast');
-                                                                        } else {
-                                                                            $('#messenger_logStatusDiv').hide('fast');
-                                                                        }">
-                                                                    <img src="template/add_row.png" alt="Log"/>
-                                                                </div>                                
-                                                                <div id="messenger_logStatusDiv" style="display: none;">
-                                                                    <textarea id="messenger_logStatus" name="messenger_logStatus"  class="tahoma10" style="width: 99.8%;height: 260px;text-align: right" disabled="disabled">           
-                                                                    </textarea>
-                                                                </div>
-                                                            </div>-->
+                                                            <!--                                                            <div class="col-lg-4" style="" id="logStatus" >
+                                                                                                                            فرایند تیکت :
+                                                                                                                            <div style="display: initial;" onclick="if ($('#messenger_logStatusDiv').css('display') == 'none') {
+                                                                                                                                        $('#messenger_logStatusDiv').show('fast');
+                                                                                                                                    } else {
+                                                                                                                                        $('#messenger_logStatusDiv').hide('fast');
+                                                                                                                                    }">
+                                                                                                                                <img src="template/add_row.png" alt="Log"/>
+                                                                                                                            </div>                                
+                                                                                                                            <div id="messenger_logStatusDiv" style="display: none;">
+                                                                                                                                <textarea id="messenger_logStatus" name="messenger_logStatus"  class="tahoma10" style="width: 99.8%;height: 260px;text-align: right" disabled="disabled">           
+                                                                                                                                </textarea>
+                                                                                                                            </div>
+                                                                                                                        </div>-->
                                                         </div>
                                                         <div class="row col-lg-12">                                                            
                                                             <button class="col-lg-4 flat-button button-color button-normal black" onclick="$('#newTicket').slideUp();$('#ticketTable').show();">بازگشت </button>                
@@ -906,7 +939,7 @@
                                             </div>
                                             <div class="list-group">
                                                 <%
-                                                    if (projectMe == null || projectMe.size() == 0) {                                                        
+                                                    if (projectMe == null || projectMe.size() == 0) {
                                                 %>
                                                 <a menuitemname="0"  class="list-group-item" id="ClientAreaHomePagePanels-Recent_News-0">
                                                     <p>شما در حال حاضر عضو پروژه ای نشده اید</p>
@@ -918,7 +951,7 @@
                                                         int day = dateLable.getDay();
                                                         int year = dateLable.getYear();
                                                 %>
-                                                <a menuitemname="1" onclick="selectProject(<%=projectMe.get(i).get(Content._id)%>)" class="list-group-item" id="ClientAreaHomePagePanels-Recent_News-1">
+                                                <a menuitemname="1" href="Server?do=Content.sw&panel=sw&text=<%=projectMe.get(i).get(Content._title)%>" target="_blank" class="list-group-item" id="ClientAreaHomePagePanels-Recent_News-1">
                                                     <%=projectMe.get(i).get(Content._title)%><br/><span class="text-last-updated"><%=day%><%=month%><%=year%></span>
                                                 </a>
                                                 <%}%>
@@ -1328,7 +1361,7 @@
     <script src="template/js/slider.js" type="text/javascript"></script> 
     <script src="template/js/util.js" type="text/javascript"></script>
     <script src='template/js/owl.carousel.js' type='text/javascript'></script>
-    <script src="template/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+    <!--<script src="template/js/dataTables.bootstrap.min.js" type="text/javascript"></script>-->
     <script src="template/js/dataTables.responsive.min.js" type="text/javascript"></script>
     <script>
                         function selectProject(id) {
@@ -1353,8 +1386,8 @@
                         }
                         $(document).ready(function () {
                             $('#example').DataTable();
-//                            $('#ticketDataTable').DataTable();
-                            //                                                                                                                                                                                                        new jj('#userAttachFiles_sendFiles').jjAjaxFileUploadByTitleAndMultiFile('#attachFileUser', 'user_attachFile', 'user_titleFile', "#user_divUpload");
+                            $('#ticketDataTable').DataTable({"bLengthChange": false,info: false});
+                            new jj('#sendFileMessenger').jjAjaxFileUploadByTitleAndMultiFile('#attachFileMessenger', 'messenger_attachFile', 'messenger_titleFile', "#showFileMessengerDiv");
                             //                                                                                                                                                                                                        new jj('#userAttachFiles_sendFilesAdmin').jjAjaxFileUploadByTitleAndMultiFile('#attachFileUserAdmin', 'user_attachFileUser', 'user_titleFile_admin', "#user_divUpload1");
                             //                                                                                                                                                                                                        new jj('#sendPic1').jjAjaxFileUpload2('user_file_personal', '', '#user_attachPicPersonal', '#PicPreviewPersonal');
                             //                                                                                                                                                                                                        new jj('#sendPicSignature').jjAjaxFileUpload2('user_file_Signature', '', '#user_attachPicSignature', '#PicPreviewSignature');

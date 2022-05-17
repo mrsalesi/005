@@ -1,4 +1,44 @@
+.ticketResponse {
+    border: solid thin #f2f9ff;
+    border-radius: 3px;
+    padding: 1em;
+    margin: 3px 0;
+}
+.yourTicket {
+    border: solid thin #f8f8f8;
+    border-radius: 3px;
+    padding: 1em;
+    margin: 3px 0;
+}
+.yourTicket .date_time, .ticketResponse .date_time{
+    text-align: left;
+    color: #004e66;
+    direction: ltr
+}
+.ticketResponse .ticketHeader {
+    background-color: #f2f9ff;
+}
+.yourTicket .ticketHeader {
+    background-color: #f8f8f8;
+}
+.ticketTitle{
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+    text-align: center;
+    padding: 15px;
+    margin-bottom: 20px;
 
+}
+.TicketSender i {
+    font-size: 1.7em;
+    margin: 0 0.5em;
+}
+
+.submenu.mega-menu h2{
+    font-size: 1.5em;
+}
+.date_time{float: left;direction:ltr} 
 a{cursor: pointer}
 #sw{min-height: 55em}
 a.jjLink.hoverAutoWiki{color:#fbc608}
@@ -60,7 +100,7 @@ textarea,input[type=text],input[type=submit],input[type=password],input[type=dat
 .header .logo{width:16vw;height:42px;-webkit-transition:all .3s ease-in-out;-moz-transition:all .3s ease-in-out;-ms-transition:all .3s ease-in-out;-o-transition:all .3s ease-in-out;transition:all .3s ease-in-out;margin:28px 57px 0 0}
 .header.downscrolled{position:fixed;top:0;width:100%;z-index:9999;opacity:0;top:-121px;-webkit-transition:all .5s ease-in-out;-moz-transition:all .5s ease-in-out;-ms-transition:all .5s ease-in-out;-o-transition:all .5s ease-in-out;transition:all .5s ease-in-out}
 .header.upscrolled{opacity:1;top:0;box-shadow:0 0 5px rgba(0,0,0,.1)}
-.menu.menu-extra{float:right;position:relative}
+.menu.menu-extra{float:right;position:relative;margin: 0;}
 .menu.menu-extra:after{content:"";position:absolute;width:2px;height:30px;background:rgba(0,0,0,.1);left:0;top:50%;margin-top:-15px}
 .menu.menu-extra li a{color:#333;padding:0 20px;line-height:100px;height:100px}
 .menu.menu-extra li a:hover{color:#eab702}
@@ -146,7 +186,7 @@ textarea,input[type=text],input[type=submit],input[type=password],input[type=dat
 .page-title{position:relative;padding:100px 0}
 .page-title-heading h1{text-align:right;color:#fff;text-transform:uppercase;font-weight:700;letter-spacing:1px;font-size:2.3em}
 .page-title .overlay,.parallax .overlay{position:absolute;left:0;top:0;width:100%;height:100%;background: #333 url("../img/pattern.png") repeat 50% 22px;   
-;-ms-filter:"alpha(opacity=80)";filter:alpha(opacity=80);opacity:.8}
+                                        ;-ms-filter:"alpha(opacity=80)";filter:alpha(opacity=80);opacity:.8}
 .breadcrumbs ul{padding-top:10px}
 .breadcrumbs ul li{display:inline-block;position:relative;margin-right:25px}
 .breadcrumbs ul li a{font-size:13px;color:#fff;letter-spacing:3px;font-weight:600;text-transform:uppercase}
@@ -157,11 +197,11 @@ textarea,input[type=text],input[type=submit],input[type=password],input[type=dat
 .main-content{padding:100px 0}
 /*article{margin-bottom:40px}*/
 article .featured-post{position:relative;
-/*margin: 3px;*/
-/*padding: 3px;*/
-/*border: 1px dashed #000;*/
-/*width: 100%;
-height: 160px;}*/}
+                       /*margin: 3px;*/
+                       /*padding: 3px;*/
+                       /*border: 1px dashed #000;*/
+                       /*width: 100%;
+                       height: 160px;}*/}
 article .post-comment{position:absolute;left:20px;top:20px;z-index:20;background-color:#eab702;text-align:center;color:#fff}
 article .post-comment li.date span{display:block;font-size:14px}
 article .post-comment li.date .day{font-size:1em;padding:10px 12px}

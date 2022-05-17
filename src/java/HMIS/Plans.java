@@ -887,10 +887,10 @@ public class Plans {
 
                 if (!tice_configMessage.equals("")) {//اگر در تنظیمات پیام ها چنین عنوانی  یافت شد اگر فعال بود پیامی که در تنظیمات ما تعریف شده را بیاور
                     text = tice_configMessage;
-                    Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(jjTools.getParameter(request, _supervisorRoleId), db), "1", "sms,app,email", "", "  مافوق محترم " + Role.getRoleUserName(jjTools.getParameter(request, _supervisorRoleId), db) + " برنامه عملیاتی با عنوان : " + Row.get(0).get(_title) + "به شما ابلاغ شده است ", text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                    Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(jjTools.getParameter(request, _supervisorRoleId), db), "1", "sms,app,email", "", "  مافوق محترم " + Role.getRoleUserName(jjTools.getParameter(request, _supervisorRoleId), db) + " برنامه عملیاتی با عنوان : " + Row.get(0).get(_title) + "به شما ابلاغ شده است ", text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
                 } else {
                     text = "برنامه عملیاتی به شما ابلاغ گردید.";
-                    Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(jjTools.getParameter(request, _supervisorRoleId), db), "1", "sms,app,email", "", "  مافوق محترم " + Role.getRoleUserName(jjTools.getParameter(request, _supervisorRoleId), db) + " برنامه عملیاتی با عنوان : " + Row.get(0).get(_title) + "به شما ابلاغ شده است ", text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                    Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(jjTools.getParameter(request, _supervisorRoleId), db), "1", "sms,app,email", "", "  مافوق محترم " + Role.getRoleUserName(jjTools.getParameter(request, _supervisorRoleId), db) + " برنامه عملیاتی با عنوان : " + Row.get(0).get(_title) + "به شما ابلاغ شده است ", text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
                 }
 
             } else {
@@ -946,11 +946,11 @@ public class Plans {
                         String tice_configMessage = Tice_config.getValue(db,  Tice_config._config_sendPlantoImproveQuality_name);
                         if (!tice_configMessage.equals("")) {//اگر در تنظیمات پیام ها چنین عنوانی  یافت شد اگر فعال بود پیامی که در تنظیمات ما تعریف شده را بیاور
                             String text = tice_configMessage;
-                            Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(jjTools.getParameter(request, _improveQualityId), db), "1", "sms,app,email", "", "مسئول پایش " + Role.getRoleUserName(jjTools.getParameter(request, _improveQualityId), db) + "  برنامه عملیاتی " + jjTools.getParameter(request, _title) + " برای شما ابلاغ شده است پیگیری نمایید", text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                            Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(jjTools.getParameter(request, _improveQualityId), db), "1", "sms,app,email", "", "مسئول پایش " + Role.getRoleUserName(jjTools.getParameter(request, _improveQualityId), db) + "  برنامه عملیاتی " + jjTools.getParameter(request, _title) + " برای شما ابلاغ شده است پیگیری نمایید", text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
 
                         } else {
                             String text = "لطفا وارد برنامه مدیار شوید و برنامه عملیاتی را تایید کنید";
-                            Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(jjTools.getParameter(request, _improveQualityId), db), "1", "sms,app,email", "", "مسئول پایش " + Role.getRoleUserName(jjTools.getParameter(request, _improveQualityId), db) + "  برنامه عملیاتی " + jjTools.getParameter(request, _title) + " برای شما ابلاغ شده است پیگیری نمایید", text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                            Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(jjTools.getParameter(request, _improveQualityId), db), "1", "sms,app,email", "", "مسئول پایش " + Role.getRoleUserName(jjTools.getParameter(request, _improveQualityId), db) + "  برنامه عملیاتی " + jjTools.getParameter(request, _title) + " برای شما ابلاغ شده است پیگیری نمایید", text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
                         }
 
                     } else {
@@ -1033,20 +1033,20 @@ public class Plans {
                             String tice_configMessageManager = Tice_config.getValue(db,  Tice_config._config_sendPlantoManager_name);
                             if (!tice_configMessageManager.equals("")) {//اگر در تنظیمات پیام ها چنین عنوانی  یافت شد اگر فعال بود پیامی که در تنظیمات ما تعریف شده را بیاور
                                 String text = tice_configMessageManager;
-                                Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(plansRow.get(0).get(Plans._managerRoleId).toString(), db), "1", "sms,app,email", "", "مدیر بیمارستان،  برنامه عملیاتی با عنوان: " + plansRow.get(0).get(_title) + "به شما ابلاغ شده است ", text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                                Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(plansRow.get(0).get(Plans._managerRoleId).toString(), db), "1", "sms,app,email", "", "مدیر بیمارستان،  برنامه عملیاتی با عنوان: " + plansRow.get(0).get(_title) + "به شما ابلاغ شده است ", text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
 
                             } else {
                                 String text = "وارد برنامه مدیار شوید و برنامه را تایید کنید.";
-                                Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(plansRow.get(0).get(Plans._managerRoleId).toString(), db), "1", "sms,app,email", "", "مدیر بیمارستان،  برنامه عملیاتی با عنوان: " + plansRow.get(0).get(_title) + "به شما ابلاغ شده است ", text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                                Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(plansRow.get(0).get(Plans._managerRoleId).toString(), db), "1", "sms,app,email", "", "مدیر بیمارستان،  برنامه عملیاتی با عنوان: " + plansRow.get(0).get(_title) + "به شما ابلاغ شده است ", text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
                             }
                             String tice_configMessageCommettes = Tice_config.getValue(db,  Tice_config._config_sendPlantoCommittee_name);
                             if (!tice_configMessageCommettes.equals("")) {//اگر در تنظیمات پیام ها چنین عنوانی  یافت شد اگر فعال بود پیامی که در تنظیمات ما تعریف شده را بیاور
                                 String text = tice_configMessageCommettes;
-                                Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(commettesRow.get(0).get(Commettes._secretary).toString(), db), "1", "sms,app,email", "", "دبیر کمیته،" + commettesRow.get(0).get(Commettes._title) + " برنامه عملیاتی با عنوان: " + plansRow.get(0).get(_title) + "به شما ابلاغ شده است ", text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                                Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(commettesRow.get(0).get(Commettes._secretary).toString(), db), "1", "sms,app,email", "", "دبیر کمیته،" + commettesRow.get(0).get(Commettes._title) + " برنامه عملیاتی با عنوان: " + plansRow.get(0).get(_title) + "به شما ابلاغ شده است ", text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
 
                             } else {
                                 String text = "مصوبه پیشنهادی در کمیته شما ایجاد شد";
-                                Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(commettesRow.get(0).get(Commettes._secretary).toString(), db), "1", "sms,app,email", "", "دبیر کمیته،" + commettesRow.get(0).get(Commettes._title) + " برنامه عملیاتی با عنوان: " + plansRow.get(0).get(_title) + "به شما ابلاغ شده است ", text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                                Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(commettesRow.get(0).get(Commettes._secretary).toString(), db), "1", "sms,app,email", "", "دبیر کمیته،" + commettesRow.get(0).get(Commettes._title) + " برنامه عملیاتی با عنوان: " + plansRow.get(0).get(_title) + "به شما ابلاغ شده است ", text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
                             }
 
                         } else {
@@ -1609,10 +1609,10 @@ public class Plans {
                 String tice_configMessage = Tice_config.getValue(db,  Tice_config._config_requestEditingthePlan_name);
                 if (!tice_configMessage.equals("")) {//اگر در تنظیمات پیام ها چنین عنوانی  یافت شد اگر فعال بود پیامی که در تنظیمات ما تعریف شده را بیاور
                     String text = tice_configMessage;
-                    Messenger.sendMesseage(null, db, row.get(0).get(_creatorId).toString(), "1", "sms,app,email", "", "برنامه را ویرایش نمایید", text, "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                    Messenger.sendMesseage(null, db, row.get(0).get(_creatorId).toString(), "1", "sms,app,email", "", "برنامه را ویرایش نمایید", text, "","", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
                 } else {
                     String text = "برنامه عملیاتی با عنوان " + row.get(0).get(_title) + "برای ویرایش در کارتابل شما قرار گرفته است لطفا برای ویرایش و تایید اقدام نمایید";
-                    Messenger.sendMesseage(null, db, row.get(0).get(_creatorId).toString(), "1", "sms,app,email", "", "برنامه را ویرایش نمایید", text, "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                    Messenger.sendMesseage(null, db, row.get(0).get(_creatorId).toString(), "1", "sms,app,email", "", "برنامه را ویرایش نمایید", text, "","", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
                 }
 
                 script += Js.modal(errorMessageing, "پیام سامانه");
@@ -1657,10 +1657,10 @@ public class Plans {
                  String tice_configMessage = Tice_config.getValue(db,  Tice_config._config_requestEditingthePlan_name);
                     if (!tice_configMessage.equals("")) {//اگر در تنظیمات پیام ها چنین عنوانی  یافت شد اگر فعال بود پیامی که در تنظیمات ما تعریف شده را بیاور
                         String text = tice_configMessage;
-                        Messenger.sendMesseage(null, db, row.get(0).get(_creatorId).toString(), "1", "sms,app,email", "", "برنامه را ویرایش نمایید", text, "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                        Messenger.sendMesseage(null, db, row.get(0).get(_creatorId).toString(), "1", "sms,app,email", "", "برنامه را ویرایش نمایید", text, "","", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
                 } else {
                     String text = "برنامه عملیاتی با عنوان " + row.get(0).get(_title) + "برای ویرایش در کارتابل شما قرار گرفته است لطفا برای ویرایش و تایید اقدام نمایید";
-                    Messenger.sendMesseage(null, db, row.get(0).get(_creatorId).toString(), "1", "sms,app,email", "", "برنامه را ویرایش نمایید", text, "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                    Messenger.sendMesseage(null, db, row.get(0).get(_creatorId).toString(), "1", "sms,app,email", "", "برنامه را ویرایش نمایید", text, "","", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
                 }
 
                 script += Js.modal(errorMessageing, "پیام سامانه");
@@ -2829,10 +2829,10 @@ public class Plans {
                      String tice_configMessage = Tice_config.getValue(db,  Tice_config._config_offerFormtotheCommittee_name);
                     if (!tice_configMessage.equals("")) {//اگر در تنظیمات پیام ها چنین عنوانی  یافت شد اگر فعال بود پیامی که در تنظیمات ما تعریف شده را بیاور
                         String text = tice_configMessage;
-                            Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(commettesRow.get(0).get(Commettes._secretary).toString(), db), "1", "sms,app,email", "", "دبیر کمیته،" + commettesRow.get(0).get(Commettes._title) + " برنامه عملیاتی با عنوان: " + jjTools.getParameter(request, Approved._title).toString().replaceAll("#A#", "-") + "به شما ابلاغ شده است ", text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                            Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(commettesRow.get(0).get(Commettes._secretary).toString(), db), "1", "sms,app,email", "", "دبیر کمیته،" + commettesRow.get(0).get(Commettes._title) + " برنامه عملیاتی با عنوان: " + jjTools.getParameter(request, Approved._title).toString().replaceAll("#A#", "-") + "به شما ابلاغ شده است ", text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));                                
                     } else {
                         String text = "وارد برنامه مدیار شوید و مصوبه پیشنهاد شده را تایید کنید.";
-                        Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(commettesRow.get(0).get(Commettes._secretary).toString(), db), "1", "sms,app,email", "", "دبیر کمیته،" + commettesRow.get(0).get(Commettes._title) + " برنامه عملیاتی با عنوان: " + jjTools.getParameter(request, Approved._title).toString().replaceAll("#A#", "-") + "به شما ابلاغ شده است ", text, html.toString(), "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
+                        Messenger.sendMesseage(null, db, Role.getUeserIdByUserRole(commettesRow.get(0).get(Commettes._secretary).toString(), db), "1", "sms,app,email", "", "دبیر کمیته،" + commettesRow.get(0).get(Commettes._title) + " برنامه عملیاتی با عنوان: " + jjTools.getParameter(request, Approved._title).toString().replaceAll("#A#", "-") + "به شما ابلاغ شده است ", text, html.toString(), "", "یادآوری",Tice_config.getValue(db, Tice_config._config_activeSmsModulePlans_name),Tice_config.getValue(db, Tice_config._config_activeEmailModulePlans_name));
                     }
 
                 }
