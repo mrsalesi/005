@@ -261,7 +261,7 @@
                 </div>
                 <div class="field-wrap">
                     <div class='CaptchaWrap' >
-                    <input type="tel" required autocomplete="off" id="UserCaptchaCode" class="CaptchaTxtField" placeholder='کدتصویر زیر را وارد کنید' style="width:35%;display: inline;"/>
+                        <input type="tel" required autocomplete="off" id="UserCaptchaCode" class="CaptchaTxtField" placeholder='کدتصویر زیر را وارد کنید' style="width:35%;display: inline;"/>
                         <div id="CaptchaImageCode" class="CaptchaTxtField" style="display: inline;float: left">
                         </div>
                     </div>
@@ -294,6 +294,7 @@
             <div id="swOneFormToCompleteForm">
                 <div class="top-row">
                     <div class="field-wrap">
+                        <input id="formAnswers_formId" name="formAnswers_formId" type="hidden" value="67">
                         <label>
                             نام <span class="req">*</span>
                         </label>
@@ -334,7 +335,7 @@
                         <label>
                             شماره شناسنامه<span class="req">*</span>
                         </label>
-                        <input type="text"required autocomplete="off" class="datepicker"  id="q162" name="q162" placeholder="شماره شناسنامه"/>
+                        <input type="number" required autocomplete="off"   id="q162" name="q162" placeholder="شماره شناسنامه"/>
                     </div>
                 </div>
                 <div class="top-row">
@@ -361,9 +362,12 @@
                     </div>
                     <div class="field-wrap">
                         <label>
-                            مبلغ حق عضویت<span class="req">*</span>
+                            نوع پرداخت حق عضویت<span class="req">*</span>
                         </label>
-                        <input type="text" required autocomplete="off" id="q166" name="q166" placeholder="مبلغ حق عضویت" />
+                        <select id="q166" name="q166" class="form-control">
+                            <option value="نقد">نقد</option>
+                            <option value="اقساط">اقساط</option>
+                        </select>
                     </div>
 
                 </div>
@@ -378,16 +382,19 @@
                         <label>
                             شماره پرسنلی<span class="req">*</span>
                         </label>
-                        <input type="text" required autocomplete="off" id="q168" name="q168" placeholder="شماره پرسنلی" />
+                        <input type="number" required autocomplete="off" id="q168" name="q168" placeholder="شماره پرسنلی" />
                     </div>
 
                 </div>
                 <div class="top-row">
                     <div class="field-wrap">
-                        <label>
+<!--                        <label>
                             شماره پرسنلی<span class="req">*</span>
                         </label>
-                        <input type="text"required autocomplete="off" class="" id="q169" name="q169" placeholder="شماره پرسنلی"/>
+                        <input type="text"required autocomplete="off" class="" id="q169" name="q169" placeholder="شماره پرسنلی"/>-->
+                        <label>
+                            اگر حدود تاریخ عضویت در تعاونی را هم  نمیدانید تاریخ روز جاری را ثبت کنید
+                        </label>
                     </div>
                     <div class="field-wrap">
                         <label>
@@ -488,30 +495,41 @@
                     </label>
                     <input type="text"required autocomplete="off" id="q181" name="q181" placeholder="ادرس محل سکونت"/>
                 </div>
-
-                <div class="field-wrap">
-                    <label>
-                        27-اینجانب اقرار و اعلام می‌نمایم شرایط عمومی و اختصاصی مربوط به عضویت در تعاونی مسكن(چندمنظوره)كاركنان دادگستری استان اصفهان             موضوع ماده 12 اساسنامه را دارا بوده و در شرایط فعلی عضو هیچ تعاونی مشابه دیگری نمی‌باشم و در صورتی كه خلاف آن اثبات شود مسئولیت  آن را به عهده می‌گیرم. تاریخ <!-- عنوان سوال--><span class="req">*</span>
-                    </label>
-                    <input type="number"required autocomplete="off" id="q182" name="q182" placeholder=""/>
+                <div class="field-wrap" style="color: #eab702">
+                    <input type="checkbox" required autocomplete="off" id="q182" name="q182" style="width: 1em;height: 1em" />
+                    <span class="req">*</span>
+                    اینجانب اقرار و اعلام می‌نمایم شرایط عمومی و اختصاصی مربوط به عضویت در تعاونی مسكن
+                    (چندمنظوره)كاركنان دادگستری استان اصفهان             موضوع ماده 
+                    اساسنامه را دارا بوده و در شرایط فعلی عضو هیچ تعاونی مشابه دیگری نمی‌باشم و در صورتی كه خلاف آن اثبات شود مسئولیت
+                    آن را به عهده می‌گیرم
                 </div>
                 <div class="field-wrap">
                     <label>
-                        28-فتوكپی آخرین حكم كارگزینی ـ كپی شناسنامه ـ كپی كارت ملی ـ و اصل فیش واریزی بابت حق عضویت       ضمیمه می‌باشد. <!-- عنوان سوال--><span class="req">*</span>
+                        فتوكپی آخرین حكم كارگزینی ـ كپی شناسنامه ـ كپی كارت ملی ـ و اصل فیش واریزی بابت حق عضویت       ضمیمه می‌باشد. <!-- عنوان سوال--><span class="req">*</span>
                     </label>
-
-                    <div class="col-lg-3" style="margin-bottom: 20px">
-                        <input id="q183" name="q183" value="" required="" type="hidden">                                        
-                        <img id="q183_Preview" class="img-thumbnail" src="img/preview.jpg">
-                        <div class="row">
-                            <input class="btn btn-primary" id="send_q183_icon" type="submit" value="ارسال">
-                            <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
-                            <input type="file" id="q183_file" name="q183_file" onchange="$(this).parent().find('span.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;">
-                            <span class="form-control col-lg"></span>
+                    <div id="filePdfLoader" class="col-lg-12 mg-t-20" style="">                                                                                        
+                        <div class="col-lg-12">پیوست کردن فایل 
+                            <div class="" id="showFileMessengerDiv"></div>
                         </div>
-                    </div>                </div>            
-
-                <button class="button button-block"  onclick="formAnswerSet_insertAndFinalForm();">درخواست عضویت</button>
+                        <div class="input-group col-lg-12">
+                            <input class="" id="messenger_titleFile" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" />
+                            <input id="attachFileMessenger" name="attachFileMessenger" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file" />
+                            <span class="btn btn-primary" onclick=" $(this).parent().find('input[type=file]').click();">انتخاب فایل-1</span>
+                            <span id="sendFileMessenger" class="btn flat-button button-color button-normal green">ارسال فایل روی سرور-2<i class="fa fa-upload"></i></span>
+                        </div>
+                        <div class="inputAfterSelectManager" ></div>
+                    </div>
+                </div>            
+                <div class="field-wrap">
+                    <div class='CaptchaWrap' >
+                        <input type="tel" required autocomplete="off" id="UserCaptchaCode2" class="CaptchaTxtField" placeholder='کدتصویر زیر را وارد کنید' style="width:35%;display: inline;"/>
+                        <div id="CaptchaImageCode2" class="CaptchaTxtField" style="display: inline;float: left">
+                        </div>
+                    </div>
+                    <span id="WrongCaptchaError3" class="error"></span>
+                    <a class="" onclick='CreateCaptcha();'>کد مجدد</a>
+                </div>
+                <button class="button button-block"  onclick="formAnswerSet_insertRegisterForm();">درخواست عضویت</button>
                 <!--<a class="button button-block" style="text-align: center"  href="Server?do=FormAnswerSet.add_new&formAnswers_formId=67">عضویت پیشرفته</a>-->
 
             </div>
@@ -523,8 +541,16 @@
     </div><!-- tab-content -->
 
 </div> <!-- /form -->
-<script src="template/js/jquery.min.js" type="text/javascript"></script>
+<script src="Manager/js/js.cookie.js" type="text/javascript"></script>
+<script src="Manager/js/ajaxfileupload.js" type="text/javascript"></script>
+<link href="Manager/js/jquery/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css"/>
+<script src="Manager/js/jquery/jquery-ui-1.9.2.custom.min.js" type="text/javascript"></script>
+<script src="Manager/js/calendar/jquery.ui.datepicker-cc.js" type="text/javascript"></script>
+<script src="Manager/js/calendar/jquery.ui.datepicker-cc-fa.js" type="text/javascript"></script>
+<script src="Manager/js/calendar/calendar.all.js" type="text/javascript"></script>
 <script>
+                    new jj('#sendFileMessenger').jjAjaxFileUploadByTitleAndMultiFile('#attachFileMessenger', 'messenger_attachFile', 'messenger_titleFile', "#showFileMessengerDiv");
+                    new jj("body .datepicker").jjCalendarWithYearSelector("1310","1390");
                     $('.form').find('input, textarea').on('keyup blur focus', function (e) {
 
                         var $this = $(this),
@@ -591,13 +617,19 @@
                         }
                         cd = a + ' ' + b + ' ' + c + ' ' + d + ' ' + e + ' ' + f;
                         $('#CaptchaImageCode').empty().append('<canvas id="CapCode" class="capcode" width="200" height="50" dir="ltr"></canvas>')
+                        $('#CaptchaImageCode2').empty().append('<canvas id="CapCode2" class="capcode" width="200" height="50" dir="ltr"></canvas>')
 
                         var c = document.getElementById("CapCode"),
                                 ctx = c.getContext("2d"),
                                 x = c.width / 2,
                                 img = new Image();
+                        var c2 = document.getElementById("CapCode2"),
+                                ctx2 = c2.getContext("2d"),
+                                x2 = c2.width / 2,
+                                img2 = new Image();
 
                         img.src = "template/img/captchaback.jpg";
+                        img2.src = "template/img/captchaback.jpg";
                         img.onload = function () {
                             var pattern = ctx.createPattern(img, "repeat");
                             ctx.fillStyle = pattern;
@@ -608,12 +640,32 @@
                             ctx.setTransform(1, -0.12, 0, 1, 0, 15);
                             ctx.fillText(cd, x, 40);
                         };
+                        img2.onload = function () {
+                            var pattern = ctx2.createPattern(img2, "repeat");
+                            ctx2.fillStyle = pattern;
+                            ctx2.fillRect(0, 0, c.width, c.height);
+                            ctx2.font = "0.8em Roboto Slab";
+                            ctx2.fillStyle = '#212121';
+                            ctx2.textAlign = 'center';
+                            ctx2.setTransform(1, -0.12, 0, 1, 0, 15);
+                            ctx2.fillText(cd, x2, 40);
+                        };
+                        
                     }
 
 // Validate Captcha
                     function ValidateCaptcha() {
                         var string1 = removeSpaces(cd);
                         var string2 = removeSpaces($('#UserCaptchaCode').val());
+                        if (string1 == string2) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                    function ValidateCaptcha2() {
+                        var string1 = removeSpaces(cd);
+                        var string2 = removeSpaces($('#UserCaptchaCode2').val());
                         if (string1 == string2) {
                             return true;
                         } else {

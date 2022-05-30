@@ -215,12 +215,13 @@ public class Access_User {
         }
         return null;
     }
+
     public static String setAttachPic(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean needString) throws Exception {
         try {
             String token = jjTools.getParameter(request, _token);
             String fileName = jjTools.getParameter(request, _attachPicPersonal).toString();
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put(_attachPicPersonal, fileName); 
+            map.put(_attachPicPersonal, fileName);
             db.update(tableName, map, _token + "=" + token);
         } catch (Exception ex) {
             Server.ErrorHandler(ex);
@@ -556,11 +557,12 @@ public class Access_User {
             return "";
         }
     }
+
     public static String editUser(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean needString) throws Exception {
         try {
-            
+
             String id = jjTools.getParameter(request, _id);
-         
+
             List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, _id + "=" + id));
             String email = jjTools.getParameter(request, _email);
 
@@ -572,12 +574,12 @@ public class Access_User {
             map.put(_name, jjTools.getParameter(request, _name));
             map.put(_mobile, jjTools.getParameter(request, _mobile));
             map.put(_attachFile, jjTools.getParameter(request, _attachFile));
-            map.put(_attachPicPersonal, jjTools.getParameter(request, _attachPicPersonal));                    
+            map.put(_attachPicPersonal, jjTools.getParameter(request, _attachPicPersonal));
             map.put(_codeMeli, jjTools.getParameter(request, _codeMeli));
             map.put(_pass, jjTools.getParameter(request, _pass).toLowerCase());
             map.put(_address, jjTools.getParameter(request, _address));
-                       String int1 = jjTools.getParameter(request, _int1);                                 
-            map.put(_postalCode, jjTools.getParameter(request, _postalCode));                
+            String int1 = jjTools.getParameter(request, _int1);
+            map.put(_postalCode, jjTools.getParameter(request, _postalCode));
             String whrer;
             if (!Access_User.hasAccess(request, db, rul_rfsAll)) {
                 whrer = _id + "=" + jjTools.getParameter(request, _id);
@@ -1140,7 +1142,9 @@ public class Access_User {
                     return "";
                 }
                 List<Map<String, Object>> groups = jjDatabase.separateRow(
-                        db.Select(Access_Group_User.tableName, Access_Group_User._user_id + "=" + user.get(0).get(Access_User._id)));
+                        db.otherSelect("SELECT id, "
+                                + "GROUP_CONCAT(group_id SEPARATOR ' OR id=') as group_id "//گروه هایی که کاربر در آن هست را کانکت میکند و آماده ی سلکت بعدی است
+                                + "FROM access_user_group WHERE user_id=" + user.get(0).get(Access_User._id).toString() + " GROUP BY user_id;"));
                 StringBuilder validInSeassion = new StringBuilder();
                 StringBuilder noValidInSeassion = new StringBuilder();
                 jjTools.setSessionAttribute(request, "#" + Access_User._id.toUpperCase(), user.get(0).get(Access_User._id).toString());
@@ -1167,28 +1171,28 @@ public class Access_User {
                     } else {
                         html.append("$('#TrIdInUserForm').hide();\n");
                     }
-                    for (int i = 0; i < groups.size(); i++) {
-                        List<Map<String, Object>> group = jjDatabase.separateRow(
-                                db.Select(Access_Group.tableName, Access_Group._id + "=" + groups.get(i).get(Access_Group_User._group_id)));
-                        if (group.size() > 0) {
-                            for (int j = 1; j < Access_Group.chkNumber; j++) {
-                                String rulId = "0";//defult value,to privent null pointer exeption in group_c
+                    if (groups.size() > 0) {//اگر کاربر عضو گروهی نبود دسترسی به چیزی ندارد
+                        List<Map<String, Object>> group = jjDatabase.separateRow(db.Select(Access_Group.tableName, Access_Group._id + "=" + groups.get(0).get(Access_Group_User._group_id)));
+                        for (int j = 1; j < Access_Group.chkNumber; j++) {// به تعداد همه ی دسترسی هایی که در دیتابیس تعریف شده
+                            String rulId = "";//defult value,to privent null pointer exeption in group_c
+                            for (int i = 0; i < group.size(); i++) {// به تعداد گروه هایی که کاربر در آنها عضو است دسترسی را چک میکنیم
                                 try {
-                                    rulId = group.get(0).get("group_c" + (j < 10 ? "0" + j : j)).toString();
+                                    String columnName = "group_c" + (j < 10 ? "0" + j : j);// برای ستون های زیر ده یک صفر باید اضافه کنیم چون در دیتابیس از اول اینطوری بوده که بهتر است این صفر را برداریم
+                                    rulId += group.get(i).get(columnName).toString().equals("1") ? "1" : "";// اگر دسترسی داشت یک میگذاریم اگر نداشت تهی 
                                 } catch (Exception ex) {
                                     ServerLog.Print(
                                             "خطایی در پایگاه داده: ردیف "
                                             + "group_c" + (j < 10 ? "0" + j : j)
                                             + "وجود ندارد، این خطا از طریق استثنا ها مدیریت شد");
-                                    rulId = "0";
+                                    rulId = "";
                                 }
-                                if (rulId.equals("1")) {
-                                    if (!validInSeassion.toString().contains("$" + j + "$")) {
-                                        validInSeassion.append("$" + j + "$");
-                                    }
-                                } else {
-                                    noValidInSeassion.append("$" + j + "$");
-                                    html.append("$('#C" + (j < 10 ? "0" + j : j) + "').attr('disabled','disabled');\n");
+                            }                            
+                            if (rulId.isEmpty()) {
+                                noValidInSeassion.append("$" + j + "$");
+                                html.append("$('#C" + (j < 10 ? "0" + j : j) + "').attr('disabled','disabled');\n");
+                            } else {
+                                if (!validInSeassion.toString().contains("$" + j + "$")) {
+                                    validInSeassion.append("$" + j + "$");
                                 }
                             }
                         }
@@ -1337,7 +1341,7 @@ public class Access_User {
                 //در موقع ورود به سامانه برای کاربری که وارد سامانه شده یک پیامک و ایمیل ارسال میشود
                 System.out.println("//////////////////////////////////////");
                 String errorMessage = user.get(0).get(_jensiat).toString() + " " + user.get(0).get(_name).toString() + " " + user.get(0).get(_family).toString() + " " + " به سامانه وارد شدید";
-                Messenger.sendMesseage(request, db, user.get(0).get(_id).toString(), "0", "sms,email", "", "ورود به سامانه", errorMessage, "","", "امنیتی", Tice_config.getValue(db, Tice_config._config_activeSmsLogin_name), Tice_config.getValue(db, Tice_config._config_activeEmailLogin_name));
+                Messenger.sendMesseage(request, db, user.get(0).get(_id).toString(), "0", "sms,email", "", "ورود به سامانه", errorMessage, "", "", "امنیتی", Tice_config.getValue(db, Tice_config._config_activeSmsLogin_name), Tice_config.getValue(db, Tice_config._config_activeEmailLogin_name));
                 System.out.println("//////////////////////////////////////");
             } else {
                 List<Map<String, Object>> user = jjDatabase.separateRow(db.Select(
@@ -1518,7 +1522,7 @@ public class Access_User {
                 //در موقع ورود به سامانه برای کاربری که وارد سامانه شده یک پیامک و ایمیل ارسال میشود
                 System.out.println("//////////////////////////////////////");
                 String errorMessage = user.get(0).get(_jensiat).toString() + " " + user.get(0).get(_name).toString() + " " + user.get(0).get(_family).toString() + " " + " به سامانه وارد شدین";
-                Messenger.sendMesseage(request, db, user.get(0).get(_id).toString(), "0", "sms,email", "", "ورود به سامانه", errorMessage, "","", "امنیتی", Tice_config.getValue(db, Tice_config._config_activeSmsLogin_name), Tice_config.getValue(db, Tice_config._config_activeEmailLogin_name));
+                Messenger.sendMesseage(request, db, user.get(0).get(_id).toString(), "0", "sms,email", "", "ورود به سامانه", errorMessage, "", "", "امنیتی", Tice_config.getValue(db, Tice_config._config_activeSmsLogin_name), Tice_config.getValue(db, Tice_config._config_activeEmailLogin_name));
                 System.out.println("//////////////////////////////////////");
                 List<Map<String, Object>> groups = jjDatabase.separateRow(
                         db.Select(Access_Group_User.tableName, Access_Group_User._user_id + "=" + user.get(0).get(Access_User._id)));
@@ -1957,7 +1961,7 @@ public class Access_User {
         jjTools.setSessionAttribute(request, "#" + Access_User._email.toUpperCase(), "");
         request.getSession().invalidate();
 
-        Server.outPrinter(request, response, "window.localStorage.setItem('user_token','');"+"window.location.href = '/';");
+        Server.outPrinter(request, response, "window.localStorage.setItem('user_token','');" + "window.location.href = '/';");
         return "";
     }
 
@@ -2525,12 +2529,12 @@ public class Access_User {
             if (panel.equals("")) {
                 panel = "userNameAfterLogin";
             }
-            html.append(Js.setHtml("#userNameAfterLogin", "<nav id='mainnav'><ul class='menu'><li  class='userIcon'><i class='fa fa-user ' style='margin: 7px;'></i><ul class='submenu right-sub-menu'><li><a  href=''>"+ user.get(Access_User._name).toString() + "&nbsp;" + user.get(Access_User._family).toString() +"</a></li><li><a  href='userProfile.jsp?user_token=" + user.get(Access_User._token).toString() + "'>پنل کاربری</a></li><li><a href='' onclick='signOut();'>خروج</a></li></ul></li></ul></nav>")); 
+            html.append(Js.setHtml("#userNameAfterLogin", "<nav id='mainnav'><ul class='menu'><li  class='userIcon'><i class='fa fa-user ' style='margin: 7px;'></i><ul class='submenu right-sub-menu'><li><a  href=''>" + user.get(Access_User._name).toString() + "&nbsp;" + user.get(Access_User._family).toString() + "</a></li><li><a  href='userProfile.jsp?user_token=" + user.get(Access_User._token).toString() + "'>پنل کاربری</a></li><li><a href='' onclick='signOut();'>خروج</a></li></ul></li></ul></nav>"));
 //            html.append(Js.setHtml("#userNameAfterLogin", "<li class='  ' style='border:1px #eab702 solid'><a  style='cursor:pointer' href='userProfile.jsp?user_token=" + user.get(Access_User._token).toString() + "'>" + user.get(Access_User._name).toString() + "&nbsp;" + user.get(Access_User._family).toString() + "&nbsp;"
 //                    + "<i class=\"fa fa-user-circle\"></i></a></li>") + ";\n");  
             html.append(Js.setHtml("#userNameAfterLogin1", "<li class='   ' style='color:black'>" + user.get(Access_User._name).toString() + "&nbsp;" + user.get(Access_User._family).toString() + "&nbsp;"
                     + "<a  style='cursor:pointer;' href='userProfile.jsp?user_token=" + user.get(Access_User._token).toString() + "''><i class=\"fa fa-user-circle\"></i></a></li>") + ";\n");
-                html.append("sw('خوش آمدید'); " );
+            html.append("sw('خوش آمدید'); ");
             String script = "";
             script += " var href =index.jsp;\n"
                     + "      window.location.href = href;";

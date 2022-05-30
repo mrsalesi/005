@@ -35,6 +35,10 @@
                                     <input class="form-control" type="text" name="product_factor_serialNumber" id="product_factor_serialNumber">
                                 </div>
                                 <div class="col-lg-4">
+                                    تاریخ سر رسید:
+                                    <input class="form-control" type="text" name="product_factor_serialNumber" id="product_factor_serialNumber">
+                                </div>
+                                <div class="col-lg-4">
                                     نام شرکت
                                     <input class="form-control" type="text" name="product_factor_companyName" id="product_factor_companyName">
                                 </div>
@@ -81,25 +85,25 @@
                                     </div>                               
                                 </div>
                                 <div class="col-lg-12 row" id="FactorItemInFactorForm" style="margin: auto;">
-                                    <input type="hidden" name="id" id="FactorItem_id1">
-                                    <input type="hidden" name="product_factor_item_factorId" id="product_factor_item_factorId1">
+                                    <input type="hidden" name="id" id="FactorItem_id1" />
+                                    <input type="hidden" name="product_factor_item_factorId" id="product_factor_item_factorId1" />
                                     <div class="col-lg-3">
-                                        محصول
+                                        ردیف هزینه (محصول/خدمت)
                                         <select id="product_factor_item_productId1" name="product_factor_item_productId" class="form-control" onchange="cmsFactorItem.m_getProductPrice($(this).val());">                    
                                         </select>
                                     </div>
 
                                     <div class="col-lg-3">
                                         قیمت اصلی
-                                        <input class="form-control" type="text" name="product_factor_item_originalPrice" id="product_factor_item_originalPrice1" >
+                                        <input class="form-control" type="text" name="product_factor_item_originalPrice" id="product_factor_item_originalPrice1" />
                                     </div>
                                     <div class="col-lg-3">
                                         درصد تخفیف
-                                        <input class="form-control" type="text" name="product_factor_item_discountPercent" id="product_factor_item_discountPercent1" onchange="cmsFactor.m_getProductPriceAfterDiscount();">
+                                        <input class="form-control" type="text" name="product_factor_item_discountPercent" id="product_factor_item_discountPercent1" onchange="cmsFactor.m_getProductPriceAfterDiscount();" />
                                     </div>
                                     <div class="col-lg-3">
                                         قیمت بعد از تخفیف
-                                        <input class="form-control" type="text" name="product_factor_item_priceAfterDiscount" id="product_factor_item_priceAfterDiscount1" onchange="cmsFactor.m_getProductDiscountPercent();">
+                                        <input class="form-control" type="text" name="product_factor_item_priceAfterDiscount" id="product_factor_item_priceAfterDiscount1" onchange="cmsFactor.m_getProductDiscountPercent();" />
                                     </div>
                                     <div class="col-lg-3">
                                         درصد ارزش افزوده
@@ -112,33 +116,7 @@
                                     <div class="col-lg-3">
                                         قیمت کل
                                         <input class="form-control" type="text" name="product_factor_item_totalPrice" id="product_factor_item_totalPrice1" >
-                                    </div>
-                                    <div class="col-lg-3">
-                                        تعداد اقساط برای این پروژه
-                                        <select class="form-control form-control-lg" id="mySelect" onchange="cmsFactor.m_getInstallments()">
-                                            <option value="0">بدون قسط</option>
-                                            <option value="1">یک قسط</option>
-                                            <option value="2">دو قسط</option>
-                                            <option value="3">سه قسط</option>
-                                            <option value="4">چهار قسط</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        قسط اول
-                                        <input class="form-control" type="text" name="product_factor_item_Installment1" id="product_factor_item_Installment1" >
-                                    </div>
-                                    <div class="col-lg-3">
-                                        قسط دوم
-                                        <input class="form-control" type="text" name="product_factor_item_Installment2" id="product_factor_item_Installment2" >
-                                    </div>
-                                    <div class="col-lg-3">
-                                        قسط سوم
-                                        <input class="form-control" type="text" name="product_factor_item_Installment3" id="product_factor_item_Installment3" >
-                                    </div>
-                                    <div class="col-lg-3">
-                                        قسط چهارم
-                                        <input class="form-control" type="text" name="product_factor_item_Installment4" id="product_factor_item_Installment4" >
-                                    </div>
+                                    </div>                                    
                                     <div class="col-lg-12">
                                         توضیحات
                                         <textarea class="form-control" name="product_factor_item_discription" id="product_factor_item_discription1"></textarea>
@@ -151,11 +129,11 @@
                                 </div>
                                 <div class="col-lg-6">
                                     مبلغ کل ارزش افزوده فاکتور
-                                    <input class="form-control" type="text" name="product_factor_totalAmountValueAdded" id="product_factor_totalAmountValueAdded" disabled="disabled">
+                                    <input class="form-control" type="text" name="product_factor_totalAmountValueAdded" id="product_factor_totalAmountValueAdded" disabled="disabled" />
                                 </div>
                                 <div class="col-lg-6">
                                     مبلغ کل فاکتور
-                                    <input class="form-control" type="text" name="product_factor_totalAmount" id="product_factor_totalAmount" disabled="disabled">
+                                    <input class="form-control" type="text" name="product_factor_totalAmount" id="product_factor_totalAmount" disabled="disabled" />
                                 </div>
                             </div>
                             <div class="row mg-t-20">

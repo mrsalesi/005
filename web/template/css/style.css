@@ -1,3 +1,6 @@
+#swOneFormToCompleteForm input{
+    color: #ffffff;
+}
 .ticketResponse {
     border: solid thin #f2f9ff;
     border-radius: 3px;

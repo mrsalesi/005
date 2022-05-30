@@ -175,7 +175,6 @@ function formAnswerSet_editAndFinalForm() {
  * @returns {undefined}
  */
 function formAnswerSet_insertAndFinalForm() {
-    alert();
     var requireds = $("#swOneFormToCompleteForm input[required]:text,#swOneFormToCompleteForm input[required]:hidden");
     var flag = true;
     var firsnonAnswered;
@@ -201,7 +200,73 @@ function formAnswerSet_insertAndFinalForm() {
     param += "do=FormAnswerSet.insert";
     param += "&formAnswers_status=ثبت نهایی";
     param += "&" + new jj('#swOneFormToCompleteForm').jjSerial();
+    var messenger_attachFile = $(".messenger_attachFile");
+    for (var i = 0; i < messenger_attachFile.length; i++) {
+        param += $(messenger_attachFile[i]).val() + ",";
+    }
     new jj(param).jjAjax2(false);
+}
+/**
+ *  ذخیره ی و ثبت نهایی فرم درخواست عضویت
+ *  به سرور می فرسد.
+ * سوالات اجباری را چک می کند که تکمیل شده باشند و در غیر اینصورت اسکرول می کند به آن سوال
+ * @returns {undefined}
+ */
+function formAnswerSet_insertRegisterForm() {
+    alert("2222");
+    var requireds = $("#swOneFormToCompleteForm input[required]:text,#swOneFormToCompleteForm input[required]:hidden");
+    var flag = true;
+    var firsnonAnswered;
+    for (var i = 0; i < requireds.length; i++) {
+        if ($(requireds[i]).val().trim() === "") {
+            $(requireds[i]).parent().parent().addClass('redBorder');
+            if (flag) {//فقط اولین عنصری که اجباری بوده و پر نشده این حالت دارد برای بعدی ها فلگ فالس می شود
+                firsnonAnswered = $(requireds[i]).parent().parent();
+            }
+            flag = false;
+        } else {
+            $(requireds[i]).parent().parent().removeClass('redBorder');
+        }
+    }
+    if (!flag) {
+        new jj("شما به تعدادی از سوالات پاسخ نداده اید").jjModal(" در صورت تایید نهایی دیگر اجازه ی ویرایش فرم را نخواهید داشت");
+        $([document.documentElement, document.body]).animate({
+            scrollTop: $(firsnonAnswered).offset().top
+        }, 500);
+        return;
+    }
+    var param = "";
+    param += "do=FormAnswerSet.insert";
+    param += "&formAnswers_status=ثبت نهایی";
+    param += "&" + new jj('#swOneFormToCompleteForm').jjSerial();
+    param += "&q183="; // چون ممکن است چند فایل بارگذاری کرده باشند در حلقه از دیو نگهدارنده ی فایل های بارگذاری شده میخوانیم
+    var messenger_attachFile = $(".messenger_attachFile");
+    if (messenger_attachFile.length == 0) {
+        new jj("لطفا مدارک خود را با عنوان مناسب بارگذاری نمایید").jjModal("مدارک را بارگذاری نمایید");
+        return;
+    }
+    for (var i = 0; i < messenger_attachFile.length; i++) {
+        param += $(messenger_attachFile[i]).val() + ",";
+    }
+    var result = ValidateCaptcha2();
+    if ($("#UserCaptchaCode2").val() == "" || $("#UserCaptchaCode2").val() == null || $("#UserCaptchaCode2").val() == "undefined") {
+        $('#WrongCaptchaError3').text('لطفا کد زیر را وارد کنید.').show();
+        $('#UserCaptchaCode2').focus();
+    } else {
+        if (result == false) {
+            IsAllowed = false;
+            $('#WrongCaptchaError3').text('تصویر زیر را به درستی وارد کنید!').show();
+            CreateCaptcha();
+            $('#UserCaptchaCode2').focus().select();
+        } else {
+            IsAllowed = true;
+            $('#UserCaptchaCode2').val('').attr('place-holder', 'تصویر زیر وارد کنید');
+            CreateCaptcha();
+            $('#WrongCaptchaError3').fadeOut(100);
+            $('#SuccessMessage2').fadeIn(500).css('display', 'block').delay(5000).fadeOut(250);
+            new jj(param).jjAjax2(false);
+        }
+    }
 }
 
 /**
@@ -212,7 +277,7 @@ function formAnswerSet_insertAndFinalForm() {
  * @returns {undefined}
  */
 function  removeFormIdFromCookie(id) {
-    var uniqueForms = Cookies.get('#UNIQUE_FORMS_Compleited');// فرم های که باید توسط هر کاربر یکبار تکمیل شوندبعد از تکمیل نهایی در این کوکی ذخیره میشوند
+    var uniqueForms = Cookies.get('#UNIQUE_FORMS_Compleited'); // فرم های که باید توسط هر کاربر یکبار تکمیل شوندبعد از تکمیل نهایی در این کوکی ذخیره میشوند
     if (uniqueForms) {
         var uniqueFormsId = uniqueForms.split(",");
         var temp = "";
@@ -223,19 +288,18 @@ function  removeFormIdFromCookie(id) {
                 temp += uniqueFormsId[i] + ",";
             }
         }
-        Cookies.set("#UNIQUE_FORMS_Compleited", temp.substring(0, (temp.length - 1)));//برای حذف کامای آخر
+        Cookies.set("#UNIQUE_FORMS_Compleited", temp.substring(0, (temp.length - 1))); //برای حذف کامای آخر
     }
 //    alert("set #removeFormIdFromCookie:" + uniqueForms);
 }
 ;
-
 /**
  * ست کردن آی دی فرم هایی که یکبار باید پر بشوند در کوکی
  * @param {type} id
  * @returns {undefined}
  */
 function  addFormIdToCookie(id) {
-    var uniqueForms = Cookies.get('#UNIQUE_FORMS_Compleited');// فرم های که باید توسط هر کاربر یکبار تکمیل شوندبعد از تکمیل نهایی در این کوکی ذخیره میشوند    
+    var uniqueForms = Cookies.get('#UNIQUE_FORMS_Compleited'); // فرم های که باید توسط هر کاربر یکبار تکمیل شوندبعد از تکمیل نهایی در این کوکی ذخیره میشوند    
     if (uniqueForms) {
         var uniqueFormsId = uniqueForms.split(",");
         uniqueForms = "";
@@ -249,15 +313,12 @@ function  addFormIdToCookie(id) {
         uniqueForms += id;
         Cookies.set("#UNIQUE_FORMS_Compleited", uniqueForms);
     } else {
-        Cookies.set("#UNIQUE_FORMS_Compleited", (id));// اگر ست نشده بود
+        Cookies.set("#UNIQUE_FORMS_Compleited", (id)); // اگر ست نشده بود
         uniqueForms = Cookies.get('#UNIQUE_FORMS_Compleited');
     }
     alert("set #UNIQUE_FORMS_Compleited:" + uniqueForms);
 }
 ;
-
-
-
 //#####################################################################
 // -----------------------------------------------------------------
 function initCms(lang) {
@@ -388,7 +449,6 @@ function sw(titleTextOrId) {
         titleTextOrId = titleTextOrId.replace("<span>", "");
     }
     titleTextOrId = new jj(titleTextOrId).jjTrim();
-
     // ------------------  switch sw and slider --------------------------------
     //    if(titleTextOrId=="خانه"){
     //        $('#sw').hide();
@@ -404,7 +464,7 @@ function sw(titleTextOrId) {
     if (titleTextOrId.toString().toLowerCase() == "$comment") {
         $("#sw").append("<div id='pCommentDiv' class='pCommentDiv'></div>");
 //        var commentPage = LANGUAGE == 'fa' ? 'public_comment_fa.html' : (LANGUAGE == 'en' ? 'public_comment_en.html' : 'public_comment_ar.html');
-        var commentPage = LANGUAGE == '1' ? 'public_comment1.html' : (LANGUAGE == '2' ? 'public_comment2.html' : (LANGUAGE == '3' ? 'public_comment3.html' : (LANGUAGE == '4' ? 'public_comment4.html' : 'public_comment5.html')));//====== BY RASHIDI ======
+        var commentPage = LANGUAGE == '1' ? 'public_comment1.html' : (LANGUAGE == '2' ? 'public_comment2.html' : (LANGUAGE == '3' ? 'public_comment3.html' : (LANGUAGE == '4' ? 'public_comment4.html' : 'public_comment5.html'))); //====== BY RASHIDI ======
 //        alert(commentPage);
         $("#pCommentDiv").load("formCms/" + commentPage, null, function () {
             $('#insert_Comment').button().click(function () {
@@ -490,7 +550,6 @@ function sw(titleTextOrId) {
                 jj("do=Enrolment.insert&" + new jj("#swEnrolmentFormPublic").jjSerial()).jjAjax2(false, 'Server');
                 sw(setting_comment_afted_send_text);
             });
-
             $('#enrol_url_file').button().click(function () {
             });
             $('#upload_Enrol').button().click(function () {
@@ -506,7 +565,7 @@ function sw(titleTextOrId) {
                 $('#enrolment_pic').hide()
             });
             new jj('#upload_Enrol').jjAjaxFileUpload('#enrol_url_file', '#enrolment_pic', '#enrol_url_pic_demo');
-            new jj('#upload_Enrol').jjAjaxFileUpload('#enrol_url_file', '#enrolment_pic1', '#enrol_url_pic_demo');//====== BY RASHIDI ======
+            new jj('#upload_Enrol').jjAjaxFileUpload('#enrol_url_file', '#enrolment_pic1', '#enrol_url_pic_demo'); //====== BY RASHIDI ======
 
             $('#enrol_url_file2').button().click(function () {
             });
@@ -523,7 +582,7 @@ function sw(titleTextOrId) {
                 $('#enrolment_file').hide()
             });
             new jj('#upload_Enrol2').jjAjaxFileUpload2('#enrol_url_file2', '#enrolment_file');
-            new jj('#upload_Enrol2').jjAjaxFileUpload2('#enrol_url_file2', '#enrolment_file1');//====== BY RASHIDI ======
+            new jj('#upload_Enrol2').jjAjaxFileUpload2('#enrol_url_file2', '#enrolment_file1'); //====== BY RASHIDI ======
         });
         $("#swTitle").html("فرم استخدام");
         swRightClear();
@@ -569,7 +628,6 @@ function sw(titleTextOrId) {
     // ------------------  get data from content table  ------------------------
     new jj("do=Content.sw&text=" + titleTextOrId.toString() + "&panel=sw&title=swTitle&jj=1").jjAjax(true, null);
     swRightClear();
-
     /*
      *@augments if menu dosnt need , it must be empty
      **/
@@ -592,7 +650,6 @@ function showLoginForm() {
             $('#registBtn').button().click(function () {
                 registInSite();
             });
-
             jj("#user_pass1").jjAddEnterKeyListener("signIn();");
             jj("#user_email1").jjAddEnterKeyListener("signIn();");
             jj("#user_answer").jjAddEnterKeyListener("registInSite();");
@@ -691,10 +748,8 @@ function login() {
 //    param += "&jj=1";
     new jj("do=Access_User.login&jj=1&" + new jj("#loginForm").jjSerial()).jjAjax2(false);
     USER_EMAIL = new jj('#login_user_email').jjVal();
-
 }
 ;
-
 function validateEmail(email) {
     var emailPathern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 //    var re = /^.*$/;
@@ -729,7 +784,7 @@ function validatedigit(digit) {
 }
 function validatePass(lastname) {
 //    var regx = (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/);
-    var regx = (/^[0-9a-zA-Z]{4,}$/);//رمز به صورت یک کاراکتر کوچک سپس حداقل 4 رقم
+    var regx = (/^[0-9a-zA-Z]{4,}$/); //رمز به صورت یک کاراکتر کوچک سپس حداقل 4 رقم
     return regx.test(lastname);
 }
 //function validatePass(lastname) {
@@ -758,7 +813,6 @@ function registInSite() {
     if (validatepersion(name) && new jj('#user_name').jjVal() !== "") {
         $('#user_name').css("box-shadow", "2px 0px 10px 2px rgba(1,50, 60, 0.8)");
         $("#errorRegistMessagePanel1").html('');
-
 //        validateflag = true;
     } else {
         $("#user_name").css("box-shadow", "2px 0px 10px 2px rgba(100, 10, 20,1)");
@@ -773,7 +827,6 @@ function registInSite() {
     if (validatePass(pass) && new jj('#user_pass2').jjVal() != "") {
         $('#user_pass').css("box-shadow", "2px 0px 10px 2px rgba(1,50, 60, 0.8)");
         $("#errorRegistMessagePanel2").html('');
-
 //        validateflag = true;
     } else {
         $("#user_pass2").css("box-shadow", "2px 0px 10px 2px rgba(100, 10, 20,1)");
@@ -811,7 +864,6 @@ function registInSite() {
 
 
     var family = $("#user_family").val();
-
     if (validatepersion(family) && new jj('#user_family').jjVal() !== "") {
         $('#user_family').css("box-shadow", "2px 0px 10px 2px rgba(1,50, 60, 0.8)");
         $("#errorRegistMessagePanel5").html('');
@@ -862,7 +914,6 @@ function registInSiteUser() {
     if (validatepersion(name) && new jj('#user_name_register').jjVal() !== "") {
         $('#user_name_register').css("border", "1px solid #e5e5e5");
         $("#registMessagePanel").html('');
-
 //        validateflag = true;
     } else {
         $("#user_name_register").css("border", "1px solid  red");
@@ -911,7 +962,6 @@ function registInSiteUser() {
 //         if(new jj('#user_pass').jjVal() !=""){
         $('#user_pass_register').css("border", "1px solid #e5e5e5");
         $("#registMessagePanel").html('');
-
 //        validateflag = true;
     } else {
         $("#user_pass_register").css("border", "1px solid red");
@@ -925,11 +975,9 @@ function registInSiteUser() {
         $('#user_pass_2').css("border", "1px solid red");
         $("#registMessagePanel").html('');
         $("#registMessagePanel").append('لطفا تکرار پسورد خود راوارد کنید');
-
         return false;
     } else {
         $('#user_pass_2').css("border", "1px solid #e5e5e5");
-
         $("#registMessagePanel").html('');
     }
 //
@@ -937,19 +985,13 @@ function registInSiteUser() {
         $('#user_password_hint').css("border", "1px solid red");
         $("#registMessagePanel").html('');
         $("#registMessagePanel").append('لطفایاد آور خود را  وارد کنید');
-
         return false;
     } else {
         $('#user_password_hint').css("border", "1px solid #e5e5e5");
-
         $("#registMessagePanel").html('');
-
     }
     $(".jjLoginExitPanel").val();
-
-
     new jj("do=Access_User.registUserSite&panel=" + setting_login_exit_panel.replace(".", "") + "&" + new jj("#registForm").jjSerial()).jjAjax2(false);
-
 }
 
 
@@ -957,7 +999,6 @@ function registInSiteUser() {
 
 function rightMenu(id) {
     toggleList();
-
 }
 
 
@@ -977,7 +1018,6 @@ function rightMenu(id) {
 function ShowRegistForm() {
     $("#loginForm").hide();
     $("#registForm").show();
-
 }
 ////////////////////////backToLogin برای نمایش صفحه ورود وپنهان کردن صفحه ثبت نام
 function backToLogin() {
@@ -987,13 +1027,10 @@ function backToLogin() {
 /////////////////
 function registInSitePardakht() {
     var flag = true;
-
-
     var pass = $("#user_pass_pardakht2").val();
     if (validatePass(pass) && new jj('#user_pass_pardakht2').jjVal() != "") {
         $('#user_pass_pardakht2').css("box-shadow", "2px 0px 10px 2px rgba(1,50, 60, 0.8)");
         $("#errorRegistMessagePanel5").html('');
-
 //        validateflag = true;
     } else {
         $("#user_pass_pardakht2").css("box-shadow", "2px 0px 10px 2px rgba(100, 10, 20,1)");
@@ -1024,7 +1061,6 @@ function registInSitePardakht() {
 
 
     var name = $("#user_name_pardakht").val();
-
     if (validatepersion(name) && new jj('#user_name_pardakht').jjVal() != "") {
         $('#user_name_pardakht').css("box-shadow", "2px 0px 10px 2px rgba(1,50, 60, 0.8)");
         $("#errorRegistMessagePanel9").html('');
@@ -1040,7 +1076,6 @@ function registInSitePardakht() {
     ////FAMILY(F)
 
     var family = $("#user_family_pardakht").val();
-
     if (validatepersion(family) && new jj('#user_family_pardakht').jjVal() !== "") {
         $('#user_family_pardakht').css("box-shadow", "2px 0px 10px 2px rgba(1,50, 60, 0.8)");
         $("#errorRegistMessagePanel10").html('');
@@ -1119,7 +1154,7 @@ function loginRefresh() {
     new jj("do=Access_User.loginMstid&panel=userNameAfterLogin").jjAjax2(false);
 }
 function swGetNewsCategory() {
-    new jj("do=News.getList&panel=sw&id=0&jj=1").jjAjax2(true);//id=0=> top news(slider + priority 2)
+    new jj("do=News.getList&panel=sw&id=0&jj=1").jjAjax2(true); //id=0=> top news(slider + priority 2)
 }
 function swGetForumCategory() {
     new jj("do=Category_Forum.getList&panel=sw").jjAjax2(true);
@@ -1158,7 +1193,6 @@ function swGetUrdU(productId) {
     var tempid = (productId) ? productId : "0";
     new jj("do=Product.getListUrduAll&panel=sw&id=" + tempid + "&jj=1&title=swTitle").jjAjax2(true);
     swOptionsMenu("swSelectOptions");
-
 }
 /**swGetProducts
  * این تابع برای نمایش محتوای داخل منو ها
@@ -1169,7 +1203,6 @@ function swGetUrdU(productId) {
 function swGetContent(contentId) {
     var tempid = (contentId) ? contentId : "0";
     new jj("do=Content.getListContent&panel=swGroups&id=" + tempid + "").jjAjax2(true);
-
 }
 /**این تابع برای سلکت تگ ها در صفحه اصلی سایت ونمایش محتوای تگ نوشته شده
  * 
@@ -1186,8 +1219,6 @@ function swGetContent(contentId) {
 function getContentTages(contentId) {
     var tempid = (contentId) ? contentId : "0";
     new jj("do=Content.getContentTages&panel=swContentTages&id=" + tempid + "").jjAjax2(true);
-
-
 }
 /**
  * این تابع برای قسمت گروه های سایت یاهمان کتگوری محتواست
@@ -1226,7 +1257,6 @@ function swRightProductMenu() {
 //    var panel = (panel) ? panel : "swRight";
     $("#sidebarright").css("display", "block");
     $("#sidebarright").show();
-
 //    new jj("do=Category_Product.getList&panel='#swRight'&id=0&jj=1").jjAjax2();
 }
 /**
@@ -1291,7 +1321,6 @@ function signInHome() {
     new jj(param).jjAjax2(false);
     $("#swLoginForm").hide();
     $("#sw").show();
-
     $("html, body").animate({scrollTop: 0}, "slow");
     return false;
 }
@@ -1369,7 +1398,6 @@ function SignUpInSite() {
     if (validatePass(pass) && new jj('#passRegist').jjVal() != "") {
         $('#passRegist').css("box-shadow", "2px 0px 10px 2px rgba(1,50, 60, 0.8)");
         $("#errorRegistMessagePanel1").html('');
-
     } else {
         $("#passRegist").css("box-shadow", "2px 0px 10px 2px rgba(100, 10, 20,1)");
         $("#errorRegistMessagePanel1").html('');
@@ -1449,7 +1477,6 @@ function showformSignIn() {
     $("#password").show();
     $("#login").show();
     $("#forgetPass").show();
-
 }
 
 /**با انتخاب ورود به سامانه
@@ -1462,7 +1489,6 @@ function showformSignOut() {
 
     $("#sign-in").hide();
     $("#sign-out").show();
-
 }
 /**با انتخاب ورود به سامانه
  * این تابع برای فراموشی رمز عبور در قسمت ورود بعه سامانه نوشته شده 
@@ -1475,7 +1501,6 @@ function showFormForgetPass() {
     $("#forgetPass").hide();
     $("#sendEmail").show();
     $("#back").show();
-
 }
 /**
  * در صفحه اول سایت
@@ -1572,7 +1597,6 @@ function newsLike(newsId) {
     new jj("سپاس از همکاری شما.نظر شما بزودی در سیستم اعمال می شود...").jjDialog();
 }
 ;
-
 //By Md
 function productDisLike(productId) {
     new jj("سپاس از همکاری شما.نظر شما بزودی در سیستم اعمال می شود...").jjDialog();
@@ -1583,7 +1607,6 @@ function productDisLike(productId) {
     new jj("do=Product.productDisLike&id=" + productId).jjAjax2(true);
 }
 ;
-
 //By Md
 function productLike(productId) {
     jj("سپاس از همکاری شما.نظر شما بزودی در سیستم اعمال می شود...").jjDialog();
@@ -1609,7 +1632,6 @@ function refreshSumPrice() {// آپدیت شدن قیمت کل پرداختی
         $("#finalPrice").html(sum);
         $("#account_factor_sum").val(sum);
     });
-
 //   
 }
 
@@ -1634,17 +1656,14 @@ function addToShoppingCart(productId) {//آی دی کالای انتخابی ر�
             $("#productNums").html(1);
             $("#productNumsCart").html(1);
             new jj('دوره به صورتحساب شما اضافه شد.').jjModal("پیام سامانه");
-
 //            showShoppingCart();
         }
     } else {
         new jj('این دوره پیش از این انتخاب شده است.').jjModal("پیام سامانه");
-
     }
     $("#shoppingCart").html(new jj('productNums').jjCookieGet());
 }
 ;
-
 function getDetailsProductsSite(id, panel) {
     $('#sidebarright').hide();
 //    $('.news').hide();
@@ -1662,7 +1681,6 @@ function getDetailsProductsSite(id, panel) {
     }
     param += "&panel=sw";
     param += "&jj=1";
-
     new jj(param).jjAjax2(false);
 }
 
@@ -1702,14 +1720,11 @@ function afterDeletePrFromCart(productId) {//آیتمی را از سبد خری�
         $("#cartShop").css("display", "none");
         $("#form-company").css("display", "none");
         $("#cartEmpty").css("display", "block");
-
     }
 
 
 
     refreshSumPrice();
-
-
 }
 ;
 function prePaymentPardakht() {
@@ -1724,7 +1739,7 @@ function prePaymentPardakht() {
 //        $(".bankDiv").css("border", "0px gray dashed");
 //        var param = new jj("#sw").jjSerial();
 //        new jj("do=Factor.insertFactor&" + param).jjAjax2(true);//ثبت فاکتور در دیتابیس
-    new jj("do=Factor.insertFactor&idProduct=" + $("#product_factor_item_productId").val()).jjAjax2(true);//ثبت فاکتور در دیتابیس
+    new jj("do=Factor.insertFactor&idProduct=" + $("#product_factor_item_productId").val()).jjAjax2(true); //ثبت فاکتور در دیتابیس
 }
 function prePayment() {
     alert("1111111");
@@ -1737,7 +1752,6 @@ function prePayment() {
 //        $("#user_address").css("border", "1px gray solid");
 //        $(".bankDiv").css("border", "0px gray dashed");
     var param = new jj("#sw").jjSerial();
-
 //        param += "&do=Factor.insertFactor";
 //        nameDargah($('.bankDiv input:radio[class=dargahha]:checked').val());
 //        new jj(param).jjAjax2(true);//ثبت فاکتور در دیتابیس
@@ -1781,7 +1795,7 @@ function Comment() {
         $('#comment_text').css("border", "red dashed");
     } else {
         jj("do=Comment.insert&" + new jj("#commentForm").jjSerial()).jjAjax2();
-        sw(setting_default_sw);//برای نمایش صفحه اصلی بعد از ارسال فرم
+        sw(setting_default_sw); //برای نمایش صفحه اصلی بعد از ارسال فرم
     }
 }
 ;
@@ -1818,7 +1832,6 @@ function swProduct(productId) {
     }
 }
 ;
-
 //<============ BY RASHIDI ========
 /*
  *Only use when div whit "id=swTopNewsDiv" is avalable in DOM( when getList() in serverside has ben caled)
@@ -1850,7 +1863,6 @@ function resultSearch0() {
     new jj('do=Product.resultSearch1').jjAjax2();
 }
 ;
-
 function swNews2(newsId) {
     if (jj(newsId).jjIsDigit()) {
         new jj("do=News.swPishro&id=" + newsId.toString() + "&panel=sw").jjAjax2(true);
@@ -1877,7 +1889,6 @@ function swPic(titleTextOrId) {
     }
 }
 ;
-
 function searchAction(text, panelSelector) {
     panelSelector = (panelSelector == null) ? "sw" : panelSelector;
     new jj("do=Content.searchTextInAll&text=" + text + "&panel=" + panelSelector + "&title=swTitle").jjAjax2(true);
@@ -1965,7 +1976,6 @@ function autoLogin(email, pass) {
 function profileShakhsi() {
     var param = "";
     param += "do=Access_User.profileShakhsi";
-
     jj(param).jjAjax2(false);
 }
 
@@ -1979,14 +1989,11 @@ function forget() {
     $("#forgetEmail").hide();
     $("#BazgashtBaSafheWorod").show();
     $("#sendEmail").show();
-
-
 }
 function  sendEmail() {
     var param = "";
     param += "do=Access_User.sendEmail";
     param += "&email1=" + new jj('#login_user_email').jjVal();
-
     jj(param).jjAjax2(false);
 }
 /***
@@ -1997,10 +2004,7 @@ function sendArticel() {
     var param = "";
     param += "do=Access_User.sendArticel";
     param += "&email=" + new jj('#login_user_email').jjVal();
-
     new jj(param).jjAjax2(false);
-
-
 }
 /**
  * تغییر عکس در getoneProduct
@@ -2012,12 +2016,12 @@ function changeProductPic(className) {
     var param = "";
     var src = "";
     var src1 = "";
-    src = $('.mainPic.productPic').attr("src");//در آوردن عکس اصلی
-    src1 = $(className).attr("href");//درآوردن عکسی که روی آن کلیک شده اسن
-    $('.mainPic.productPic').attr("src", src1);// جایگزنی عکس اصلی با عکسی که روی آن کلیک شده است
-    $('.mainPic.productPic').parent().attr("href", src1);// جایگزنی عکس اصلی با عکسی که روی آن کلیک شده است پدر اصلی هم باید لینک اش عوصض شود
-    $(className).attr("href", src);//جایگزینی عکس کلیک شده با عکس اصلی
-    $(className).children("img.productPic").attr("src", src);//جایگزینی عکس فرعی انتخاب شده با عکس اصلی اینجا عکس عوض می شود
+    src = $('.mainPic.productPic').attr("src"); //در آوردن عکس اصلی
+    src1 = $(className).attr("href"); //درآوردن عکسی که روی آن کلیک شده اسن
+    $('.mainPic.productPic').attr("src", src1); // جایگزنی عکس اصلی با عکسی که روی آن کلیک شده است
+    $('.mainPic.productPic').parent().attr("href", src1); // جایگزنی عکس اصلی با عکسی که روی آن کلیک شده است پدر اصلی هم باید لینک اش عوصض شود
+    $(className).attr("href", src); //جایگزینی عکس کلیک شده با عکس اصلی
+    $(className).children("img.productPic").attr("src", src); //جایگزینی عکس فرعی انتخاب شده با عکس اصلی اینجا عکس عوض می شود
     new jj(param).jjAjax2(false);
 }
 function changeSrc1() {
@@ -2131,7 +2135,6 @@ function swGetProducts(productId) {
 }
 function sw_1(id) {
     new jj("do=Category_Content.dispatchJsp&id=" + id + "&jj=1&title=swTitle").jjAjax3(true);
-
 }
 function swGetContent_canon(contentId) {
     window.localStorage.setItem('category', contentId);
@@ -2187,7 +2190,6 @@ function prePaymentProduct() {
     if (validatepersion(name) && new jj('#user_name_Receiver').jjVal() !== "") {
         $('#user_name_Receiver').css("border", "1px solid #e5e5e5");
         $("#msg").html('');
-
     } else {
         $("#user_name_Receiver").css("border", "1px solid  red");
         $("#msg").html('');
@@ -2448,11 +2450,9 @@ function chengePass() {
         $('#user_pass_2_edit').css("border", "1px solid red");
         $("#msg").html('');
         $("#msg").append('لطفا تکرار پسورد خود راوارد کنید');
-
         return false;
     } else {
         $('#user_pass_2_edit').css("border", "1px solid #e5e5e5");
-
         $("#msg").html('');
     }
 //
@@ -2460,13 +2460,10 @@ function chengePass() {
         $('#user_password_hint').css("border", "1px solid red");
         $("#registMessagePanel").html('');
         $("#registMessagePanel").append('لطفایاد آور خود را  وارد کنید');
-
         return false;
     } else {
         $('#user_password_hint_edit').css("border", "1px solid #e5e5e5");
-
         $("#msg").html('');
-
     }
     var params = "do=Access_User.editPassUser&";
     params += new jj("#form_edit_pass").jjSerial();
@@ -2499,13 +2496,11 @@ function loadFormCompany() {
     var show_form_company = function () {
         if (checkbox.checked) {
             form_company.style['display'] = 'block';
-
         } else {
             form_company.style['display'] = 'none';
         }
     };
     checkbox.onclick = show_form_company;
-
     var param = "";
     param += "do=Factor.show";
     param += "&" + new jj('#form_address').jjSerial();
@@ -2535,7 +2530,6 @@ function validformadress() {
     if (validatepersion(name) && new jj('#user_name').jjVal() !== "") {
         $('#user_name').css("border", "1px solid #e5e5e5");
         $("#msg").html('');
-
     } else {
         $("#user_name").css("border", "1px solid  red");
         $("#msg").html('');
@@ -2581,7 +2575,6 @@ function validformadress() {
         $("#msg").html('');
         $("#msg").append(' لطفا آدرس خود را به فارسی وارد کنید.');
         return false;
-
     }
 
     $(".mobileSlider").hide();
@@ -2832,7 +2825,6 @@ function  validEmplye() {
         return false;
     }
     return  true;
-
 }
 
 ////////ردیافت اطلاعات از کاربران  فرم 1 mstid
@@ -2866,7 +2858,6 @@ function insertemploye() {
 }
 
 ;
-
 /**
  * بازیابی رمز عبور
  * @returns {void}
@@ -2900,7 +2891,6 @@ function recoveryEmploy() {
     }
 }
 ;
-
 /**
  * بازیابی رمز عبور
  * @returns {void}
@@ -2932,7 +2922,6 @@ function recoveryEmploy2() {
     }
 }
 ;
-
 ////دکتری////ردیافت اطلاعات از کاربران  فرم 2  mstid
 function insertemploye2() {
     var name = $("#employe_info_name").val();
@@ -3223,12 +3212,10 @@ function DynamicsCourseForm() {
         var id = this.getAttribute("id");
         $('div[id=' + id + ']').remove();
         numderCourse--;
-
         if (numderCourse === 0) {
             $('#save_btn').hide();
         }
         numderCourse++;
-
     });
 }
 function appendRow(n) {
@@ -3274,7 +3261,6 @@ function appendRow(n) {
             '</div>' +
             '</div>'
             );
-
 }
 
 
@@ -3560,7 +3546,6 @@ function DynamicsSoftForm2() {
         }
 
     });
-
 }
 //////ساخت  فرم زبان های به صورت پویا 
 function DynamicsLanguageForm2() {
@@ -3633,7 +3618,6 @@ function DynamicsLanguageForm2() {
         }
 
     });
-
 }
 
 /////////////////////////////////////فرم سابقه  کاری/////
@@ -3659,7 +3643,6 @@ function DynamicsCompanyForm2() {
         }
 
     });
-
 }
 function appendRow_Company(n) {
     $("#input-Company").append(
@@ -3731,16 +3714,8 @@ function appendRow_Company(n) {
             '</div>' +
             '</div>'
             );
-
-
 }
 ;
-
-
-
-
-
-
 ///////////////////////////////////////
 function formDesigner() {
 //    alert("formDesigner");
@@ -3785,17 +3760,14 @@ function slidersite() {
 }
 function slidersite2() {
     new jj("do=Pic.getsidersite2&panel=carousel&jj=1").jjAjax2();
-
 //    picSlipprySlider(setting_pic_slider_responsive_panel, setting_pic_slider_delay);
 }
 function slidersite4() {
     new jj("do=Pic.getsidersite4&panel=carousel_4&jj=1").jjAjax2();
-
 //    picSlipprySlider(setting_pic_slider_responsive_panel, setting_pic_slider_delay);
 }
 function slidersite3() {
     new jj("do=Pic.getsidersite3&panel=carousel_3&jj=1").jjAjax2();
-
 //    picSlipprySlider(setting_pic_slider_responsive_panel, setting_pic_slider_delay);
 }
 function getNews() {
@@ -3839,11 +3811,9 @@ function samane1() {
 }
 function samane2() {
     window.location = 'http://www.mstid.com/MSTID/Server?do=FormAnswerSet.add_new&formAnswers_formId=40';
-
 }
 function samane3() {
     window.location = 'http://www.mstid.com/MSTID/Server?do=FormAnswerSet.add_new&formAnswers_formId=41';
-
 }
 
 function m_sendMassege() {
@@ -3851,8 +3821,6 @@ function m_sendMassege() {
     param += new jj("#formMassege").jjSerial();
     param += "&do=Messenger.sendMesseage";
     new jj(param).jjAjax2(false);
-
-
 }
 
 function insertComment() {
@@ -3866,14 +3834,12 @@ function insertComment() {
     new jj("#swCommentForm").jjFormClean();
 }
 function add_newTicket() {
-    $("#ticketHeader").show();//این قسمت فقط برای اولین پیام فعال باشد
-    $("#message_chat").html("");//اگر قبلا یک چت را سلکت کرده باشد باید آنها را پاک کنیم
+    $("#ticketHeader").show(); //این قسمت فقط برای اولین پیام فعال باشد
+    $("#message_chat").html(""); //اگر قبلا یک چت را سلکت کرده باشد باید آنها را پاک کنیم
     $('#newTicket').slideDown();
     $('#ticketTable').hide();
     $('#messenger_chatID').val("");
     new jj('#formMassege').jjFormClean();
-
-
 }
 function sendTicket() {
     if (new jj('#messenger_title').jjVal() < 5) {
@@ -3891,7 +3857,7 @@ function sendTicket() {
         $("#messenger_textMessage").css("border", "unset");
     }
     var params = new jj('#formMassege').jjSerial() + '&do=Messenger.insertChat&jj=1';
-    params += "&messenger_attachFile=";// چون ممکن است چند فایل بارگذاری کرده باشند در حلقه از دیو نگهدارنده ی فایل های بارگذاری شده میخوانیم
+    params += "&messenger_attachFile="; // چون ممکن است چند فایل بارگذاری کرده باشند در حلقه از دیو نگهدارنده ی فایل های بارگذاری شده میخوانیم
     var messenger_attachFile = $(".messenger_attachFile");
     for (var i = 0; i < messenger_attachFile.length; i++) {
         params += $(messenger_attachFile[i]).val() + ",";
@@ -3900,7 +3866,7 @@ function sendTicket() {
     new jj("بعد از ارسال پیام میتوانید با رفرش کردن صفحه وضعیت پیام را در جدول ببینید").jjModal_Yes_No("صفحه رفرش بشود ؟", "location.reload();");
 }
 function selectTicket(id) {
-    $("#ticketHeader").hide();//این قسمت فقط برای اولین پیام فعال باشد
+    $("#ticketHeader").hide(); //این قسمت فقط برای اولین پیام فعال باشد
     new jj('#formMassege').jjFormClean();
     $('#newTicket').slideDown();
     $('#ticketTable').hide();

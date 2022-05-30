@@ -2,17 +2,12 @@ package cms.cms;
 
 import cms.tools.*;
 import cms.access.*;
-import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import jj.*;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.table.DefaultTableModel;
 
 public class FactorItem {
 
@@ -35,6 +30,8 @@ public class FactorItem {
     public static String _date = "product_factor_item_date";
     public static String _time = "product_factor_item_time";
     public static String _statuse = "product_factor_item_statuse";
+    public static String _statuslog = "product_factor_statuseLog";
+    public static String _dueDate = "product_factor_dueDate";
     public static String lbl_statusePaid = "پرداخت شده";
     public static String lbl_statuseUnPaid = "پرداخت نشده";
     public static String lbl_insert = "ذخیره";
@@ -190,6 +187,7 @@ public class FactorItem {
             map.put(_totalPrice, jjTools.getParameter(request, _totalPrice));
             map.put(_valueAdded, jjTools.getParameter(request, _valueAdded));
             map.put(_date, dateIR.getDBFormat_8length());
+            map.put(_dueDate, jjCalendar_IR.getDatabaseFormat_8length(jjTools.getParameter(request, _priceAfterDiscount), true));
             map.put(_time, dateIR.getTimeFormat_4length());
             map.put(_statuse, lbl_statuseUnPaid);
             if (db.insert(tableName, map).getRowCount() == 0) {
@@ -448,31 +446,15 @@ public class FactorItem {
      */
     public static String getProductFactorItem(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
         StringBuffer html = new StringBuffer();
-        List<Map<String, Object>> category = jjDatabase.separateRow(db.Select(Category_Content.tableName, Category_Content._parent + "=39"));
-        String where = "";
-        for (int r = 0; r < category.size(); r++) {
-            System.out.println(".." + where);
-//                where += "'" + category.get(r).get(Category_Content._id).toString() + "',";
-//            if (r < category.size() - 1) {
-//                where += "," ;
-//
-//                //            List<Map<String, Object>> row1 = jjDatabase.separateRow(db.Select(Content.tableName, Content._category_id + "="+category.get(r).get(Category_Content._id)));
-//            }
-              where += " " + category.get(r).get(Category_Content._id);
-                    if (r < category.size() - 1) {// برای اینکه اخری را کاما نگذارد
-                        where += " ,";
-                    }
-        }
-        List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(Content.tableName, Content._category_id + " IN (" + where + ")"));
-        System.out.println(".........    .........     .........." + row.size());
+        List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(Product.tableName, Product._active+"="+1));
         String panel = jjTools.getParameter(request, "panel");
         panel = panel.equals("") ? "product_factor_item_productId" : panel;
-        html.append("<option id='0' value='0'>محصول را انتخاب کنید...</option>");
+        html.append("<option id='0' value='0'>مورد معامله را انتخاب کنید...</option>");
         if (row.size() > 0) {
             for (int i = 0; i < row.size(); i++) {
-                html.append("<option id='" + row.get(i).get(Content._id)
-                        + "'  value='" + row.get(i).get(Content._id) + "'>"
-                        + row.get(i).get(Content._title).toString()
+                html.append("<option id='" + row.get(i).get(Product._id)
+                        + "'  value='" + row.get(i).get(Product._id) + "'>"
+                        + row.get(i).get(Product._name).toString()
                         + "</option>");
             }
             Server.outPrinter(request, response, Js.setHtml("#" + panel, html) + Js.select2(panel, "width: '100%'"));
@@ -492,14 +474,14 @@ public class FactorItem {
      */
     public static String getProductPrice(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
         String orginalPrice = "";
-        StringBuffer html = new StringBuffer();
+        StringBuilder html = new StringBuilder();
         List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(Product.tableName, _id + "=" + jjTools.getParameter(request, _id)));
-        orginalPrice = row.get(0).get(Product._price2).toString();
+        orginalPrice = jjNumber.isDigit(row.get(0).get(Product._price2).toString())?row.get(0).get(Product._price2).toString():"0" ;
         html.append(Js.setVal("#" + _originalPrice, orginalPrice));
         html.append(Js.setVal("#unitPrice", orginalPrice));
         html.append(Js.setVal("#unitPriceFactorItem", orginalPrice));
         html.append(Js.setVal("#product_factor_item_quantity1", 1));
-        String valueAdded = row.get(0).get(Product._taxPercent).toString();
+        String valueAdded = jjNumber.isDigit(row.get(0).get(Product._taxPercent).toString())?row.get(0).get(Product._taxPercent).toString():"0" ;
         html.append(Js.setVal("#" + _percentageOfValueAdded, valueAdded));
         html.append(Js.setVal("#" + _valueAdded, (Integer.parseInt(orginalPrice) / 100) * Integer.parseInt(valueAdded)));
         html.append(Js.setVal("#" + _totalPrice, Integer.parseInt(orginalPrice) + (Integer.parseInt(orginalPrice) / 100) * Integer.parseInt(valueAdded)));

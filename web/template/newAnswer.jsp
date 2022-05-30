@@ -80,9 +80,9 @@
                     <input id="formAnswers_formId" name="formAnswers_formId" type="hidden" value="<%=formRow.get(0).get(Forms._id)%>" />
                     <p class="mg-b-20 mg-sm-b-30">
                         <%=formRow.get(0).get(Forms._description)%></p>
-                    <%=formRow.get(0).get(Forms._htmlContent)%>
-                    <% if (formRow.get(0).get(Forms._isDateEditable).toString().equals("1")) {/*اگر تاریخ قابل ویرایش بود*/
-                    %>                        
+                        <%=formRow.get(0).get(Forms._htmlContent)%>
+                        <% if (formRow.get(0).get(Forms._isDateEditable).toString().equals("1")) {/*اگر تاریخ قابل ویرایش بود*/
+                        %>                        
                     <div class="row bg-white tx-dark">
                         تاریخ ثبت را وارد کنید
                         <div class="col-lg-3 ">
@@ -253,7 +253,7 @@
                                     } else if (questionType.equals("select_option")) {//اگر سلکت آپشن بود برای گزینه های هر سوال
                                         List<Map<String, Object>> optionsRow = jjDatabaseWeb.separateRow(db.Select(FormQuestionOptions.tableName, FormQuestionOptions._question_id + "=" + questionsRow.get(i).get(FormQuestions._id)));
                                         String defaultVal = questionsRow.get(i).get(FormQuestions._defaultValue).toString();//مقدار پیش فرض                                        
-%>
+                                    %>
                                     <div class="col-lg-12">
                                         <select class="form-control" 
                                                 id="q<%= questionsRow.get(i).get(FormQuestions._id).toString()%>" 
@@ -330,7 +330,7 @@
                     <%
                         String userRoles[] = jjTools.getSeassionUserRole(request).split(",");
                         if (userRoles.length > 1) {// اگر بیشتر از یک نقش داشت سلکت اپشن نقش هایش را نشانش می دهیم  که هر کدام را خواست انتخاب کند
-                    %>
+%>
                     <div class="col-lg-12">
                         <select id="formAnswers_userRole" name="formAnswers_userRole" class="form-control" style="width: 100%">
                             <%= Role.getUeserRolesSelectOption(request, response, db, true)%>
@@ -355,8 +355,8 @@
         </div>
 
 
-        <script src="js/jquery/jquery-1.10.2_1.js" type="text/javascript"></script>
-        <script src="js/jquery/jquery-migrate-1.2.0.js" type="text/javascript"></script>
+        <script src="Manager/js/jquery/jquery-1.10.2_1.js" type="text/javascript"></script>
+        <script src="Manager/js/jquery/jquery-migrate-1.2.0.js" type="text/javascript"></script>
         <script src="Manager/popper.js"></script>
         <script src="Manager/bootstrap.js"></script>
 
@@ -439,7 +439,7 @@
                 // البته در موقع نشان دادن هم میتوانیم با جاوا در دیتا بیش چک کنیم که دیگر این فرم را نشان کاربر ندهیم
                 // سمت کلاینت فرم های یونیک را در کوکی ست کنیم که موقع پر کردن بهشان اجازه ندهد
                 if (formRow.get(0).get(Forms._uniqueComplete).toString().equals("1")) {// اگر فرم باید یونیک پر شود چک کنیم ببینیم در یونیک فرم های پر شده ی این مرورگر وجود دارد یا نه
-            %>
+%>
                                     var formid = <%=formId%>;
                                     var uniqueForms = Cookies.get('#UNIQUE_FORMS_Compleited');// فرم های که باید توسط هر کاربر یکبار تکمیل شوند بعد از تکمیل نهایی در این کوکی ذخیره میشوند
                                     if (uniqueForms) {
@@ -455,7 +455,7 @@
 
             <%
             } else {//برای حذف فرم هایی که قبلا یکتا بوده اند و الان دیگر یکتا نیستند ازکوکی باید اقدام کنیم
-            %>
+%>
                                     var formid = <%=formId%>;
                                     var uniqueForms = Cookies.get('#UNIQUE_FORMS_Compleited');// فرم های که باید توسط هر کاربر یکبار تکمیل شوندبعد از تکمیل نهایی در این کوکی ذخیره میشوند
                                     removeFormIdFromCookie(formid);

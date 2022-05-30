@@ -42,7 +42,6 @@
 //    Content.sw(request, response, Server.db, true);
     String user_token = jjTools.getParameter(request, "user_token");
     System.out.println("user_token====" + user_token);
-    StringBuilder html1 = new StringBuilder();
     jjDatabaseWeb db;
     db = Server.db;
     if (user_token.isEmpty() && jjTools.getSeassionUserId(request) > 0) {
@@ -317,7 +316,7 @@
                 List<Map<String, Object>> groupId = jjDatabase.separateRow(db.Select(Access_Group_User.tableName, Access_Group_User._user_id + "='" + user.get(0).get(Access_User._id) + "'"));
                 List<Map<String, Object>> rowMessageTiket = jjDatabase.separateRow(db.Select(Messenger.tableName, "(" + Messenger._receiver + "=" + user.get(0).get(Access_User._id) + " OR "
                         + Messenger._sender + "=" + user.get(0).get(Access_User._id) + ") AND " + Messenger._type + "='" + Messenger.message_Advice + "' GROUP BY  " + Messenger._chatID + " ORDER BY id desc"));
-                System.out.print(groupId.size());
+                System.out.println("groupId.size()" + groupId.size());
                 if (!groupId.isEmpty()) {
                     for (int z = 0; z < groupId.size(); z++) {
                         groups += "'" + groupId.get(z).get(Access_Group_User._group_id).toString() + "'";
@@ -326,13 +325,13 @@
                         }
                     }
                     projectMe = jjDatabase.separateRow(db.Select(Content.tableName, Content._privateGroupId + " IN (" + groups + ")"));
-                    System.out.print(projectMe.size());
+                    System.out.println(projectMe.size());
                     news = jjDatabase.separateRow(db.Select(News.tableName, News._privateGroupId + " IN (" + groups + ")"));
-                    System.out.print(news.size());
-                    //                                                rowFactor = jjDatabase.separateRow(db.Select(Factor.tableName, Factor._userId + "='" + user.get(0).get(Access_User._id) + "'"));
-                    rowFactor = jjDatabase.separateRow(db.otherSelect("SELECT product_factor.*,product_factor_item.* FROM product_factor LEFT JOIN product_factor_item ON product_factor.id = product_factor_item.product_factor_item_factorId where product_factor.product_factor_userId ='" + user.get(0).get(Access_User._id) + "'"));
-                    System.out.print("////");
+                    System.out.println(news.size());
+                    //rowFactor = jjDatabase.separateRow(db.Select(Factor.tableName, Factor._userId + "='" + user.get(0).get(Access_User._id) + "'"));
+                    System.out.println("________________________________________");
                 }
+                rowFactor = jjDatabase.separateRow(db.otherSelect("SELECT product_factor.*,product_factor_item.* FROM product_factor LEFT JOIN product_factor_item ON product_factor.id = product_factor_item.product_factor_item_factorId where product_factor.product_factor_userId ='" + user.get(0).get(Access_User._id) + "' GROUP BY product_factor.id"));
             %>
             <section id="main-body">
                 <div class="container">
@@ -387,7 +386,6 @@
                                             <div class="icon"><i class="fa fa-cube"></i></div>
                                                 <%
                                                     if (projectMe == null || projectMe.size() == 0) {
-                                                        System.out.print("////5" + projectMe + "//" + news + "//" + rowFactor);
                                                 %>
                                             <div class="stat"><%=0%></div>
                                             <%} else {%>
@@ -402,7 +400,6 @@
                                             <div class="icon"><i class="fa fa-globe"></i></div>
                                                 <%
                                                     if (news == null || news.size() == 0) {
-                                                        System.out.print("////5" + projectMe + "//" + news + "//" + rowFactor);
                                                 %>
                                             <div class="stat"><%=0%></div>
                                             <%} else {%>
@@ -416,8 +413,11 @@
                                         <a  data-filter=".AllSms">
                                             <div class="icon"><i class="fa fa-comments"></i></div>
                                                 <%
+                                                    System.out.println("rowFactor: " + rowFactor);
+                                                    System.out.println("projectMe:" + projectMe);
+                                                    System.out.println("news" + news);
                                                     if (rowMessageTiket == null || rowMessageTiket.size() == 0) {
-                                                        System.out.print("////5" + projectMe + "//" + news + "//" + rowFactor);
+                                                        System.out.println("^^^^^ 5:");
                                                 %>
                                             <div class="stat">0</div>
                                             <%} else {%>
@@ -432,7 +432,6 @@
                                             <div class="icon"><i class="fa fa-credit-card"></i></div>
                                                 <%
                                                     if (rowFactor == null || rowFactor.size() == 0) {
-                                                        System.out.print("////5" + projectMe + "//" + news + "//" + rowFactor);
                                                 %>
                                             <div class="stat"><%=0%></div>
                                             <%} else {%>
@@ -465,7 +464,6 @@
                                     <h2>پروژه ها</h2>
                                     <%
                                         if (projectMe == null || projectMe.size() == 0) {
-                                            System.out.print("////5" + projectMe + "//" + news + "//" + rowFactor);
                                     %>
                                     <div class="announcement-single">
                                         <h3>
@@ -479,7 +477,7 @@
                                         </blockquote>
                                     </div>
                                     <%} else {
-                                        System.out.print("////6" + projectMe + "//" + news + "//" + rowFactor);
+                                        System.out.print("******6");
                                         for (int i = 0; i < projectMe.size(); i++) {
                                             jjCalendar_IR dateLable = new jjCalendar_IR(projectMe.get(i).get(Content._date).toString());
                                             String month = dateLable.getMonthName();
@@ -562,7 +560,7 @@
                                                     <td><%=rowMessageTiket.get(i).get(Messenger._title)%><br/>#<%=rowMessageTiket.get(i).get(Messenger._chatID)%></td>
                                                     <td><%=rowMessageTiket.get(i).get(Messenger._sender)%> </td>
                                                     <td><%= jjCalendar_IR.getViewFormat(rowMessageTiket.get(i).get(Messenger._postageDate).toString())%>
-                                                        (<%=jjCalendar_IR.getViewFormatTime_8length(rowMessageTiket.get(i).get(Messenger._time).toString() )%>) </td>
+                                                        (<%=jjCalendar_IR.getViewFormatTime_8length(rowMessageTiket.get(i).get(Messenger._time).toString())%>) </td>
                                                     <td><%=rowMessageTiket.get(i).get(Messenger._status)%></td>
                                                 </tr>
                                                 <%
@@ -670,7 +668,7 @@
                             </div>
                             <div class="AllPaid" style="display: none"></div>
                             <div class="table-paid card rounded-0" style="display: none">
-                                <table id="example" class="uk-table uk-table-hover uk-table-striped " style="width:100%;">
+                                <table id="factorTable" class="uk-table uk-table-hover uk-table-striped " style="width:100%;">
                                     <thead>
                                         <tr>
                                             <th>صورت حساب</th>
@@ -684,18 +682,17 @@
                                     <tbody>
                                         <% if (rowFactor != null) {
                                                 for (int i = 0; i < rowFactor.size(); i++) {
-                                                    String statuse1 = rowFactor.get(i).get(Factor._statuse).toString();
                                                     String statusePaid = Factor.lbl_statuseUnPaid;
                                                     if (rowFactor.get(i).get(Factor._statuse).toString().equals(statusePaid)) {
-                                                        System.out.print("...................");
                                         %>
                                         <%jjCalendar_IR dateLablePaid = new jjCalendar_IR(rowFactor.get(i).get(Factor._date).toString());
                                             String monthPaid = dateLablePaid.getMonthName();
                                             int dayPaid = dateLablePaid.getDay();
                                             int yearPaid = dateLablePaid.getYear();
-                                            List<Map<String, Object>> nameProject = jjDatabase.separateRow(db.Select(Content.tableName, Content._id + "=" + rowFactor.get(i).get(FactorItem._productId)));%>
+                                            System.out.println("...................");
+                                            List<Map<String, Object>> nameProject = jjDatabase.separateRow(db.Select(Product.tableName, Product._id + "=" + rowFactor.get(i).get(FactorItem._productId)));%>
                                         <tr >
-                                            <td><%=nameProject.get(i).get(Content._title)%></td>
+                                            <td><%=nameProject.get(0).get(Product._name)%></td>
                                             <td><%=rowFactor.get(i).get(Factor._serialNumber)%></td>
                                             <td><%=dayPaid%><%=monthPaid%><%=yearPaid%></td>
                                             <td><%=rowFactor.get(i).get(Factor._totalAmount)%></td>
@@ -715,16 +712,6 @@
                                             <td></td>
                                         </tr><%}%>
                                     </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th>صورت حساب</th>
-                                            <th>شماره صورتحساب</th>
-                                            <th>تاریخ صورت حساب</th>
-                                            <th>مبلغ</th>
-                                            <th>وضعیت</th>
-                                            <th>مشاهده</th>
-                                        </tr>
-                                    </tfoot>
                                 </table></div>
                             <div class="table-unPaid" style="display: none">
                                 <table id="example1" class="uk-table uk-table-hover uk-table-striped table-unPaid" style="width:100%;">
@@ -744,15 +731,15 @@
                                                     String statuse = rowFactor.get(x).get(Factor._statuse).toString();
                                                     String statuseUnPaid = Factor.lbl_statuseUnPaid;
                                                     if (rowFactor.get(x).get(Factor._statuse).toString().equals(statuseUnPaid)) {
-                                                        System.out.print("..../././////........" + rowFactor.get(x).get(Factor._statuse).toString() + Factor.lbl_statuseUnPaid);
+                                                        System.out.print("%$%$%$%$%$%$" + rowFactor.get(x).get(Factor._statuse).toString() + Factor.lbl_statuseUnPaid);
                                         %>
                                         <%      jjCalendar_IR dateLableUnPaid = new jjCalendar_IR(rowFactor.get(x).get(Factor._date).toString());
                                             String monthUnPaid = dateLableUnPaid.getMonthName();
                                             int dayUnPaid = dateLableUnPaid.getDay();
                                             int yearUnPaid = dateLableUnPaid.getYear();
-                                            List<Map<String, Object>> nameProject2 = jjDatabase.separateRow(db.Select(Content.tableName, Content._id + "=" + rowFactor.get(x).get(FactorItem._productId)));%>
+                                            List<Map<String, Object>> nameProject2 = jjDatabase.separateRow(db.Select(Product.tableName, Content._id + "=" + rowFactor.get(x).get(FactorItem._productId)));%>
                                         <tr >
-                                            <td><%=nameProject2.get(x).get(Content._title)%></td>
+                                            <td>prdName:<%=nameProject2.get(0).get(Product._name)%></td>
                                             <td><%=rowFactor.get(x).get(Factor._serialNumber)%></td>
                                             <td><%=dayUnPaid%><%=monthUnPaid%><%=yearUnPaid%></td>
                                             <td><%=rowFactor.get(x).get(Factor._totalAmount)%></td>
@@ -806,9 +793,9 @@
                                             String monthUnPaid = dateLableUnPaid.getMonthName();
                                             int dayUnPaid = dateLableUnPaid.getDay();
                                             int yearUnPaid = dateLableUnPaid.getYear();
-                                            List<Map<String, Object>> nameProject2 = jjDatabase.separateRow(db.Select(Content.tableName, Content._id + "=" + rowFactor.get(x).get(FactorItem._productId)));%>
+                                            List<Map<String, Object>> nameProject2 = jjDatabase.separateRow(db.Select(Product.tableName, Product._id + "=" + rowFactor.get(x).get(FactorItem._productId)));%>
                                         <tr >
-                                            <td><%=nameProject2.get(x).get(Content._title)%></td>
+                                            <td><%=nameProject2.get(0).get(Product._name)%></td>
                                             <td><%=rowFactor.get(x).get(Factor._serialNumber)%></td>
                                             <td><%=dayUnPaid%><%=monthUnPaid%><%=yearUnPaid%></td>
                                             <td><%=rowFactor.get(x).get(Factor._totalAmount)%></td>
@@ -826,17 +813,7 @@
                                             <td></td>
                                             <td></td>
                                         </tr><%}%>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th>صورت حساب</th>
-                                            <th>شماره صورتحساب</th>
-                                            <th>تاریخ صورت حساب</th>
-                                            <th>مبلغ</th>
-                                            <th>وضعیت</th>
-                                            <th>مشاهده</th>
-                                        </tr>
-                                    </tfoot>
+                                    </tbody>                                    
                                 </table></div>                                                                                    
                             <!--edit info-->
                             <div id="AccessuserForm" class="hammer" style="display: none;">
@@ -1386,7 +1363,7 @@
                         }
                         $(document).ready(function () {
                             $('#example').DataTable();
-                            $('#ticketDataTable').DataTable({"bLengthChange": false,info: false});
+                            $('#ticketDataTable').DataTable({"bLengthChange": false, info: false}); 
                             new jj('#sendFileMessenger').jjAjaxFileUploadByTitleAndMultiFile('#attachFileMessenger', 'messenger_attachFile', 'messenger_titleFile', "#showFileMessengerDiv");
                             //                                                                                                                                                                                                        new jj('#userAttachFiles_sendFilesAdmin').jjAjaxFileUploadByTitleAndMultiFile('#attachFileUserAdmin', 'user_attachFileUser', 'user_titleFile_admin', "#user_divUpload1");
                             //                                                                                                                                                                                                        new jj('#sendPic1').jjAjaxFileUpload2('user_file_personal', '', '#user_attachPicPersonal', '#PicPreviewPersonal');

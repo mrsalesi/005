@@ -1,10 +1,43 @@
-1134 6/6/1400
-1135 6/6/1400
-1136 6/6/1400
-1137 6/6/1400
-
-
-210
-212
-
-31318619
+DROP TABLE IF EXISTS `db_taavoni`.`hmis_forms`;
+CREATE TABLE  `db_taavoni`.`hmis_forms` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `forms_code` varchar(45) DEFAULT NULL,
+  `forms_title` varchar(500) NOT NULL DEFAULT '',
+  `forms_category` varchar(50) DEFAULT NULL,
+  `forms_priority` int(10) unsigned DEFAULT NULL,
+  `forms_departments` varchar(45) NOT NULL DEFAULT '0',
+  `forms_isActive` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `forms_isDateEditable` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `forms_tags` varchar(45) DEFAULT NULL,
+  `forms_icon` varchar(20) NOT NULL DEFAULT '',
+  `forms_ownerId` varchar(10) NOT NULL DEFAULT '0',
+  `forms_ownerRole` varchar(10) DEFAULT NULL,
+  `forms_accesseRoles` varchar(500) DEFAULT NULL,
+  `forms_accessesUsers` varchar(500) DEFAULT NULL,
+  `forms_resultAccessRole` varchar(500) DEFAULT NULL,
+  `forms_resultAccessUsers` varchar(500) DEFAULT NULL,
+  `forms_uniqueComplete` tinyint(3) unsigned DEFAULT NULL,
+  `forms_showResultToQuestioner` tinyint(3) unsigned DEFAULT NULL,
+  `forms_showAllResultToQuestioner` tinyint(3) unsigned DEFAULT NULL,
+  `forms_showCometePreAproveForm` tinyint(3) unsigned DEFAULT NULL,
+  `forms_creationDate` int(10) unsigned NOT NULL DEFAULT '0',
+  `forms_creationTime` int(10) unsigned NOT NULL DEFAULT '0',
+  `forms_expireDate` int(10) unsigned DEFAULT NULL,
+  `forms_expireTime` varchar(45) DEFAULT NULL,
+  `forms_visit` int(11) NOT NULL DEFAULT '0',
+  `forms_nextFormId` varchar(10) DEFAULT NULL,
+  `forms_isAutoWiki` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `forms_hasAutoWikiInContent` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `forms_autoWikIsUpdate` tinyint(1) DEFAULT NULL,
+  `forms_css` longtext,
+  `forms_javaScript` longtext,
+  `forms_htmlContent` longtext,
+  `forms_htmlContentWithWikiLinks` longtext,
+  `forms_discription` longtext,
+  `forms_isRandomQuestion` int(10) unsigned DEFAULT NULL,
+  `forms_showQuestionsOneByOne` int(10) unsigned DEFAULT NULL,
+  `forms_resultGroupId` varchar(25) DEFAULT NULL,
+  `forms_accessessGroupId` varchar(25) DEFAULT NULL,
+  `forms_isRandomOption` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4;

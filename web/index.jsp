@@ -66,7 +66,7 @@
             <link href="Manager/font-awesome.css" rel="stylesheet" />
             <link href="Manager/font-tahoma.css" rel="stylesheet" type="text/css"/>
             <link href="Manager/ionicons.css" rel="stylesheet" />
-            <link href="StyleBody.css" rel="stylesheet" type="text/css"/>
+            <link href="StyleBody.css" rel="stylesheet" type="text/css"/>            
             <style>
                 .morelink:visited {
                     color: #eab702
@@ -774,10 +774,10 @@
                     <h4 class="widget-title">صفحات</h4>
                     <ul>
                         <li><a href="index.jsp">صفحه اصلی</a></li>
-                        <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;">پروژه های شرکت</a></li>
+                        <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax(false);return false;">پروژه های شرکت</a></li>
                         <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;">گالری</a></li>
-                        <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;">تماس با ما</a></li>
-                        <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;">درباره ما</a></li>
+                        <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax(false);return false;">تماس با ما</a></li>
+                        <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax(false);return false;">درباره ما</a></li>
                     </ul>
                 </div>
             </div>
@@ -786,7 +786,8 @@
             <i class="fa fa-angle-up"></i>
         </a>
         <!--start scrip-->
-        <script src="template/js/jquery.min.js" type="text/javascript"></script>
+        <script src="Manager/js/jquery/jquery-1.10.2_1.js" type="text/javascript"></script>
+        <script src="Manager/js/jquery/jquery-migrate-1.2.0.js" type="text/javascript"></script>
         <script src="template/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="template/js/jquery.cookie.js" type="text/javascript"></script>
         <script src="Manager/js/jj2.js" type="text/javascript"></script>

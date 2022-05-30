@@ -2,17 +2,13 @@ package cms.cms;
 
 import cms.tools.*;
 import cms.access.*;
-import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import jj.*;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.table.DefaultTableModel;
 
 public class Factor {
 
@@ -143,8 +139,8 @@ public class Factor {
                 return "";
             }
             String id = jjTools.getParameter(request, "id");
-            StringBuffer html = new StringBuffer();
-            StringBuffer html3 = new StringBuffer();
+            StringBuilder html = new StringBuilder();
+            StringBuilder html3 = new StringBuilder();
             List<Map<String, Object>> rowFactorItem = jjDatabase.separateRow(db.Select(FactorItem.tableName, FactorItem._factorId + "=" + id));
             html3.append("<div class=\"table-wrapper\">\n");
             html3.append("<table id='refreshItemFactorInFactor' class='table display responsive' style='direction: rtl;'><thead>");
@@ -158,9 +154,9 @@ public class Factor {
             html3.append("<th class='c' width='15%'>حذف</th>");
             html3.append("</thead><tbody>");
             for (int i = 0; i < rowFactorItem.size(); i++) {
-                List<Map<String, Object>> rowProduct = jjDatabase.separateRow(db.Select(Content.tableName, Content._id + "=" + rowFactorItem.get(i).get(FactorItem._productId)));
+                List<Map<String, Object>> rowProduct = jjDatabase.separateRow(db.Select(Product.tableName, Product._id + "=" + rowFactorItem.get(i).get(FactorItem._productId)));
                 html3.append("<td class='c'>" + rowFactorItem.get(i).get(FactorItem._id) + "</td>");
-                html3.append("<td class='c'>" + rowProduct.get(0).get(Content._title) + "</td>");
+                html3.append("<td class='c'>" + rowProduct.get(0).get(Product._name) + "</td>");
                 html3.append("<td class='c'>" + (jjNumber.getFormattedNumber(rowFactorItem.get(i).get(FactorItem._originalPrice).toString())) + "</td>");
                 html3.append("<td class='c'>" + (jjNumber.getFormattedNumber(rowFactorItem.get(i).get(FactorItem._priceAfterDiscount).toString())) + "</td>");
                 html3.append("<td class='c'>" + (jjNumber.getFormattedNumber(rowFactorItem.get(i).get(FactorItem._valueAdded).toString())) + "</td>");
@@ -456,7 +452,7 @@ public class Factor {
             map.put(FactorItem._percentageOfValueAdded, jjTools.getParameter(request, FactorItem._percentageOfValueAdded));
             map.put(FactorItem._priceAfterDiscount, jjTools.getParameter(request, FactorItem._priceAfterDiscount));
             map.put(FactorItem._productId, jjTools.getParameter(request, FactorItem._productId));
-            map.put(FactorItem._quantity, jjTools.getParameter(request, FactorItem._quantity));
+            map.put(FactorItem._quantity, jjNumber.isDigit(jjTools.getParameter(request, FactorItem._quantity))? jjTools.getParameter(request, FactorItem._quantity) : "0");
             map.put(FactorItem._totalPrice, jjTools.getParameter(request, FactorItem._totalPrice));
             map.put(FactorItem._valueAdded, jjTools.getParameter(request, FactorItem._valueAdded));
             if (!db.update(FactorItem.tableName, map, FactorItem._id + "=" + id)) {

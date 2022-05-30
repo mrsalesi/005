@@ -21,7 +21,7 @@ var hmisMyMessages = {
                 });
 //                $("#myMessenger_textHTML").summernote();
                 new jj('#sendMyMessage').jjAjaxFileUploadTitleUploadFiles('#MyMessageAttachFile', '#myMessages_attachFile', 'myMessages_titleFile', '#myMessages_attachFileTitle');
-                
+
 
                 hmisMyMessages.selectOptionUserMyMessages("myMessages_receiver");
 
@@ -87,7 +87,7 @@ var hmisMyMessages = {
         hmisMyMessages.m_show_tbl();
         hmisMyMessages.m_clean();
     },
-   
+
     m_select: function (id) {
         var param = "";
         param += "do=" + hmisMessenger.tableName + ".selectMyMessages";
@@ -116,6 +116,16 @@ var hmisMyMessages = {
     mainTabSetSize: function () {
         $('#swMyMessages').css('height', hmisMyMessages.heightTab);
     },
+    selectTicket: function (id) {
+        hmisMyMessages.loadForm();
+        hmisMyMessages.m_show_form();
+        $("#ticketHeader").hide();//این قسمت فقط برای اولین پیام فعال باشد
+        new jj('#formMassege').jjFormClean();
+        $('#newTicket').slideDown();
+        $('#ticketTable').hide();
+        var params = "messenger_chatID=" + id + "&do=Messenger.refreshChat&jj=1";
+        new jj(params).jjAjax(false);
+    }
     //    m_add_new: function () {
 //        new jj("do=" + hmisMyMessages.tableName + ".add_new").jjAjax2(false);
 //        $('#messenger_receiver').val("null").trigger('change');
@@ -173,7 +183,8 @@ var hmisMyMessages = {
 //        param += "&jj=1";
 //        new jj(param).jjAjax2(false);
 //
-//    },
+//    }
+    
 }
 
 

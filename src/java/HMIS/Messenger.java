@@ -239,7 +239,11 @@ public class Messenger {
             StringBuilder html = new StringBuilder();
             StringBuilder html3 = new StringBuilder();
             int id = jjTools.getSeassionUserId(request);
-            List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(Messenger.tableName, _receiver + "=" + id));
+            List<Map<String, Object>> row = jjDatabase.separateRow(db.otherSelect("SELECT r.user_name as rn ,r.user_family as rf,s.user_name,s.user_family,hmis_Messenger.* FROM hmis_Messenger\n"
+                    + "left join access_user r on messenger_receiver=r.id\n"
+                    + "left join access_user s on messenger_sender=s.id\n"
+                    + "WHERE messenger_receiver=" + id + " OR messenger_sender = " + id + "\n"
+                    + ";"));
             html.append(" <div class=\"card-header bg-primary tx-white\">لیست پیام های من</div>"
                     + "<div class='col-lg-12'>"
                     + "<a href='#' class='sh-pagetitle-icon'>"
@@ -273,15 +277,15 @@ public class Messenger {
                 html.append("<td style='text-align:center' class='mousePointer" + " " + getClassCssForStatus((row.get(i).get(_status).toString())) + "'>" + (row.get(i).get(_id).toString()) + "</td>");
                 html.append("<td style='text-align:center' class='c'>" + jjCalendar_IR.getViewFormat(row.get(i).get(_postageDate)) + "</td>");
                 html.append("<td style='text-align:center' class='r'>" + (row.get(i).get(_textMessage).toString()) + "</td>");
-                html.append("<td style='text-align:center' class='r'>" + Access_User.getUserName(row.get(i).get(_receiver).toString(), db) + "</td>");
-                html.append("<td style='text-align:center' class='r'>" + (Access_User.getUserName(row.get(i).get(_sender).toString(), db)) + "</td>");
+                html.append("<td style='text-align:center' class='r'>" + row.get(i).get("rn") + " " + row.get(i).get("rf") + "</td>");
+                html.append("<td style='text-align:center' class='r'>" + row.get(i).get(Access_User._name) + " " + row.get(i).get(Access_User._family) + "</td>");
                 html.append("<td style='text-align:center' class='r'>" + (row.get(i).get(_status).toString()) + "</td>");
-                html.append("<td class='' style='text-align: center;' onclick='hmisMyMessages.m_select(" + row.get(i).get(_id) + ");'><img src='template/contract.png' style='height:30px;margin:auto'/></td>");
+                html.append("<td class='' style='text-align: center;' onclick='hmisMyMessages.m_select(" + row.get(i).get(_id) + ");'><i class='fa fa-gear'></i></td>");
                 if (accDel) {
                     if (row.get(i).get(_status).toString().equals(status_displayed)) {
-                        html.append("<td class='c mousePointer' style='text-align: center;' onclick='hmisMessenger.alert()' ><img src='template/delet.png' style='height:30px;margin:auto'/></td>");
+                        html.append("<td class='c mousePointer' style='text-align: center;' onclick='hmisMessenger.alert()' ><i class='fa fa-trash'></i></td>");
                     } else {
-                        html.append("<td class='c mousePointer' style='text-align: center;' onclick='hmisMyMessages.m_delete(" + row.get(i).get(_id) + ");'><img src='template/delet.png' style='height:30px;margin:auto'/></td>");
+                        html.append("<td class='c mousePointer' style='text-align: center;' onclick='hmisMyMessages.m_delete(" + row.get(i).get(_id) + ");'><i class='fa fa-edit'></i></td>");
                     }
                 }
                 html.append("</tr>");

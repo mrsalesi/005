@@ -9,6 +9,7 @@ import cms.access.Access_User;
 import cms.tools.Js;
 import cms.tools.Server;
 import cms.tools.jjTools;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,7 @@ public class FormQuestionOptions {
     public static final String _lable = "formQuestionOptions_lable";
     public static final String _value = "formQuestionOptions_value";
     public static final String _question_id = "formQuestionOptions_question_id";
+    public static final String _code = "formQuestionOptions_code";
     public static final String _icon = "formQuestionOptions_icon";
 
     public static int rul_rfs = 0;//60;
@@ -106,7 +108,7 @@ public class FormQuestionOptions {
 //                        + "                        </div>\n"  
 //                        + "");  
             }
-            html.append("<div class='card-header bg-info tx-white'>افزودن و ویرایش گزینه های سوال</div>");           
+            html.append("<div class='card-header bg-info tx-white mg-t-40'>افزودن و ویرایش گزینه های سوال</div>");
             html.append("<div style='width: 100%; padding-left: -10px;'><div class='table-responsive'>");
             html.append("<table id='refreshFormQuestionOptions' class='table table-striped table-hover dt-responsive display' cellspacing='0' style='direction: rtl;'><thead>");
             html.append("<th width='5%' class='r'>کد</th>");
@@ -118,8 +120,8 @@ public class FormQuestionOptions {
             html.append("</thead><tbody>");
             for (int i = 0; i < row.size(); i++) {
                 html.append("<tr class='p' onclick='hmisFormQuestionOptions.m_select(").append(row.get(i).get(_id)).append(");'>");
-                html.append("<td class='r'>").append(row.get(i).get(_id)).append("</td>");
-                if (row.get(i).get(_icon).toString().isEmpty()) {
+                html.append("<td class='r'>").append(row.get(i).get(_code).equals("")?row.get(i).get(_id):row.get(i).get(_code)).append("</td>");
+                if (row.get(i).get(_icon).toString().isEmpty()) {     
                     html.append("<td class='c'></td>");
                 } else {
                     html.append("<td class='c'><img src='upload/").append(row.get(i).get(_icon)).append("' /></td>");
@@ -142,6 +144,8 @@ public class FormQuestionOptions {
             }
             String script = Js.setHtml("#" + panel, html.toString());
 //            script += Js.table("#refreshFormQuestionOptions", height, 0, Access_User.getAccessDialog(request, db, rul_ins).equals("") ? "2" : "", "لیست اخبار");
+                    script += Js.table("#refreshFormQuestionOptions", "300", 0, "", "گزینه ها");  
+
             Server.outPrinter(request, response, script);
             return "";
         } catch (Exception ex) {
@@ -155,7 +159,7 @@ public class FormQuestionOptions {
             StringBuilder script = new StringBuilder();
             boolean accIns = Access_User.hasAccess(request, db, rul_ins);
             if (accIns) {
-                script.append(Js.setHtml("#formQuestionOption_buttons", "<button class='btn btn-outline-success btn-block mg-b-10' onclick='" + Js.jjFormQuestionOptions.insert() + "'   title='" + lbl_insert + "' '>ذخیره</button>"));
+                script.append(Js.setHtml("#formQuestionOption_buttons", "<button class='btn btn-success btn-block mg-b-10' onclick='" + Js.jjFormQuestionOptions.insert() + "'   title='" + lbl_insert + "' '>ذخیره</button>"));
             } else {
                 script.append(Js.setHtml("#form_Question_buttons", ""));
             }
@@ -185,7 +189,8 @@ public class FormQuestionOptions {
             script.append(Js.setVal("#" + tableName + "_id", formRow.get(0).get(_id).toString()));
             script.append(Js.setVal("#" + _lable, formRow.get(0).get(_lable).toString()));
             script.append(Js.setVal("#" + _value, formRow.get(0).get(_value).toString()));
-            script.append(Js.setVal("#" + _icon, formRow.get(0).get(_icon).toString()));
+            script.append(Js.setVal("#" + _code, formRow.get(0).get(_code).toString()));
+            script.append(Js.setVal("#" + _icon, formRow.get(0).get(_icon).toString()));   
             if (!formRow.get(0).get(_icon).toString().isEmpty()) {//اگر عکس داشت نشان بدهد
                 script.append(Js.setAttr("#formQuestionOptions_Preview", "src", "upload/" + formRow.get(0).get(_icon).toString()));
             } else {
@@ -194,11 +199,11 @@ public class FormQuestionOptions {
             String buttonsHtml = "";
             boolean accEdit = Access_User.hasAccess(request, db, rul_edt);
             if (accEdit) {
-                buttonsHtml += "<button class='btn btn-outline-warning btn-block mg-b-10 text-center' onclick='" + Js.jjFormQuestionOptions.edit(id) + "'   title='" + lbl_edit + "' '>" + lbl_edit + "</button>";
+                buttonsHtml += "<button class='btn btn-warning btn-block mg-b-10 text-center' onclick='" + Js.jjFormQuestionOptions.edit(id) + "'   title='" + lbl_edit + "' '>" + lbl_edit + "</button>";
             }
             boolean accDelete = Access_User.hasAccess(request, db, rul_dlt);
             if (accDelete) {
-                buttonsHtml += "<button class='btn btn-outline-danger btn-block mg-b-10 text-center' onclick='" + Js.jjFormQuestionOptions.delete(id) + "'   title='" + lbl_delete + "' '>" + lbl_delete + "</button>";
+                buttonsHtml += "<button class='btn btn-danger btn-block mg-b-10 text-center' onclick='" + Js.jjFormQuestionOptions.delete(id) + "'   title='" + lbl_delete + "' '>" + lbl_delete + "</button>";
             }
             script.append(Js.setHtml("#formQuestionOption_buttons", buttonsHtml));
             //کاربر بعد از ثبت مشخصات فرم یاد سوالات فرم را یکی یکی یا دسته ای اضافه کند
@@ -228,6 +233,7 @@ public class FormQuestionOptions {
             Map<String, Object> map = new HashMap<>();
             map.put(_lable, jjTools.getParameter(request, _lable));
             map.put(_icon, jjTools.getParameter(request, _icon));
+            map.put(_code, jjTools.getParameter(request, _code));
             map.put(_value, jjTools.getParameter(request, _value));
             map.put(_question_id, jjTools.getParameter(request, _question_id));
             List<Map<String, Object>> insertedFormRow = jjDatabaseWeb.separateRow(db.insert(tableName, map));
@@ -261,6 +267,7 @@ public class FormQuestionOptions {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put(_lable, jjTools.getParameter(request, _lable));
             map.put(_value, jjTools.getParameter(request, _value));
+            map.put(_code, jjTools.getParameter(request, _code));
             map.put(_icon, jjTools.getParameter(request, _icon));
 //            map.put(_question_id, jjTools.getParameter(request, _question_id));//نباید تغییر کند قاعدتا ولی بگذاریم هم طوری نمی شود
 
@@ -347,6 +354,7 @@ public class FormQuestionOptions {
 
             StringBuilder html = new StringBuilder();
             List<Map<String, Object>> optionRows = jjDatabaseWeb.separateRow(db.Select(tableName, _question_id + "=" + questionId));
+            html.append("<option value=''>همه</option>");
             for (int i = 0; i < optionRows.size(); i++) {//فقط چند گزینه ای ها را نشان میدهیم
                 html.append("<option value='" + optionRows.get(i).get(_id) + "'>"
                         + optionRows.get(i).get(_lable) + (optionRows.get(i).get(_value).toString().isEmpty() ? "" : ("(" + optionRows.get(i).get(_value) + ")"))
@@ -365,14 +373,16 @@ public class FormQuestionOptions {
                 return "";
             }
             Map<String, Object> map = new HashMap<>();
-            List<Map<String, Object>> departmentRow = jjDatabaseWeb.separateRow(db.Select(Department.tableName));
+            Map<String, Object> mapQuestion = new HashMap<>();
+            List<Map<String, Object>> departmentRow = jjDatabaseWeb.separateRow(db.Select(Department.tableName, "id>5"));
             for (int i = 0; i < departmentRow.size(); i++) {
-
                 map.put(_lable, departmentRow.get(i).get(Department._title));
                 map.put(_value, "0");
                 map.put(_question_id, jjTools.getParameter(request, "hmis_formquestions_id"));
                 db.insert(tableName, map);
             }
+            mapQuestion.put(FormQuestions._answersType, "select_option");
+            db.update(FormQuestions.tableName, mapQuestion, FormQuestions._id + "=" + jjTools.getParameter(request, "hmis_formquestions_id"));
             StringBuilder script = new StringBuilder();
 //            if (insertedFormRow.isEmpty()) {
 //                String errorMessage = "عملیات درج به درستی صورت نگرفت.";
@@ -406,31 +416,48 @@ public class FormQuestionOptions {
                 return "";
             }
             Map<String, Object> map = new HashMap<>();
+            Map<String, Object> mapQuestion = new HashMap<>();
             String questionId = jjTools.getParameter(request, "hmis_formquestions_id");
 
-            List<Map<String, Object>> rows = jjDatabaseWeb.separateRow(db.otherSelect("SELECT " + Department._user_id
+            List<Map<String, Object>> rows = jjDatabaseWeb.separateRow(db.otherSelect("SELECT hmis_forms.forms_departments"
                     + " from " + FormQuestions.tableName
                     + " LEFT JOIN " + Forms.tableName + " ON " + FormQuestions._formID + "=hmis_forms.id"
-                    + " LEFT JOIN " + Department.tableName + " ON " + Forms._departments + "=department.id"
+                    //                    + " LEFT JOIN " + Department.tableName + " ON " + Forms._departments + "=department.id"
                     + " where hmis_formquestions.id=" + questionId));
+
 //            List<Map<String, Object>> rows = jjDatabaseWeb.separateRow(db.JoinLeft(FormQuestions. tableName,Forms.tableName,Forms._departments,FormQuestions._formID ,Forms._id," where "+FormQuestions._id + "=" + questionId));
-//            List<Map<String, Object>> departmentRow = jjDatabaseWeb.separateRow(db.Select(Department.tableName,Department._user_id,Department._id+"="+rows.get(0).get(Forms._departments)));
             if (rows.size() > 0) {
-                String[] userArray = rows.get(0).get(Department._user_id).toString().split(",");
+                String departmentsId = rows.get(0).get(Forms._departments).toString();
+                String[] departmentIdArray = departmentsId.split(",");
+                String usersId = "";
+                for (int j = 0; j < departmentIdArray.length; j++) {
+                    if (jjNumber.isDigit(departmentIdArray[j])) {
+                        List<Map<String, Object>> departmentRow = jjDatabaseWeb.separateRow(db.Select(Department.tableName, Department._user_id, Department._id + "=" + departmentIdArray[j]));
+                        usersId += departmentRow.get(0).get(Department._user_id) + ",";
+                    }
+                }
+                List<String> newList = new ArrayList<>();// 
+                String[] arrayStr = usersId.split(",");
+                for (int i = 0; i < arrayStr.length; i++) {//اگر ای دی کاربر تکراری بود داخل لیست جدید نمی آید
+                    if (!newList.contains(arrayStr[i])) {
+                        newList.add(arrayStr[i]);
+                    }
+                }
+                System.out.println("newList" + newList);
+                String userIds = String.join(",", newList);//تبدیل به استرینگ می شود برای خروجی
+                System.out.println("usersId=" + usersId);
+
+                String[] userArray = userIds.split(",");
                 for (int i = 0; i < userArray.length; i++) {
                     map.put(_lable, Access_User.getUserName(userArray[i], db));
                     map.put(_value, "0");
                     map.put(_question_id, questionId);
                     db.insert(tableName, map);
-                }
+                }  
+                mapQuestion.put(FormQuestions._answersType, "select_option");
+                db.update(FormQuestions.tableName, mapQuestion, FormQuestions._id + "=" + questionId);
             }
-//            List<Map<String, Object>> insertedFormRow = jjDatabaseWeb.separateRow(db.insert(tableName, map));
             StringBuilder script = new StringBuilder();
-//            if (insertedFormRow.isEmpty()) {
-//                String errorMessage = "عملیات درج به درستی صورت نگرفت.";
-//                Server.outPrinter(request, response, Js.modal(errorMessage, "پیام سامانه"));
-//                return "";
-//            }
             script.append(Js.jjFormQuestionOptions.refresh(jjTools.getParameter(request, "hmis_formquestions_id")));
             script.append(Js.jjFormQuestionOptions.showTbl());
             Server.outPrinter(request, response, script.toString());

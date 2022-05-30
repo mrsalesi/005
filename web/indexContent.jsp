@@ -232,7 +232,7 @@
                         List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(Content.tableName, Content._title + "='" + text +"'"));
                         Map<String, Object> map = new HashMap<>();
                         int visit = Integer.parseInt(row.get(0).get(Content._visit).toString()) + 1;
-                        map.put(News._visit, visit);
+                        map.put(Content._visit, visit);
                         jjCalendar_IR dateLable = new jjCalendar_IR(row.get(0).get(Content._date).toString());
                         String month = dateLable.getMonthName();
                         int day = dateLable.getDay();

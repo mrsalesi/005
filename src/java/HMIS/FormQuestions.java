@@ -40,6 +40,7 @@ public class FormQuestions {
     public static final String _htmlDiscriptionInResult = "formQuestions_htmlDiscriptionInResult";
     public static final String _preority = "formQuestions_preority";//ترتیب سوال
     public static final String _range = "formQuestions_range";//حیطه سوال
+    public static final String _code = "formQuestions_code";//حیطه سوال
 
     public static int rul_rfs = 0;//60;
     public static int rul_rfs_own = 0;// 61;//فقط امکان دیدن فرم های ایجاد شده ی توسط خود ایجاد کننده را دارد // بر روی سمت
@@ -108,19 +109,40 @@ public class FormQuestions {
             html.append("<div style='width: 100%; padding-left: -10px;'>"
                     + "<div class='table-responsive'>");
             html.append("<table id='refreshFormQuestions' class='table table-striped table-hover dt-responsive display ' cellspacing='0' style='direction: rtl;'><thead>");
-            html.append("<th width='5%' class='c'>ترتیب سوال</th>");
-            html.append("<th width='5%' class='c'>کد</th>");
+            html.append("<th width='10%' class='c'>ترتیب سوال</th>");
+            html.append("<th width='10%' class='c'>کد</th>");
             html.append("<th width='20%' class='c'>عنوان سوال</th>");
-            html.append("<th width='20%' class='c'>ویرایش و اصلاح</th>");
-            html.append("<th width='20%' class='c'>آنالیز و آمار</th>");
-
-            html.append("<th width='20%' class='c'>حذف سوال</th>");
+            html.append("<th width='10%' class='c'>نوع سوال</th>");
+            html.append("<th width='10%' class='c'>حیطه سوال</th>");
+            html.append("<th width='10%' class='c'>کپی سوال</th>");
+            html.append("<th width='10%' class='c'>ویرایش و افزودن گزینه های سوال</th>");
+            html.append("<th width='10%' class='c'>آنالیز و آمار</th>");
+            html.append("<th width='10%' class='c'>حذف سوال</th>");
+//            html.append("<tr>");
+//            html.append("<th></th>");
+//            html.append("<th></th>");
+//            html.append("<th></th>");
+//            html.append("<th></th>");
+//            html.append("<th></th>");
+//            html.append("<th></th>");
+//            html.append("<th></th>");
+//            html.append("<th></th>");
+//            html.append("<th></th>");
+//            html.append("</tr>");  
             html.append("</thead><tbody>");
             for (int i = 0; i < row.size(); i++) {
                 html.append("<tr  class='mousePointer'>");
                 html.append("<td class='c'>").append(row.get(i).get(_preority)).append("</td>");
-                html.append("<td class='c'>").append(row.get(i).get(_id)).append("</td>");
+                html.append("<td class='c'>").append(row.get(i).get(_code).equals("") ? row.get(i).get(_id) : row.get(i).get(_code)).append("</td>");
                 html.append("<td class='c'>").append(row.get(i).get(_title)).append("</td>");
+                html.append("<td class='c'>").append(row.get(i).get(_answersType)).append("</td>");
+                html.append("<td class='c'>").append(row.get(i).get(_range)).append("</td>");
+                boolean accInsert = Access_User.hasAccess(request, db, rul_ins);// برای کپی سوال باید اجازه ی ایجاد سوال را داشته باشد
+                if (accInsert) {
+                    html.append("<td class='c' ><i class=\"fa fa-copy\" onclick='" + Js.jjFormQuestions.copy(row.get(i).get(_id).toString()) + "'></i></td>");
+                } else {
+                    html.append("<td class='c'>-</td>");
+                }
                 html.append("<td class='c p' onclick='").append(Js.jjFormQuestions.select(row.get(i).get(_id).toString())).append("'><i class='icon ion-ios-gear' onclick='hmisFormQuestions.m_select(").append(row.get(i).get(_id)).append(");' ></i></td>");
                 html.append("<td class='c p'><a target='_blank' href='Server?do=FormAnswerSet.showAllResult&formAnswers_formId=" + row.get(i).get(_formID) + "'><i class='fa fa-bar-chart' style='color:#0866c6'></i></a></td>");
                 boolean accDelete = Access_User.hasAccess(request, db, rul_dlt);
@@ -143,7 +165,8 @@ public class FormQuestions {
                 panel = "swNewsTbl";
             }
             String script = Js.setHtml("#" + panel, html.toString());
-            script += Js.table("#refreshFormQuestions", height, 0, Access_User.getAccessDialog(request, db, rul_ins).equals("") ? "2" : "", "لیست اخبار");
+            script += Js.table("#refreshFormQuestions", "auto", 0, "", "سوالات");
+          
             Server.outPrinter(request, response, script);
             return "";
         } catch (Exception ex) {
@@ -157,7 +180,7 @@ public class FormQuestions {
             StringBuilder script = new StringBuilder();
             boolean accIns = Access_User.hasAccess(request, db, rul_ins);
             if (accIns) {
-                script.append(Js.setHtml("#form_Question_buttons", "<div class='col-lg'><button onclick='" + Js.jjFormQuestions.insert() + "' value='" + lbl_insert + "' class='btn btn-outline-success btn-block mg-b-10'>" + lbl_insert + "</button>"));
+                script.append(Js.setHtml("#form_Question_buttons", "<div class='col-lg'><button onclick='" + Js.jjFormQuestions.insert() + "' value='" + lbl_insert + "' class='btn btn-success btn-block mg-b-10'>" + lbl_insert + "</button>"));
                 script.append("$('#formQuestions_preority').val(1*$('#formQuestions_preority').val()+1);");
             } else {
                 script.append(Js.setHtml("#form_Question_buttons", ""));
@@ -189,11 +212,12 @@ public class FormQuestions {
             StringBuilder script = new StringBuilder();
             Map<String, Object> map = new HashMap<String, Object>();
             script.append(Js.setVal("#" + tableName + "_id", formRow.get(0).get(_id).toString()));
-            script.append(Js.setVal("#formQuestions_range1", formRow.get(0).get(_range).toString()));          
-            script.append(Js.setVal("#"+_range, formRow.get(0).get(_range).toString()));
-            script.append(Js.select2("#formQuestions_range", " width: '100%'"));   
-            script.append(Js.setVal("#" + _title, formRow.get(0).get(_title).toString()));
+            script.append(Js.setVal("#formQuestions_range1", formRow.get(0).get(_range).toString()));
             script.append(Js.setVal("#" + _icon, formRow.get(0).get(_icon).toString()));
+            script.append(Js.setVal("#" + _code, formRow.get(0).get(_code).toString()));
+            script.append(Js.setVal("#" + _range, formRow.get(0).get(_range).toString()));
+            script.append(Js.select2("#formQuestions_range", " width: '100%'"));
+            script.append(Js.setVal("#" + _title, formRow.get(0).get(_title).toString()));
             script.append(Js.setVal("#" + _preority, formRow.get(0).get(_preority).toString()));
             script.append(Js.setVal("#" + _answersType, formRow.get(0).get(_answersType).toString()));
             script.append(Js.setVal("#" + _trueAnswer, formRow.get(0).get(_trueAnswer).toString()));
@@ -202,7 +226,7 @@ public class FormQuestions {
             if (formRow.get(0).get(_answersType).toString().equals("radio") || formRow.get(0).get(_answersType).toString().equals("select_option") || formRow.get(0).get(_answersType).toString().equals("checkbox")) {
                 script.append(Js.hide("#defaultValueDiv"));//مقدار پیش فرض  مخفی شود
                 script.append(Js.hide("#placeHolderDiv"));//placeHolderDivمخفی شود
-                script.append(Js.hide("#swFormQuestionOptionsForm"));  
+                script.append(Js.hide("#swFormQuestionOptionsForm"));
                 script.append(Js.jjFormQuestionOptions.refresh(id));
             } else {// اگر از نوع فیلد های بدون گزینه بود جدول و فرم گزینه ها مخفی بشود
                 script.append(Js.hide("#swFormQuestionOptionsTbl"));
@@ -224,19 +248,21 @@ public class FormQuestions {
             script.append(Js.setVal("#" + _isRequierd, formRow.get(0).get(_isRequierd).toString()));
             script.append(Js.setVal("#" + _weight, formRow.get(0).get(_weight).toString()));
             String htmlBottons = "";
+            String htmlBottons2 = "";
             boolean accEdit = Access_User.hasAccess(request, db, rul_edt);
             if (accEdit) {
-                htmlBottons += "<div class='col-lg'><button onclick='" + Js.jjFormQuestions.edit(id) + "' id='edit_Forms_new'  value='" + lbl_edit + "' class='btn btn-outline-warning btn-block mg-b-10'>" + lbl_edit + "</button></div>";
+                htmlBottons += "<div class='col-lg'><button onclick='" + Js.jjFormQuestions.edit(id) + "' id='edit_Forms_new'  value='" + lbl_edit + "' class='btn btn-warning btn-block mg-b-10'>" + lbl_edit + "</button></div>";
             }
             boolean accInsert = Access_User.hasAccess(request, db, rul_ins);// برای کپی سوال باید اجازه ی ایجاد سوال را داشته باشد
             if (accInsert) {
-                htmlBottons += "<div class='col-lg'><button onclick='" + Js.jjFormQuestions.copy(id) + "' id='edit_Forms_new'  value='" + lbl_copy + "' class='btn btn-outline-info btn-block mg-b-10'>" + lbl_copy + "</button></div>";
+                htmlBottons2 += "<div class='col-lg'><button onclick='" + Js.jjFormQuestions.copy(id) + "' id='copy_Forms_new'  value='" + lbl_copy + "' class='btn btn-info btn-block mg-b-10'>" + lbl_copy + "</button></div>";
             }
             boolean accDelete = Access_User.hasAccess(request, db, rul_dlt);
             if (accDelete) {
-                htmlBottons += "<div class='col-lg'><button onclick='" + Js.jjFormQuestions.delete(id) + "' id='edit_Forms_new'  value='" + lbl_delete + "' class='btn btn-outline-danger btn-block mg-b-10'>" + lbl_delete + "</button></div>";
+                htmlBottons += "<div class='col-lg'><button onclick='" + Js.jjFormQuestions.delete(id) + "' id='delete_Forms_new'  value='" + lbl_delete + "' class='btn btn-danger btn-block mg-b-10'>" + lbl_delete + "</button></div>";
             }
             script.append(Js.setHtml("#form_Question_buttons", htmlBottons));
+            script.append(Js.setHtml("#btnQuestionCopy", htmlBottons2));
             Server.outPrinter(request, response, script.toString());
             return "";
         } catch (Exception ex) {
@@ -278,6 +304,7 @@ public class FormQuestions {
                 map.put(_formID, questionRow.get(0).get(_formID).toString());
                 map.put(_title, "کپی " + questionRow.get(0).get(_title).toString());
                 map.put(_icon, questionRow.get(0).get(_icon).toString());
+                map.put(_code, questionRow.get(0).get(_code).toString());
                 map.put(_placeHolder, questionRow.get(0).get(_placeHolder).toString());
                 map.put(_answersType, questionRow.get(0).get(_answersType).toString());
                 map.put(_trueAnswer, questionRow.get(0).get(_trueAnswer).toString());
@@ -305,6 +332,7 @@ public class FormQuestions {
                     System.out.println("Copy --->");
                     Map<String, Object> map2 = new HashMap();
                     map2.put(FormQuestionOptions._lable, questionOptionRows.get(i).get(FormQuestionOptions._lable));
+                    map2.put(FormQuestionOptions._code, questionOptionRows.get(i).get(FormQuestionOptions._code));
                     map2.put(FormQuestionOptions._icon, questionOptionRows.get(i).get(FormQuestionOptions._icon));
                     map2.put(FormQuestionOptions._question_id, insertedQuestionRow.get(0).get(_id));//آی دی سوالی که همین الآن اینسرت شده در جدول سوال ها
                     map2.put(FormQuestionOptions._value, questionOptionRows.get(i).get(FormQuestionOptions._value));
@@ -314,6 +342,7 @@ public class FormQuestions {
             StringBuilder script = new StringBuilder();
             script.append(Js.jjFormQuestions.refresh(jjTools.getParameter(request, _formID)));
             script.append(Js.jjForms.select(jjTools.getParameter(request, _formID)));
+            script.append("$('#questionsAndoptionsForm').show();");
             script.append(Js.jjFormQuestions.showTbl());
             script.append(Js.modal("سوال با گزینه ها کپی شد", "پیام سامانه"));
 //            String errorMessage = "سوال با کد " + insertedQuestionRow.get(0).get(_id) + " کپی شد" + " تعداد گزینه ها " + questionOptionRows.size();
@@ -327,59 +356,127 @@ public class FormQuestions {
         }
     }
 
+    /**
+     * با انتخاب فرم و سوال می توان سوال را در فرم جدید کپی کرد
+     *
+     * @param request
+     * @param response
+     * @param db
+     * @param needString
+     * @return
+     * @throws Exception
+     */
     public static String copyQuestionInform(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean needString) throws Exception {
         try {
             if (!Access_User.hasAccess(request, db, rul_ins)) {
                 Server.outPrinter(request, response, "شما اجازه ی دسترسی به این قسمت را ندارید");
                 return "";
             }
-
             String id = jjTools.getParameter(request, _id);
-            List<Map<String, Object>> questionRow = jjDatabaseWeb.separateRow(db.Select(tableName, _id + "=" + id));
-            if (questionRow.isEmpty()) {
-                String errorMessage = "کد سوال صحیح نیست یا سوال مورد نظر یافت نشد";
-                Server.outPrinter(request, response, Js.modal(errorMessage, "پیام سامانه"));
-                return "";
-            }
-            Map<String, Object> map = new HashMap();
-            map.put(_formID, jjTools.getParameter(request, _formID));
-            map.put(_title, questionRow.get(0).get(_title).toString());
-            map.put(_icon, questionRow.get(0).get(_icon).toString());
-            map.put(_placeHolder, questionRow.get(0).get(_placeHolder).toString());
-            if (questionRow.get(0).get(_range).equals("null") || questionRow.get(0).get(_range).equals("") || questionRow.get(0).get(_range).equals(null)) {
-                map.put(_range, "");
-            } else {
-                map.put(_range, questionRow.get(0).get(_range).toString());
-            }
-            map.put(_answersType, questionRow.get(0).get(_answersType).toString());
-            map.put(_trueAnswer, questionRow.get(0).get(_trueAnswer).toString());
-            map.put(_answersType, questionRow.get(0).get(_answersType).toString());
-            map.put(_defaultValue, questionRow.get(0).get(_defaultValue).toString());
-            map.put(_htmlDiscription, questionRow.get(0).get(_htmlDiscription).toString());
-            map.put(_htmlDiscriptionInResult, questionRow.get(0).get(_htmlDiscriptionInResult).toString());
-            map.put(_isRequierd, questionRow.get(0).get(_isRequierd).toString());
-            map.put(_weight, questionRow.get(0).get(_weight).toString());
-            List<Map<String, Object>> insertedQuestionRow = jjDatabaseWeb.separateRow(db.insert(tableName, map));
-            if (insertedQuestionRow.isEmpty()) {
-                String errorMessage = "عملیات کپی به درستی صورت نگرفت.";
-                Server.outPrinter(request, response, Js.modal(errorMessage, "پیام سامانه"));
-                return "";
-            }
-            List<Map<String, Object>> questionOptionRows = jjDatabaseWeb.separateRow(db.Select(FormQuestionOptions.tableName, FormQuestionOptions._question_id + "=" + id));
-            for (int i = 0; i < questionOptionRows.size(); i++) {
-                System.out.println("Copy --->");
-                Map<String, Object> map2 = new HashMap();
-                map2.put(FormQuestionOptions._lable, questionOptionRows.get(i).get(FormQuestionOptions._lable));
-                map2.put(FormQuestionOptions._icon, questionOptionRows.get(i).get(FormQuestionOptions._icon));
-                map2.put(FormQuestionOptions._question_id, insertedQuestionRow.get(0).get(_id));//آی دی سوالی که همین الآن اینسرت شده در جدول سوال ها
-                map2.put(FormQuestionOptions._value, questionOptionRows.get(i).get(FormQuestionOptions._value));
-                db.insert(FormQuestionOptions.tableName, map2);
-            }
+            String formId = jjTools.getParameter(request, "forms_FormIdInCopyQuestion");
+
             StringBuilder script = new StringBuilder();
-            script.append(Js.jjFormQuestions.refresh(insertedQuestionRow.get(0).get(_formID).toString()));
-            script.append(Js.jjFormQuestions.showTbl());
-            String errorMessage = "سوال با کد " + insertedQuestionRow.get(0).get(_id) + " کپی شد" + " تعداد گزینه ها " + questionOptionRows.size();
-            Server.outPrinter(request, response, Js.modal(errorMessage, "پیام سامانه") + script);
+            if (jjNumber.isDigit(id)) {
+                List<Map<String, Object>> questionRow = jjDatabaseWeb.separateRow(db.Select(tableName, _id + "=" + id));
+                if (questionRow.isEmpty()) {
+                    String errorMessage = "کد سوال صحیح نیست یا سوال مورد نظر یافت نشد";
+                    Server.outPrinter(request, response, Js.modal(errorMessage, "پیام سامانه"));
+                    return "";
+                }      
+                Map<String, Object> map = new HashMap();
+                map.put(_formID, jjTools.getParameter(request, _formID));
+                map.put(_title, questionRow.get(0).get(_title).toString());
+                map.put(_code, questionRow.get(0).get(_code).toString());
+                map.put(_icon, questionRow.get(0).get(_icon).toString());
+                map.put(_placeHolder, questionRow.get(0).get(_placeHolder).toString());
+                if (questionRow.get(0).get(_range).equals("null") || questionRow.get(0).get(_range).equals("") || questionRow.get(0).get(_range).equals(null)) {
+                    map.put(_range, "");
+                } else {
+                    map.put(_range, questionRow.get(0).get(_range).toString());
+                }
+                map.put(_answersType, questionRow.get(0).get(_answersType).toString());
+                map.put(_trueAnswer, questionRow.get(0).get(_trueAnswer).toString());
+                map.put(_answersType, questionRow.get(0).get(_answersType).toString());
+                map.put(_defaultValue, questionRow.get(0).get(_defaultValue).toString());
+                map.put(_htmlDiscription, questionRow.get(0).get(_htmlDiscription).toString());
+                map.put(_htmlDiscriptionInResult, questionRow.get(0).get(_htmlDiscriptionInResult).toString());
+                map.put(_isRequierd, questionRow.get(0).get(_isRequierd).toString());
+                map.put(_weight, questionRow.get(0).get(_weight).toString());
+                List<Map<String, Object>> insertedQuestionRow = jjDatabaseWeb.separateRow(db.insert(tableName, map));
+                if (insertedQuestionRow.isEmpty()) {
+                    String errorMessage = "عملیات کپی به درستی صورت نگرفت.";
+                    Server.outPrinter(request, response, Js.modal(errorMessage, "پیام سامانه"));
+                    return "";
+                }
+                List<Map<String, Object>> questionOptionRows = jjDatabaseWeb.separateRow(db.Select(FormQuestionOptions.tableName, FormQuestionOptions._question_id + "=" + id));
+                for (int i = 0; i < questionOptionRows.size(); i++) {
+                    System.out.println("Copy --->");
+                    Map<String, Object> map2 = new HashMap();
+                    map2.put(FormQuestionOptions._lable, questionOptionRows.get(i).get(FormQuestionOptions._lable));
+                    map2.put(FormQuestionOptions._code, questionOptionRows.get(i).get(FormQuestionOptions._code));
+                    map2.put(FormQuestionOptions._icon, questionOptionRows.get(i).get(FormQuestionOptions._icon));
+                    map2.put(FormQuestionOptions._question_id, insertedQuestionRow.get(0).get(_id));//آی دی سوالی که همین الآن اینسرت شده در جدول سوال ها
+                    map2.put(FormQuestionOptions._value, questionOptionRows.get(i).get(FormQuestionOptions._value));
+                    db.insert(FormQuestionOptions.tableName, map2);
+                }
+                script.append(Js.jjFormQuestions.refresh( jjTools.getParameter(request, _formID)));
+                script.append(Js.jjFormQuestions.showTbl());
+                String errorMessage = "سوال با کد " + insertedQuestionRow.get(0).get(_id) + " کپی شد" + " تعداد گزینه ها " + questionOptionRows.size();
+                script.append(Js.modal(errorMessage, "پیام سامانه"));
+            } else {
+                if (jjNumber.isDigit(formId)) {
+                    List<Map<String, Object>> questionsFormRow = jjDatabaseWeb.separateRow(db.Select(tableName, _id, _formID + "=" + formId));
+                    for (int m = 0; m < questionsFormRow.size(); m++) {
+                        List<Map<String, Object>> questionRow = jjDatabaseWeb.separateRow(db.Select(tableName, _id + "=" + questionsFormRow.get(m).get(_id)));
+                        if (questionRow.isEmpty()) {
+                            String errorMessage = "کد سوال صحیح نیست یا سوال مورد نظر یافت نشد";
+                            Server.outPrinter(request, response, Js.modal(errorMessage, "پیام سامانه"));
+                            return "";
+                        }
+                        Map<String, Object> map = new HashMap();
+                        map.put(_formID, jjTools.getParameter(request, _formID));
+                        map.put(_title, questionRow.get(0).get(_title).toString());
+                        map.put(_code, questionRow.get(0).get(_code).toString());
+                        map.put(_icon, questionRow.get(0).get(_icon).toString());
+                        map.put(_placeHolder, questionRow.get(0).get(_placeHolder).toString());
+                        if (questionRow.get(0).get(_range).equals("null") || questionRow.get(0).get(_range).equals("") || questionRow.get(0).get(_range).equals(null)) {
+                            map.put(_range, "");
+                        } else {
+                            map.put(_range, questionRow.get(0).get(_range).toString());
+                        }
+                        map.put(_answersType, questionRow.get(0).get(_answersType).toString());
+                        map.put(_trueAnswer, questionRow.get(0).get(_trueAnswer).toString());
+//                        map.put(_answersType, questionRow.get(0).get(_answersType).toString());
+                        map.put(_defaultValue, questionRow.get(0).get(_defaultValue).toString());
+                        map.put(_htmlDiscription, questionRow.get(0).get(_htmlDiscription).toString());
+                        map.put(_htmlDiscriptionInResult, questionRow.get(0).get(_htmlDiscriptionInResult).toString());
+                        map.put(_isRequierd, questionRow.get(0).get(_isRequierd).toString());
+                        map.put(_weight, questionRow.get(0).get(_weight).toString());
+                        List<Map<String, Object>> insertedQuestionRow = jjDatabaseWeb.separateRow(db.insert(tableName, map));
+                        if (insertedQuestionRow.isEmpty()) {
+                            String errorMessage = "عملیات کپی به درستی صورت نگرفت.";
+                            Server.outPrinter(request, response, Js.modal(errorMessage, "پیام سامانه"));
+                            return "";
+                        }
+                        List<Map<String, Object>> questionOptionRows = jjDatabaseWeb.separateRow(db.Select(FormQuestionOptions.tableName, FormQuestionOptions._question_id + "=" + questionsFormRow.get(m).get(_id)));
+                        for (int i = 0; i < questionOptionRows.size(); i++) {
+                            System.out.println("Copy --->");
+                            Map<String, Object> map2 = new HashMap();
+                            map2.put(FormQuestionOptions._lable, questionOptionRows.get(i).get(FormQuestionOptions._lable));
+                            map2.put(FormQuestionOptions._code, questionOptionRows.get(i).get(FormQuestionOptions._code));
+                            map2.put(FormQuestionOptions._icon, questionOptionRows.get(i).get(FormQuestionOptions._icon));
+                            map2.put(FormQuestionOptions._question_id, insertedQuestionRow.get(0).get(_id));//آی دی سوالی که همین الآن اینسرت شده در جدول سوال ها
+                            map2.put(FormQuestionOptions._value, questionOptionRows.get(i).get(FormQuestionOptions._value));
+                            db.insert(FormQuestionOptions.tableName, map2);
+                        }
+
+                    }
+                    script.append(Js.jjFormQuestions.refresh( jjTools.getParameter(request, _formID)));
+                    script.append(Js.jjFormQuestions.showTbl());   
+                }
+            }
+            Server.outPrinter(request, response, script);
+
             return "";
         } catch (Exception ex) {
             String errorMessage = "خطا در کپی سوال یا گزینه های ان رخ داده  " + "خطای شماره ی 6895";
@@ -412,6 +509,7 @@ public class FormQuestions {
                 map.put(_range, jjTools.getParameter(request, _range));
             }
             map.put(_icon, jjTools.getParameter(request, _icon));
+            map.put(_code, jjTools.getParameter(request, _code));
             map.put(_weight, jjTools.getParameter(request, _weight).isEmpty() ? "0" : jjTools.getParameter(request, _weight));
             map.put(_placeHolder, jjTools.getParameter(request, _placeHolder));
             map.put(_preority, jjTools.getParameter(request, _preority));
@@ -434,12 +532,14 @@ public class FormQuestions {
                     || insertedQuestionRow.get(0).get(_answersType).equals("select_option")
                     || insertedQuestionRow.get(0).get(_answersType).equals("checkbox")) {
                 script.append(Js.jjForms.select(jjTools.getParameter(request, _formID)));
+                script.append("$('#questionsAndoptionsForm').show();");
                 script.append(Js.jjFormQuestions.select(insertedQuestionRow.get(0).get(_id).toString()));
                 script.append(Js.modal("گزینه های سوال را اضافه کنید", "پیام سامانه"));
             } else {
                 // اگر سوال چند گزینه ای باشد فرم بسته نشود و از کاربر بخواهیم گزینه ها را وارد کند
                 script.append(Js.jjFormQuestions.refresh(jjTools.getParameter(request, _formID)));
                 script.append(Js.jjForms.select(jjTools.getParameter(request, _formID)));
+                script.append("$('#questionsAndoptionsForm').show();");
                 script.append(Js.jjFormQuestions.select(insertedQuestionRow.get(0).get(_id).toString()));
 //                script.append(Js.jjFormQuestions.showTbl());
 //                script.append(Js.modal("سوال ثبت شد", "پیام سامانه"));
@@ -473,6 +573,7 @@ public class FormQuestions {
                 map.put(_range, jjTools.getParameter(request, _range));
             }
             map.put(_isRequierd, jjTools.getParameter(request, _isRequierd));
+            map.put(_code, jjTools.getParameter(request, _code));
             map.put(_icon, jjTools.getParameter(request, _icon));
             map.put(_weight, jjTools.getParameter(request, _weight).isEmpty() ? "0" : jjTools.getParameter(request, _weight));
             map.put(_trueAnswer, jjTools.getParameter(request, _trueAnswer));
@@ -491,7 +592,8 @@ public class FormQuestions {
                 if ((questionRow.get(0).get(_answersType).equals("radio") || questionRow.get(0).get(_answersType).equals("select_option"))
                         && (jjTools.getParameter(request, _answersType).equals("radio") || jjTools.getParameter(request, _answersType).equals("select_option"))) {
                     map.put(_answersType, jjTools.getParameter(request, _answersType));
-                    script.append(Js.modal("امکان ویرایش نوع این سوال وجود ندارد, توجه : فقط در مواردی که سوال از نوع رادیو باشد به سلکت آپشن قابل تبدیل است و بالعکس", "قبلا افرادی این فرم را تکمیل کرده اند"));
+                } else {
+                    script.append(Js.modal("نوع پاسخ ها ویرایش نشد, توجه : فقط در مواردی که سوال از نوع رادیو باشد به سلکت آپشن قابل تبدیل است و بالعکس", "نوع پاسخ ها ویرایش نشد ,قبلا افرادی این فرم را تکمیل کرده اند"));
                 }
             } else {
                 map.put(_answersType, jjTools.getParameter(request, _answersType));
@@ -500,6 +602,7 @@ public class FormQuestions {
                 script.append(Js.jjFormQuestions.refresh(jjTools.getParameter(request, _formID)));
                 script.append(Js.jjFormQuestions.showTbl());
                 script.append(Js.jjForms.select(jjTools.getParameter(request, _formID)));
+                script.append("$('#questionsAndoptionsForm').show();");
                 Server.outPrinter(request, response,
                         //                        Js.modal("ویرایش بدرستی انجام شد", "پیام سامانه") + 
                         script);
@@ -572,12 +675,14 @@ public class FormQuestions {
                         + _answersType + "='radio' OR "
                         + _answersType + "='checkbox' OR "
                         + _answersType + "='select_option' )", _title));// بر اساس حروف الفبا مرتب باشد بهتر است
-                optionHtml.append("<option  value='sumOfForm_" + formId + "'>جمع امتیازات این فرم</option>");
-                optionHtml.append("<option  value='avgOfForm_" + formId + "'>میانگین درصد پاسخگویی این فرم</option>");
+
                 for (int i = 0; i < rowQuestion.size(); i++) {
                     optionHtml.append("<option  value='avg_").append(rowQuestion.get(i).get(_id)).append("'>-میانگین بازه ای-").append(rowQuestion.get(i).get(_title)).append("</option>");
                     optionHtml.append("<option  value='sum_").append(rowQuestion.get(i).get(_id)).append("'>-مجموع بازه ای-").append(rowQuestion.get(i).get(_title)).append("</option>");
                 }
+                optionHtml.append("<option  value='sumOfForm_" + formId + "'>جمع امتیازات این فرم</option>");
+                optionHtml.append("<option  value='countOfFormAnswerSet_" + formId + "'>تعداد فرم های تکمیل شده</option>");
+                optionHtml.append("<option  value='avgOfForm_" + formId + "'>میانگین درصد پاسخگویی این فرم</option>");
                 if (needString) {
                     return optionHtml.toString();
                 }
@@ -608,6 +713,50 @@ public class FormQuestions {
                     + _answersType + "='checkbox' OR "
                     + _answersType + "='select_option' )", _title));
             if (jjNumber.isDigit(formId)) {
+                optionHtml.append("<option value=''>همه</option>");
+                for (int i = 0; i < questionsRow.size(); i++) {
+                    optionHtml.append("<option  value='").append(questionsRow.get(i).get(_id)).append("'>").append(questionsRow.get(i).get(_title)).append("</option>");
+                }
+
+                if (needString) {
+                    return optionHtml.toString();
+                }
+                String panel = jjTools.getParameter(request, "panel");
+                if (panel.isEmpty()) {
+                    panel = "#hmis_indicatiors_a_forms";
+                }
+                Server.outPrinter(request, response, Js.setHtml(panel, optionHtml) );        
+//                Server.outPrinter(request, response, Js.setHtml(panel, optionHtml) + Js.select2(panel, ""));
+            }
+            return "";
+        } catch (Exception e) {
+            Server.outPrinter(request, response, Server.ErrorHandler(e));
+            return "";
+        }
+    }
+
+    /**
+     * این تابع برای کپی سوال ها استفاده می شود همه سوال ها در آپشن بیاید
+     *
+     * @param request
+     * @param response
+     * @param db
+     * @param needString
+     * @return
+     * @throws Exception
+     */
+    public static String getQuestionforCopy(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean needString) throws Exception {
+        StringBuilder optionHtml = new StringBuilder();
+        try {
+            String formId = jjTools.getParameter(request, _formID);// اگر نباشد تهی برمیگرداند
+            if (needString) {// برای زمانی که آپشن ها را فقط بصورت اچ تی ام ال برای یک کلاس جاوایی لازم داریم
+                formId = jjTools.getAttribute(request, _formID);// اگر درخواست از کلاینت باشد وارد این شرط نمی شود
+            }
+            List<Map<String, Object>> questionsRow = jjDatabaseWeb.separateRow(db.Select(FormQuestions.tableName, _id + "," + _title,
+                    FormQuestions._formID + "=" + formId,
+                    _title));
+            if (jjNumber.isDigit(formId)) {
+                optionHtml.append("<option value='ALL'>همه</option>");
                 for (int i = 0; i < questionsRow.size(); i++) {
                     optionHtml.append("<option  value='").append(questionsRow.get(i).get(_id)).append("'>").append(questionsRow.get(i).get(_title)).append("</option>");
                 }
@@ -652,6 +801,7 @@ public class FormQuestions {
                     + _answersType + "='checkbox' OR "
                     + _answersType + "='select_option' )", _title + " LIMIT 3 "));
             if (jjNumber.isDigit(formId)) {
+                optionHtml.append("<option value=''>همه</option>");
                 for (int i = 0; i < questionsRow.size(); i++) {
                     optionHtml.append("<option  value='").append(questionsRow.get(i).get(_id)).append("'>").append(questionsRow.get(i).get(_title)).append("</option>");
                 }
@@ -682,6 +832,7 @@ public class FormQuestions {
                     + _answersType + "='checkbox' OR "
                     + _answersType + "='select_option' )", _title));
             if (jjNumber.isDigit(formId)) {
+                optionHtml.append("<option value=''>همه</option>");
                 for (int i = 0; i < questionsRow.size(); i++) {
                     optionHtml.append("<option  value='").append(questionsRow.get(i).get(_id)).append("'>").append(questionsRow.get(i).get(_title)).append("</option>");
                 }
@@ -704,12 +855,14 @@ public class FormQuestions {
                         + _answersType + "='radio' OR "
                         + _answersType + "='checkbox' OR "
                         + _answersType + "='select_option' )", _title));// بر اساس حروف الفبا مرتب باشد بهتر است
-                optionHtml.append("<option  value='sumOfForm_" + formId + "'>مجموع امتیازات این فرم</option>");
-                optionHtml.append("<option  value='avgOfForm_" + formId + "'>میانگین امتیازات این فرم</option>");
+
                 for (int i = 0; i < rowQuestion.size(); i++) {
                     optionHtml.append("<option  value='avg_").append(rowQuestion.get(i).get(_id)).append("'>").append(rowQuestion.get(i).get(_title) + "-میانگین بازه ای-").append("</option>");
                     optionHtml.append("<option  value='sum_").append(rowQuestion.get(i).get(_id)).append("'>").append(rowQuestion.get(i).get(_title) + "-مجموع بازه ای-").append("</option>");
                 }
+                optionHtml.append("<option  value='sumOfForm_" + formId + "'>مجموع امتیازات این فرم</option>");
+                optionHtml.append("<option  value='countOfFormAnswerSet_" + formId + "'>تعداد فرم های تکمیل شده</option>");
+                optionHtml.append("<option  value='avgOfForm_" + formId + "'>میانگین درصد پاسخگویی این فرم</option>");
             }
             return optionHtml.toString();
 
@@ -737,6 +890,51 @@ public class FormQuestions {
             String formID = jjTools.getParameter(request, "formQuestions_formId");
             System.out.println("formID=" + formID);
             html.append("<option  style='color:black' value=''>انتخاب حیطه سوال</option>");
+            DefaultTableModel dtm;
+            if (jjNumber.isDigit(formID)) {
+                dtm = db.SelectDistinct(FormQuestions.tableName, FormQuestions._range, FormQuestions._formID + "=" + formID);
+            } else {
+                dtm = db.SelectDistinct(FormQuestions.tableName, FormQuestions._range);
+            }
+            List<Map<String, Object>> row = jjDatabase.separateRow(dtm);
+            for (int i = row.size() - 1; i >= 0; i--) {
+
+                html.append("<option value='" + row.get(i).get(_range).toString() + "'"
+                        + (row.get(i).get(_range).toString().equals(_range) ? " selected='selected'>" : ">")
+                        + row.get(i).get(_range).toString() + "</option>");//'option' and 'value' for this fild is same('value' is not necessary)
+
+            }
+            if (panel == "") {
+                panel = "formQuestions_range";
+            }
+            script += Js.setHtml(panel, html.toString());
+
+            Server.outPrinter(request, response, script);
+            return "";
+        } catch (Exception e) {
+            Server.outPrinter(request, response, Server.ErrorHandler(e));
+            return "";
+        }
+    }
+
+    /**
+     * گرفتن حیطههای یک فرم به همراه گزینه همه حیطه ها
+     *
+     * @param request
+     * @param response
+     * @param db
+     * @param needString
+     * @return
+     * @throws Exception
+     */
+    public static String getAlloptionRangeFormQuestion(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean needString) throws Exception {
+        try {
+            StringBuilder html = new StringBuilder();
+            String script = "";
+            String panel = jjTools.getParameter(request, "panel");
+            String formID = jjTools.getParameter(request, "formQuestions_formId");
+            System.out.println("formID=" + formID);
+            html.append("<option  style='color:black' value=''>همه حیطه ها</option>");
             DefaultTableModel dtm;
             if (jjNumber.isDigit(formID)) {
                 dtm = db.SelectDistinct(FormQuestions.tableName, FormQuestions._range, FormQuestions._formID + "=" + formID);

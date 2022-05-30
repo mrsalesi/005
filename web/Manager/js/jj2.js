@@ -2222,14 +2222,14 @@ var jj = function (selector) {
                                         var ext = dataArray[i].split('.').pop();
                                         // برای آلنکه بتوانیم چندین اینپوت فیلد که مربوط به یک ستون در دیتابیس است را سریال کنیم نام کلاس را دقیقا ستون معادل در دیتابیس می گذاریم و باید در هنگام ادیت یا اینسرت با یک حلقه ی تکرار این سریال را انجام دهیم
                                         if (ext == ("png") || ext == ("jpg") || ext == ("gif") || ext == ("svg")) {
-                                            $(divUploadSelector).append("<div class='col-lg-12  media-body mg-l-15'>"
+                                            $(divUploadSelector).append("<div class='col-lg-12 mg-l-15'>"
                                                     + "<img class='wd-40 rounded-circle mg-r-20' src='upload/" + dataArray[i] + "'/>"
                                                     + "<a  href='upload/" + dataArray[i] + "'>دانلود  " + title + "</a>"
                                                     + " <input class='" + databaseColoumnName.replace("#", "") + "' type='hidden'  value='" + dataArray[i] + "'>"
                                                     + "<div class='btn btn-danger btn-icon mg-r-5 mg-b-10' onclick='$(this).parent().remove();'><i class='fa fa-close'></i>" + "</div>"
                                                     + "</div>");
                                         } else {
-                                            $(divUploadSelector).append("<div class='col-lg-12  media-body mg-l-15'>"
+                                            $(divUploadSelector).append("<div class='col-lg-12 mg-l-15'>"
                                                     + "<i class='icon ion-ios-paper-outline'></i>"
                                                     + "<a  href='upload/" + dataArray[i] + "'>دانلود  " + title + "</a>"
                                                     + " <input class='" + databaseColoumnName.replace("#", "") + "' type='hidden'  value='" + dataArray[i] + "'>"
@@ -2645,7 +2645,7 @@ var jj = function (selector) {
 
                             // برای آلنکه بتوانیم چندین اینپوت فیلد که مربوط به یک ستون در دیتابیس است را سریال کنیم نام کلاس را دقیقا ستون معادل در دیتابیس می گذاریم و باید در هنگام ادیت یا اینسرت با یک حلقه ی تکرار این سریال را انجام دهیم
                             if (ext == ("png") || ext == ("jpg") || ext == ("gif") || ext == ("svg")) {
-                                $(divUploadSelector).append("<div class='col-lg-12  media-body mg-l-15'>"
+                                $(divUploadSelector).append("<div class='col-lg-12 mg-l-15'>"
                                         + "<img class='wd-40 rounded-circle mg-r-20' src='upload/" + data + "'/>"
                                         + "<a  href='upload/" + data + "'>دانلود  " + title + "</a>"
                                         + " <input class='" + databaseColoumnName.replace("#", "") + "' type='hidden'  value='" + data + "'>"
@@ -2653,7 +2653,7 @@ var jj = function (selector) {
                                         + "<div style='display:inline-block' >" + sub + "</div>"
                                         + "</div>");
                             } else {
-                                $(divUploadSelector).append("<div class='col-lg-12  media-body mg-l-15'>"
+                                $(divUploadSelector).append("<div class='col-lg-12 mg-l-15'>"
                                         + "<i class='icon ion-ios-paper-outline'></i>"
                                         + "<a  href='upload/" + data + "'>دانلود  " + title + "</a>"
                                         + " <input class='" + databaseColoumnName.replace("#", "") + "' type='hidden'  value='" + data + "'>"
