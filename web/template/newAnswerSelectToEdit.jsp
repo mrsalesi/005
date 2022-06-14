@@ -131,34 +131,86 @@
         <!--<link href="template/css/questionStyle.css" rel="stylesheet" type="text/css"/>-->
         <!--<link href="template/css/questionStyle_1.css" rel="stylesheet" type="text/css"/>-->   
         <!--<link href="template/css/questionStyle_2.css" rel="stylesheet" type="text/css"/>-->   
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <link href="template/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <link href="template/css/style.css" rel="stylesheet" type="text/css"/>
+        <link href="template/css/responsive.css" rel="stylesheet" type="text/css"/>
+        <link href="template/colors/color1.css" rel="stylesheet" type="text/css" id="colors"/>
+        <link href="template/css/animate.css" rel="stylesheet" type="text/css"/>
+        <link href="template/css/revelationSlider.css" rel="stylesheet" type="text/css"/>
+        <link href="template/css/flexslider.css" rel="stylesheet" type="text/css"/>
+        <link href="template/css/magpopup.css" rel="stylesheet" type="text/css"/>
+        <link href="template/css/shortcodes.css" rel="stylesheet" type="text/css"/>
+        <link href="template/css/owlcarusel.css" rel="stylesheet" type="text/css"/>
+        <link href="Manager/font-awesome.css" rel="stylesheet" />
+        <link href="Manager/font-tahoma.css" rel="stylesheet" type="text/css"/>
+        <link href="Manager/ionicons.css" rel="stylesheet" />
+        <link href="./StyleBody.css" rel="stylesheet" type="text/css"/>
 
         <%= formRow.get(0).get(Forms._css)%>
-        <style>html{ font-size: 10px;
-              font-weight: normal;
-              cursor: pointer;
-              line-height: 32px;
-              font-family: Tahoma, Arial;
-              height: auto;}
-            </style>
-        </head>
-        <body>            
-            <section class="flat-row about what-we-do " id="services">
+        <style>
+            .morelink:visited {
+                color: #eab702
+            }
+            a.morelink {
+                text-decoration:none;
+                outline: none;
+            }
+            .morecontent span {
+                display: none;
+            }
+            .dateNews:after{
+                content: "\f1ec";
+                font-family: "fontAwesome";
+                font-size: 11px;
+                right: 0px;
+                /*text-align: revert-layer;*/
+                float: right;
+                margin: 0px 5px;
+
+            }
+            .userIcon:after{
+                content: "\f078";
+                font-family: "fontAwesome";
+                font-size: 10px;
+
+            }
+        </style>
+    </head>
+    <body>            
+        <section class="flat-row background-black row-promobox">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="title-section style3">
-                            <div class="">
-                                <div class="">
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <h1>                                            
-                                        فرم شما ثبت شد
-                                        <br/>
-                                         پس از بررسی توسط کارشناسان در صورت لزوم به شما اطلاع رسانی میشود
-                                    </h1>
-                                </div>
-                            </div>
+                <div class="">
+                    <div class="flat-promobox style1 color-white">
+                        <h3>
+                            فرم شما ثبت شد                                    
+                        </h3>
+                        <p>
+                            پس از بررسی توسط کارشناسان در صورت لزوم به شما اطلاع رسانی میشود
+                            .</p>
+                        <div class="promobox-group-content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="flat-row parallax parallax4" style="background-position: 50% 23px;">
+            <div class="overlay">
+                <div class="container">
+                    <div class="color-white">
+                        <div class="breadcrumbs">
+                            <p>
+                                فرم ها و درخواست های شما توسط سیستم مکانیزه دریافت و با ثبت تاریخ و نام تکمیل کننده در کارتابل کارشناسان قرار میگرد                                
+                            </p>
+                            <p>
+                                بعضی از فرم ها نیازمند جلسات و یا تصمیم گیری است و بعد از آن شما باید اطلاعات دیگری را ارسال کنید    
+                            </p>
+                            <p>
+                                بعضی فرم ها نیازمند اقداماتی است که باید در روال کار قرار گیرد     و بصورت خودکار فرایند آن انجام میشود و شما نتایج در کارتابل مشاهده خواهید کرد
+                            </p>
+                            <p>
+                                در صورت لزوم بعد از بررسی کارشناسان از طریق شماره های تماس شما وضعیت و نتیحه را  به اطلاع شما میرسانند
+                            </p>
                         </div>
                     </div>
                 </div>

@@ -29,86 +29,91 @@
 
             <div class="card bd-primary mg-t-20" id='AccessuserForm'>
                 <input type="hidden" id="access_user_id" name="id" />
-                <div class="card-header bg-primary tx-white">سند فیزیکی کاربر بصورتpdf</div>
-                  <div class="col-lg-12">فایل های پیوست توسط ادمین
-                        <div class="" id="user_divUpload1"></div>
-                    </div>
-                    <div class="input-group col-lg-12">
-                        <div class=""> عنوان فایل</div>
-                        <span id="user_pic_admin" class="form-control"></span>
-                        <input class="form-control" id="user_titleFile_admin" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" >
-                        <input id="attachFileUserAdmin" name="attachFileUser" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
-                        <input class="btn btn-primary" id="userAttachFiles_sendFilesAdmin" type="submit" value="ارسال">
-                        <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
-                        <!--<span class="form-control"></span>-->
-                        <a   id="DownloadattachFileUser" href="" style="display: none" target="_blank" download>
-                            دانلود
-                        </a>
-                    </div>                            
-                    <br/>
+                <div class="card-header bg-primary tx-white">اسکن پرونده ی کاربر</div>
+                <div class="col-lg-12">فایل های پیوست توسط ادمین
+                    <div class="" id="user_attachFileDiv"></div>
+                </div>
+                <div class="input-group col-lg-12">
+                    <div class=""> عنوان فایل</div>
+                    <span id="user_pic_admin" class="form-control"></span>
+                    <input class="form-control" id="user_titleFile_admin" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" >
+                    <input id="attachFileUserAdmin" name="user_attachFile" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                    <input class="btn btn-primary" id="userAttachFiles_sendFilesAdmin" type="submit" value="ارسال">
+                    <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                    <!--<span class="form-control"></span>-->
+                    <a   id="DownloadattachFileUser" href="" style="display: none" target="_blank" download>
+                        دانلود
+                    </a>
+                </div>                            
+                <br/>
+                <div class="card-header bg-primary tx-white">فایل های پیوست توسط کاربر</div>
+                <div class="col-lg-12">
+                    <div class="" id="user_attachFileUserDiv"></div>
+                </div>
+                <br/>
                 <div class="card-header bg-primary tx-white">سند های جداگانه</div>
                 <div class="card-body pd-sm-30">                    
                     <div class="row" style="margin-bottom: 10px">
-                            <div class="row" style="margin-bottom: 10px">
-                        <div class="col-lg" style="">
-                            <div>
-                                عکس پرسنلی
+                        <div class="row" style="margin-bottom: 10px">
+                            <div class="col-lg" style="">
+                                <div>
+                                    عکس پرسنلی
+                                </div>
+
+                                <input id="user_attachPicPersonal" name="user_attachPicPersonal" type="hidden">
+                                <img id="PicPreviewPersonal" name="PicPreviewPersonal" class="img-thumbnail" src="img/profile_pre.png">
+                                <div class="row">
+                                    <input class="btn btn-primary" id="sendPic1" type="submit" value="ارسال">
+                                    <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                    <input id="user_file_personal" name="user_file_personal" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                    <span id="user_pic1"  class="form-control"></span>
+                                    <!--<span class="form-control"></span>-->
+                                </div>
+                                <a   id="DownloadPicPersonal" href="" style="display: none" target="_blank" download>
+                                    دانلود عکس پرسنلی
+                                </a>
+                            </div>
+                            <br/>
+                            <div class="col-lg " style="">
+                                <div>
+                                    عکس کارت پرسنلی</div>
+                                <input id="user_attachPicPersonnelCard" name="user_attachPicPersonnelCard" type="hidden">
+                                <img id="PicPreview" name="PicPreview" class="img-thumbnail" src="img/preview.jpg">
+                                <div class="row">
+                                    <input class="btn btn-primary" id="sendPicupload" type="submit" value="ارسال">
+                                    <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                    <input id="uploaded_file" name="upload_file" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                    <span id="user_pic3"  class="form-control"></span>
+                                    <!--<span class="form-control"></span>-->
+                                </div>
+                                <a   id="DownloadPicPersonnelCard" href="" style="display: none" target="_blank" download>
+                                    دانلودکارت پرسنلی
+                                </a>
+                            </div>
+                            <br/>
+                            <div class="col-lg" style="">
+                                <div>  عکس امضا</div>
+                                <input id="user_attachPicSignature" name="user_attachPicSignature" type="hidden">
+
+                                <img id="PicPreviewSignature"  name="PicPreviewSignature" class="img-thumbnail" src="img/preview.jpg">
+                                <div class="row">
+                                    <input class="btn btn-primary" id="sendPicSignature" type="submit" value="ارسال">
+                                    <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                    <input id="user_file_Signature" name="user_file_Signature" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                    <span id="user_pic2"  class="form-control"></span>
+                                    <!--<span class="form-control"></span>-->
+                                </div>
+                                <a   id="DownloadPicSignature" href="" style="display: none" target="_blank" download>
+                                    دانلود عکس امضا
+                                </a>
                             </div>
 
-                            <input id="user_attachPicPersonal" name="user_attachPicPersonal" type="hidden">
-                            <img id="PicPreviewPersonal" name="PicPreviewPersonal" class="img-thumbnail" src="img/profile_pre.png">
-                            <div class="row">
-                                <input class="btn btn-primary" id="sendPic1" type="submit" value="ارسال">
-                                <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
-                                <input id="user_file_personal" name="user_file_personal" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
-                                <span id="user_pic1"  class="form-control"></span>
-                                <!--<span class="form-control"></span>-->
-                            </div>
-                            <a   id="DownloadPicPersonal" href="" style="display: none" target="_blank" download>
-                                دانلود عکس پرسنلی
-                            </a>
                         </div>
-                        <br/>
-                        <div class="col-lg " style="">
-                            <div>
-                                عکس کارت پرسنلی</div>
-                            <input id="user_attachPicPersonnelCard" name="user_attachPicPersonnelCard" type="hidden">
-                            <img id="PicPreview" name="PicPreview" class="img-thumbnail" src="img/preview.jpg">
-                            <div class="row">
-                                <input class="btn btn-primary" id="sendPicupload" type="submit" value="ارسال">
-                                <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
-                                <input id="uploaded_file" name="upload_file" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
-                                <span id="user_pic3"  class="form-control"></span>
-                                <!--<span class="form-control"></span>-->
-                            </div>
-                            <a   id="DownloadPicPersonnelCard" href="" style="display: none" target="_blank" download>
-                                دانلودکارت پرسنلی
-                            </a>
-                        </div>
-                        <br/>
-                        <div class="col-lg" style="">
-                            <div>  عکس امضا</div>
-                            <input id="user_attachPicSignature" name="user_attachPicSignature" type="hidden">
-
-                            <img id="PicPreviewSignature"  name="PicPreviewSignature" class="img-thumbnail" src="img/preview.jpg">
-                            <div class="row">
-                                <input class="btn btn-primary" id="sendPicSignature" type="submit" value="ارسال">
-                                <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
-                                <input id="user_file_Signature" name="user_file_Signature" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
-                                <span id="user_pic2"  class="form-control"></span>
-                                <!--<span class="form-control"></span>-->
-                            </div>
-                            <a   id="DownloadPicSignature" href="" style="display: none" target="_blank" download>
-                                دانلود عکس امضا
-                            </a>
-                        </div>
-                 
-                    </div>
                     </div>
                 </div>
                 <div class="card-header bg-primary tx-white">اطلاعات کاربر</div>
                 <div class="card-body pd-sm-30">                    
-                
+
                     <div class="row">
                         <div class="col-lg">
                             شماره عضویت
@@ -274,7 +279,7 @@
         <div class="row col-lg-12">
             <div class="mg-t-20  col-lg" >
                 <button class='btn btn-outline-secondary mg-b-10  btn-block' onclick="cmsUser.m_show_tbl();
-                        cmsUser.m_clean();">بازگشت </button>;
+                    cmsUser.m_clean();">بازگشت </button>;
             </div><!-- col -->
             <div id="User_button" class="col-lg-9 mg-t-20 row">            
             </div>
@@ -342,30 +347,11 @@
             reader.onload = function (e) {
                 $('#PicPreview').attr('src', e.target.result);
             }
-
-
             reader.readAsDataURL(input.files[0]);
         }
     }
-
     $("#uploaded_file").change(function () {
         readURL(this);
     });
-    function readURLfiles(input) {
 
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                $('#PicPreviewAttach').attr('src', e.target.result);
-            }
-
-
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    $("#attachFile").change(function () {
-        readURLfiles(this);
-    });
 </script>

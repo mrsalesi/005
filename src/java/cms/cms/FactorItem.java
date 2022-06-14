@@ -88,7 +88,7 @@ public class FactorItem {
                 }
             }
 
-            StringBuffer html = new StringBuffer();
+            StringBuilder html = new StringBuilder();
 
             html.append(" <div class='card bd-primary mg-t-20'>");
             html.append("    <div class='card-header bg-primary tx-white'>مدیریت آیتم های فاکتور</div>"
@@ -146,7 +146,7 @@ public class FactorItem {
 
     public static String add_new(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
         try {
-            StringBuffer html = new StringBuffer();
+            StringBuilder html = new StringBuilder();
             boolean accIns = Access_User.hasAccess(request, db, rul_ins);
             if (accIns) {
                 html.append(Js.setHtml("#FactorItem_button_insert", "<button id=\"insert_Factor_new\" title='" + lbl_insert + "' class='btn btn-outline-success btn-block mg-b-10' onclick='" + Js.jjFactorItem.insert() + "'>" + lbl_insert + "</button>"));
@@ -171,21 +171,21 @@ public class FactorItem {
                 Server.outPrinter(request, response, "دسترسی به این قسمت را ندارید");
                 return "";
             }
-            Map<String, Object> map = new HashMap<>();
             Map<String, Object> mapFactor = new HashMap<>();
+            Map<String, Object> map = new HashMap<>();
             jjCalendar_IR dateIR = new jjCalendar_IR();
             map.put(_factorId, jjTools.getParameter(request, _factorId));
-            map.put(_discountPercent, jjTools.getParameter(request, _discountPercent));
+            map.put(_discountPercent, jjNumber.isFloat(jjTools.getParameter(request, _discountPercent))?jjTools.getParameter(request, _discountPercent):"0" );
             map.put(_discription, jjTools.getParameter(request, _discription));
-            map.put(_originalPrice, jjTools.getParameter(request, _originalPrice));
-            map.put(_percentageOfValueAdded, jjTools.getParameter(request, _percentageOfValueAdded));
-            map.put(_priceAfterDiscount, jjTools.getParameter(request, _priceAfterDiscount));
+            map.put(_originalPrice, jjNumber.isFloat(jjTools.getParameter(request, _originalPrice))?jjTools.getParameter(request, _originalPrice):"0" );
+            map.put(_percentageOfValueAdded,  jjNumber.isFloat(jjTools.getParameter(request, _percentageOfValueAdded))?jjTools.getParameter(request, _percentageOfValueAdded):"0" );
+            map.put(_priceAfterDiscount,  jjNumber.isFloat(jjTools.getParameter(request, _priceAfterDiscount))?jjTools.getParameter(request, _priceAfterDiscount):"0" );
             map.put(_productId, jjTools.getParameter(request, _productId));
             if (jjTools.getParameter(request, _quantity).equals("")) {
-                map.put(_quantity, 0);
+                map.put(_quantity, 1);
             }
-            map.put(_totalPrice, jjTools.getParameter(request, _totalPrice));
-            map.put(_valueAdded, jjTools.getParameter(request, _valueAdded));
+            map.put(_totalPrice,  jjNumber.isFloat(jjTools.getParameter(request, _totalPrice))?jjTools.getParameter(request, _totalPrice):"0" );
+            map.put(_valueAdded,  jjNumber.isFloat(jjTools.getParameter(request, _valueAdded))?jjTools.getParameter(request, _valueAdded):"0" );
             map.put(_date, dateIR.getDBFormat_8length());
             map.put(_dueDate, jjCalendar_IR.getDatabaseFormat_8length(jjTools.getParameter(request, _priceAfterDiscount), true));
             map.put(_time, dateIR.getTimeFormat_4length());
@@ -362,7 +362,7 @@ public class FactorItem {
                 return "";
             }
             List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, _id + "=" + id));
-            StringBuffer html = new StringBuffer();
+            StringBuilder html = new StringBuilder();
             jjCalendar_IR dateIR = new jjCalendar_IR();
             html.append(Js.setVal("#FactorItem_id", row.get(0).get(_id)));
             html.append(Js.setVal("#" + _factorId, row.get(0).get(_factorId)));
@@ -445,7 +445,7 @@ public class FactorItem {
      * @throws Exception
      */
     public static String getProductFactorItem(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
-        StringBuffer html = new StringBuffer();
+        StringBuilder html = new StringBuilder();
         List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(Product.tableName, Product._active+"="+1));
         String panel = jjTools.getParameter(request, "panel");
         panel = panel.equals("") ? "product_factor_item_productId" : panel;

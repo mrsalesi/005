@@ -77,10 +77,8 @@
                 <div class="header-row">
                     <div class="header-column">
                         <div class="header-logo">
-
                             <img  src="template1/img/logo2.png" class="custom-logo" alt=""   style="width:20%" />
                             <span class="header-nav header-nav-stripe">
-
                                 <a class="btn header-btn-collapse-nav" data-toggle="collapse"
                                    data-target=".header-nav-main">
                                     <i class="fa fa-bars"></i>

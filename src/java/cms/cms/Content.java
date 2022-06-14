@@ -501,6 +501,54 @@ public class Content {
         }
     }
 
+    public static String copy(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isFromClient) throws Exception {
+        try {
+            if (!Access_User.hasAccess(request, db, rul_ins)) {
+                Server.outPrinter(request, response, "دسترسی ایجاد محتوا را ندارید");
+                return "";
+            }
+            String id = jjTools.getParameter(request, _id);
+            List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, _id + "=" + id));
+            Map<String, Object> map = new HashMap();
+            map.put(_parent, row.get(0).get(_parent));
+            map.put(_content, row.get(0).get(_content));
+            map.put(_titleTag, row.get(0).get(_titleTag));
+            map.put(_privateGroupId, row.get(0).get(_privateGroupId));
+            map.put(_privateUserId, row.get(0).get(_privateUserId));
+            map.put(_description, row.get(0).get(_description));
+            String userId = String.valueOf(jjTools.getSeassionUserId(request));
+            map.put(_ownerId, userId);
+            map.put(_headerTags, row.get(0).get(_headerTags));
+            map.put(_script, row.get(0).get(_script));
+            map.put(_isAjax, row.get(0).get(_isAjax));
+            map.put(_content_page, row.get(0).get(_content_page));
+            map.put(_date, jjCalendar_IR.getDatabaseFormat_8length(null, true));
+            map.put(_priority, row.get(0).get(_priority));
+            map.put(_category_id, row.get(0).get(_category_id));
+            map.put(_pic, row.get(0).get(_pic));
+            map.put(_visit, "0");
+            map.put(_likes, "0");
+            map.put(_explain, row.get(0).get(_explain));
+            map.put(_disLikes, "0");
+            map.put(_userCommensIsActive, row.get(0).get(_userCommensIsActive));
+            map.put(_target, row.get(0).get(_target));
+            map.put(_isEditableOnlyByOwner, row.get(0).get(_isEditableOnlyByOwner));
+            map.put(_title, jjTools.getParameter(request, "content_title").trim().isEmpty() ? row.get(0).get(_title) : jjTools.getParameter(request, "content_title").trim());
+            map.put(_hasLink, row.get(0).get(_hasLink));
+            map.put(_tags, row.get(0).get(_tags));
+            map.put(_style, row.get(0).get(_style));
+            if (db.insert(tableName, map).getRowCount() == 0) {
+                Server.outPrinter(request, response, Js.modal("بدرستی انجام نشد، ممکن از در محتوای مبدا داده ای کامل نباشد", "خطا"));
+                return "";
+            }
+            Server.outPrinter(request, response, Js.jjContent.refresh() + Js.modal("عملیات کپی انجام شد", "پیام سیستم"));
+            return "";
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Server.ErrorHandler(ex);
+        }
+    }
+
     public static String delete(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isFromClient) throws Exception {
         try {
             resetCatchContentTitle(request, _content, db, isFromClient);
@@ -1262,7 +1310,7 @@ public class Content {
         ServletContext context = request.getSession().getServletContext();//ست کردن متغیر هایی در اسکوپ اپلیکیشن برای اینکه همه کاربر ها بتوانند از این متغیر ها استفاده کنند
         ServerLog.Print("===>>>>>resetCatchProductTitle" + context.getContextPath() + context.getServerInfo());
         String lang = "1";// زبان را باید دقت کنیم بعدا درست باشد یعنی برای هر زبان یک متغیر در اسکوپ اپلیکیشن می خواهیم
-        context.setAttribute("catchProductTitle", jjDatabase.separateRow(db.Select(Product.tableName, Product._name + "," + Product._id  , Product._hasLink + "=1", "CHAR_LENGTH(" + Product._name + ")DESC")));
+        context.setAttribute("catchProductTitle", jjDatabase.separateRow(db.Select(Product.tableName, Product._name + "," + Product._id, Product._hasLink + "=1", "CHAR_LENGTH(" + Product._name + ")DESC")));
     }
 
     public static List<Map<String, Object>> getCatchContentTitle(HttpServletRequest request, String content, jjDatabaseWeb db, boolean isFromClient) {
@@ -1365,8 +1413,8 @@ public class Content {
 //                    content = content.replace("&nbsp;" + ti + "&nbsp;", "<a onclick=swProduct('" + id + "'); class='mousePointer jjLink' >" + ti + "&nbsp;</a>");
 //                }
             }
-                content = content.replaceAll("&_l_t_;", "&lt;");
-                content = content.replaceAll("&_g_t_;", "&gt;");// تا اینجا روی محتوا ها اتو ویکی را اعمال کردیم            
+            content = content.replaceAll("&_l_t_;", "&lt;");
+            content = content.replaceAll("&_g_t_;", "&gt;");// تا اینجا روی محتوا ها اتو ویکی را اعمال کردیم            
             return content;
         } catch (Exception ex) {
             return Server.ErrorHandler(ex);

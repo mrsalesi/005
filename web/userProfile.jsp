@@ -1,8 +1,9 @@
-<%-- 
+<%--
     Document   : index
     Created on : Nov 15, 2021, 1:13:01 PM
     Author     : IRANNOVIN
 --%>
+<%@page import="HMIS.FormAnswers"%>
 <%@page import="HMIS.Messenger"%>
 <%@page import="cms.access.Access_Group_User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -47,7 +48,6 @@
     if (user_token.isEmpty() && jjTools.getSeassionUserId(request) > 0) {
         List<Map<String, Object>> user = jjDatabase.separateRow(db.Select(Access_User.tableName, Access_User._id + "=" + jjTools.getSeassionUserId(request)));;
         user_token = user.get(0).get(Access_User._token).toString();
-
     }
     if (jjTools.getSeassionUserId(request) == 0 && user_token.isEmpty()) {
         System.out.println("response.sendRedirect>>>" + Server.mainPage);
@@ -84,7 +84,10 @@
     <link href="template/css/dataTables.responsive.css" rel="stylesheet" type="text/css"/>
     <link href="template/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>
     <style>
-        #showFileMessengerDiv img {
+        #user_attachFileUserDiv img,user_attachFileDiv img {
+            max-width: 25%;
+        }
+        #showFileMessengerDiv img,#showFileMessengerDiv_sale img,#showFileMessengerDiv_move img {
             max-width: 100px;
         }
         .main-body {
@@ -128,7 +131,7 @@
         }
         .shadow-none {
             box-shadow: none!important;
-        } 
+        }
         .entry-details-content li:hover{
             border-bottom:1px #eab702 solid;
         }
@@ -213,9 +216,9 @@
                             %>
                             <div id="userNameAfterLogin" class="textlogin" style="float: right;margin: 9px;">
                                 <nav id="mainnav"><ul class="menu">
+                                        سلام <%= jjTools.getSeassionUserNameAndFamily(request)%>
                                         <li class="userIcon"><i class="fa fa-user " style="margin: 7px;"></i>
-                                            <ul class="submenu right-sub-menu">
-                                                <li><a >سلام <%= jjTools.getSeassionUserNameAndFamily(request)%></a></li>
+                                            <ul class="submenu right-sub-menu">                                                
                                                 <li><a href="userProfile.jsp?user_token=<%= user.get(0).get(Access_User._token)%>">پنل کاربری</a></li>
                                                 <li><a  onclick="signOut();">خروج</a></li></ul></li></ul></nav>
                             </div>
@@ -261,17 +264,17 @@
                                                 <div class="row">
                                                     <div class="container">
                                                         <%
-                                                            List<Map<String, Object>> row10 = jjDatabase.separateRow(db.Select(Category_Content.tableName, Category_Content._parent + "=39"));
-                                                            for (int o = 0; o < row10.size(); o++) {
+                                                            List<Map<String, Object>> subCategoryOfProjects = jjDatabase.separateRow(db.Select(Category_Content.tableName, Category_Content._parent + "=39"));
+                                                            for (int o = 0; o < subCategoryOfProjects.size(); o++) {
                                                         %>
                                                         <div class="col-md-4">
-                                                            <h2 style="text-align: right"><%=row10.get(o).get(Category_Content._title)%></h2>
+                                                            <h2 style="text-align: right"><%=subCategoryOfProjects.get(o).get(Category_Content._title)%></h2>
                                                             <ul class="mega-menu-sub">
                                                                 <%
-                                                                    List<Map<String, Object>> row9 = jjDatabase.separateRow(db.Select(Content.tableName, Content._category_id + "=" + row10.get(o).get(Category_Content._id)));
+                                                                    List<Map<String, Object>> row9 = jjDatabase.separateRow(db.Select(Content.tableName, Content._category_id + "=" + subCategoryOfProjects.get(o).get(Category_Content._id)));
                                                                     for (int b = 0; b < row9.size(); b++) {
                                                                 %>
-                                                                <li><a ><i class="fa fa-flag"></i><%=row9.get(b).get(Content._title)%></a></li> 
+                                                                <li><a ><i class="fa fa-flag"></i><%=row9.get(b).get(Content._title)%></a></li>
                                                                         <%}%>
                                                             </ul>
                                                         </div>
@@ -283,7 +286,7 @@
                                         <li><a  onclick="new jj('do=Content.sw&panel=sw&text=تیم شرکت&jj=1').jjAjax2()">تیم شرکت</a></li>
                                         <li><a  onclick="$('#sw').load('gallery.jsp')">گالری</a></li>
                                         <li><a >خدمات</a> </li>
-                                        <li><a  onclick="new jj('do=Content.sw&panel=sw&text=درباره ی ما&jj=1').jjAjax2()">درباره ی شرکت </a></li>
+                                        <li><a  onclick="new jj('do=Content.sw&panel=sw&text=درباره ما&jj=1').jjAjax2()">درباره ی شرکت </a></li>
                                         <li><a  onclick="new jj('do=Content.sw&panel=sw&text=تماس با ما&jj=1').jjAjax2()">تماس با ما</a></li>
                                     </ul>
                                 </nav>
@@ -305,16 +308,22 @@
             </div>
         </header>
         <div id="sw">
-
             <%
-
                 List<Map<String, Object>> user = jjDatabase.separateRow(db.Select(Access_User.tableName, Access_User._token + "='" + user_token + "'" + " OR " + Access_User._id + "=" + jjTools.getSeassionUserId(request)));
                 List<Map<String, Object>> projectMe = null;
                 List<Map<String, Object>> news = null;
                 List<Map<String, Object>> rowFactor = null;
-                String groups = "";
+                rowFactor = jjDatabase.separateRow(db.otherSelect("SELECT product_factor.*,product_factor_item_productId,product_factor_item_factorId FROM product_factor "
+                        + " LEFT JOIN product_factor_item ON product_factor.id = product_factor_item.product_factor_item_factorId "
+                        + " WHERE product_factor.product_factor_userId ='" + user.get(0).get(Access_User._id) + "' GROUP BY product_factor.id"));
+                String groups = "";//گروه هایی که کاربر در آنها عضویت دارد
+//                 List<Map<String, Object>> myProjects =  jjDatabase.separateRow(db.otherSelect("SELECT group_title FROM access_user_group"
+//                        + "  LEFT JOIN access_group g ON group_id=g.id"
+//                        + " WHERE user_id="+jjTools.getSeassionUserId(request)+""
+//                        + " AND group_title LIKE 'اعضای پروژه ی%' ;"));
                 List<Map<String, Object>> groupId = jjDatabase.separateRow(db.Select(Access_Group_User.tableName, Access_Group_User._user_id + "='" + user.get(0).get(Access_User._id) + "'"));
-                List<Map<String, Object>> rowMessageTiket = jjDatabase.separateRow(db.Select(Messenger.tableName, "(" + Messenger._receiver + "=" + user.get(0).get(Access_User._id) + " OR "
+                List<Map<String, Object>> rowMessageTiket = jjDatabase.separateRow(db.otherSelect("SELECT hmis_Messenger.*," + Access_User._name + "," + Access_User._family
+                        + " FROM `db_taavoni`.`hmis_Messenger` LEFT  JOIN Access_user a on messenger_sender=a.id WHERE (" + Messenger._receiver + "=" + user.get(0).get(Access_User._id) + " OR "
                         + Messenger._sender + "=" + user.get(0).get(Access_User._id) + ") AND " + Messenger._type + "='" + Messenger.message_Advice + "' GROUP BY  " + Messenger._chatID + " ORDER BY id desc"));
                 System.out.println("groupId.size()" + groupId.size());
                 if (!groupId.isEmpty()) {
@@ -324,14 +333,22 @@
                             groups += " ,";
                         }
                     }
-                    projectMe = jjDatabase.separateRow(db.Select(Content.tableName, Content._privateGroupId + " IN (" + groups + ")"));
+                    List<Map<String, Object>> subPrivateCategoryOfProjects = jjDatabase.separateRow(db.Select(Category_Content.tableName, Category_Content._parent + "=41"));
+                    String projectCategoriesCondition = Content._category_id + "=41 ";// آی دی دسته یندی هایی که زیر مجموعه ی دسته بندی پروژه های شرکت هستند تا یک سطح
+                    for (int i = 0; i < subPrivateCategoryOfProjects.size(); i++) {
+                        projectCategoriesCondition += " OR " + Content._category_id + "=" + subPrivateCategoryOfProjects.get(i).get(Category_Content._id).toString();
+                    }
+                    projectMe = jjDatabase.separateRow(db.Select(Content.tableName, Content._privateGroupId + " IN (" + groups + ")" + " AND (" + projectCategoriesCondition + ")"));
                     System.out.println(projectMe.size());
                     news = jjDatabase.separateRow(db.Select(News.tableName, News._privateGroupId + " IN (" + groups + ")"));
                     System.out.println(news.size());
                     //rowFactor = jjDatabase.separateRow(db.Select(Factor.tableName, Factor._userId + "='" + user.get(0).get(Access_User._id) + "'"));
-                    System.out.println("________________________________________");
+
                 }
-                rowFactor = jjDatabase.separateRow(db.otherSelect("SELECT product_factor.*,product_factor_item.* FROM product_factor LEFT JOIN product_factor_item ON product_factor.id = product_factor_item.product_factor_item_factorId where product_factor.product_factor_userId ='" + user.get(0).get(Access_User._id) + "' GROUP BY product_factor.id"));
+                List<Map<String, Object>> moveAnsersRow = jjDatabase.separateRow(db.otherSelect("SELECT * FROM hmis_formanswers "
+                        + " WHERE (formanswers_questionId='186' or formanswers_questionId='185') AND formanswers_answer='" + jjTools.getSeassionUserId(request) + "'")// اگر در پاسخ به انتقال گیرنده آی دی 
+                );
+                System.out.println("________________________________________");
             %>
             <section id="main-body">
                 <div class="container">
@@ -341,7 +358,7 @@
                                 <h3><%=user.get(0).get(Access_User._name)%> <%=user.get(0).get(Access_User._family)%> ,خوش امدید</h3>
                                 <ol class="breadcrumb">
                                     <li>
-                                        <a href="userProfile.jsp">اعضا 
+                                        <a href="userProfile.jsp">اعضا
                                         </a>        </li>
                                     <li class="active">
                                         ناحیه کاربری
@@ -381,9 +398,9 @@
                         <div class="col-md-9 pull-md-right">
                             <div class="tiles clearfix">
                                 <div class="row">
-                                    <div class="col-sm-3 col-xs-6 tile portfolio-filter" onclick="">
+                                    <div class="col-sm-3 col-xs-6 tile portfolio-filter" >
                                         <a  data-filter=".AllProject">
-                                            <div class="icon"><i class="fa fa-cube"></i></div>
+                                            <div class="icon"><i class="fa fa-cube"></i></div>                                               
                                                 <%
                                                     if (projectMe == null || projectMe.size() == 0) {
                                                 %>
@@ -395,7 +412,7 @@
                                             <div class="highlight bg-color-blue"></div>
                                         </a>
                                     </div>
-                                    <div class="col-sm-3 col-xs-6 tile portfolio-filter" onclick="">
+                                    <div class="col-sm-3 col-xs-6 tile portfolio-filter" >
                                         <a  data-filter=".AllInformation">
                                             <div class="icon"><i class="fa fa-globe"></i></div>
                                                 <%
@@ -408,8 +425,8 @@
                                             <div class="title">اطلاعیه ها</div>
                                             <div class="highlight bg-color-green"></div>
                                         </a>
-                                    </div>                                    
-                                    <div class="col-sm-3 col-xs-6 tile portfolio-filter" onclick="">
+                                    </div>
+                                    <div class="col-sm-3 col-xs-6 tile portfolio-filter" >
                                         <a  data-filter=".AllSms">
                                             <div class="icon"><i class="fa fa-comments"></i></div>
                                                 <%
@@ -427,7 +444,7 @@
                                             <div class="highlight bg-color-red"></div>
                                         </a>
                                     </div>
-                                    <div class="col-sm-3 col-xs-6 tile portfolio-filter" onclick="">
+                                    <div class="col-sm-3 col-xs-6 tile portfolio-filter" >
                                         <a  data-filter=".table-cancle">
                                             <div class="icon"><i class="fa fa-credit-card"></i></div>
                                                 <%
@@ -441,26 +458,59 @@
                                             <div class="highlight bg-color-gold"></div>
                                         </a>
                                     </div>
-                                </div>                                 
+                                    <div class="col-sm-3 col-xs-6 tile portfolio-filter" >
+                                        <a  data-filter=".allSaleAds">
+                                            <div class="icon"><i class="fa fa-credit-card"></i></div>
+                                            <div class="stat">-</div>
+                                            <div class="title">درخواست ثبت آگهی فروش</div>
+                                            <div class="highlight bg-color-gold"></div>
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-3 col-xs-6 tile portfolio-filter" >
+                                        <a  data-filter=".allMoveSession">
+                                            <div class="icon"><i class="fa fa-credit-card"></i></div>
+                                            <div class="stat">-</div>
+                                            <div class="title">درخواست جلسه انتقال</div>
+                                            <div class="highlight bg-color-gold"></div>
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-3 col-xs-6 tile portfolio-filter" >
+                                        <a  data-filter=".allNewProjects">
+                                            <div class="icon"><i class="fa fa-credit-card"></i></div>
+                                            <div class="stat">-</div>
+                                            <div class="title">ثبت نام پروژه ی جدید</div>
+                                            <div class="highlight bg-color-gold"></div>
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-3 col-xs-6 tile portfolio-filter" >
+                                        <a  data-filter=".allmoveForm">
+                                            <div class="icon"><i class="fa fa-credit-card"></i></div>
+                                            <div class="stat"><%= moveAnsersRow.size()%></div>
+                                            <div class="title">تاریخچه نقل و انتقالات</div>
+                                            <div class="highlight bg-color-gold"></div>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                             <div id="swContent" ></div>
-                            <div class="" onclick="">
+                            <div class="" >
                                 <%
                                     List<Map<String, Object>> rowWelcome = jjDatabase.separateRow(db.Select(Content.tableName, Content._id + "=" + 2));
                                     for (int b = 0; b < rowWelcome.size(); b++) {
                                 %>
-                                <div class="col-lg-12 panel panel-default panel-accent-gold" onclick="">
+                                <div class="col-lg-12 panel panel-default panel-accent-purple">
                                     <div>
                                         <a href="Server?do=Content.sw&panel=sw&text=<%=rowWelcome.get(b).get(Content._title)%>" target="_blank"><i class="fa fa-flag"></i><%=rowWelcome.get(b).get(Content._title)%></a>
                                         <p><%=rowWelcome.get(b).get(Content._explain)%></p>
+                                        <a href="Server?do=Content.sw&panel=sw&text=<%=rowWelcome.get(b).get(Content._title)%>" target="_blank"><i class="fa fa-arrow-alt-left"></i> مشاهده</a>
                                     </div>
-                                </div> 
+                                </div>
                                 <%
                                     }
-                                %>                               
-                            </div>  
-                            <div class="AllProject" style="display: none">
-                                <div class="col-xs-12 main-content">           
+                                %>
+                            </div>
+                            <div class="AllProject  allTabs"  style="display: none">
+                                <div class="col-xs-12 main-content">
                                     <h2>پروژه ها</h2>
                                     <%
                                         if (projectMe == null || projectMe.size() == 0) {
@@ -469,7 +519,7 @@
                                         <h3>
                                             <span class="label label-default">
                                             </span>
-                                            <a >در حال حاضر پروژه ای ندارید</a>
+                                            در حال حاضر پروژه ای ندارید
                                         </h3>
                                         <blockquote>
                                             <p>
@@ -490,18 +540,18 @@
                                                 <%=day%><%=month%><%=year%>
                                             </span>
                                             <a  href="Server?do=Content.sw&panel=sw&text=<%=projectMe.get(i).get(Content._title)%>" target="_blank"><%=projectMe.get(i).get(Content._title)%></a>
-                                        </h3>                                        
+                                        </h3>
                                     </div>
                                     <%}%>
                                     <%}%>
                                 </div>
                             </div>
-                            <div class="AllInformation" style="display: none">
-                                <div class="col-xs-12 main-content">           
+                            <div class="AllInformation allTabs"  style="display: none">
+                                <div class="col-xs-12 main-content">
                                     <h2>اطلاعیه ها</h2>
                                     <%
                                         if (news == null || news.size() == 0) {
-                                            System.out.print("////7" + projectMe + "//" + news + "//" + rowFactor);
+                                            System.out.print(">>>>7" + projectMe + "//" + news + "//" + rowFactor);
                                     %>
                                     <div class="announcement-single">
                                         <h3>
@@ -539,15 +589,15 @@
                                     <%}%>
                                 </div>
                             </div>
-                            <div class="AllSms" style="display: none">
-                                <div class="col-xs-12">                                               
+                            <div class="AllSms allTabs"  style="display: none">
+                                <div class="col-xs-12">
                                     <div class="card rounded-0" id='ticketTable'>
-                                        <button class="btn btn-success pd-sm-x-20 mg-sm-r-5 col-lg-3" style="color: white;" onclick="add_newTicket();"> ثبت تیکت جدید</button>        
+                                        <button class="btn btn-success pd-sm-x-20 mg-sm-r-5 col-lg-3" style="color: white;" onclick="add_newTicket();"> ثبت تیکت جدید</button>
                                         <table id="ticketDataTable"  style="width:100%;">
                                             <thead class="card-header bg-primary tx-white">
                                                 <tr>
                                                     <th>موضوع</th>
-                                                    <th>آی دی فرستنده</th>
+                                                    <th> فرستنده</th>
                                                     <th>تاریخ</th>
                                                     <th>وضعیت</th>
                                                 </tr>
@@ -558,7 +608,7 @@
                                                 %>
                                                 <tr onclick="selectTicket(<%=rowMessageTiket.get(i).get(Messenger._chatID)%>);" style="cursor: pointer">
                                                     <td><%=rowMessageTiket.get(i).get(Messenger._title)%><br/>#<%=rowMessageTiket.get(i).get(Messenger._chatID)%></td>
-                                                    <td><%=rowMessageTiket.get(i).get(Messenger._sender)%> </td>
+                                                    <td><%=rowMessageTiket.get(i).get(Access_User._name) + " " + rowMessageTiket.get(i).get(Access_User._family)%> </td>
                                                     <td><%= jjCalendar_IR.getViewFormat(rowMessageTiket.get(i).get(Messenger._postageDate).toString())%>
                                                         (<%=jjCalendar_IR.getViewFormatTime_8length(rowMessageTiket.get(i).get(Messenger._time).toString())%>) </td>
                                                     <td><%=rowMessageTiket.get(i).get(Messenger._status)%></td>
@@ -586,7 +636,7 @@
                                                             <input type="hidden" id="messenger_chatID" name="messenger_chatID" />
                                                             <div class="row" id="ticketHeader">
                                                                 <div class="col-lg" style="">
-                                                                    عنوان 
+                                                                    عنوان
                                                                     <input class="form-control" id="messenger_title" name="messenger_title"  placeholder="عنوان پیام" type="text" />
                                                                     <input id="messenger_type" name="messenger_type"  type="hidden" value="پشتیبانی"/>
                                                                 </div>
@@ -594,7 +644,7 @@
                                                                     <div class="col-lg-3 col-sm-6">
                                                                         بخش
                                                                         <div class="form-group" style=" margin-bottom: 20px;" >
-                                                                            <select id="messenger_receiver" name="messenger_receiver"  class="form-control" >   
+                                                                            <select id="messenger_receiver" name="messenger_receiver"  class="form-control" >
                                                                                 <option value="2619">امور اداری</option>
                                                                                 <option value="3939">امور مالی</option>
                                                                                 <option value="1532">مدیریت</option>
@@ -603,36 +653,40 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-3 col-sm-6">
-                                                                        فرستنده : 
+                                                                        فرستنده :
                                                                         <input   class="form-control" value="<%= jjTools.getSeassionUserNameAndFamily(request)%>" type="text"  disabled="disabled" />
                                                                         <input   class="form-control" id="messenger_sender" name="messenger_sender"  value="<%= jjTools.getSeassionUserId(request)%>" type="hidden"/>
                                                                     </div>
                                                                     <div class="col-lg-3 col-sm-6">
                                                                         تاریخ ارسال
-                                                                        <input class="form-control" id="messenger_postageDate"   disabled="disabled" 
+                                                                        <input class="form-control" id="messenger_postageDate"   disabled="disabled"
                                                                                value="<%=jjCalendar_IR.getViewFormat_10length(jjCalendar_IR.getDatabaseFormat_8length(null, true))%>"  />
-
                                                                     </div>
                                                                     <div class="col-lg-3 col-sm-6" id="status">
                                                                         وضعیت
                                                                         <input type="text" id="messenger_status" name="messenger_status"   class="form-control"  disabled="disabled"/>
                                                                     </div>
-                                                                </div>                                                                
+                                                                </div>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-lg-12" style="">
                                                                     متن پیام
                                                                     <textarea  class="form-control" id="messenger_textMessage" name="messenger_textMessage"  rows="7" ></textarea>
                                                                 </div>
-                                                            </div>                                                                                    
-                                                            <div id="filePdfLoader" class="col-lg-12 mg-t-20" style="">                                                                                        
-                                                                <div class="col-lg-12">پیوست کردن فایل 
+                                                            </div>
+                                                            <div id="filePdfLoader" class="col-lg-12 mg-t-20" style="">
+                                                                <div class="col-lg-12">پیوست کردن فایل
                                                                     <div class="" id="showFileMessengerDiv"></div>
                                                                 </div>
                                                                 <div class="input-group col-lg-12">
-                                                                    <div class=""> عنوان فایل</div>
+                                                                    <div class=""> بهتر است عنوان فایل را متناسب با محتوای آن انتخاب کنید</div>
                                                                     <input class="form-control" id="messenger_titleFile" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" />
-                                                                    <input id="attachFileMessenger" name="attachFileMessenger" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file" />
+                                                                    <input id="attachFileMessenger" name="attachFileMessenger" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());
+                                                                            var temp = $(this).val();
+                                                                            temp = temp.replace(/.*:/ig, '');
+                                                                            temp = temp.replace(/\\.*\\/ig, '');
+                                                                            $(this).parent().find('input[type=text]').val(temp);
+                                                                           " style="display: none;" type="file" />
                                                                     <span id="sendFileMessenger" class="btn flat-button button-color button-normal green">ارسال فایل ری سرور<i class="fa fa-upload"></i></span>
                                                                     <span class="btn btn-primary" onclick=" $(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
                                                                 </div>
@@ -647,18 +701,17 @@
                                                                                                                                         $('#messenger_logStatusDiv').hide('fast');
                                                                                                                                     }">
                                                                                                                                 <img src="template/add_row.png" alt="Log"/>
-                                                                                                                            </div>                                
+                                                                                                                            </div>
                                                                                                                             <div id="messenger_logStatusDiv" style="display: none;">
-                                                                                                                                <textarea id="messenger_logStatus" name="messenger_logStatus"  class="tahoma10" style="width: 99.8%;height: 260px;text-align: right" disabled="disabled">           
+                                                                                                                                <textarea id="messenger_logStatus" name="messenger_logStatus"  class="tahoma10" style="width: 99.8%;height: 260px;text-align: right" disabled="disabled">
                                                                                                                                 </textarea>
                                                                                                                             </div>
                                                                                                                         </div>-->
                                                         </div>
-                                                        <div class="row col-lg-12">                                                            
-                                                            <button class="col-lg-4 flat-button button-color button-normal black" onclick="$('#newTicket').slideUp();$('#ticketTable').show();">بازگشت </button>                
-                                                            <button class="col-lg-6 flat-button button-color button-normal blue" onclick="sendTicket();">ارسال </button>                
+                                                        <div class="row col-lg-12">
+                                                            <button class="col-lg-4 flat-button button-color button-normal black" onclick="$('#newTicket').slideUp();$('#ticketTable').show();">بازگشت </button>
+                                                            <button class="col-lg-6 flat-button button-color button-normal blue" onclick="sendTicket();">ارسال </button>
                                                         </div><!-- card -->
-
                                                     </div><!-- card -->
                                                 </div><!-- col -->
                                             </div><!-- col -->
@@ -666,7 +719,7 @@
                                     </div><!-- col-8 -->
                                 </div><!-- col-8 -->
                             </div>
-                            <div class="AllPaid" style="display: none"></div>
+                            <div class="AllPaid allTabs"  style="display: none"></div>
                             <div class="table-paid card rounded-0" style="display: none">
                                 <table id="factorTable" class="uk-table uk-table-hover uk-table-striped " style="width:100%;">
                                     <thead>
@@ -686,13 +739,14 @@
                                                     if (rowFactor.get(i).get(Factor._statuse).toString().equals(statusePaid)) {
                                         %>
                                         <%jjCalendar_IR dateLablePaid = new jjCalendar_IR(rowFactor.get(i).get(Factor._date).toString());
+                                            System.out.println(".................--------------------..");
+                                            System.out.println(rowFactor.get(i).get(Factor._id));
                                             String monthPaid = dateLablePaid.getMonthName();
                                             int dayPaid = dateLablePaid.getDay();
                                             int yearPaid = dateLablePaid.getYear();
-                                            System.out.println("...................");
-                                            List<Map<String, Object>> nameProject = jjDatabase.separateRow(db.Select(Product.tableName, Product._id + "=" + rowFactor.get(i).get(FactorItem._productId)));%>
+//                                            List<Map<String, Object>> nameProject = jjDatabase.separateRow(db.Select(FactorItem.tableName, FactorItem._factorId + "=" + rowFactor.get(i).get(Factor._id)) );%>
                                         <tr >
-                                            <td><%=nameProject.get(0).get(Product._name)%></td>
+                                            <td><%=rowFactor.get(0).get(Factor._discription)%></td>
                                             <td><%=rowFactor.get(i).get(Factor._serialNumber)%></td>
                                             <td><%=dayPaid%><%=monthPaid%><%=yearPaid%></td>
                                             <td><%=rowFactor.get(i).get(Factor._totalAmount)%></td>
@@ -702,7 +756,7 @@
                                                 }
                                             }
                                         } else {
-                                            System.out.print("////3" + projectMe + "//" + news + "//" + rowFactor);%>
+                                            System.out.print(">>>>3" + projectMe + "//" + news + "//" + rowFactor);%>
                                         <tr>
                                             <td></td>
                                             <td></td>
@@ -713,7 +767,7 @@
                                         </tr><%}%>
                                     </tbody>
                                 </table></div>
-                            <div class="table-unPaid" style="display: none">
+                            <div class="table-unPaid allTabs"  style="display: none">
                                 <table id="example1" class="uk-table uk-table-hover uk-table-striped table-unPaid" style="width:100%;">
                                     <thead>
                                         <tr>
@@ -737,9 +791,11 @@
                                             String monthUnPaid = dateLableUnPaid.getMonthName();
                                             int dayUnPaid = dateLableUnPaid.getDay();
                                             int yearUnPaid = dateLableUnPaid.getYear();
+                                            System.out.print("%$%$%$%$%$%$87687");
+                                            System.out.println("...........^^^^........");
                                             List<Map<String, Object>> nameProject2 = jjDatabase.separateRow(db.Select(Product.tableName, Content._id + "=" + rowFactor.get(x).get(FactorItem._productId)));%>
                                         <tr >
-                                            <td>prdName:<%=nameProject2.get(0).get(Product._name)%></td>
+                                            <td><%=rowFactor.get(x).get(Factor._discription)%></td>
                                             <td><%=rowFactor.get(x).get(Factor._serialNumber)%></td>
                                             <td><%=dayUnPaid%><%=monthUnPaid%><%=yearUnPaid%></td>
                                             <td><%=rowFactor.get(x).get(Factor._totalAmount)%></td>
@@ -749,7 +805,7 @@
                                                 }
                                             }
                                         } else {
-                                            System.out.print("////4" + projectMe + "//" + news + "//" + rowFactor);%>
+                                            System.out.print(">>>>4" + projectMe + "//" + news + "//" + rowFactor);%>
                                         <tr>
                                             <td></td>
                                             <td></td>
@@ -769,8 +825,8 @@
                                             <th>مشاهده</th>
                                         </tr>
                                     </tfoot>
-                                </table></div>                                                                                    
-                            <div class="table-cancle" style="display: none">
+                                </table></div>
+                            <div class="table-cancle allTabs"  style="display: none">
                                 <table id="example1" class="uk-table uk-table-hover uk-table-striped" style="width:100%;">
                                     <thead>
                                         <tr>
@@ -787,15 +843,16 @@
                                                 for (int x = 0; x < rowFactor.size(); x++) {
                                                     String statuse = rowFactor.get(x).get(Factor._statuse).toString();
                                                     String statuseUnPaid = Factor.lbl_statuseUnPaid;
-                                                    System.out.print("..../././////........" + rowFactor.get(x).get(Factor._statuse).toString() + Factor.lbl_statuseUnPaid);
+                                                    System.out.print("...././.>>>>/........" + rowFactor.get(x).get(Factor._statuse).toString() + Factor.lbl_statuseUnPaid);
                                         %>
                                         <%      jjCalendar_IR dateLableUnPaid = new jjCalendar_IR(rowFactor.get(x).get(Factor._date).toString());
                                             String monthUnPaid = dateLableUnPaid.getMonthName();
                                             int dayUnPaid = dateLableUnPaid.getDay();
                                             int yearUnPaid = dateLableUnPaid.getYear();
+                                            System.out.print("%$%$%$%$%$%78777");
                                             List<Map<String, Object>> nameProject2 = jjDatabase.separateRow(db.Select(Product.tableName, Product._id + "=" + rowFactor.get(x).get(FactorItem._productId)));%>
                                         <tr >
-                                            <td><%=nameProject2.get(0).get(Product._name)%></td>
+                                            <td><%=rowFactor.get(x).get(Factor._discription)%></td>
                                             <td><%=rowFactor.get(x).get(Factor._serialNumber)%></td>
                                             <td><%=dayUnPaid%><%=monthUnPaid%><%=yearUnPaid%></td>
                                             <td><%=rowFactor.get(x).get(Factor._totalAmount)%></td>
@@ -804,7 +861,7 @@
                                         </tr><%
                                             }
                                         } else {
-                                            System.out.print("////4" + projectMe + "//" + news + "//" + rowFactor);%>
+                                            System.out.print(">>>>4" + projectMe + "//" + news + "//" + rowFactor);%>
                                         <tr>
                                             <td></td>
                                             <td></td>
@@ -813,14 +870,210 @@
                                             <td></td>
                                             <td></td>
                                         </tr><%}%>
-                                    </tbody>                                    
-                                </table></div>                                                                                    
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="allMoveSession allTabs"  style="display: none">
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="card rounded-0">
+                                                <div id="message_chat_move">
+                                                </div><!-- card-header -->
+                                                <div class="card-header bg-primary tx-white">
+                                                    برای انتقال امتیاز یا ملک شما باید جلسه ای در تعاونی هماهنگ شود، برای هماهنگی درخواست خود را ثبت کنید
+                                                </div><!-- card-header -->
+                                                <div class="card-body" id="formMassege_move">
+                                                    <div id="messengerForm_move">
+                                                        <input type="hidden" id="messenger_id_move" name="id" />
+                                                        <input type="hidden" id="messenger_chatID_move" name="messenger_chatID" />
+                                                        <div class="row" id="ticketHeader_move">
+                                                            <input class="form-control" id="messenger_title_move" name="messenger_title" type="hidden" value="درخواست جلسه ی انتقال" />
+                                                            <input id="messenger_type_move" name="messenger_type"  type="hidden" value="درخواست جلسه ی انتقال"/>
+                                                            <div class="row">
+                                                                <div class="col-lg-3 col-sm-6">
+                                                                    بخش
+                                                                    <div class="form-group" style=" margin-bottom: 20px;" >
+                                                                        <select id="messenger_receiver_move" name="messenger_receiver"  class="form-control" >
+                                                                            <option value="2619">امور اداری</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3 col-sm-6">
+                                                                    فرستنده :
+                                                                    <input   class="form-control" value="<%= jjTools.getSeassionUserNameAndFamily(request)%>" type="text"  disabled="disabled" />
+                                                                    <input   class="form-control" id="messenger_sender_move" name="messenger_sender"  value="<%= jjTools.getSeassionUserId(request)%>" type="hidden"/>
+                                                                </div>
+                                                                <div class="col-lg-3 col-sm-6">
+                                                                    تاریخ ارسال
+                                                                    <input class="form-control" id="messenger_postageDate_move"   disabled="disabled"
+                                                                           value="<%=jjCalendar_IR.getViewFormat_10length(jjCalendar_IR.getDatabaseFormat_8length(null, true))%>"  />
+                                                                </div>
+                                                                <div class="col-lg-3 col-sm-6" id="status_move">
+                                                                    وضعیت
+                                                                    <input type="text" id="messenger_status_move" name="messenger_status"   class="form-control"  disabled="disabled"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12" style="">
+                                                                متن پیام
+                                                                <textarea  class="form-control" id="messenger_textMessage_move" name="messenger_textMessage"  rows="7" ></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div id="filePdfLoader_move" class="col-lg-12 mg-t-20" style="">
+                                                            <div class="col-lg-12">پیوست کردن فایل
+                                                                <div class="" id="showFileMessengerDiv_move"></div>
+                                                            </div>
+                                                            <div class="input-group col-lg-12">
+                                                                <div class=""> بهتر است عنوان فایل را متناسب با محتوای آن انتخاب کنید</div>
+                                                                <input class="form-control" id="messenger_titleFile_move" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" />
+                                                                <input id="attachFileMessenger_move" name="attachFileMessenger" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file" />
+                                                                <span id="sendFileMessenger_move" class="btn flat-button button-color button-normal green">ارسال فایل ری سرور<i class="fa fa-upload"></i></span>
+                                                                <span class="btn btn-primary" onclick=" $(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                                            </div>
+                                                            <div class="inputAfterSelectManager" ></div>
+                                                        </div>
+                                                        <div class="col-lg-4" id="sendingMetod_move"></div>
+                                                    </div>
+                                                    <div class="row col-lg-12">
+                                                        <button class="col-lg-4 flat-button button-color button-normal black" onclick="$('.allMoveSession').slideUp();">بازگشت </button>
+                                                        <button class="col-lg-6 flat-button button-color button-normal blue" onclick="sendTicket_move();">ارسال </button>
+                                                    </div><!-- card -->
+                                                </div><!-- card -->
+                                            </div><!-- col -->
+                                        </div><!-- col -->
+                                    </div>
+                                </div><!-- col-8 -->
+                            </div>
+                            <div class="allNewProjects allTabs"  style="display: none">
+                                <div class="card-header bg-primary tx-white">
+                                    در حال حاضر پروژه ی فعالی برای ثبت نام وحود ندارد
+                                </div>
+                            </div>
+                            <div class="allmoveForm allTabs"  style="display: none">
+                                <div class="card-header bg-primary tx-white">
+                                    نقل و انتقالی هایی که برای شما ثبت شده است
+                                </div>
+                                <%
+                                    if (!moveAnsersRow.isEmpty()) {
+                                        for (int z = 0; z < moveAnsersRow.size(); z++) {
+                                            List<Map<String, Object>> ansersForOneMoveForm = jjDatabase.separateRow(db.otherSelect("SELECT * FROM hmis_formanswers  "
+                                                    + " WHERE  formanswers_answerSet_id='" + moveAnsersRow.get(z).get(FormAnswers._answerSet_id) + "'  ;"));
+
+                                %>
+                                <table  style="width:90%;margin:  5px 5%;">
+                                    <thead>
+                                        <tr>
+                                            <th>عنوان پروژه ی انتقال یافته</th>
+                                            <th>تاریخ انتقال</th>
+                                            <th>انتقال دهنده</th>
+                                            <th>انتقال گیرنده</th>
+                                            <th>پیوست</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+
+                                            <td><%= ansersForOneMoveForm.get(0).get(FormAnswers._answer).toString()%></td>                                    
+                                            <td><%= ansersForOneMoveForm.get(3).get(FormAnswers._answer).toString()%></td>                                 
+                                            <td style="color: red"><%= Access_User.getUserName(ansersForOneMoveForm.get(1).get(FormAnswers._answer).toString(), db)%></td>                                    
+                                            <td style="color: green"><%= Access_User.getUserName(ansersForOneMoveForm.get(2).get(FormAnswers._answer).toString(), db)%></td>                                    
+                                            <td><%= ansersForOneMoveForm.get(4).get(FormAnswers._answer).toString().isEmpty() ? ""
+                                                    : ("<a href='upload/" + ansersForOneMoveForm.get(4).get(FormAnswers._answer).toString() + "' target='_blank' >download</a>")%> </td>                                    
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <br/>
+                                <%
+                                        }
+                                    }
+                                %>
+                            </div>
+                            <div class="allSaleAds allTabs"  style="display: none">
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="card rounded-0">
+                                                <div id="message_chat_sale">
+                                                </div><!-- card-header -->
+                                                <div class="card-header bg-primary tx-white">
+                                                    ارسال درخواست ثبت ملک/امتیاز شما در سایت تعاونی
+                                                </div><!-- card-header -->
+                                                <div class="card-body" id="formMassege_sale">
+                                                    <div id="messengerForm_sale">
+                                                        <input type="hidden" id="messenger_id_sale" name="id" />
+                                                        <input type="hidden" id="messenger_chatID_sale" name="messenger_chatID" />
+                                                        <div class="row" id="ticketHeader_sale">
+                                                            <input class="form-control" id="messenger_title_sale" name="messenger_title"  type="hidden"  value="درخواست ثبت آگهی فروش"/>
+                                                            <input id="messenger_type_sale" name="messenger_type"  type="hidden" value="درخواست ثبت آگهی فروش"/>
+                                                            <div class="row">
+                                                                <div class="col-lg-3 col-sm-6">
+                                                                    بخش
+                                                                    <div class="form-group" style=" margin-bottom: 20px;" >
+                                                                        <select id="messenger_receiver_sale" name="messenger_receiver"  class="form-control" >
+                                                                            <option value="2619">امور اداری</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3 col-sm-6">
+                                                                    فرستنده :
+                                                                    <input   class="form-control" value="<%= jjTools.getSeassionUserNameAndFamily(request)%>" type="text"  disabled="disabled" />
+                                                                    <input   class="form-control" id="messenger_sender_sale" name="messenger_sender"  value="<%= jjTools.getSeassionUserId(request)%>" type="hidden"/>
+                                                                </div>
+                                                                <div class="col-lg-3 col-sm-6">
+                                                                    تاریخ ارسال
+                                                                    <input class="form-control" id="messenger_postageDate_sale"   disabled="disabled"
+                                                                           value="<%=jjCalendar_IR.getViewFormat_10length(jjCalendar_IR.getDatabaseFormat_8length(null, true))%>"  />
+                                                                </div>
+                                                                <div class="col-lg-3 col-sm-6" id="status_sale">
+                                                                    وضعیت
+                                                                    <input type="text" id="messenger_status_sale" name="messenger_status"   class="form-control"  disabled="disabled"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12" style="">
+                                                                متن پیام
+                                                                <textarea  class="form-control" id="messenger_textMessage_sale" name="messenger_textMessage"  rows="7" ></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div id="filePdfLoader_sale" class="col-lg-12 mg-t-20" style="">
+                                                            <div class="col-lg-12">پیوست کردن فایل
+                                                                <div class="" id="showFileMessengerDiv_sale"></div>
+                                                            </div>
+                                                            <div class="input-group col-lg-12">
+                                                                <div class=""> بهتر است عنوان فایل را متناسب با محتوای آن انتخاب کنید</div>
+                                                                <input class="form-control" id="messenger_titleFile_sale" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" />
+                                                                <input id="attachFileMessenger_sale" name="attachFileMessenger" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());
+                                                                        var temp = $(this).val();
+                                                                        temp = temp.replace(/.*:/ig, '');
+                                                                        temp = temp.replace(/\\.*\\/ig, '');
+                                                                        $(this).parent().find('input[type=text]').val(temp);
+                                                                       " style="display: none;" type="file" />
+                                                                <span id="sendFileMessenger_sale" class="btn flat-button button-color button-normal green">ارسال فایل ری سرور<i class="fa fa-upload"></i></span>
+                                                                <span class="btn btn-primary" onclick=" $(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                                            </div>
+                                                            <div class="inputAfterSelectManager" ></div>
+                                                        </div>
+                                                        <div class="col-lg-4" id="sendingMetod_sale"></div>
+                                                    </div>
+                                                    <div class="row col-lg-12">
+                                                        <button class="col-lg-4 flat-button button-color button-normal black" onclick="$('.allSaleAds').slideUp();">بازگشت </button>
+                                                        <button class="col-lg-6 flat-button button-color button-normal blue" onclick="sendTicket_sale();">ارسال </button>
+                                                    </div><!-- card -->
+                                                </div><!-- card -->
+                                            </div><!-- col -->
+                                        </div><!-- col -->
+                                    </div>
+                                </div><!-- col-8 -->
+                            </div>
                             <!--edit info-->
                             <div id="AccessuserForm" class="hammer" style="display: none;">
                                 <input type="hidden" name="token" value="" />
                                 <div class="row">
                                     <div class="col-sm-12 col-xs-12 pull-left">
-                                        <div class="form-group">                                                                                                 
+                                        <div class="form-group">
                                             <div class="col-lg-2" style=""></div>
                                             <div class="col-lg-8" style="">
                                                 <div>
@@ -839,7 +1092,7 @@
                                                         دانلود عکس پرسنلی
                                                     </a>
                                             </div><div class="col-lg-2" style=""></div>
-                                        </div>                                            
+                                        </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <input type="hidden" id="access_user_id" name="id" value="<%=user.get(0).get(Access_User._id)%>" />
@@ -868,7 +1121,7 @@
                                         <div class="form-group">
                                             <label for="inputAddress2" class="control-label">کدپستی</label>
                                             <input type="text"  id="user_postalCode" name="user_postalCode"  value="<%=user.get(0).get(Access_User._postalCode)%>" class="form-control" />
-                                        </div>                                        
+                                        </div>
                                     </div>
                                     <div class="col-sm-6 col-xs-12 pull-left">
                                         <div class="form-group">
@@ -876,28 +1129,61 @@
                                             <div class="control">
                                                 <input type="text"  id="user_mobile" name="user_mobile" size="30"  value="<%=user.get(0).get(Access_User._mobile)%>" class="form-control"/>
                                             </div>
-                                        </div>                                            
+                                        </div>
                                     </div>
                                     <div class="col-sm-12 col-xs-12 pull-left">
                                         <div class="form-group">
                                             <div class="row" style="margin-bottom: 10px">
-                                                <div class="col-lg-12">pdfاطلاعات کاربر
-                                                    <div class="" id="user_divUpload"></div>
+                                                <div class="col-lg-12">اسکن پرونده شما
+                                                    <div class="" id="user_attachFileDiv">
+                                                        <%
+                                                            String userFiles[] = user.get(0).get(Access_User._attachFile).toString().split(",");
+                                                            for (int k = 0; k < userFiles.length; k++) {
+                                                        %>
+                                                        <a href="upload/<%= userFiles[k]%>" >
+                                                            <img class="" src="upload/<%= userFiles[k]%>" style="max-height: 200px" target='_blank' /> دانلود
+                                                        </a>
+                                                        <%
+                                                            }
+                                                        %>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12">فایل هایی که شما پیوست کرده اید
+                                                    <div class="" id="user_attachFileUserDiv">
+                                                        <%
+                                                            String userFilesUser[] = user.get(0).get(Access_User._attachFileUser).toString().split(",");
+                                                            for (int k = 0; k < userFilesUser.length; k++) {
+                                                        %>
+                                                        <div class='col-lg-12 mg-l-15'>
+                                                            <img class='wd-40 rounded-circle mg-r-20' src='upload/<%=userFilesUser[k]%>' />
+                                                            <a target='_blank' href='upload/"<%=userFilesUser[k]%>"'>دانلود</a>
+                                                            <input class='<%= Access_User._attachFileUser%>' type='hidden' value='<%=userFilesUser[k]%>'>
+                                                                <div class='btn btn-danger btn-icon mg-r-5 mg-b-10' onclick='$(this).parent().remove();'><i class='fa fa-close'></i></div>
+                                                        </div>
+                                                        <%
+                                                            }
+                                                        %>
+                                                    </div>
                                                 </div>
                                                 <div class="input-group col-lg-12" style="padding: 14px;">
-                                                    <div class=""> عنوان فایل</div>
+                                                    <div class=""> بهتر است عنوان فایل را متناسب با محتوای آن انتخاب کنید</div>
                                                     <span id="user_pic" class="form-control" style="display: none"></span>
                                                     <input class="form-control" id="user_titleFile" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" />
-                                                    <input id="attachFileUser" name="attachFileUser" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file" /><!--فایل انتخاب شده از بروزر-->
+                                                    <input id="attachFileUser" name="attachFileUser" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());
+                                                            var temp = $(this).val();
+                                                            temp = temp.replace(/.*:/ig, '');
+                                                            temp = temp.replace(/\\.*\\/ig, '');
+                                                            $(this).parent().find('input[type=text]').val(temp);
+                                                           " style="display: none;" type="file" /><!--فایل انتخاب شده از بروزر-->
                                                     <input class="tp-caption sfl flat-button-slider bg-button-slider-32bfc0" id="userAttachFiles_sendFiles" style="margin: 5px" type="submit" value="ارسال"/>
                                                     <span class="tp-caption sfl flat-button-slider bg-button-slider-32bfc0" style="margin: 5px" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
                                                     <!--<span class="form-control" /></span>-->
                                                     <a   id="DownloadAttachFile"  style="display: none" target="_blank" download>
                                                         دانلود
                                                     </a>
-                                                </div>  
+                                                </div>
                                             </div>
-                                        </div>                                           
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group text-center">
@@ -910,7 +1196,7 @@
                                     <div class="col-sm-6">
                                         <div menuitemname="Active Products/Services" class="panel panel-default panel-accent-gold">
                                             <div class="panel-heading">
-                                                <h3 class="panel-title">                                                                                                                                                                                  
+                                                <h3 class="panel-title">
                                                     <i class="fa fa-cube"></i>پروژه ها
                                                 </h3>
                                             </div>
@@ -946,13 +1232,13 @@
                                             <div class="list-group">
                                                 <%
                                                     if (news == null || news.size() == 0) {
-                                                        System.out.print("////7" + projectMe + "//" + news + "//" + rowFactor);
+                                                        System.out.print(">>>>711" + projectMe + "//" + news + "//" + rowFactor);
                                                 %>
                                                 <a menuitemname="0"  class="list-group-item" id="ClientAreaHomePagePanels-Recent_News-0">
                                                     <p>در حال حاضر اطلاعیه ای برای شما وجود ندارد</p>
                                                 </a>
                                                 <%} else {%>
-                                                <%System.out.print("////8" + projectMe + "//" + news + "//" + rowFactor);
+                                                <%System.out.print(">>>>8" + projectMe + "//" + news + "//" + rowFactor);
                                                     for (int i = 0; i < news.size(); i++) {
                                                         jjCalendar_IR dateLableNews = new jjCalendar_IR(news.get(i).get(News._date).toString());
                                                         String monthNews = dateLableNews.getMonthName();
@@ -972,7 +1258,7 @@
                                     <div class="col-sm-6">
                                         <div menuitemname="Recent Support Tickets" class="panel panel-default panel-accent-blue">
                                             <div class="panel-heading">
-                                                <h3 class="panel-title">                                                                                                                                                                               
+                                                <h3 class="panel-title">
                                                     <i class="fa fa-comments"></i>پیام های شما
                                                 </h3>
                                             </div>
@@ -986,21 +1272,21 @@
                                         </div>
                                         <div menuitemname="Recent News" class="panel panel-default panel-accent-asbestos">
                                             <div class="panel-heading">
-                                                <h3 class="panel-title">                                                                                                                                                                                 
+                                                <h3 class="panel-title">
                                                     <i class="fa fa-file"></i>فایل های شما
                                                 </h3>
                                             </div>
                                             <div class="list-group">
                                                 <%
-                                                    if (user.get(0).get(Access_User._attachFileUser) == "") {
-                                                        System.out.print("////1111" + projectMe + "//" + news + "//" + rowFactor);
+                                                    if (user.get(0).get(Access_User._attachFile) == "") {
+                                                        System.out.print(">>>>1111" );
                                                 %>
                                                 <a menuitemname="0"  class="list-group-item" id="ClientAreaHomePagePanels-Recent_News-0">
                                                     <p>فایلی برای شما اپلود نشده است</p>
                                                 </a>
                                                 <%} else {%>
-                                                <%            StringBuilder html2 = new StringBuilder();
-                                                    String attachFiles = user.get(0).get(Access_User._attachFileUser).toString();
+                                                <% 
+                                                    String attachFiles = user.get(0).get(Access_User._attachFile).toString();
                                                     String[] attachFilesArray = attachFiles.split(",");
                                                     for (int l = 0; l < attachFilesArray.length; l++) {
                                                         List<Map<String, Object>> fileRow = jjDatabase.separateRow(db.Select(UploadServlet.tableName, UploadServlet._file_name + "='" + attachFilesArray[l] + "'"));
@@ -1025,7 +1311,7 @@
                                                             }
                                                         }
                                                     }
-                                                %>                                                                                                                                                                   
+                                                %>
                                             </div>
                                             <div class="panel-footer">
                                             </div>
@@ -1082,7 +1368,7 @@
                                 <div class="list-group">
                                     <%
                                         if (projectMe == null || projectMe.size() == 0) {
-                                            System.out.print("////9" + projectMe + "//" + news + "//" + rowFactor);
+                                            System.out.print(">>>>9" + projectMe + "//" + news + "//" + rowFactor);
                                     %>
                                     <a menuitemname="Order New Services"  class="list-group-item" id="Secondary_Sidebar-Client_Shortcuts-Order_New_Services">
                                         در حال حاضر در هیچ پروژه ای مشارکت نداشته اید
@@ -1090,7 +1376,7 @@
                                     <%} else {
                                         for (int i = 0; i < projectMe.size(); i++) {
                                     %>
-                                    <a onclick="selectProject(<%=projectMe.get(i).get(Content._id)%>)" menuitemname="Order New Services"  class="list-group-item" id="Secondary_Sidebar-Client_Shortcuts-Order_New_Services">
+                                    <a href="Server?do=Content.sw&panel=sw&text=<%=projectMe.get(i).get(Content._title)%>" target="_blank" menuitemname="Order New Services"  class="list-group-item" id="Secondary_Sidebar-Client_Shortcuts-Order_New_Services">
                                         &nbsp; <%=projectMe.get(i).get(Content._title)%>
                                     </a>
                                     <%}%><%}%>
@@ -1106,13 +1392,13 @@
                                 <div class="list-group">
                                     <%
                                         if (news == null || news.size() == 0) {
-                                            System.out.print("////10" + projectMe + "//" + news + "//" + rowFactor);
+                                            System.out.print(">>>>10" + projectMe + "//" + news + "//" + rowFactor);
                                     %>
                                     <a menuitemname="Order New Services"  class="list-group-item" id="Secondary_Sidebar-Client_Shortcuts-Order_New_Services">
                                         ;در حال حاضر اطلاعیه ای وجود ندارد
                                     </a>
                                     <%} else {%>
-                                    <%System.out.print("////11" + projectMe + "//" + news + "//" + rowFactor);
+                                    <%System.out.print(">>>>11" + projectMe + "//" + news + "//" + rowFactor);
                                         for (int i = 0; i < news.size(); i++) {
                                     %>
                                     <a onclick="selectNews(<%=news.get(0).get(News._id)%>)" menuitemname="Order New Services"  class="list-group-item" id="Secondary_Sidebar-Client_Shortcuts-Order_New_Services">
@@ -1153,7 +1439,7 @@
                             <div class="textwidget">
                                 <ul class="footer-info">
                                     <li class="footer-home arrow"><a>صفحه اصلی</a></li>
-                                    <li class="footer-Allproject arrow"><a>درباره ی ما</a></li>
+                                    <li class="footer-Allproject arrow"><a>درباره ما</a></li>
                                     <li class="footer-Allproject arrow"><a>پروژه ها</a></li>
                                 </ul>
                             </div>
@@ -1194,7 +1480,7 @@
             </div>
         </div>
     </footer>
-    <!--end footer-->                                                            
+    <!--end footer-->
     <div class="switcher-container">
         <h2>
             انتخاب رنگ<a class="sw-click">
@@ -1297,7 +1583,8 @@
                 <ul>
                     <li><a href="index.jsp">صفحه اصلی</a></li>
                     <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;">پروژه های شرکت</a></li>
-                    <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;">گالری</a></li>
+                    <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();
+                            return false;">گالری</a></li>
                     <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;">تماس با ما</a></li>
                     <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;">درباره ما</a></li>
                 </ul>
@@ -1335,7 +1622,7 @@
     <script src="template/js/main.js" type="text/javascript"></script>
     <script src="template/js/jquery.themepunch.tools.min.js" type="text/javascript"></script>
     <script src="template/js/jquery.themepunch.revolution.min.js" type="text/javascript"></script>
-    <script src="template/js/slider.js" type="text/javascript"></script> 
+    <script src="template/js/slider.js" type="text/javascript"></script>
     <script src="template/js/util.js" type="text/javascript"></script>
     <script src='template/js/owl.carousel.js' type='text/javascript'></script>
     <!--<script src="template/js/dataTables.bootstrap.min.js" type="text/javascript"></script>-->
@@ -1363,9 +1650,11 @@
                         }
                         $(document).ready(function () {
                             $('#example').DataTable();
-                            $('#ticketDataTable').DataTable({"bLengthChange": false, info: false}); 
+                            $('#ticketDataTable').DataTable({"bLengthChange": false, info: false});
                             new jj('#sendFileMessenger').jjAjaxFileUploadByTitleAndMultiFile('#attachFileMessenger', 'messenger_attachFile', 'messenger_titleFile', "#showFileMessengerDiv");
-                            //                                                                                                                                                                                                        new jj('#userAttachFiles_sendFilesAdmin').jjAjaxFileUploadByTitleAndMultiFile('#attachFileUserAdmin', 'user_attachFileUser', 'user_titleFile_admin', "#user_divUpload1");
+                            new jj('#sendFileMessenger_sale').jjAjaxFileUploadByTitleAndMultiFile('#attachFileMessenger_sale', 'messenger_attachFile', 'messenger_titleFile_sale', "#showFileMessengerDiv_sale");
+                            new jj('#sendFileMessenger_move').jjAjaxFileUploadByTitleAndMultiFile('#attachFileMessenger_move', 'messenger_attachFile', 'messenger_titleFile_move', "#showFileMessengerDiv_move");
+                            //                                                                                                                                                                                                        new jj('#userAttachFiles_sendFilesAdmin').jjAjaxFileUploadByTitleAndMultiFile('#attachFileUserAdmin', 'user_attachFileUser', 'user_titleFile_admin', "#user_attachFileUserDiv1");
                             //                                                                                                                                                                                                        new jj('#sendPic1').jjAjaxFileUpload2('user_file_personal', '', '#user_attachPicPersonal', '#PicPreviewPersonal');
                             //                                                                                                                                                                                                        new jj('#sendPicSignature').jjAjaxFileUpload2('user_file_Signature', '', '#user_attachPicSignature', '#PicPreviewSignature');
                             //                                                                                                                                                                                                        new jj('#sendPicupload').jjAjaxFileUpload2('uploaded_file', '', '#user_attachPicPersonnelCard', '#PicPreview');
@@ -1398,11 +1687,11 @@
                         });
                         (function () {
                             new jj('#sendPic1').jjAjaxFileUpload2('user_file_personal', '#user_attachPicPersonal', '#PicPreviewPersonal');
-                            new jj('#userAttachFiles_sendFiles').jjAjaxFileUploadByTitleAndMultiFile('#attachFileUser', 'user_attachFile', 'user_titleFile', "#user_divUpload");
+                            new jj('#userAttachFiles_sendFiles').jjAjaxFileUploadByTitleAndMultiFile('#attachFileUser', 'user_attachFileUser', 'user_titleFile', "#user_attachFileUserDiv");
                             var $container = $('.portfolio-wrap');
                             var selector = ".All";
                             //                                                                        $('.portfolio-filter li').removeClass('active');
-                            //         
+                            //
                             //                                                                         $(selector).css({"visibility": ""});
                             $(selector).css("display", "block");
                             $(this).addClass('active');
@@ -1410,151 +1699,10 @@
                             return false;
                         }());
                         $('.portfolio-filter').on('click', function () {
-                            //                                                                                                                                                                                            var $container = $('.portfolio-wrap');
+                            $(".allTabs").css("display", "none");
+                            $(".client-home-panels.All").css("display", "none");
                             var selector = $(this).find("a").attr('data-filter');
-                            if (selector == '.builder') {
-                                $(selector).css("display", "block");
-                                $(".All").css("display", "none");
-                                $(".electric").css("display", "none");
-                                $(".hammer").css("display", "none");
-                                $(".table-cancle").css("display", "none");
-                                $(".table-unPaid").css("display", "none");
-                                $(".table-paid").css("display", "none");
-                                $(".AllProject").css("display", "none");
-                                $(".AllInformation").css("display", "none");
-                                $(".AllSms").css("display", "none");
-                                $(".AllPaid").css("display", "none");
-                            }
-                            if (selector == '.All') {
-                                $(selector).css("display", "block");
-                                $(".builder").css("display", "none");
-                                $(".electric").css("display", "none");
-                                $(".hammer").css("display", "none");
-                                $(".table-cancle").css("display", "none");
-                                $(".table-unPaid").css("display", "none");
-                                $(".table-paid").css("display", "none");
-                                $(".AllProject").css("display", "none");
-                                $(".AllInformation").css("display", "none");
-                                $(".AllSms").css("display", "none");
-                                $(".AllPaid").css("display", "none");
-                            }
-                            if (selector == '.electric') {
-                                $(selector).css("display", "block");
-                                $(".builder").css("display", "none");
-                                $(".All").css("display", "none");
-                                $(".hammer").css("display", "none");
-                                $(".table-cancle").css("display", "none");
-                                $(".table-unPaid").css("display", "none");
-                                $(".table-paid").css("display", "none");
-                                $(".AllProject").css("display", "none");
-                                $(".AllInformation").css("display", "none");
-                                $(".AllSms").css("display", "none");
-                                $(".AllPaid").css("display", "none");
-                            }
-                            if (selector == '.hammer') {
-                                $(selector).css("display", "block");
-                                $(".builder").css("display", "none");
-                                $(".electric").css("display", "none");
-                                $(".All").css("display", "none");
-                                $(".table-cancle").css("display", "none");
-                                $(".table-unPaid").css("display", "none");
-                                $(".table-paid").css("display", "none");
-                                $(".AllProject").css("display", "none");
-                                $(".AllInformation").css("display", "none");
-                                $(".AllSms").css("display", "none");
-                                $(".AllPaid").css("display", "none");
-                            }
-                            if (selector == '.table-cancle') {
-                                //                                                                                                                                                                                                                    $(selector).css("display", "none");
-                                $(".builder").css("display", "none");
-                                $(".electric").css("display", "none");
-                                $(".All").css("display", "none");
-                                $(".table-cancle").css("display", "block");
-                                $(".table-unPaid").css("display", "none");
-                                $(".table-paid").css("display", "none");
-                                $(".AllProject").css("display", "none");
-                                $(".AllInformation").css("display", "none");
-                                $(".AllSms").css("display", "none");
-                                $(".AllPaid").css("display", "none");
-                            }
-                            if (selector == '.table-unPaid') {
-                                //                                                                                                                                                                                                                    $(selector).css("display", "none");
-                                $(".builder").css("display", "none");
-                                $(".electric").css("display", "none");
-                                $(".All").css("display", "none");
-                                $(".table-cancle").css("display", "none");
-                                $(".table-unPaid").css("display", "block");
-                                $(".table-paid").css("display", "none");
-                                $(".AllProject").css("display", "none");
-                                $(".AllInformation").css("display", "none");
-                                $(".AllSms").css("display", "none");
-                                $(".AllPaid").css("display", "none");
-                            }
-                            if (selector == '.table-paid') {
-                                //                                                                                                                                                                                                                    $(selector).css("display", "none");
-                                $(".builder").css("display", "none");
-                                $(".electric").css("display", "none");
-                                $(".All").css("display", "none");
-                                $(".table-cancle").css("display", "none");
-                                $(".table-unPaid").css("display", "none");
-                                $(".table-paid").css("display", "block");
-                                $(".AllProject").css("display", "none");
-                                $(".AllInformation").css("display", "none");
-                                $(".AllSms").css("display", "none");
-                                $(".AllPaid").css("display", "none");
-                            }
-                            if (selector == '.AllProject') {
-                                //                                                                                                                                                                                                                    $(selector).css("display", "none");
-                                $(".builder").css("display", "none");
-                                $(".electric").css("display", "none");
-                                $(".All").css("display", "none");
-                                $(".table-cancle").css("display", "none");
-                                $(".table-unPaid").css("display", "none");
-                                $(".table-paid").css("display", "none");
-                                $(".AllProject").css("display", "block");
-                                $(".AllInformation").css("display", "none");
-                                $(".AllSms").css("display", "none");
-                                $(".AllPaid").css("display", "none");
-                            }
-                            if (selector == '.AllInformation') {
-                                //                                                                                                                                                                                                                    $(selector).css("display", "none");
-                                $(".builder").css("display", "none");
-                                $(".electric").css("display", "none");
-                                $(".All").css("display", "none");
-                                $(".table-cancle").css("display", "none");
-                                $(".table-unPaid").css("display", "none");
-                                $(".table-paid").css("display", "none");
-                                $(".AllProject").css("display", "none");
-                                $(".AllInformation").css("display", "block");
-                                $(".AllSms").css("display", "none");
-                                $(".AllPaid").css("display", "none");
-                            }
-                            if (selector == '.AllSms') {
-                                //                                                                                                                                                                                                                    $(selector).css("display", "none");
-                                $(".builder").css("display", "none");
-                                $(".electric").css("display", "none");
-                                $(".All").css("display", "none");
-                                $(".table-cancle").css("display", "none");
-                                $(".table-unPaid").css("display", "none");
-                                $(".table-paid").css("display", "none");
-                                $(".AllProject").css("display", "none");
-                                $(".AllInformation").css("display", "none");
-                                $(".AllSms").css("display", "block");
-                                $(".AllPaid").css("display", "none");
-                            }
-                            if (selector == '.AllPaid') {
-                                //                                                                                                                                                                                                                    $(selector).css("display", "none");
-                                $(".builder").css("display", "none");
-                                $(".electric").css("display", "none");
-                                $(".All").css("display", "none");
-                                $(".table-cancle").css("display", "none");
-                                $(".table-unPaid").css("display", "none");
-                                $(".table-paid").css("display", "none");
-                                $(".AllProject").css("display", "none");
-                                $(".AllInformation").css("display", "none");
-                                $(".AllSms").css("display", "none");
-                                $(".AllPaid").css("display", "block");
-                            }
+                            $(selector).css("display", "block");
                             $('.portfolio-filter').removeClass('active');
                             $(this).addClass('active');
                             $container.isotope({filter: selector});
@@ -1632,5 +1780,5 @@
                             }
                         };
     </script>
-</body>      
+</body>
 </html>

@@ -171,11 +171,9 @@
                                                                     %>
                                                                     <li><a  onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false"><%=row9.get(b).get(Content._title)%></a></li> 
                                                                         <%}%>
-
                                                                 </ul>
                                                             </div>
                                                             <%}%>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -183,7 +181,7 @@
                                             <li><a href="#" onclick="new jj('do=Content.sw&panel=sw&text=تیم شرکت&jj=1').jjAjax2();return false">تیم شرکت</a></li>
                                             <li><a href="#" onclick="$('#sw').load('gallery.jsp')">گالری</a></li>
                                             <!--                                                                    <li><a href="#">خدمات</a> </li>-->
-                                            <li><a href="#" onclick="new jj('do=Content.sw&panel=sw&text=درباره ی ما&jj=1').jjAjax2()">درباره ی شرکت </a></li>
+                                            <li><a href="#" onclick="new jj('do=Content.sw&panel=sw&text=درباره ما&jj=1').jjAjax2()">درباره ی شرکت </a></li>
                                             <li><a href="#" onclick="new jj('do=Content.sw&panel=sw&text=تماس با ما&jj=1').jjAjax2()">تماس با ما</a></li>
 
                                         </ul>

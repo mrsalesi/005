@@ -198,7 +198,7 @@
                                                         <li><a  onclick="new jj('do=Content.sw&panel=sw&text=تیم شرکت&jj=1').jjAjax2();return false;">تیم شرکت</a></li>
                                                         <li><a  onclick="$('#sw').load('gallery.jsp')">گالری</a></li>
                                                         <!--                                                                    <li><a >خدمات</a> </li>-->
-                                                        <li><a  onclick="new jj('do=Content.sw&panel=sw&text=درباره ی ما&jj=1').jjAjax2()">درباره ی شرکت </a></li>
+                                                        <li><a  onclick="new jj('do=Content.sw&panel=sw&text=درباره ما&jj=1').jjAjax2()">درباره ی شرکت </a></li>
                                                         <li><a  onclick="new jj('do=Content.sw&panel=sw&text=تماس با ما&jj=1').jjAjax2()">تماس با ما</a></li>
 
                                                     </ul>
@@ -208,7 +208,6 @@
                                                 <li class="off-canvas-toggle">
                                                     <a ><i class="fa fa-bars"></i></a>
                                                 </li>
-
                                             </ul><!--
                                             <ul class="menu menu-extra-mobile" style="">
                                                 <li class="off-canvas-toggle">
@@ -466,7 +465,7 @@
                                                 <ul class="footer-info">
                                                     <li class="footer-home arrow"><a>صفحه اصلی</a></li>
 
-                                                    <li class="footer-Allproject arrow"><a>درباره ی ما</a></li>
+                                                    <li class="footer-Allproject arrow"><a>درباره ما</a></li>
                                                     <li class="footer-Allproject arrow"><a>پروژه ها</a></li>
                                                 </ul>
                                             </div>
@@ -598,14 +597,14 @@
                     <div id="site-off-canvas">
                         <span class="close"></span>
                         <div class="wrapper">
-                            <div class="widget widget_search">
+<!--                            <div class="widget widget_search">
                                 <form role="search" method="get" class="search-form" action="#">
                                     <label>
                                         <input type="search" class="search-field" placeholder="جستجو" value="" name="s">
                                     </label>
                                     <input type="submit" class="search-submit" value="پیدا کردن">
                                 </form>
-                            </div>
+                            </div>-->
                             <div id="nav_menu-2" class="widget widget-categories">
                                 <h4 class="widget-title">صفحات</h4>
                                 <ul>

@@ -277,10 +277,15 @@ public class Access_Group {
     }
 
     /**
-     *
-     * @param id
+     * 
+     * @param request
+     * @param response
+     * @param db
+     * @param isPost
+     * @return
+     * @throws Exception 
      */
-    public static String select(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
+        public static String select(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
         String id = jjTools.getParameter(request, _id);
         String errorMessageId = jjValidation.isDigitMessageFa(id, "کد");
         if (!errorMessageId.equals("")) {
@@ -291,7 +296,12 @@ public class Access_Group {
             return "";
 
         }
-        List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, _id + "=" + id));
+
+        List<Map<String, Object>> row = jjDatabase.separateRow(db.JoinLeft(tableName,
+                Access_Group_User.tableName, " *"
+                + ",GROUP_CONCAT(access_user_group.user_id   SEPARATOR ',')AS users,"
+                + "access_group.id,access_group.group_title,access_group.group_des",
+                Access_Group._id, Access_Group_User._group_id, " where  access_group.id =" + id));
         if (row.size() == 0) {
             String errorMessage = "رکوردی با این کد وجود ندارد.";
             if (jjTools.isLangEn(request)) {
@@ -303,35 +313,27 @@ public class Access_Group {
         StringBuffer html = new StringBuffer();
         StringBuffer html2 = new StringBuffer();
         StringBuilder script2 = new StringBuilder();
-        html.append(Js.setVal("#" + _title, row.get(0).get(_title)));
-        html.append(Js.setVal("#" + _des, row.get(0).get(_des)));
-        html.append(Js.setVal("#group_" + _id, row.get(0).get(_id)));
+        html.append(Js.setVal("#" + _title, row.get(0).get(Access_Group._title)));
+        html.append(Js.setVal("#" + _des, row.get(0).get(Access_Group._des)));
+        html.append(Js.setVal("#group_" + _id, row.get(0).get(Access_Group._id)));
         for (int i = 1; i < chkNumber; i++) {
             String thisRow = _chk + (i < 10 ? "0" + i : i);
             html.append(Js.setVal("#C" + (i < 10 ? "0" + i : i), row.get(0).get(thisRow)));
         }
-
-        boolean accDel = Access_User.hasAccess(request, db, rul_dlt);
-        boolean accEdt = Access_User.hasAccess(request, db, rul_edt);
+        String users = row.get(0).get("users").toString();
+        html.append(Js.setVal("#access_user_group_userId", row.get(0).get("users").toString()));
+        html.append(Js.setValSelectOption("#access_user_group_userId", row.get(0).get("users").toString()));
+        html.append(Js.select2("#access_user_group_userId", " width: '100%'"));
         String htmlBottons = "";
         boolean accEdit = Access_User.hasAccess(request, db, rul_edt);
         if (accEdit) {
-            htmlBottons += "<div class='col-lg'><button title='" + lbl_edit + "' class='btn btn-outline-warning btn-block mg-b-10' onclick='" + Js.jjGroup.edit() + "' id='edit_Group'>" + lbl_edit + "</button></div>";
-//               
+            htmlBottons += "<div class='col-lg'><button title='" + lbl_edit + "' class='btn btn-outline-warning btn-block mg-b-10' onclick='" + Js.jjGroup.edit() + "' id='edit_Group'>" + lbl_edit + "</button></div>";               
         }
         boolean accDelete = Access_User.hasAccess(request, db, rul_dlt);
         if (accDelete) {
             htmlBottons += "<div class='col-lg'><button title='" + lbl_delete + "' class='btn btn-outline-danger btn-block mg-b-10' onclick='" + Js.jjGroup.delete(id) + "' id='delete_Group'>" + lbl_delete + "</button></div>";
         }
         script2.append(Js.setHtml("#Group_button", htmlBottons));
-//        if (accEdt) {
-//            html2.append("<div class=\"row\"><div class=\"col-lg-6\"><input type=\"button\" id=\"edit_Group\" value=\"" + lbl_edit + "\" class=\"tahoma10 btn btn-success btn-block mg-b-10 ui-button ui-corner-all ui-widget\"></div>");
-//            html.append(Js.buttonMouseClick("#edit_Group", Js.jjGroup.edit()));
-//        }
-//        if (accDel) {
-//            html2.append("<div class=\"col-lg-6\"><input type=\"button\" id=\"delete_Group\" value=\"" + lbl_delete + "\" class=\"tahoma10 btn btn-success btn-block mg-b-10 ui-button ui-corner-all ui-widget\"  /></div>");
-//            html.append(Js.buttonMouseClick("#delete_Group", Js.jjGroup.delete(id)));
-//        }
         Server.outPrinter(request, response, script2 + html.toString());
         return "";
 

@@ -27,8 +27,11 @@ public class Factor {
     public static String _tell = "product_factor_tell";
     public static String _tell2 = "product_factor_tell2";
     public static String _date = "product_factor_date";
+    public static String _dueDate = "product_factor_dueDate";
+    public static String _paymentDate = "product_factor_paymentDate";
     public static String _time = "product_factor_time";
     public static String _statuse = "product_factor_statuse";
+    public static String _attach = "product_factor_attach";
     public static String _discription = "product_factor_discription";
     public static String _totalAmountValueAdded = "product_factor_totalAmountValueAdded";
     public static String _totalAmount = "product_factor_totalAmount";
@@ -83,6 +86,7 @@ public class Factor {
             html.append("<th width='15%' class='c'>سریال فاکتور</th>");
             html.append("<th width='25%' class='c'>مشتری</th>");
             html.append("<th width='20%' class='c'>جمع کل</th>");
+            html.append("<th width='20%' class='c'>وضعیت</th>");
             html.append("<th width='15%' class='c'>عملیات</th>");
             html.append("</thead><tbody>");
             for (int i = 0; i < row.size(); i++) {
@@ -93,10 +97,15 @@ public class Factor {
                     html.append("<tr style='background-color:#f1bfbf99;'>");
                     html.append("<td class='c' style='background-color:#f1bfbf99;'>" + (row.get(i).get(_id).toString()) + "</td>");
                 }
-                html.append("<td class='l'>" + jjCalendar_IR.getViewFormat(row.get(i).get(_date).toString()) + "</td>");
-                html.append("<td class='l'>" + (row.get(i).get(_serialNumber).toString()) + "</td>");
-                html.append("<td class='r'>" + (Access_User.getUserName(row.get(i).get(_userId).toString(), db)) + "</td>");
-                html.append("<td class='l'>" + (jjNumber.getFormattedNumber(row.get(i).get(_totalAmount).toString())) + "</td>");
+                html.append("<td class='c'>"
+                        + "صدور:" + jjCalendar_IR.getViewFormat(row.get(i).get(_date).toString())
+                        + "<br/>"
+                        + "سررسید:" + jjCalendar_IR.getViewFormat(row.get(i).get(_dueDate).toString())
+                        + "</td>");
+                html.append("<td class='c'>" + (row.get(i).get(_serialNumber).toString()) + "</td>");
+                html.append("<td class='c'>" + (Access_User.getUserName(row.get(i).get(_userId).toString(), db)) + "</td>");
+                html.append("<td class='c'>" + (jjNumber.getFormattedNumber(row.get(i).get(_totalAmount).toString())) + "</td>");
+                html.append("<td class='c'>" + (row.get(i).get(_statuse).toString()) + "</td>");
                 html.append("<td class='c icon ion-ios-gear-outline' onclick='cmsFactor.m_select(" + row.get(i).get(_id) + ");' style='cursor: pointer;color:red;font-size:26px;'></td>");
                 html.append("</tr>");
             }
@@ -185,13 +194,18 @@ public class Factor {
 
     public static String add_new(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
         try {
-            StringBuffer html = new StringBuffer();
+            StringBuilder html = new StringBuilder();
             boolean accIns = Access_User.hasAccess(request, db, rul_ins);
             if (accIns) {
                 html.append(Js.setHtml("#Factor_button_insert", "<button id=\"insert_Factor_new\" title='" + lbl_insert + "' class='btn btn-outline-success btn-block mg-b-10' onclick='" + Js.jjFactor.insert() + "'>" + lbl_insert + "</button>"));
                 html.append(Js.setVal("#product_factor_creator", jjTools.getSeassionUserId(request)));
                 String name = String.valueOf(jjTools.getSeassionUserId(request));
                 html.append(Js.setVal("#product_factor_creatorName", Access_User.getUserName(name, db)));
+                html.append(Js.setVal("#" + _date, jjCalendar_IR.getViewFormat_10length(jjCalendar_IR.getDatabaseFormat_8length(null, true))));
+                html.append(Js.setVal("#" + _dueDate, jjCalendar_IR.getViewFormat_10length(jjCalendar_IR.getDatabaseFormat_8length(null, true))));
+                html.append(Js.hide("#FactorItemInFactorForm"  ));
+                html.append("$('#Factor_button_insert').parent().append('');");
+
             }
             Server.outPrinter(request, response, html.toString());
             return "";
@@ -223,11 +237,12 @@ public class Factor {
             map.put(_tell2, jjTools.getParameter(request, _tell2));
             map.put(_zipCode, jjTools.getParameter(request, _zipCode));
             map.put(_zipCode2, jjTools.getParameter(request, _zipCode2));
+            map.put(_attach, jjTools.getParameter(request, _attach));
             map.put(_statuse, lbl_statuseUnPaid);
             if (jjTools.getParameter(request, _totalAmount).equals("")) {
                 map.put(_totalAmount, 0);
             } else {
-                map.put(_totalAmount, jjTools.getParameter(request, _totalAmount));
+                map.put(_totalAmount, jjTools.getParameter(request, _totalAmount).replaceAll(",", ""));
             }
             if (jjTools.getParameter(request, _totalAmountValueAdded).equals("")) {
                 map.put(_totalAmountValueAdded, 0);
@@ -235,20 +250,21 @@ public class Factor {
                 map.put(_totalAmountValueAdded, jjTools.getParameter(request, _totalAmountValueAdded));
             }
             map.put(_date, dateIR.getDBFormat_8length());
+            map.put(_dueDate, jjCalendar_IR.getDatabaseFormat_8length(jjTools.getParameter(request, _dueDate), true));
             map.put(_time, dateIR.getTimeFormat_4length());
             List<Map<String, Object>> row = jjDatabase.separateRow(db.insert(tableName, map));
-            if (row.size() == 0) {
+            if (row.isEmpty()) {
                 String errorMessage = "عملیات درج به درستی صورت نگرفت.";
                 if (jjTools.getParameter(request, "myLang").equals("2")) {
                     errorMessage = "Edit Fail;";
                 }
-                Server.outPrinter(request, response, Js.dialog(errorMessage));
+                Server.outPrinter(request, response, Js.modal(errorMessage, "خطای 245"));
                 return "";
             }
-            StringBuffer html = new StringBuffer();
+            StringBuilder html = new StringBuilder();
             html.append(Js.setVal("#product_factor_item_factorId1", row.get(0).get(_id)));
             html.append(Js.setHtml("#Factor_button_insert", ""));
-            Server.outPrinter(request, response, html.toString() + Js.jjFactor.refresh());
+            Server.outPrinter(request, response, html.toString() + Js.jjFactor.refresh() + Js.jjFactor.select(row.get(0).get(_id).toString()));
             return "";
 
         } catch (Exception ex) {
@@ -310,7 +326,7 @@ public class Factor {
                 if (jjTools.getParameter(request, "myLang").equals("2")) {
                     errorMessage = "Edit Fail;";
                 }
-                Server.outPrinter(request, response, Js.dialog(errorMessage));
+                Server.outPrinter(request, response, Js.modal(errorMessage, "خطای سیستم"));
                 return "";
             }
             List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(Factor.tableName, _id + "=" + jjTools.getParameter(request, FactorItem._factorId)));
@@ -327,7 +343,7 @@ public class Factor {
                 if (jjTools.getParameter(request, "myLang").equals("2")) {
                     errorMessage = "Edit Fail;";
                 }
-                Server.outPrinter(request, response, Js.dialog(errorMessage));
+                Server.outPrinter(request, response, Js.modal(errorMessage, "خطای سیستم"));
                 return "";
             }
             List<Map<String, Object>> rowFactor = jjDatabase.separateRow(db.Select(Factor.tableName, _id + "=" + jjTools.getParameter(request, FactorItem._factorId)));
@@ -335,6 +351,95 @@ public class Factor {
             html.append(Js.setVal("#" + _totalAmountValueAdded, jjNumber.getFormattedNumber(rowFactor.get(0).get(_totalAmountValueAdded).toString())));
             html.append(Js.setVal("#" + _totalAmount, jjNumber.getFormattedNumber(rowFactor.get(0).get(_totalAmount).toString())));
             Server.outPrinter(request, response, html.toString() + "cmsFactor.m_refreshItemFactorInFactor(" + jjTools.getParameter(request, FactorItem._factorId) + ");");
+            return "";
+
+        } catch (Exception ex) {
+            Server.outPrinter(request, response, Server.ErrorHandler(ex));
+            return "";
+        }
+    }
+
+    /**
+     * کپی کردن یک فاکتور با تعداد اقساط آن
+     *
+     * @param request
+     * @param response
+     * @param db
+     * @param isPost
+     * @return
+     * @throws Exception
+     */
+    public static String copyFactor(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
+        try {
+            if ((jjTools.getSessionAttribute(request, "#ID")).equals("")) {
+                Server.outPrinter(request, response, "alert('دسترسی شما به اتمام رسیده لطفا دوباره وارد شوید');new jj(\"\").jjGo();");
+                return "";
+            }
+            if (!Access_User.hasAccess(request, db, rul_ins)) {
+                Server.outPrinter(request, response, "دسترسی به این قسمت را ندارید");
+                return "";
+            }
+            System.out.println(">>>>>>>>>" + Integer.valueOf("4"));
+            int installementCount = jjNumber.isDigit(jjTools.getParameter(request, "installementCount")) ? Integer.valueOf(jjTools.getParameter(request, "installementCount")) : 0;
+            int installementPeriod = jjNumber.isDigit(jjTools.getParameter(request, "installementPeriod")) ? Integer.valueOf(jjTools.getParameter(request, "installementPeriod")) : 0;
+            List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(Factor.tableName, _id + "=" + jjTools.getParameter(request, Factor._id)));
+            jjCalendar_IR nextInstallementDate = new jjCalendar_IR(row.get(0).get(_dueDate).toString());
+            List<Map<String, Object>> factorItemRows = jjDatabase.separateRow(db.Select(FactorItem.tableName, FactorItem._factorId + "=" + jjTools.getParameter(request, Factor._id)));
+            for (int i = 0; i < installementCount; i++) {// به تعداد مورد درخواست کاربر در جدول اینسرت می کنیم
+                Map<String, Object> map = new HashMap<>();
+                jjCalendar_IR dateIR = new jjCalendar_IR();
+                map.put(_creator, row.get(0).get(_creator));
+                map.put(_companyName, row.get(0).get(_companyName));
+                map.put(_serialNumber, jjNumber.isDigit(row.get(0).get(_serialNumber).toString()) ? (Integer.valueOf(row.get(0).get(_serialNumber).toString()) + i) : row.get(0).get(_serialNumber).toString() + i); // اگر سریال عدد بود یکی به آن اضافه کند بصورت اینتیجر اگر نبود بصورت استرینگ کاراکتر را به آن اضافه کند
+                map.put(_userId, row.get(0).get(_userId));
+                map.put(_nationalCode, row.get(0).get(_nationalCode));
+                map.put(_economicCode, row.get(0).get(_economicCode));
+                map.put(_address, row.get(0).get(_address));
+                map.put(_address2, row.get(0).get(_address2));
+                map.put(_tell, row.get(0).get(_tell));
+                map.put(_tell2, row.get(0).get(_tell2));
+                map.put(_zipCode, row.get(0).get(_zipCode));
+                map.put(_zipCode2, row.get(0).get(_zipCode2));
+                map.put(_statuse, lbl_statuseUnPaid);
+                map.put(_date, jjCalendar_IR.getDatabaseFormat_8length(null, true));
+                nextInstallementDate.addMonth(installementPeriod);
+                map.put(_dueDate, nextInstallementDate.getDBFormat_8length());
+                map.put(_time, dateIR.getTimeFormat_4length());
+                map.put(_totalAmountValueAdded, row.get(0).get(_totalAmountValueAdded));
+                map.put(_totalAmount, row.get(0).get(_totalAmount));
+                List<Map<String, Object>> rowNewFacotr = jjDatabase.separateRow(db.insert(tableName, map));
+                if (rowNewFacotr.isEmpty()) {
+                    String errorMessage = "عملیات درج فاکتور " + i + " ام به درستی صورت نگرفت.";
+                    Server.outPrinter(request, response, Js.dialog(errorMessage));
+                    return "";
+                }
+                for (int j = 0; j < factorItemRows.size(); j++) {// هر فاکتور بین صفر تا چند آیتم میتواند داشته باشد که باید کپی شود
+                    Map<String, Object> mapItems = new HashMap<>();
+                    mapItems.put(FactorItem._factorId, rowNewFacotr.get(0).get(_id));// آی دی فاکتور مهم است دقت شود که بابد آی دی فاکتوری باشد که جدیدا وارد شده
+                    mapItems.put(FactorItem._discountPercent, factorItemRows.get(j).get(FactorItem._discountPercent));
+                    mapItems.put(FactorItem._discription, factorItemRows.get(j).get(FactorItem._discription) + " قسط " + i + "ام ");
+                    mapItems.put(FactorItem._originalPrice, factorItemRows.get(j).get(FactorItem._originalPrice));
+                    mapItems.put(FactorItem._percentageOfValueAdded, factorItemRows.get(j).get(FactorItem._percentageOfValueAdded));
+                    mapItems.put(FactorItem._priceAfterDiscount, factorItemRows.get(j).get(FactorItem._priceAfterDiscount));
+                    mapItems.put(FactorItem._productId, factorItemRows.get(j).get(FactorItem._productId));
+                    mapItems.put(FactorItem._quantity, factorItemRows.get(j).get(FactorItem._quantity));
+                    mapItems.put(FactorItem._totalPrice, factorItemRows.get(j).get(FactorItem._totalPrice));
+                    mapItems.put(FactorItem._valueAdded, factorItemRows.get(j).get(FactorItem._valueAdded));
+                    mapItems.put(FactorItem._date, nextInstallementDate.getDBFormat_8length());// تاریخ این قسمت کاربردی ندارد
+                    mapItems.put(FactorItem._time, dateIR.getTimeFormat_4length());
+                    mapItems.put(FactorItem._statuse, lbl_statuseUnPaid);
+                    if (db.insert(FactorItem.tableName, mapItems).getRowCount() == 0) {
+                        String errorMessage = "عملیات درج یکی از آیتم ها به درستی صورت نگرفت.";
+                        if (jjTools.getParameter(request, "myLang").equals("2")) {
+                            errorMessage = "Edit Fail;";
+                        }
+                        Server.outPrinter(request, response, Js.dialog(errorMessage));
+                        return "";
+                    }
+                }
+            }
+
+            Server.outPrinter(request, response, Js.modal("عملیات کپی انجام شد", "پیام سیستم"));
             return "";
 
         } catch (Exception ex) {
@@ -354,9 +459,12 @@ public class Factor {
             jjCalendar_IR dateIR = new jjCalendar_IR();
             map.put(_creator, jjTools.getParameter(request, _creator));
             map.put(_companyName, jjTools.getParameter(request, _companyName));
+            map.put(_discription, jjTools.getParameter(request, _discription));
             map.put(_serialNumber, jjTools.getParameter(request, _serialNumber));
             map.put(_userId, jjTools.getParameter(request, _userId));
             map.put(_nationalCode, jjTools.getParameter(request, _nationalCode));
+            map.put(_attach, jjTools.getParameter(request, _attach));
+            map.put(_statuse, jjTools.getParameter(request, _statuse));
             map.put(_economicCode, jjTools.getParameter(request, _economicCode));
             map.put(_address, jjTools.getParameter(request, _address));
             map.put(_address2, jjTools.getParameter(request, _address2));
@@ -364,15 +472,15 @@ public class Factor {
             map.put(_tell2, jjTools.getParameter(request, _tell2));
             map.put(_zipCode, jjTools.getParameter(request, _zipCode));
             map.put(_zipCode2, jjTools.getParameter(request, _zipCode2));
-            map.put(_statuse, lbl_statuseUnPaid);
-            map.put(_date, dateIR.getDBFormat_8length());
+            map.put(_date, jjCalendar_IR.getDatabaseFormat_8length(jjTools.getParameter(request, _date), true));
+            map.put(_dueDate, jjCalendar_IR.getDatabaseFormat_8length(jjTools.getParameter(request, _dueDate), true));
             map.put(_time, dateIR.getTimeFormat_4length());
             if (!db.update(tableName, map, _id + "=" + id)) {
                 String errorMessage = "عملیات درج به درستی صورت نگرفت.";
                 if (jjTools.getParameter(request, "myLang").equals("2")) {
                     errorMessage = "Edit Fail;";
                 }
-                Server.outPrinter(request, response, Js.dialog(errorMessage));
+                Server.outPrinter(request, response, Js.modal(errorMessage, "خطای سیستم"));
                 return "";
             }
             Server.outPrinter(request, response, Js.jjFactor.refresh());
@@ -420,7 +528,7 @@ public class Factor {
                 if (jjTools.getParameter(request, "myLang").equals("2")) {
                     errorMessage = "Edit Fail;";
                 }
-                Server.outPrinter(request, response, Js.dialog(errorMessage));
+                Server.outPrinter(request, response, Js.modal(errorMessage, "خطای سیستم"));
                 return "";
             }
             row = jjDatabase.separateRow(db.Select(Factor.tableName, _id + "=" + jjTools.getParameter(request, FactorItem._factorId)));
@@ -437,7 +545,7 @@ public class Factor {
                 if (jjTools.getParameter(request, "myLang").equals("2")) {
                     errorMessage = "Edit Fail;";
                 }
-                Server.outPrinter(request, response, Js.dialog(errorMessage));
+                Server.outPrinter(request, response, Js.modal(errorMessage, "خطای سیستم"));
                 return "";
             }
             List<Map<String, Object>> rowFactor = jjDatabase.separateRow(db.Select(Factor.tableName, _id + "=" + jjTools.getParameter(request, FactorItem._factorId)));
@@ -452,7 +560,7 @@ public class Factor {
             map.put(FactorItem._percentageOfValueAdded, jjTools.getParameter(request, FactorItem._percentageOfValueAdded));
             map.put(FactorItem._priceAfterDiscount, jjTools.getParameter(request, FactorItem._priceAfterDiscount));
             map.put(FactorItem._productId, jjTools.getParameter(request, FactorItem._productId));
-            map.put(FactorItem._quantity, jjNumber.isDigit(jjTools.getParameter(request, FactorItem._quantity))? jjTools.getParameter(request, FactorItem._quantity) : "0");
+            map.put(FactorItem._quantity, jjNumber.isDigit(jjTools.getParameter(request, FactorItem._quantity)) ? jjTools.getParameter(request, FactorItem._quantity) : "0");
             map.put(FactorItem._totalPrice, jjTools.getParameter(request, FactorItem._totalPrice));
             map.put(FactorItem._valueAdded, jjTools.getParameter(request, FactorItem._valueAdded));
             if (!db.update(FactorItem.tableName, map, FactorItem._id + "=" + id)) {
@@ -460,7 +568,7 @@ public class Factor {
                 if (jjTools.getParameter(request, "myLang").equals("2")) {
                     errorMessage = "Edit Fail;";
                 }
-                Server.outPrinter(request, response, Js.dialog(errorMessage));
+                Server.outPrinter(request, response, Js.modal(errorMessage, "خطای سیستم"));
                 return "";
             }
             Server.outPrinter(request, response, html.toString() + "cmsFactor.m_refreshItemFactorInFactor(" + jjTools.getParameter(request, FactorItem._factorId) + ");");
@@ -496,7 +604,7 @@ public class Factor {
                     if (jjTools.isLangEn(request)) {
                         errorMessage = "Delete Fail;";
                     }
-                    Server.outPrinter(request, response, Js.dialog(errorMessage));
+                    Server.outPrinter(request, response, Js.modal(errorMessage, "خطای سیستم"));
                     return "";
 
                 }
@@ -545,7 +653,7 @@ public class Factor {
                 if (jjTools.getParameter(request, "myLang").equals("2")) {
                     errorMessage = "Edit Fail;";
                 }
-                Server.outPrinter(request, response, Js.dialog(errorMessage));
+                Server.outPrinter(request, response, Js.modal(errorMessage, "خطای سیستم"));
                 return "";
             }
             List<Map<String, Object>> rowFactor = jjDatabase.separateRow(db.Select(Factor.tableName, _id + "=" + jjTools.getParameter(request, FactorItem._factorId)));
@@ -566,7 +674,7 @@ public class Factor {
                 if (jjTools.isLangEn(request)) {
                     errorMessage = "Delete Fail;";
                 }
-                Server.outPrinter(request, response, Js.dialog(errorMessage));
+                Server.outPrinter(request, response, Js.modal(errorMessage, "خطای سیستم"));
                 return "";
 
             }
@@ -584,24 +692,24 @@ public class Factor {
         try {
             String id = jjTools.getParameter(request, _id);
             List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, _id + "=" + id));
-            if (row.size() == 0) {
+            if (row.isEmpty()) {
                 String errorMessage = "رکوردی با این کد وجود ندارد.";
                 if (jjTools.isLangEn(request)) {
                     errorMessage = "Select Fail;";
                 }
-                Server.outPrinter(request, response, Js.dialog(errorMessage));
+                Server.outPrinter(request, response, Js.modal(errorMessage, "خطای سیستم"));
                 return "";
 
             }
-            StringBuffer html = new StringBuffer();
-            StringBuffer html3 = new StringBuffer();
-            jjCalendar_IR dateIR = new jjCalendar_IR();
+            StringBuilder html = new StringBuilder();
+            html.append(Js.show("#FactorItemInFactorForm"));
             html.append(Js.setVal("#" + tableName + "_" + _id, row.get(0).get(_id)));
             html.append(Js.setVal("#product_factor_item_factorId1", row.get(0).get(_id)));
             html.append(Js.setVal("#" + _creator, row.get(0).get(_creator).toString()));
             html.append(Js.setVal("#product_factor_creatorName", Access_User.getUserName(row.get(0).get(_creator).toString(), db)));
             html.append(Js.setVal("#" + _companyName, row.get(0).get(_companyName)));
             html.append(Js.setVal("#" + _serialNumber, row.get(0).get(_serialNumber)));
+            html.append(Js.setVal("#" + _statuse, row.get(0).get(_statuse)));
             html.append(Js.setVal("#" + _nationalCode, row.get(0).get(_nationalCode)));
             html.append(Js.setVal("#" + _economicCode, row.get(0).get(_economicCode)));
             html.append(Js.setVal("#" + _address, row.get(0).get(_address)));
@@ -614,7 +722,12 @@ public class Factor {
             html.append(Js.setVal("#" + _totalAmountValueAdded, jjNumber.getFormattedNumber(row.get(0).get(_totalAmountValueAdded).toString())));
             html.append(Js.setValSelectOption("#" + _userId, row.get(0).get(_userId).toString()));
             html.append(Js.select2("#" + _userId, ""));
-
+            if (!row.get(0).get(_attach).toString().isEmpty()) {// برای اینکه اگر تهی بود یک فایل خالی ایجاد نکند
+                String attachFiles[] = row.get(0).get(_attach).toString().split(",");
+                for (int k = 0; k < attachFiles.length; k++) {
+                    html.append(Js.append("#factor_attach_adminDiv", "<div class='col-lg-12 mg-l-15'><img class='wd-40 rounded-circle mg-r-20' src='upload/" + attachFiles[k] + "'><a target='_blank' href='upload/" + attachFiles[k] + "'>دانلود</a> <input class='" + _attach + "' type='hidden' value='" + attachFiles[k] + "'><div class='btn btn-danger btn-icon mg-r-5 mg-b-10' onclick='$(this).parent().remove();'><i class='fa fa-close'></i></div></div>"));
+                }
+            }
             boolean accDel = Access_User.hasAccess(request, db, rul_dlt);
             boolean accEdt = Access_User.hasAccess(request, db, rul_edt);
             if (accEdt) {
@@ -688,7 +801,7 @@ public class Factor {
         try {
             Map<String, Object> map = new HashMap<>();
             jjCalendar_IR dateIR = new jjCalendar_IR();
-            List<Map<String, Object>> rowProduct = jjDatabase.separateRow(db.Select(Product.tableName, Product._id + "='" + jjTools.getParameter(request, FactorItem._productId+"'")));
+            List<Map<String, Object>> rowProduct = jjDatabase.separateRow(db.Select(Product.tableName, Product._id + "='" + jjTools.getParameter(request, FactorItem._productId + "'")));
             double OriginalPrice = Double.parseDouble(jjTools.getParameter(request, FactorItem._originalPrice));
             double priceAfterDiscount = Double.parseDouble(jjTools.getParameter(request, FactorItem._priceAfterDiscount));
             double tax = Double.parseDouble(rowProduct.get(0).get(Product._taxPercent).toString());
@@ -701,6 +814,7 @@ public class Factor {
             map.put(_serialNumber, 0);
             map.put(_userId, jjTools.getParameter(request, _userId));
             map.put(_nationalCode, jjTools.getParameter(request, _nationalCode));
+            map.put(_discription, jjTools.getParameter(request, _discription));
             map.put(_economicCode, jjTools.getParameter(request, _economicCode));
             map.put(_address, jjTools.getParameter(request, _address));
             map.put(_address2, jjTools.getParameter(request, _address2));
@@ -708,9 +822,9 @@ public class Factor {
             map.put(_tell2, jjTools.getParameter(request, _tell2));
             map.put(_zipCode, jjTools.getParameter(request, _zipCode));
             map.put(_zipCode2, jjTools.getParameter(request, _zipCode2));
+            map.put(_statuse, jjTools.getParameter(request, _statuse));
             map.put(_totalAmountValueAdded, valueAdedd);
             map.put(_totalAmount, totalAmount);
-            map.put(_statuse, lbl_statuseUnPaid);
             map.put(_date, dateIR.getDBFormat_8length());
             map.put(_time, dateIR.getTimeFormat_4length());
             List<Map<String, Object>> row = jjDatabase.separateRow(db.insert(tableName, map));
@@ -719,7 +833,7 @@ public class Factor {
                 if (jjTools.getParameter(request, "myLang").equals("2")) {
                     errorMessage = "Edit Fail;";
                 }
-                Server.outPrinter(request, response, Js.dialog(errorMessage));
+                Server.outPrinter(request, response, Js.modal(errorMessage, "خطای سیستم"));
                 return "";
             }
             Map<String, Object> mapEdit = new HashMap<>();
@@ -729,7 +843,7 @@ public class Factor {
                 if (jjTools.getParameter(request, "myLang").equals("2")) {
                     errorMessage = "Edit Fail;";
                 }
-                Server.outPrinter(request, response, Js.dialog(errorMessage));
+                Server.outPrinter(request, response, Js.modal(errorMessage, "خطای سیستم"));
                 return "";
             }
             Map<String, Object> mapFactor = new HashMap<>();
@@ -753,7 +867,7 @@ public class Factor {
                 if (jjTools.getParameter(request, "myLang").equals("2")) {
                     errorMessage = "Edit Fail;";
                 }
-                Server.outPrinter(request, response, Js.dialog(errorMessage));
+                Server.outPrinter(request, response, Js.modal(errorMessage, "خطای سیستم"));
                 return "";
             }
             jjTools.setSessionAttribute(request, "#FACTOR_ID", row.get(0).get(_id));
@@ -898,8 +1012,8 @@ public class Factor {
     }
 
     /**
-     * این تابع برای ثبت فاکتور در قسمت ثبت سفارش در سایت است
-     * این متد بعد از ثبت کردن فاکتور در جدول کاکتور ها کاربر را به صفحه ی فاکتور ارجاع میدهد
+     * این تابع برای ثبت فاکتور در قسمت ثبت سفارش در سایت است این متد بعد از ثبت
+     * کردن فاکتور در جدول کاکتور ها کاربر را به صفحه ی فاکتور ارجاع میدهد
      *
      * @param request
      * @param response
@@ -940,7 +1054,7 @@ public class Factor {
                 if (jjTools.getParameter(request, "myLang").equals("2")) {
                     errorMessage = "Edit Fail;";
                 }
-                Server.outPrinter(request, response, Js.dialog(errorMessage));
+                Server.outPrinter(request, response, Js.modal(errorMessage, "خطای سیستم"));
                 return "";
             }
             Map<String, Object> mapEdit = new HashMap<>();
@@ -950,7 +1064,7 @@ public class Factor {
                 if (jjTools.getParameter(request, "myLang").equals("2")) {
                     errorMessage = "Edit Fail;";
                 }
-                Server.outPrinter(request, response, Js.dialog(errorMessage));
+                Server.outPrinter(request, response, Js.modal(errorMessage, "خطای سیستم"));
                 return "";
             }
 
@@ -968,11 +1082,11 @@ public class Factor {
             if (cookies != null) {
                 for (int i = 0; i < cookies.length; i++) {
                     cookie = cookies[i];
-                    if (cookie.getName().equalsIgnoreCase("productsId")) {                                               
+                    if (cookie.getName().equalsIgnoreCase("productsId")) {
                         productInCookieStr = cookies[i].getValue().replace("%2C", ",").replace("%3B", ";");
                         productInCookieStr = productInCookieStr.replaceFirst(";", "");// سمی کالن اولی را حذف میکنیم
                         productInCookieStr = productInCookieStr.replace(";;", ";");//
-                        
+
                         productInCookieStr = productInCookieStr.replaceAll(",.*;", ";");
                         ServerLog.Print("Product.buildShoppingCart =>Cookie: (product,number) " + productInCookieStr);
                         productsId = productInCookieStr.replaceAll(",.*;", ";").split(";");
@@ -1001,7 +1115,7 @@ public class Factor {
                 if (jjTools.isLangEn(request)) {
                     errorMessage = "Select Fail;";
                 }
-                return Js.dialog(errorMessage);
+                return Js.modal(errorMessage, "خطای سیستم");
             }
             for (int i = 0; i < rowProducts.size(); i++) {
                 ///=========Price======>
@@ -1135,7 +1249,7 @@ public class Factor {
                     if (jjTools.getParameter(request, "myLang").equals("2")) {
                         errorMessage = "Edit Fail;";
                     }
-                    Server.outPrinter(request, response, Js.dialog(errorMessage));
+                    Server.outPrinter(request, response, Js.modal(errorMessage, "خطای سیستم"));
                     return "";
                 }
 
@@ -1150,13 +1264,13 @@ public class Factor {
                     if (jjTools.getParameter(request, "myLang").equals("2")) {
                         errorMessage = "Edit Fail;";
                     }
-                    Server.outPrinter(request, response, Js.dialog(errorMessage));
+                    Server.outPrinter(request, response, Js.modal(errorMessage, "خطای سیستم"));
                     return "";
                 }
             }
             jjTools.setSessionAttribute(request, "#FACTOR_ID", row.get(0).get(_id));
-            Server.outPrinter(request, response, "$(location).attr('href', '/005/factor.jsp?id="+row.get(0).get(_id)+"')");
-            
+            Server.outPrinter(request, response, "$(location).attr('href', '/005/factor.jsp?id=" + row.get(0).get(_id) + "')");
+
 //            row = jjDatabase.separateRow(db.Select(tableName, _id + "=" + row.get(0).get(_id)));
             StringBuilder html = new StringBuilder();
 //            html.append("<div class='col-12 card' style='border: none;'>\n"
@@ -1344,7 +1458,7 @@ public class Factor {
                 if (jjTools.getParameter(request, "myLang").equals("2")) {
                     errorMessage = "Edit Fail;";
                 }
-                Server.outPrinter(request, response, Js.dialog(errorMessage));
+                Server.outPrinter(request, response, Js.modal(errorMessage, "خطای سیستم"));
                 return "";
             }
             Map<String, Object> mapEdit = new HashMap<>();
@@ -1354,7 +1468,7 @@ public class Factor {
                 if (jjTools.getParameter(request, "myLang").equals("2")) {
                     errorMessage = "Edit Fail;";
                 }
-                Server.outPrinter(request, response, Js.dialog(errorMessage));
+                Server.outPrinter(request, response, Js.modal(errorMessage, "خطای سیستم"));
                 return "";
             }
 
@@ -1379,7 +1493,7 @@ public class Factor {
                 if (jjTools.isLangEn(request)) {
                     errorMessage = "Select Fail;";
                 }
-                return Js.dialog(errorMessage);
+                return Js.modal(errorMessage, "خطای سیستم");
             }
             for (int i = 0; i < rowProducts.size(); i++) {
                 ///=========Price======>
@@ -1513,7 +1627,7 @@ public class Factor {
                     if (jjTools.getParameter(request, "myLang").equals("2")) {
                         errorMessage = "Edit Fail;";
                     }
-                    Server.outPrinter(request, response, Js.dialog(errorMessage));
+                    Server.outPrinter(request, response, Js.modal(errorMessage, "خطای سیستم"));
                     return "";
                 }
 
@@ -1528,7 +1642,7 @@ public class Factor {
                     if (jjTools.getParameter(request, "myLang").equals("2")) {
                         errorMessage = "Edit Fail;";
                     }
-                    Server.outPrinter(request, response, Js.dialog(errorMessage));
+                    Server.outPrinter(request, response, Js.modal(errorMessage, "خطای سیستم"));
                     return "";
                 }
             }
@@ -1696,10 +1810,36 @@ public class Factor {
                 if (jjTools.isLangEn(request)) {
                     errorMessage = "Edit Fail;";
                 }
-                return Js.dialog(errorMessage);
+                return Js.modal(errorMessage, "خطای سیستم");
             }
         } catch (Exception ex) {
             return Server.ErrorHandler(ex);
+        }
+        return "";
+    }
+
+    /**
+     * گرفتن اطلاعات کاربر و نشاندن در فیلد های فاکتور
+     *
+     * @param request
+     * @param response
+     * @param db
+     * @param isPost
+     * @return
+     * @throws Exception
+     */
+    public static String getUserInfoInFactor(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
+        String userId = jjTools.getParameter(request, "userId");
+        if (jjNumber.isDigit(userId)) {
+            List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(Access_User.tableName, Access_User._id + "=" + userId));
+            if (!row.isEmpty()) {
+                StringBuilder script = new StringBuilder();
+                script.append(Js.setVal("#" + _nationalCode, row.get(0).get(Access_User._codeMeli)));
+                script.append(Js.setVal("#" + _address, row.get(0).get(Access_User._address)));
+                script.append(Js.setVal("#" + _zipCode, row.get(0).get(Access_User._postalCode)));
+                script.append(Js.setVal("#" + _tell, row.get(0).get(Access_User._mobile)));
+                Server.outPrinter(request, response, script);
+            }
         }
         return "";
     }
@@ -1724,7 +1864,7 @@ public class Factor {
             for (int i = 0; i < row.size(); i++) {
                 html.append("<option id='" + row.get(i).get(Access_User._id)
                         + "'  value='" + row.get(i).get(Access_User._id) + "'>"
-                        + row.get(i).get(Access_User._name).toString() + " " + row.get(i).get(Access_User._family).toString()
+                        + row.get(i).get(Access_User._name).toString() + " " + row.get(i).get(Access_User._family).toString() + " " + row.get(i).get(Access_User._codeMeli).toString()
                         + "</option>");
             }
         }

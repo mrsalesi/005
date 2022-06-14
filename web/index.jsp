@@ -50,51 +50,53 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
-        <title>تعاونی دادگستری</title>
-        <meta  name="author" content="themesflat.com">
-            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-            <link href="template/css/bootstrap.css" rel="stylesheet" type="text/css"/>
-            <link href="template/css/style.css" rel="stylesheet" type="text/css"/>
-            <link href="template/css/responsive.css" rel="stylesheet" type="text/css"/>
-            <link href="template/colors/color1.css" rel="stylesheet" type="text/css" id="colors"/>
-            <link href="template/css/animate.css" rel="stylesheet" type="text/css"/>
-            <link href="template/css/revelationSlider.css" rel="stylesheet" type="text/css"/>
-            <link href="template/css/flexslider.css" rel="stylesheet" type="text/css"/>
-            <link href="template/css/magpopup.css" rel="stylesheet" type="text/css"/>
-            <link href="template/css/shortcodes.css" rel="stylesheet" type="text/css"/>
-            <link href="template/css/owlcarusel.css" rel="stylesheet" type="text/css"/>
-            <link href="Manager/font-awesome.css" rel="stylesheet" />
-            <link href="Manager/font-tahoma.css" rel="stylesheet" type="text/css"/>
-            <link href="Manager/ionicons.css" rel="stylesheet" />
-            <link href="StyleBody.css" rel="stylesheet" type="text/css"/>            
-            <style>
-                .morelink:visited {
-                    color: #eab702
-                }
-                a.morelink {
-                    text-decoration:none;
-                    outline: none;
-                }
-                .morecontent span {
-                    display: none;
-                }
-                .dateNews:after{
-                    content: "\f1ec";
-                    font-family: "fontAwesome";
-                    font-size: 11px;
-                    right: 0px;
-                    /*text-align: revert-layer;*/
-                    float: right;
-                    margin: 0px 5px;
+        <title>تعاونی مسکن کارکنان دادگستری اصفهان</title>
+        <meta  name="discription" content="سایت اطلاع رسانی  آگهی فروش امتیاز ها و پنل اعضای تعاونی مسکن کارکنان دادگستری اصفهان" />        
+        <meta  name="author" content="شرکت پژوهشگران سیستم های هوشمند سپانو" />        
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <meta name="enamad" content="403829" />
+        <link href="template/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <link href="template/css/style.css" rel="stylesheet" type="text/css"/>
+        <link href="template/css/responsive.css" rel="stylesheet" type="text/css"/>
+        <link href="template/colors/color1.css" rel="stylesheet" type="text/css" id="colors"/>
+        <link href="template/css/animate.css" rel="stylesheet" type="text/css"/>
+        <link href="template/css/revelationSlider.css" rel="stylesheet" type="text/css"/>
+        <link href="template/css/flexslider.css" rel="stylesheet" type="text/css"/>
+        <link href="template/css/magpopup.css" rel="stylesheet" type="text/css"/>
+        <link href="template/css/shortcodes.css" rel="stylesheet" type="text/css"/>
+        <link href="template/css/owlcarusel.css" rel="stylesheet" type="text/css"/>
+        <link href="Manager/font-awesome.css" rel="stylesheet" />
+        <link href="Manager/font-tahoma.css" rel="stylesheet" type="text/css"/>
+        <link href="Manager/ionicons.css" rel="stylesheet" />
+        <link href="StyleBody.css" rel="stylesheet" type="text/css"/>            
+        <style>
+            .morelink:visited {
+                color: #eab702
+            }
+            a.morelink {
+                text-decoration:none;
+                outline: none;
+            }
+            .morecontent span {
+                display: none;
+            }
+            .dateNews:after{
+                content: "\f1ec";
+                font-family: "fontAwesome";
+                font-size: 11px;
+                right: 0px;
+                /*text-align: revert-layer;*/
+                float: right;
+                margin: 0px 5px;
 
-                }
-                .userIcon:after{
-                    content: "\f078";
-                    font-family: "fontAwesome";
-                    font-size: 10px;
+            }
+            .userIcon:after{
+                content: "\f078";
+                font-family: "fontAwesome";
+                font-size: 10px;
 
-                }
-            </style>
+            }
+        </style>
     </head>
     <body class="header_sticky" style="font-family: vazir3">
         <section class="loading-overlay ajaxLoaderDiv" style="position: absolute; margin: auto; display: inline-flex">
@@ -119,15 +121,15 @@
                                 %>
                                 <a  class="register_url flat-button button-color button-normal yellow " style="" onclick='$("#sw").load("login.html");'>ثبت نام/ورود</a>
                                 <%                                    } else {
-                                        List<Map<String, Object>> user = jjDatabase.separateRow(db.Select(Access_User.tableName, Access_User._id + "=" + jjTools.getSeassionUserId(request)));                                    
+                                    List<Map<String, Object>> user = jjDatabase.separateRow(db.Select(Access_User.tableName, Access_User._id + "=" + jjTools.getSeassionUserId(request)));
 
                                 %>
-                                <div id="userNameAfterLogin" class="textlogin" style="float: right;margin: 9px;">
+                                <div id="userNameAfterLogin" class="textlogin" style="float: right;margin: 9px;color: #fff">
                                     <nav id="mainnav"><ul class="menu">
+                                            سلام <%= jjTools.getSeassionUserNameAndFamily(request)%>
                                             <li class="userIcon"><i class="fa fa-user " style="margin: 7px;"></i>
                                                 <ul class="submenu right-sub-menu">
-                                                    <li><a >سلام <%= jjTools.getSeassionUserNameAndFamily(request)%></a></li>
-                                                    <li><a href="userProfile.jsp?user_token=<%= user.get(0).get(Access_User._token) %>">پنل کاربری</a></li>
+                                                    <li><a href="userProfile.jsp?user_token=<%= user.get(0).get(Access_User._token)%>">پنل کاربری</a></li>
                                                     <li><a  onclick="signOut();">خروج</a></li></ul></li></ul></nav>
                                 </div>
                                 <%
@@ -175,13 +177,7 @@
                                                         <div class="container">
                                                             <%
                                                                 List<Map<String, Object>> row10 = jjDatabase.separateRow(db.Select(Category_Content.tableName, Category_Content._parent + "=39"));
-                                                                for (int o = 0;
-
-                                                                o< row10.size ();
-                                                                o
-
-                                                                
-                                                                    ++) {
+                                                                for (int o = 0;o < row10.size();o++) {
                                                             %>
                                                             <div class="col-md-4">
                                                                 <h2 style="text-align: right"><%=row10.get(o).get(Category_Content._title)%></h2>
@@ -190,7 +186,7 @@
                                                                         List<Map<String, Object>> row9 = jjDatabase.separateRow(db.Select(Content.tableName, Content._category_id + "=" + row10.get(o).get(Category_Content._id)));
                                                                         for (int b = 0; b < row9.size(); b++) {
                                                                     %>
-                                                                    <li><a  onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;"><%=row9.get(b).get(Content._title)%></a></li> 
+                                                                    <li><a  href="indexContent.jsp?text=<%=row9.get(b).get(Content._title)%>" target="_blank"><%=row9.get(b).get(Content._title)%></a></li> 
                                                                         <%}%>
 
                                                                 </ul>
@@ -204,7 +200,7 @@
                                             <li><a  onclick="new jj('do=Content.sw&panel=sw&text=تیم شرکت&jj=1').jjAjax2();return false;">تیم شرکت</a></li>
                                             <li><a  onclick="$('#sw').load('gallery.jsp')">گالری</a></li>
                                             <!--                                                                    <li><a >خدمات</a> </li>-->
-                                            <li><a  onclick="new jj('do=Content.sw&panel=sw&text=درباره ی ما&jj=1').jjAjax2()">درباره ی شرکت </a></li>
+                                            <li><a  onclick="new jj('do=Content.sw&panel=sw&text=درباره ما&jj=1').jjAjax2()">درباره ی شرکت </a></li>
                                             <li><a  onclick="new jj('do=Content.sw&panel=sw&text=تماس با ما&jj=1').jjAjax2()">تماس با ما</a></li>
 
                                         </ul>
@@ -238,12 +234,8 @@
                         <div class="tp-banner">
                             <ul>
                                 <%for (int i = 0;
-
-                                    i< slider.size ();
-                                    i
-
-                                    
-                                        ++) {
+                                            i < slider.size();
+                                            i++) {
                                 %>
                                 <li data-transition="random-static" data-slotamount="7" data-masterspeed="1000" data-saveperformance="on">
                                     <img src="upload/<%=slider.get(i).get(Pic._url_name) + "." + slider.get(i).get(Pic._url_ex)%>" alt="slider-image" />
@@ -286,13 +278,7 @@
                                         <div class="flat-iconbox-carosuel" data-item="4" data-nav="false" data-dots="false" data-auto="false">
                                             <%
                                                 List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(Content.tableName, Content._category_id + "=40"));
-                                                for (int j = 0;
-
-                                                j< row.size ();
-                                                j
-
-                                                
-                                                    ++) {
+                                                for (int j = 0; j < row.size(); j++) {
                                             %>
 
                                             <div class="iconbox-item root-back" style="padding: 5px 10px;text-align: right">
@@ -310,7 +296,7 @@
                                                         <%if (j == 3) {%>
                                                         <i class="fa fa-building"></i>
                                                         <%}%>
-                                                        <div class="box-title"><a onclick="sw($(this).html());return false;"><%=row.get(j).get(Content._title)%></a></div>
+                                                        <div class="box-title"><a href="indexContent.jsp?text=<%=row.get(j).get(Content._title)%>" target="_blank"><%=row.get(j).get(Content._title)%></a></div>
                                                     </div>
                                                     <%=row.get(j).get(Content._explain)%>                                                                    
                                                 </div>
@@ -323,7 +309,6 @@
                         </div>
                     </section>
                     <!--end slider samaneh-->
-
                     <!--start slider information-->
                     <section class="flat-row about background-color" id="about" style="background: #fff">
                         <div class="container">
@@ -342,23 +327,17 @@
                                     int h = 0;
                                     int count = 0;
 
-                                    if (journalNews.size () 
-                                        >= 6) {
+                                    if (journalNews.size()
+                                            >= 6) {
                                         h = journalNews.size() - 6;
-                                    }
-
-                                    
-                                        else {
+                                    } else {
                                         h = 0;
                                     }
                                 %> 
                                 <%
                                     for (int i = (journalNews.size() - 1);
-                                    i >= h ;
-                                    i
-
-                                    
-                                        --) {
+                                            i >= h;
+                                            i--) {
                                         count += 1;
                                         if (count <= 2) {
                                             htmlNews.append("<div class='col-md-6 col-lg-6 col-sm-6 col-xs-12'>"
@@ -417,12 +396,8 @@
                                                 int day = dateLable.getDay();
                                                 int year = dateLable.getYear();
                                                 for (int j = 0;
-
-                                                j< rowNews.size ();
-                                                j
-
-                                                
-                                                    ++) {
+                                                        j < rowNews.size();
+                                                        j++) {
                                             %>
                                             <div class="iconbox-item">
                                                 <div class="iconbox left style1">
@@ -473,12 +448,8 @@
                                                 List<Map<String, Object>> rowCategouries = jjDatabase.separateRow(db.Select(Category_Content.tableName, Category_Content._parent + "=39"));
                                                 String where = "";
                                                 for (int b = 0;
-
-                                                rowCategouries.size ()
-                                                > b; b
-
-                                                
-                                                    ++) {
+                                                        rowCategouries.size()
+                                                        > b; b++) {
                                                     where += ",'" + rowCategouries.get(b).get(Category_Content._id) + "'";
                                             %>
                                         <li ><a data-filter=".categouryId<%=b%>"><%= rowCategouries.get(b).get(Category_Content._title)%></a></li>
@@ -496,7 +467,7 @@
                                         <div class="flat-iconbox-carosuel" data-item="4" data-nav="false" data-dots="false" data-auto="false">
                                             <%
                                                 List<Map<String, Object>> rowAll = jjDatabase.separateRow(db.Select(Content.tableName, Content._category_id + " IN (" + where.replaceFirst(",", "") + ")"));
-                                                for (int b = 0;rowAll.size ()> b; b++) {
+                                                for (int b = 0; rowAll.size() > b; b++) {
                                             %>
                                             <div class="iconbox-item">
                                                 <div class="iconbox left style2" style="width: 100%;height: 300px;">
@@ -504,14 +475,14 @@
                                                         <div class="box-content">
                                                             <div class="box-title">
                                                                 <a href="indexContent.jsp?text=<%=rowAll.get(b).get(Content._title)%>" 
-                                                                   <% if(rowAll.get(b).get(Content._isAjax).toString().equals("1")){ %>
+                                                                   <% if (rowAll.get(b).get(Content._isAjax).toString().equals("1")) {%>
                                                                    onclick="sw('<%=rowAll.get(b).get(Content._title)%>');return false;" <%}%>><%=rowAll.get(b).get(Content._title)%></a>
                                                             </div>
                                                             <%=rowAll.get(b).get(Content._explain)%>                                                        
                                                         </div>
                                                         <ul class="portfolio-details">
                                                             <li><a href="indexContent.jsp?text=<%=rowAll.get(b).get(Content._title)%>" 
-                                                                   <% if(rowAll.get(b).get(Content._isAjax).toString().equals("1")){ %>
+                                                                   <% if (rowAll.get(b).get(Content._isAjax).toString().equals("1")) {%>
                                                                    onclick="sw('<%=rowAll.get(b).get(Content._title)%>');return false;" <%}%> ><i class="fa fa-external-link"></i></a></li>
                                                         </ul>
                                                 </div>
@@ -523,10 +494,8 @@
                                 </div>
                                 <%
                                     for (int j = 0;
-
-                                    rowCategouries.size ()
-                                    > j; j
-                                        ++) {
+                                            rowCategouries.size()
+                                            > j; j++) {
                                         List<Map<String, Object>> row2 = jjDatabase.separateRow(db.Select(Content.tableName, Content._category_id + "=" + rowCategouries.get(j).get(Category_Content._id)));
                                         for (int b = 0; row2.size() > b; b++) {
                                 %>
@@ -573,12 +542,8 @@
                                             <%
                                                 List<Map<String, Object>> row5 = jjDatabase.separateRow(db.Select(Product.tableName, Product._category_id + "=105"));
                                                 for (int j = 0;
-
-                                                j< row5.size ();
-                                                j
-
-                                                
-                                                    ++) {
+                                                        j < row5.size();
+                                                        j++) {
                                             %>
                                             <div class="iconbox-item root-back">
                                                 <div class="iconbox  left square">
@@ -631,7 +596,7 @@
                                 <div class="textwidget">
                                     <ul class="footer-info">
                                         <li class="footer-home arrow"><a>صفحه اصلی</a></li>
-                                        <li class="footer-Allproject arrow"><a>درباره ی ما</a></li>
+                                        <li class="footer-Allproject arrow"><a>درباره ما</a></li>
                                         <li class="footer-Allproject arrow"><a>پروژه ها</a></li>
                                     </ul>
                                 </div>
@@ -656,7 +621,12 @@
                                 <h4 class="widget-title">تعاونی دادگستری اصفهان</h4>
                                 <div class="textwidget">
                                     <ul class="">
-                                        <li class="footer-home"><a>تعاون برای کار شایسته</a></li>
+                                        <li class="footer-home">تعاون برای کار شایسته
+                                        </li>
+                                        <li class="footer-home">
+                                            <a referrerpolicy="origin" target="_blank" href="https://trustseal.enamad.ir/?id=280314&amp;Code=Bb84FU0uCGo95feHpAfY">
+                                                <img referrerpolicy="origin" src="https://Trustseal.eNamad.ir/logo.aspx?id=280314&amp;Code=Bb84FU0uCGo95feHpAfY" alt="" style="cursor:pointer;background-color: #8b8b8b;" id="Bb84FU0uCGo95feHpAfY"></a>
+                                        </li>
                                         <li class="footer-about">  <div class="social-links">
                                                 <a  class="root-blue"><i class="fa fa-twitter"></i></a>
                                                 <a  class="root-blue"><i class="fa fa-facebook"></i></a>
@@ -762,14 +732,14 @@
         <div id="site-off-canvas">
             <span class="close"></span>
             <div class="wrapper">
-                <div class="widget widget_search">
+<!--                <div class="widget widget_search">
                     <form role="search" method="get" class="search-form" action="#">
                         <label>
                             <input type="search" class="search-field" placeholder="جستجو" value="" name="s">
                         </label>
                         <input type="submit" class="search-submit" value="پیدا کردن">
                     </form>
-                </div>
+                </div>-->
                 <div id="nav_menu-2" class="widget widget-categories">
                     <h4 class="widget-title">صفحات</h4>
                     <ul>

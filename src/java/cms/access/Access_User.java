@@ -135,20 +135,21 @@ public class Access_User {
             html.append("<th style='text-align: center;' width='20%'>تاریخ تولد</th>");
             html.append("<th style='text-align: center;' width='10%'>نام کاربری</th>");
             html.append("<th style='text-align: center;' width='30%'>نام و نام خانوادگی</th>");
-            html.append("<th style='text-align: center;' width='30%'>وضعیت</th>");
+            html.append("<th style='text-align: center;' width='20%'>ارسال رمز</th>");
+            html.append("<th style='text-align: center;' width='10%'>وضعیت</th>");
             html.append("<th style='text-align: center;' width='5%'>عملیات</th>");
             html.append("</thead><tbody>");
             for (int i = 0; i < row.size(); i++) {
-                html.append("<tr  onclick='cmsUser.m_select(" + row.get(i).get(_id) + ");' class='mousePointer' >");
+                html.append("<tr >");
                 html.append("<td class='tahoma10' style='text-align: center;'>" + (row.get(i).get(_id)) + "</td>");
                 html.append("<td class='tahoma10' style='text-align: left;'>" + (row.get(i).get(_email).toString()) + "</td>");
                 html.append("<td class='tahoma10' style='text-align: center;'>" + (jjCalendar_IR.getViewFormat(row.get(i).get(_birthdate))) + "</td>");
                 html.append("<td class='tahoma10' style='text-align: right;'>" + (row.get(i).get(_name).toString()) + "</td>");
                 html.append("<td class='tahoma10' style='text-align: right;'>" + (row.get(i).get(_family).toString()) + "</td>");
+                html.append("<td class='tahoma10' style='text-align: center;'><button class='btn btn-outline-purple mg-b-10 btn-block' onclick='cmsUser.m_send(" + row.get(i).get(_id) + ")'>ارسال پیامک رمز </button></td>");
                 String statusUser = row.get(i).get(_isActive).equals("1") ? "فعال" : "غیر فعال";
-                html.append("<td class='tahoma10' style='text-align: right;'>" + statusUser + "</td>");
-
-                html.append("<td style='text-align: center;color:red;font-size: 26px;' class='icon ion-ios-gear-outline'><a src='img/l.png' style='cursor: pointer;height:30px' onclick='cmsUser.m_select(" + row.get(i).get(_id) + ");' ></a></td>");
+                html.append("<td class='tahoma10' style='text-align: center;' >" + statusUser + "</td>");
+                html.append("<td style='text-align: center;color:red;font-size: 26px;cursor: pointer;' class='icon ion-ios-gear-outline' onclick='cmsUser.m_select(" + row.get(i).get(_id) + ");'><a src='img/l.png' style='height:30px' ></a></td>");
                 html.append("</tr>");
             }
             html.append("</tbody></table>");
@@ -249,24 +250,11 @@ public class Access_User {
                 html.append(Js.setHtml("#User_button", ""));
             }
 
-            List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, _id + "=0"));
             //برای نشان دادن لوگوی اختصاصی بیمارستان در قسمت اضافه کردن کاربان
             StringBuilder script2 = new StringBuilder();
-            if (row.get(0).get(Access_User._attachPicPersonal).equals("")) {
-                script2.append(Js.setAttr("#PicPreviewPersonal", "src", "img/preview.jpg"));
-            } else {
-                script2.append(Js.setAttr("#PicPreviewPersonal", "src", "upload/" + row.get(0).get(Access_User._attachPicPersonal).toString() + ""));
-            }
-            if (row.get(0).get(Access_User._attachPicPersonnelCard).equals("")) {
-                script2.append(Js.setAttr("#PicPreview", "src", "img/preview.jpg"));
-            } else {
-                script2.append(Js.setAttr("#PicPreview", "src", "upload/" + row.get(0).get(Access_User._attachPicPersonnelCard).toString() + ""));
-            }
-            if (row.get(0).get(Access_User._attachPicSignature).equals("")) {
-                script2.append(Js.setAttr("#PicPreviewSignature", "src", "img/preview.jpg"));
-            } else {
-                script2.append(Js.setAttr("#PicPreviewSignature", "src", "upload/" + row.get(0).get(Access_User._attachPicSignature).toString() + ""));
-            }
+            script2.append(Js.setAttr("#PicPreviewPersonal", "src", "img/preview.jpg"));
+            script2.append(Js.setAttr("#PicPreview", "src", "img/preview.jpg"));
+            script2.append(Js.setAttr("#PicPreviewSignature", "src", "img/preview.jpg"));
             script2.append("regularExpression = /^(?=.*[a-zA-Z\\\\u0621-\\\\u064A])(?=.*[0-9\\\\u0660-\\\\u0669])[a-zA-Za-z\\\\u0621-\\\\u064A0-9\\\\u0660-\\\\u0669]{6,}$/;");
             Server.outPrinter(request, response, html.toString() + script2);
             return "";
@@ -472,7 +460,6 @@ public class Access_User {
             map.put(_attachPicPersonnelCard, jjTools.getParameter(request, _attachPicPersonnelCard));
             map.put(_attachPicSignature, jjTools.getParameter(request, _attachPicSignature));
             map.put(_attachFileUser, jjTools.getParameter(request, _attachFileUser));
-            map.put(_attachFile, jjTools.getParameter(request, _attachFile));
             map.put(_AccountInformation, jjTools.getParameter(request, _AccountInformation));
             map.put(_grade, jjTools.getParameter(request, _grade));
             map.put(_passwordReminder, jjTools.getParameter(request, _passwordReminder));
@@ -562,7 +549,11 @@ public class Access_User {
         try {
 
             String id = jjTools.getParameter(request, _id);
-
+            System.out.println(jjTools.getSeassionUserId(request));
+            if (!id.equals(jjTools.getSeassionUserId(request) + "")) {// برای اینکه کابر فقط بتواند پروفایل خودش را ویرایش کند
+                Server.outPrinter(request, response, "alert('دوباره وارد شوید'); location.reload();");
+                return "";
+            }
             List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, _id + "=" + id));
             String email = jjTools.getParameter(request, _email);
 
@@ -573,7 +564,7 @@ public class Access_User {
             map.put(_isActive, jjTools.getParameter(request, _isActive).equals("1"));
             map.put(_name, jjTools.getParameter(request, _name));
             map.put(_mobile, jjTools.getParameter(request, _mobile));
-            map.put(_attachFile, jjTools.getParameter(request, _attachFile));
+            map.put(_attachFileUser, jjTools.getParameter(request, _attachFileUser));
             map.put(_attachPicPersonal, jjTools.getParameter(request, _attachPicPersonal));
             map.put(_codeMeli, jjTools.getParameter(request, _codeMeli));
             map.put(_pass, jjTools.getParameter(request, _pass).toLowerCase());
@@ -595,11 +586,8 @@ public class Access_User {
                 Server.outPrinter(request, response, Js.dialog(errorMessage));
                 return "";
             }
-
-            // =========================
-            List<Map<String, Object>> row1 = jjDatabase.separateRow(db.Select(tableName, _id + "=" + id));
-//      
-            Server.outPrinter(request, response, "");
+            // =========================                        
+            Server.outPrinter(request, response, "alert('عملیات ویرایش به درستی انجام شد'); location.reload();");
             return "";
         } catch (Exception e) {
             Server.outPrinter(request, response, Server.ErrorHandler(e));
@@ -649,17 +637,17 @@ public class Access_User {
                 return "";
             }
             List<Map<String, Object>> user = jjDatabase.separateRow(db.Select(tableName, _id + "=" + id));
-            StringBuilder html = new StringBuilder();
+            StringBuilder script = new StringBuilder();
             System.out.println("------------------------------------");
             System.out.println(user.get(0).get(_attachPicPersonal).toString());
             System.out.println("--------------------------------------");
-            html.append("$('#picUserProfile').attr('src', 'upload/" + user.get(0).get(_attachPicPersonal).toString() + "');");
-            html.append("$('#picUserProfile1').attr('src', 'upload/" + user.get(0).get(_attachPicPersonal).toString() + "');");
-            html.append("$('#emailUserProfile').html('" + user.get(0).get(_email).toString() + "');");
-            html.append("$('#nameUserProfile').html('" + user.get(0).get(_name).toString() + user.get(0).get(_family).toString() + "');");
-            html.append("alert('عملیات ویرایش به درستی انجام شد');");
-            html.append("loadFormsHmis();");
-            Server.outPrinter(request, response, html.toString());
+            script.append("$('#picUserProfile').attr('src', 'upload/" + user.get(0).get(_attachPicPersonal).toString() + "');");
+            script.append("$('#picUserProfile1').attr('src', 'upload/" + user.get(0).get(_attachPicPersonal).toString() + "');");
+            script.append("$('#emailUserProfile').html('" + user.get(0).get(_email).toString() + "');");
+            script.append("$('#nameUserProfile').html('" + user.get(0).get(_name).toString() + user.get(0).get(_family).toString() + "');");
+            script.append("alert('عملیات ویرایش به درستی انجام شد');");
+//            script.append("loadFormsHmis();");
+            Server.outPrinter(request, response, script.toString());
             return "";
         } catch (Exception e) {
             Server.outPrinter(request, response, Server.ErrorHandler(e));
@@ -724,9 +712,18 @@ public class Access_User {
 
     /**
      *
-     * @param id
+     * @param request
+     * @param response
+     * @param db
+     * @param needString
+     * @return
+     * @throws Exception
      */
     public static String select(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean needString) throws Exception {
+        if (!Access_User.hasAccess(request, db, rul_rfs) && !Access_User.hasAccess(request, db, rul_rfs)) {
+            Server.outPrinter(request, response, "شما دسنرسی به این قسمت را ندارین");
+            return "";
+        }
         try {
             String id = jjTools.getParameter(request, _id);
             String errorMessageId = jjValidation.isDigitMessageFa(id, "کد");
@@ -738,7 +735,7 @@ public class Access_User {
                 return "";
             }
 
-            if (id.equals("0") || id.equals("1") || id.equals("2") || id.equals("3") || id.equals("4") || id.equals("1")) {
+            if (id.equals("0") || id.equals("1") || id.equals("2") || id.equals("3") || id.equals("4")) {
                 String errorMessage = "شما اجازه مشاهده اطلاعات این شخص را ندارید";
                 Server.outPrinter(request, response, Js.dialog(errorMessage) + Js.jjUser.showTbl());
                 return "";
@@ -770,7 +767,7 @@ public class Access_User {
                 html.append(Js.select2("#selectOptionGroupUser", ""));
             }
             html.append(Js.setVal("#access_user_id", row.get(0).get(_id)));
-            html.append(Js.setVal("#" + _mobile, row.get(0).get(_mobile)));
+            html.append(Js.setVal("#user_mobileUser", row.get(0).get(_mobile)));
             html.append(Js.setVal("#" + _int1, row.get(0).get(_int1)));
             html.append(Js.setVal("#" + _int2, row.get(0).get(_int2)));
             html.append(Js.setVal("#" + _int3, row.get(0).get(_int3)));
@@ -805,7 +802,19 @@ public class Access_User {
             html.append(Js.setAttr("#DownloadPicPersonal", "href", "upload/" + row.get(0).get(_attachPicPersonal)));
             html.append(Js.setAttr("#DownloadPicPersonnelCard", "href", "upload/" + row.get(0).get(_attachPicPersonnelCard)));
             html.append(Js.setAttr("#DownloadattachFileUser", "href", "upload/" + row.get(0).get(_attachFileUser)));
-            html.append(Js.setAttr("#DownloadAttachFile", "href", "upload/" + row.get(0).get(_attachFile)));
+            if (!row.get(0).get(_attachFile).toString().isEmpty()) {//فایل های پیوست شده ی کاربر را  اگر چیزی داشته باشد پشت سر هم نشان میدهد
+                String userFiles[] = row.get(0).get(_attachFile).toString().split(",");
+                for (int k = 0; k < userFiles.length; k++) {
+                    html.append(Js.append("#user_attachFileDiv", "<div class='col-lg-12 mg-l-15'><img class='wd-40 rounded-circle mg-r-20' src='upload/" + userFiles[k] + "'><a target='_blank' href='upload/" + userFiles[k] + "'>دانلود</a> <input class='" + _attachFile + "' type='hidden' value='" + userFiles[k] + "'><div class='btn btn-danger btn-icon mg-r-5 mg-b-10' onclick='$(this).parent().remove();'><i class='fa fa-close'></i></div></div>"));
+                }
+            }
+            if (!row.get(0).get(_attachFileUser).toString().isEmpty()) {//فایل های پیوست شده ی کاربر را  اگر چیزی داشته باشد پشت سر هم نشان میدهد
+                String userFilesUser[] = row.get(0).get(_attachFileUser).toString().split(",");
+                for (int k = 0; k < userFilesUser.length; k++) {
+                    html.append(Js.append("#user_attachFileUserDiv", "<div class='col-lg-12 mg-l-15'><img class='wd-40 rounded-circle mg-r-20' src='upload/" + userFilesUser[k] + "'><a target='_blank' href='upload/" + userFilesUser[k] + "'>دانلود</a> <input class='" + _attachFileUser + "' type='hidden' value='" + userFilesUser[k] + "'><div class='btn btn-danger btn-icon mg-r-5 mg-b-10' onclick='$(this).parent().remove();'><i class='fa fa-close'></i></div></div>"));
+                }
+            }
+
             /////برای دانلود عکس ها نوشته شده
             html.append(Js.setAttr("#DownloadPicSignature", "href", "upload/" + row.get(0).get(_attachPicSignature)));
 
@@ -1186,7 +1195,7 @@ public class Access_User {
                                             + "وجود ندارد، این خطا از طریق استثنا ها مدیریت شد");
                                     rulId = "";
                                 }
-                            }                            
+                            }
                             if (rulId.isEmpty()) {
                                 noValidInSeassion.append("$" + j + "$");
                                 html.append("$('#C" + (j < 10 ? "0" + j : j) + "').attr('disabled','disabled');\n");
@@ -2313,12 +2322,13 @@ public class Access_User {
         try {
 
 //            List<Map<String, Object>> rowAllActiveRols = jjDatabase.separateRow(db.JoinLeft(tableName, Role.tableName, "access_user.id," + _name + "," + Role._title + "," + _family, _id, Role._user_id, " WHERE  access_user.id>5 AND " + _isActive + "=1"));// بر اساس حروف الفبا مرتب باشد بهتر است
-            List<Map<String, Object>> rowAllActiveRols = jjDatabase.separateRow(db.otherSelect("SELECT group_concat(hmis_role.role_title)as title,access_user.id,user_name,role_title,user_family FROM access_user\n"
+            List<Map<String, Object>> rowAllActiveRols = jjDatabase.separateRow(db.otherSelect(
+                    "SELECT group_concat(hmis_role.role_title)as title,access_user.id,user_name,role_title,user_family,user_codeMeli FROM access_user\n"
                     + " LEFT JOIN hmis_role ON\n"
                     + " access_user.id = hmis_role.role_user_id  WHERE  access_user.id>5 AND user_is_active=1 group by id"));// بر اساس حروف الفبا مرتب باشد بهتر است
             optionHtml.append("<option  value='ALL'>تمام کاربران ثبت شده</option>");
             for (int i = 0; i < rowAllActiveRols.size(); i++) {
-                optionHtml.append("<option  value='").append(rowAllActiveRols.get(i).get(_id)).append("'>").append(rowAllActiveRols.get(i).get(_family) + "-").append(rowAllActiveRols.get(i).get(_name)).append("(" + rowAllActiveRols.get(i).get("title") + ")").append("</option>");
+                optionHtml.append("<option  value='").append(rowAllActiveRols.get(i).get(_id)).append("'>").append(rowAllActiveRols.get(i).get(_family) + "-").append(rowAllActiveRols.get(i).get(_name)).append("(" + rowAllActiveRols.get(i).get(_codeMeli) + ")").append("</option>");
             }
             if (needString) {// اگر فقط اچ تی ام ال را بخواهیم که معمولا در کد های جی اس پی یا فراخوانی های سمت سرور اینگونه است
                 return optionHtml.toString();
@@ -2450,11 +2460,13 @@ public class Access_User {
                         Access_User.tableName, Access_User._int1 + "='" + StudentId
                         + "' AND " + Access_User._pass + "='" + passRequest + "'"));
                 if (user.size() == 1) {
-                    System.out.println(".........................................................................................p");
-                    Server.outPrinter(request, response, afterUserLoginOrRegistSite(request, response, db, url, user.get(0)));
+                    if (user.get(0).get(_isActive).toString().equals("0")) {
+                        Server.outPrinter(request, response, Js.modal("کاربر غیر فعال", "شما کاربر فعال این مجموعه نیستید"));
+                    } else {
+                        Server.outPrinter(request, response, afterUserLoginOrRegistSite(request, response, db, url, user.get(0)));
+                    }
                     return "";
                 } else {
-
                     String comment = "ایمیل و یا رمز عبور صحیح نمی باشد.";
                     if (jjTools.isLangEn(request)) {
                         comment = "Email or Password is not currect.";
@@ -2629,6 +2641,48 @@ public class Access_User {
             Server.outPrinter(request, response, Server.ErrorHandler(e));
             return "";
         }
+    }
+
+    /**
+     * این تابع برای مواقعی که میخواهیم به طرف نام کاربری و رمز عبور ولینک
+     * دانلود تپ را بفرستیم استفاده میکنیم
+     *
+     * @param request
+     * @param response
+     * @param db
+     * @param needString
+     * @return
+     * @throws Exception
+     */
+    public static String send(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean needString) throws Exception {
+        try {
+            String reciversId = jjTools.getParameter(request, _id);
+            List<Map<String, Object>> userRow = jjDatabaseWeb.separateRow(db.Select(Access_User.tableName, Access_User._id + "=" + reciversId));// پیام فقط برای کابران فعال میرود : ویژگی
+            String textMessage = " تعاونی مسکن کارکنان دادگستری اصفهان"
+                    + "<br/>"
+                    + " شماره عضویت:" + " " + userRow.get(0).get(Access_User._int1).toString()
+                    + "<br/>"
+                    + " رمز عبور:" + " " + userRow.get(0).get(Access_User._pass).toString() + " "
+                    + "<br/>"
+                    + "tmdke.ir";
+            jjCalendar_IR date = new jjCalendar_IR();
+            Messenger.sendMesseage(request, db, reciversId, "" + jjTools.getSeassionUserId(request) + "", "app,sms,email", String.valueOf(date.getDBFormat_8length()), "ارسال نام کاربری و رمز عبور", textMessage, "", "", "عادی", Tice_config.getValue(db, Tice_config._config_activeSms_name), Tice_config.getValue(db, Tice_config._config_activeEmail_name));
+            Server.outPrinter(request, response, Js.modal("پیام با موفقیت ارسال شد", "ارسال پیام"));
+            return "";
+        } catch (Exception e) {
+            Server.outPrinter(request, response, Server.ErrorHandler(e));
+            return "";
+        }
+    }
+
+    public static String updateAndroid(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean needString) throws Exception {
+        try {
+            request.getRequestDispatcher("template/updateAndroid.jsp").forward(request, response);
+        } catch (Exception e) {
+            Server.outPrinter(request, response, Server.ErrorHandler(e));
+            return "";
+        }
+        return "";
     }
 
     /**

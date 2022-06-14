@@ -76,23 +76,24 @@ var cmsContent = {
         $('#content_content').summernote('code', '');
     },
     m_add_new: function () {
+        $("#newContentCopy .btn").attr("onclick", "");
         $('.summernote').summernote({height: 150, tooltip: false});
         new jj("do=" + cmsContent.tableName + ".add_new").jjAjax2(false);
         cmsContent.m_show_form();
         cmsContent.m_clean();
 
     },
-     /**
+    /**
      * 
      * @param {type} selector
      * @returns {undefined}
      */
-     m_getGroupsWithUsers: function (selector) {
+    m_getGroupsWithUsers: function (selector) {
         var param = "";
         param += "panel=" + selector;
         param += "&do=" + cmsGroup.tableName + ".getGroupsWithUsers";
         new jj(param).jjAjax2(false);
-    }, 
+    },
 //    m_getGroups: function (selector) {
 //        var param = "";
 //        param += "panel=" + selector;
@@ -125,6 +126,20 @@ var cmsContent = {
             cmsContent.m_clean();
         } else {
             new jj(valid).jjDialog();
+        }
+    },
+    copy: function () {
+        var valid = cmsContent.m_validation();
+        if (valid == "") {
+            var param = "";
+            param += "do=" + cmsContent.tableName + ".copy";
+            param += "&content_title=" + $("#newContentTitle").val();
+            param += "&id=" + $("#content_id").val();
+            new jj(param).jjAjax2(false);
+            cmsContent.m_show_tbl();
+            cmsContent.m_clean();
+        } else {
+            new jj(valid).jjModal("پیام سیستم");
         }
     },
     m_edit: function () {
@@ -170,6 +185,7 @@ var cmsContent = {
         cmsContent.m_clean();
     },
     m_select: function (id) {
+        $("#newContentCopy .btn").attr("onclick", "cmsContent.copy();");
         var param = "";
         param += "do=" + cmsContent.tableName + ".select";
         param += "&" + cmsContent.f_id + "=" + (id == null ? "" : id);
@@ -430,5 +446,5 @@ var cmsCategoryContent = {
     mainTabSetSize: function () {
         $('#swCategoryContent').css('height', cmsCategoryContent.heightTab);
     },
-    
+
 };

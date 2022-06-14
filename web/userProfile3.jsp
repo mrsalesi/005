@@ -261,7 +261,7 @@
                                                                     <li><a href="" onclick="new jj('do=Content.sw&panel=sw&text=تیم شرکت&jj=1').jjAjax2()">تیم شرکت</a></li>
                                                                     <li><a href="" onclick="$('#sw').load('gallery.jsp')">گالری</a></li>
                                                                     <li><a href="">خدمات</a> </li>
-                                                                    <li><a href="" onclick="new jj('do=Content.sw&panel=sw&text=درباره ی ما&jj=1').jjAjax2()">درباره ی شرکت </a></li>
+                                                                    <li><a href="" onclick="new jj('do=Content.sw&panel=sw&text=درباره ما&jj=1').jjAjax2()">درباره ی شرکت </a></li>
                                                                     <li><a href="" onclick="new jj('do=Content.sw&panel=sw&text=تماس با ما&jj=1').jjAjax2()">تماس با ما</a></li>
                                                                   
                                                                 </ul>
@@ -515,7 +515,7 @@
                                                                                                                                                                                                         <ul class="footer-info">
                                                                                                                                                                                                         <li class="footer-home arrow"><a>صفحه اصلی</a></li>
 
-                                                                                                                                                                                                        <li class="footer-Allproject arrow"><a>درباره ی ما</a></li>
+                                                                                                                                                                                                        <li class="footer-Allproject arrow"><a>درباره ما</a></li>
                                                                                                                                                                                                         <li class="footer-Allproject arrow"><a>پروژه ها</a></li>
                                                                                                                                                                                                         </ul>
                                                                                                                                                                                                         </div>

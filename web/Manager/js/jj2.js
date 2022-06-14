@@ -163,7 +163,7 @@ var jj = function (selector) {
             this.jjAjax2 = function (isCacheable, servletName) {
                 if (sessionStorage.getItem("is_reloaded"))
                     alert('Reloaded!');
-                var newURL = "Server?" + this.selector;//اگر این خط فعال باشد هر چی سمت سرور ارسال شود در  ادرس دیده میشود
+                var newURL = "Server2?" + this.selector;//اگر این خط فعال باشد هر چی سمت سرور ارسال شود در  ادرس دیده میشود
 //                var newURL = ;
                 $.ajax({
                     url: (servletName == null) ? SERVLET_NAME : servletName,
@@ -2185,8 +2185,7 @@ var jj = function (selector) {
                     if ($("#" + inputFileId.replace("#", "")).val() == "") {
                         new jj("ابتدا  فایلی را انتخاب نمایید.").jjModal();
                         return;
-                    }
-
+                    }                    
                     $.ajaxFileUpload({
                         url: 'UploadServlet',
                         secureuri: false,
@@ -2242,7 +2241,7 @@ var jj = function (selector) {
                                 } else {
 //                            new jj('فایل به درستی ارسال نشد.').jjModal();
                                 }
-                                new jj(title).jjModal('فایل بدرستی بارگذاری شد');
+                                new jj("شناسه ی فایل شما در سیستم:" + "<br/>"+title).jjModal('فایل بدرستی بارگذاری شد');
                                 $("#" + inputFiletitle.replace("#", "")).val('');
 //                                $("#transaction_divUpload").html("");////در فایل بانکی  فقظ یک مورد را ثبت میکنیم 
                                 $('#user_pic').html('');

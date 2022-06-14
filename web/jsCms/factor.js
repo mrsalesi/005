@@ -4,11 +4,16 @@ var cmsFactor = {
     loadForm: function () {
         if ($("#swFactorForm").html() == '') {
             $("#swFactorForm").load("formAccount/factor.html", null, function () {
-                new jj("#account_factor_date").jjCalendarWithYearSelector(1399, 1420);
+                new jj('#factor_attach_sendFilesAdmin').jjAjaxFileUploadByTitleAndMultiFile('#factor_attach', 'product_factor_attach', 'factor_attach_title_admin', "#factor_attach_adminDiv");
+                new jj("#product_factor_dueDate").jjCalendar();
+                new jj("#product_factor_date").jjCalendar();
                 cmsFactor.m_getUserFactor("product_factor_userId");
                 $("#product_factor_userId").select2({
                     width: '100%'
                 });
+                $("#product_factor_userId").on("change", function () {
+                    cmsFactor.m_getUserInfoInFactor($(this).val());
+                })
                 cmsFactorItem.m_getProductFactorItem("product_factor_item_productId1");
                 $("#product_factor_item_productId1").select2({
                     width: '100%'
@@ -38,12 +43,19 @@ var cmsFactor = {
         param += "&do=" + cmsFactor.tableName + ".getUserFactor";
         new jj(param).jjAjax2(false);
     },
+    m_getUserInfoInFactor: function (userId) {
+        var param = "";
+        param += "userId=" + userId;
+        param += "&do=" + cmsFactor.tableName + ".getUserInfoInFactor";
+        new jj(param).jjAjax(false);
+    },
     m_show_form: function () {
         $('#swFactorTbl').hide();
         $('#swFactorForm').show();
         cmsFactor.tabSizeForm();
     },
-    m_clean: function () {
+    m_clean: function () {        
+        $("#factor_attach_adminDiv").html("");
         $("#product_factor_totalAmount").val('');
         $("#product_factor_totalAmountValueAdded").val('');
         $("#product_factor_creator").val('');
@@ -76,6 +88,7 @@ var cmsFactor = {
         $("#product_factor_item_productId1").select2();
     },
     m_add_new: function () {
+        $("#Installments .btn").attr("onclick", "");
         cmsFactor.m_show_form();
         cmsFactor.m_clean();
         cmsFactor.m_cleantItemFactorInFactor();
@@ -90,7 +103,13 @@ var cmsFactor = {
     },
     m_insert: function () {
         var param = "";
+        var attachFilesMulti = $("#factor_attach_adminDiv .product_factor_attach");
+        var temp = "";
+        for (var i = 0; i < attachFilesMulti.length; i++) {
+            temp += $(attachFilesMulti[i]).val() == "" ? "" : ($(attachFilesMulti[i]).val() + ",");
+        }
         param += "do=" + cmsFactor.tableName + ".insert";
+        param += "&product_factor_attach=" + temp;
         param += "&" + new jj('#swFactorForm').jjSerial();
         new jj(param).jjAjax2(false);
     },
@@ -113,7 +132,13 @@ var cmsFactor = {
     },
     m_edit: function () {
         var param = "";
+        var attachFilesMulti = $("#factor_attach_adminDiv .product_factor_attach");
+        var temp = "";
+        for (var i = 0; i < attachFilesMulti.length; i++) {
+            temp += $(attachFilesMulti[i]).val() == "" ? "" : ($(attachFilesMulti[i]).val() + ",");
+        }
         param += "do=" + cmsFactor.tableName + ".edit";
+        param += "&product_factor_attach=" + temp;
         param += "&" + new jj('#swFactorForm').jjSerial();
         new jj(param).jjAjax2(false);
         cmsFactor.m_show_tbl();
@@ -157,6 +182,23 @@ var cmsFactor = {
         param3 = parseFloat(param3) + parseFloat(valueAdedd);
         $("#product_factor_item_totalPrice1").val(param3);
         $("#product_factor_item_discountPercent1").val(param1 + ".00");
+    },
+
+    copyFactor: function () {
+        if (confirm("در صورت تایید از این فاکتور به تعداد " + $("#installementCount").val() + " با فاصله ی زمانی " + $("#installementPeriod").val() + " ماه کپی ایجاد میشود ")) {
+            if (new jj($("#installementPeriod").val()).jjIsDigit() && new jj($("#installementCount").val()).jjIsDigit()) {
+                var param = "";
+                param += "installementCount=" + $("#installementCount").val();
+                param += "&installementPeriod=" + $("#installementPeriod").val();
+                param += "&id=" + $("#product_factor_id").val();
+                param += "&do=" + cmsFactor.tableName + ".copyFactor";
+                new jj(param).jjAjax(false);
+            } else {
+                alert("ماه و تعداد اقساط را بصورت عددی وارد کنید");
+                return;
+            }
+        }
+
     },
     m_getInstallments: function () {
         var x = document.getElementById("mySelect").value;
@@ -260,6 +302,7 @@ var cmsFactor = {
         new jj(param).jjAjax2(false);
     },
     m_select: function (id) {
+        $("#Installments .btn").attr("onclick", "cmsFactor.copyFactor();");
         var param = "";
         param += "do=" + cmsFactor.tableName + ".select";
         param += "&" + cmsFactor.f_id + "=" + (id == null ? "" : id);

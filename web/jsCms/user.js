@@ -22,8 +22,8 @@ var cmsUser = {
                     cmsUser.m_clean();
                     cmsUser.m_show_tbl();
                 });
-                new jj('#userAttachFiles_sendFiles').jjAjaxFileUploadByTitleAndMultiFile('#attachFileUser', 'user_attachFile', 'user_titleFile', "#user_divUpload");
-                new jj('#userAttachFiles_sendFilesAdmin').jjAjaxFileUploadByTitleAndMultiFile('#attachFileUserAdmin', 'user_attachFileUser', 'user_titleFile_admin', "#user_divUpload1");
+//                new jj('#userAttachFiles_sendFiles').jjAjaxFileUploadByTitleAndMultiFile('#attachFileUser', 'user_attachFile', 'user_titleFile', "#user_divUpload");
+                new jj('#userAttachFiles_sendFilesAdmin').jjAjaxFileUploadByTitleAndMultiFile('#attachFileUserAdmin', 'user_attachFile', 'user_titleFile_admin', "#user_attachFileDiv");
                 new jj('#sendPic1').jjAjaxFileUpload2('user_file_personal', '#user_attachPicPersonal', '#PicPreviewPersonal');
                 new jj('#sendPicSignature').jjAjaxFileUpload2('user_file_Signature', '#user_attachPicSignature', '#PicPreviewSignature');
                 new jj('#sendPicupload').jjAjaxFileUpload2('uploaded_file', '#user_attachPicPersonnelCard', '#PicPreview');
@@ -52,7 +52,9 @@ var cmsUser = {
     },
     m_clean: function () {
 
-        $('#selectOptionGroupUser').html();
+        $('#user_attachFileDiv').html("");
+        $('#user_attachFileUserDiv').html("");
+        $('#selectOptionGroupUser').html("");
         $('#user_emailUser').css("border-color", "unset");
         $('#user_passUser').css("border-color", "unset");
         ;
@@ -116,10 +118,10 @@ var cmsUser = {
         cmsUser.tabSizeTbl();
     },
     m_insert: function () {
-        var attachFilesMulti = $("#user_divUpload .user_attachFile");
+        var attachFilesMulti = $("#user_attachFileDiv .user_attachFile");
         var temp = ""
         for (var i = 0; i < attachFilesMulti.length; i++) {
-            temp += $(attachFilesMulti[i]).val() + ",";
+            temp += $(attachFilesMulti[i]).val() == "" ? "" : ($(attachFilesMulti[i]).val() + ",");
         }
         var param = "";
         param += "do=" + cmsUser.tableName + ".insert";
@@ -131,10 +133,15 @@ var cmsUser = {
 //        }
     },
     m_edit: function () {
-        var attachFilesMulti = $("#user_divUpload .user_attachFile");
+        var attachFilesMulti = $("#user_attachFileDiv .user_attachFile");
         var temp = "";
         for (var i = 0; i < attachFilesMulti.length; i++) {
-            temp += $(attachFilesMulti[i]).val() + ",";
+            temp += $(attachFilesMulti[i]).val() == "" ? "" : ($(attachFilesMulti[i]).val() + ",");
+        }
+        var attachFilesMulti2 = $("#user_attachFileUserDiv .user_attachFileUser");
+        var temp2 = "";
+        for (var i = 0; i < attachFilesMulti2.length; i++) {
+            temp += $(attachFilesMulti2[i]).val() == "" ? "" : ($(attachFilesMulti2[i]).val() + ",");
         }
         var param = "";
         param += "do=" + cmsUser.tableName + ".edit";
@@ -143,6 +150,7 @@ var cmsUser = {
         param += "&user_attachAxPersonnelCard=" + $('#user_attachPicPersonnelCard').val();
         param += "&user_attachAxSignature=" + $('#user_attachPicSignature').val();
         param += "&user_attachFile=" + temp;
+        param += "&user_attachFileUser=" + temp2;
         param += "&" + new jj('#swUser').jjSerial();
         new jj(param).jjAjax2(false);
         cmsUser.m_show_tbl();
@@ -150,14 +158,14 @@ var cmsUser = {
         cmsUser.m_clean();
     },
     m_editUser: function () {
-          var attachFilesMulti = $("#user_divUpload .user_attachFile");
+        var attachFilesMulti = $("#user_attachFileUserDiv .user_attachFileUser");
         var temp = "";
         for (var i = 0; i < attachFilesMulti.length; i++) {
-            temp += $(attachFilesMulti[i]).val() + ",";
+            temp += $(attachFilesMulti[i]).val() == "" ? "" : ($(attachFilesMulti[i]).val() + ",");
         }
         var param = "";
         param += "do=" + cmsUser.tableName + ".editUser";
-        param += "&user_attachFile=" + temp;
+        param += "&user_attachFileUser=" + temp;
         param += "&user_name=" + $("#user_name").val();
         param += "&user_family=" + $("#user_family").val();
         param += "&user_pass=" + $("#user_pass").val();
@@ -256,7 +264,15 @@ var cmsUser = {
         param += "panel=" + selector;
         param += "&do=" + cmsUser.tableName + ".getSelectOptionNotNull";
         new jj(param).jjAjax2(false);
-    }
+    },
+    //نام کاربری و رمز عبور کاربر را با پیامک ارسال میکند
+    m_send: function (id) {
+        var param = "";
+        param += "do=" + cmsUser.tableName + ".send";
+        param += "&id=" + id;
+        new jj(param).jjAjax2(false);
+    },
+
 };
 function loginToCMS() {
     new jj("do=Access_User.login&" + (new jj("#swLoginForm").jjSerial())).jjAjax2();

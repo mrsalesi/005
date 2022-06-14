@@ -2160,10 +2160,10 @@ public class Messenger {
         //اگر تاریخ امروز یا روزهای قبل بود همین الان بر اساس گیرنده ها و روش ارسال جدا بکند و ارسال بکند در غیر اینصورت برای اینکه قابل ویرایش باشد جدا نمی کنیم
         if (postageDate == null || postageDate.equals("") || Integer.valueOf(postageDate) == jjCalendar_IR.getDatabaseFormat_8length(null, true)) {
             for (int j = 0; j < receiverMessageArray.length; j++) {// به تعداد دریافت کننده ه
-                if (jjNumber.isDigit(receiverMessageArray[j])) {// اگر آی دی داده شده عدد بود
-                    textMessage = messageOne;//برای اینکه اسم قیلی داخلش نماند
-                    List<Map<String, Object>> userRow = jjDatabaseWeb.separateRow(db.Select(Access_User.tableName, Access_User._id + "=" + receiverMessageArray[j] + " AND " + Access_User._isActive + "=1"));// پیام فقط برای کابران فعال میرود : ویژگی
-                    if (userRow.size() == 1) {// اگر چنین کاربری وجود داشت
+                textMessage = messageOne;//برای اینکه اسم قیلی داخلش نماند
+                List<Map<String, Object>> userRow = jjDatabaseWeb.separateRow(db.Select(Access_User.tableName, Access_User._id + "=" + receiverMessageArray[j] + " AND " + Access_User._isActive + "=1"));// پیام فقط برای کابران فعال میرود : ویژگی
+                if (userRow.size() == 1) {// اگر چنین کاربری وجود داشت
+                    if (jjNumber.isDigit(receiverMessageArray[j])) {// اگر آی دی داده شده عدد بود
                         textMessage = userRow.get(0).get(Access_User._jensiat).toString() + " " + userRow.get(0).get(Access_User._name).toString() + " "
                                 + userRow.get(0).get(Access_User._family).toString() + " " + textMessage;
                         if (type.contains("مشاوره")) {
@@ -2194,21 +2194,21 @@ public class Messenger {
                         map.put(_textHTML, textHTML);
                         map.put(_title, subject);
                         String logStatus = "";
+
                         System.out.println("sendingMethod=" + sendingMethod);
                         if (sendingMethod.contains("sms")) {
-                            System.out.println("");
-                            System.out.println("/////////////////////////////sms");
                             String mobile = userRow.get(0).get(Access_User._mobile).toString();
+                            System.out.println("//>>>>>>>>>>>>>sms : " + mobile);
                             String[] mobileArray = userRow.get(0).get(Access_User._mobile).toString().split(",");
                             if (Tice_config.getValue(db, Tice_config._config_activeSms_name).equals("1")) {
                                 if (statusSms.equals("1")) {
                                     if (mobileArray.length > 1) {
                                         for (int i = 0; i < mobileArray.length; i++) {
-//                                            logStatus += sms.sendMessageByApi(request, db, mobileArray[i], sender, textMessage, "", "", "");
+                                            logStatus += sms.sendMessageByApi(request, db, mobileArray[i], textMessage.replaceAll("<br/>", "\n"), "", "", "");
                                         }
                                     } else {
                                         if (mobileArray.length == 1) {
-//                                            logStatus += sms.sendMessageByApi(null, db, mobile, sender, textMessage, "", "", "");
+                                            logStatus += sms.sendMessageByApi(null, db, mobile, textMessage.replaceAll("<br/>", "\n"), "", "", "");
                                         }
                                     }
                                 }
@@ -2230,8 +2230,8 @@ public class Messenger {
                         }
                         if (sendingMethod.contains("email")) {//@ToDo موقع ارسال ایمیل در جدولی مخصوص ایمیل ها هم اینسرت بشود که سابقه بماند
                             if (Tice_config.getValue(db, Tice_config._config_activeEmail_name).equals("1")) {
-                                if (statusEmail.equals("1")) {
-                                    System.out.println("/////////////////////////////email");
+                                if (statusEmail.equals("1") && !userRow.get(0).get(Access_User._email).toString().isEmpty()) {
+                                    System.out.println("//>>>>>>>>>>>>>>>>email");
                                     logStatus += Server.sendEmail("", userRow.get(0).get(Access_User._email).toString(), subject, textMessage + textHTML, true, request, db);
                                 }
                             }
@@ -2459,7 +2459,7 @@ public class Messenger {
             map.put(_type, message_Advice);
             map.put(_status, status_posted);
             map.put(_receiver, jjTools.getParameter(request, _receiver));
-            String chatID = jjTools.getParameter(request, _chatID).isEmpty() ? jjNumber.getRandom(8) : jjTools.getParameter(request, _chatID);
+            String chatID = jjTools.getParameter(request, _chatID).isEmpty() ? ("1" + jjNumber.getRandom(8)) : jjTools.getParameter(request, _chatID);
             map.put(_chatID, chatID);
             jjCalendar_IR dateIR = new jjCalendar_IR();
             map.put(_time, dateIR.getTimeFormat_4length() + dateIR.getSeconds_2length());
@@ -2491,7 +2491,7 @@ public class Messenger {
      */
     public static String refreshChat(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
         try {
-            if (jjTools.getSeassionUserId(request) < 1) {// کاربر مهمان اجازه ی دیدن تیکت و .. را ندارد
+            if (jjTools.getSeassionUserId(request) < 1) {// کاربر مهمان اجازه ی دیدن تیکت و ... را ندارد
                 Server.outPrinter(request, response, Js.modal("مدت زیادی با سیستم تعامل نداشته اید، مجددا وارد شوید", "وارد شوید"));
                 return "";
             }

@@ -12,7 +12,11 @@ var cmsGroup = {
                     cmsGroup.m_clean();
                     cmsGroup.m_show_tbl();
                 });
-                addCheckboxFunction()
+                cmsUser.getSelectOption("#swGroupForm #access_user_group_userId");
+                $("#swGroupForm #access_user_group_userId").select2({
+                    width: '100%'
+                });
+                addCheckboxFunction();
             });
         }
     },
@@ -29,6 +33,9 @@ var cmsGroup = {
         $('#swGroupTbl').hide();
         $('#swGroupForm').show();
         cmsGroup.tabSizeForm();
+        $("#swGroupForm #access_user_group_userId").select2({
+            width: '100%'
+        });
     },
     m_clean: function () {
         new jj("#" + cmsGroup.f_group_id).jjVal('');
@@ -83,7 +90,7 @@ var cmsGroup = {
         cmsGroup.m_clean();
     },
     m_delete: function (id) {
-        new jj("آیا از حذف این رکورد اطمینان دارید؟").jjModal_Yes_No("پیام سامانه",'cmsGroup.m_delete_after_question(' + id + ');\n');
+        new jj("آیا از حذف این رکورد اطمینان دارید؟").jjModal_Yes_No("پیام سامانه", 'cmsGroup.m_delete_after_question(' + id + ');\n');
     },
     m_delete_after_question: function (id) {
         var param = "";
@@ -340,7 +347,7 @@ function addCheckboxFunction() {
             new jj("#C280").jjVal(true);
             new jj("#C270").jjVal(true);
         }
-    });   
+    });
     //دسته بندی فایل ها
     $("#C376").change(function (e) {
         if (new jj("#C376").jjVal() == '1') {
@@ -543,7 +550,7 @@ function addCheckboxFunction() {
         }
     });
 
-   
+
     //پروژه ها
     $("#C382").change(function (e) {
         if (new jj("#C382").jjVal() == '1') {

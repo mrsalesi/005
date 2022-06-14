@@ -213,7 +213,6 @@ function formAnswerSet_insertAndFinalForm() {
  * @returns {undefined}
  */
 function formAnswerSet_insertRegisterForm() {
-    alert("2222");
     var requireds = $("#swOneFormToCompleteForm input[required]:text,#swOneFormToCompleteForm input[required]:hidden");
     var flag = true;
     var firsnonAnswered;
@@ -3847,18 +3846,66 @@ function sendTicket() {
         $("#messenger_title").css("border", "dashed red thin");
         return false;
     } else {
-        $("#messenger_textMessage").css("border", "unset");
+        $("#messenger_textMessage").css("border", "");
     }
-    if (new jj('#messenger_textMessage').jjVal() < 10) {
+    if (new jj('#messenger_textMessage').jjVal().length < 10) {
         new jj("متن را وارد کنید").jjModal("پیام سیستم");
         $("#messenger_textMessage").css("border", "dashed red thin");
         return false;
     } else {
-        $("#messenger_textMessage").css("border", "unset");
+        $("#messenger_textMessage").css("border", "");
     }
     var params = new jj('#formMassege').jjSerial() + '&do=Messenger.insertChat&jj=1';
     params += "&messenger_attachFile="; // چون ممکن است چند فایل بارگذاری کرده باشند در حلقه از دیو نگهدارنده ی فایل های بارگذاری شده میخوانیم
-    var messenger_attachFile = $(".messenger_attachFile");
+    var messenger_attachFile = $("#showFileMessengerDiv .messenger_attachFile");
+    for (var i = 0; i < messenger_attachFile.length; i++) {
+        params += $(messenger_attachFile[i]).val() + ",";
+    }
+    new jj(params).jjAjax(false);
+    new jj("بعد از ارسال پیام میتوانید با رفرش کردن صفحه وضعیت پیام را در جدول ببینید").jjModal_Yes_No("صفحه رفرش بشود ؟", "location.reload();");
+}
+function sendTicket_sale() {
+    if (new jj('#messenger_title_sale').jjVal() < 5) {
+        new jj("عنوان را مختصر و واضح وارد کنید").jjModal("پیام سیستم");
+        $("#messenger_title_sale").css("border", "dashed red thin");
+        return false;
+    } else {
+        $("#messenger_textMessage_sale").css("border", "");
+    }
+    if (new jj('#messenger_textMessage_sale').jjVal().length < 10) {
+        new jj("متن را وارد کنید").jjModal("پیام سیستم");
+        $("#messenger_textMessage_sale").css("border", "dashed red thin");
+        return false;
+    } else {
+        $("#messenger_textMessage_sale").css("border", "");
+    }
+    var params = new jj('#formMassege_sale').jjSerial() + '&do=Messenger.insertChat&jj=1';
+    params += "&messenger_attachFile="; // چون ممکن است چند فایل بارگذاری کرده باشند در حلقه از دیو نگهدارنده ی فایل های بارگذاری شده میخوانیم
+    var messenger_attachFile = $("#showFileMessengerDiv_sale .messenger_attachFile");
+    for (var i = 0; i < messenger_attachFile.length; i++) {
+        params += $(messenger_attachFile[i]).val() + ",";
+    }
+    new jj(params).jjAjax(false);
+    new jj("بعد از ارسال پیام میتوانید با رفرش کردن صفحه وضعیت پیام را در جدول ببینید").jjModal_Yes_No("صفحه رفرش بشود ؟", "location.reload();");
+}
+function sendTicket_move() {//ارسال تیکت بصورت ثبت درخواست انتقال
+    if (new jj('#messenger_title_move').jjVal() < 5) {
+        new jj("عنوان را مختصر و واضح وارد کنید").jjModal("پیام سیستم");
+        $("#messenger_title_move").css("border", "dashed red thin");
+        return false;
+    } else {
+        $("#messenger_textMessage_move").css("border", "");
+    }
+    if (new jj('#messenger_textMessage_move').jjVal().length < 10) {
+        new jj("متن را وارد کنید").jjModal("پیام سیستم");
+        $("#messenger_textMessage_move").css("border", "dashed red thin");
+        return false;
+    } else {
+        $("#messenger_textMessage_move").css("border", "");
+    }
+    var params = new jj('#formMassege_move').jjSerial() + '&do=Messenger.insertChat&jj=1';
+    params += "&messenger_attachFile="; // چون ممکن است چند فایل بارگذاری کرده باشند در حلقه از دیو نگهدارنده ی فایل های بارگذاری شده میخوانیم
+    var messenger_attachFile = $("#showFileMessengerDiv_move .messenger_attachFile");
     for (var i = 0; i < messenger_attachFile.length; i++) {
         params += $(messenger_attachFile[i]).val() + ",";
     }

@@ -22,36 +22,49 @@
                         <div class="card-header bg-primary tx-white">
                             اطلاعات فاکتور
                         </div><!-- card-header -->
-                        <div class="card-body">
+                        <div class="card-body">                            
+                            <div class="row mg-t-20">
+                                <div class="col-lg-3">
+                                    وضعیت
+                                    <select class="form-control"  name="product_factor_statuse" id="product_factor_statuse" >
+                                        <option value="پرداخت نشده">پرداخت نشده</option>                                            
+                                        <option value="پرداخت شده">پرداخت شده</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="row mg-t-20">
                                 <input type="hidden" name="id" id="product_factor_id">
-                                <div class="col-lg-4">
+                                <div class="col-lg-3">
                                     درج توسط:
                                     <input class="form-control" type="hidden" name="product_factor_creator" id="product_factor_creator">
                                     <input class="form-control" type="text" id="product_factor_creatorName" disabled="disabled">
                                 </div>
-                                <div class="col-lg-4">
+                                <div class="col-lg-3">
                                     شماره سریال فاکتور:
                                     <input class="form-control" type="text" name="product_factor_serialNumber" id="product_factor_serialNumber">
                                 </div>
-                                <div class="col-lg-4">
-                                    تاریخ سر رسید:
-                                    <input class="form-control" type="text" name="product_factor_serialNumber" id="product_factor_serialNumber">
+                                <div class="col-lg-3">
+                                    تاریخ صدور:
+                                    <input class="form-control" type="text" name="product_factor_date" id="product_factor_date">
                                 </div>
-                                <div class="col-lg-4">
+                                <div class="col-lg-3">
+                                    تاریخ سر رسید:
+                                    <input class="form-control" type="text" name="product_factor_dueDate" id="product_factor_dueDate">
+                                </div>
+                                <div class="col-lg-3">
                                     نام شرکت
                                     <input class="form-control" type="text" name="product_factor_companyName" id="product_factor_companyName">
                                 </div>
-                                <div class="col-lg-4">
+                                <div class="col-lg-3">
                                     نام مشتری:
                                     <select id="product_factor_userId" name="product_factor_userId" class="form-control">                    
                                     </select>
                                 </div>
-                                <div class="col-lg-4">
+                                <div class="col-lg-3">
                                     کد ملی:
                                     <input class="form-control" type="text" name="product_factor_nationalCode" id="product_factor_nationalCode">
                                 </div>
-                                <div class="col-lg-4">
+                                <div class="col-lg-3">
                                     کد اقتصادی:
                                     <input class="form-control" type="text" name="product_factor_economicCode" id="product_factor_economicCode">
                                 </div>
@@ -95,31 +108,42 @@
 
                                     <div class="col-lg-3">
                                         قیمت اصلی
-                                        <input class="form-control" type="text" name="product_factor_item_originalPrice" id="product_factor_item_originalPrice1" />
+                                        <input class="form-control" type="number" name="product_factor_item_originalPrice" id="product_factor_item_originalPrice1" />
                                     </div>
                                     <div class="col-lg-3">
                                         درصد تخفیف
-                                        <input class="form-control" type="text" name="product_factor_item_discountPercent" id="product_factor_item_discountPercent1" onchange="cmsFactor.m_getProductPriceAfterDiscount();" />
+                                        <input class="form-control" type="number" name="product_factor_item_discountPercent" id="product_factor_item_discountPercent1" onchange="cmsFactor.m_getProductPriceAfterDiscount();" />
                                     </div>
                                     <div class="col-lg-3">
                                         قیمت بعد از تخفیف
-                                        <input class="form-control" type="text" name="product_factor_item_priceAfterDiscount" id="product_factor_item_priceAfterDiscount1" onchange="cmsFactor.m_getProductDiscountPercent();" />
+                                        <input class="form-control" type="number" name="product_factor_item_priceAfterDiscount" id="product_factor_item_priceAfterDiscount1" onchange="cmsFactor.m_getProductDiscountPercent();" />
                                     </div>
                                     <div class="col-lg-3">
                                         درصد ارزش افزوده
-                                        <input class="form-control" type="text" name="product_factor_item_percentageOfValueAdded" id="product_factor_item_percentageOfValueAdded1" >
+                                        <input class="form-control" type="number" name="product_factor_item_percentageOfValueAdded" id="product_factor_item_percentageOfValueAdded1" >
                                     </div>
                                     <div class="col-lg-3">
                                         میزان ارزش افزوده
-                                        <input class="form-control" type="text" name="product_factor_item_valueAdded" id="product_factor_item_valueAdded1" >
+                                        <input class="form-control" type="number" name="product_factor_item_valueAdded" id="product_factor_item_valueAdded1" >
                                     </div>
                                     <div class="col-lg-3">
                                         قیمت کل
-                                        <input class="form-control" type="text" name="product_factor_item_totalPrice" id="product_factor_item_totalPrice1" >
-                                    </div>                                    
+                                        <input class="form-control" type="number" name="product_factor_item_totalPrice" id="product_factor_item_totalPrice1" >
+                                    </div>                                                                        
+                                    <div class="col-lg-12">
+                                        <div class=""> پیوست فایل</div>
+                                        <div id="factor_attach_adminDiv" class="col-lg-12"></div>
+                                        <div>
+                                            <input class="form-control" id="factor_attach_title_admin" placeholder="فایل شما با این عنوان در سامانه ذخیره میشود" type="text" >
+                                            <input id="factor_attach" name="factor_attach" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file">
+                                            <input class="btn btn-primary" id="factor_attach_sendFilesAdmin" type="submit" value="ارسال">
+                                            <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">انتخاب فایل</span>
+                                        </div>
+                                        <!--<span class="form-control"></span>-->
+                                    </div> 
                                     <div class="col-lg-12">
                                         توضیحات
-                                        <textarea class="form-control" name="product_factor_item_discription" id="product_factor_item_discription1"></textarea>
+                                        <textarea class="form-control" name="product_factor_discription" id="product_factor_discription"></textarea>
                                     </div>
                                     <div class="col-lg-12" id="FactorItemButtonEdit">
                                         <button id='insert_ItemFactorInFactor_new' title='ثبت' class='btn btn-outline-success btn-block mg-t-10' onclick='cmsFactor.insertItemFactorInFactor();'>ثبت</button>
@@ -144,6 +168,20 @@
                                 </div>
                                 <div id="Factor_button_delete" class="col-lg-4">            
                                 </div>
+                            </div>
+                            <div class="row mg-t-20 bd-primary card-header" id='Installments'>
+                                <div class="col-lg-3">
+                                    کپی به تعداد (اقساط)
+                                    <input class="form-control form-control-lg" id="installementCount" name="installementCount" value="4" placeholder="تغداد اقساط را وارد کنید"/>                                        
+                                </div>
+                                <div class="col-lg-3">
+                                    فاصله ی اقساط (ماه)
+                                    <input class="form-control" type="text" name="installementPeriod" id="installementPeriod" value="1" placeholder="عدد به ماه وارد کنید">
+                                </div>                                
+                                <div class="col-lg-6">                                    
+                                    باید فرم ثبت شده باشد و در حالت ویرایش این گزینه فعال میشود
+                                    <button class="btn btn-outline-purple mg-b-10 btn-block" onclick="">کپی </button>                
+                                </div>                                
                             </div>
                         </div>
                     </div>

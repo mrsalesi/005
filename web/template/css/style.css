@@ -1,3 +1,14 @@
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
 #swOneFormToCompleteForm input{
     color: #ffffff;
 }
@@ -83,7 +94,7 @@ textarea:-moz-placeholder,textarea::-moz-placeholder,input:-moz-placeholder,inpu
 input:-ms-input-placeholder{color:#6a6a6a}
 textarea::-webkit-input-placeholder,input::-webkit-input-placeholder{color:#6a6a6a;opacity:1}
 .btn{background-image:none}
-textarea,input[type=text],input[type=submit],input[type=password],input[type=datetime],input[type=datetime-local],input[type=date],input[type=month],input[type=time],input[type=week],input[type=number],input[type=email],input[type=url],input[type=search],input[type=tel],input[type=color],.uneditable-input,.dropdown-menu,.navbar .nav>.active>a,.navbar .nav>.active>a:hover,.navbar .nav>.active>a:focus{-webkit-appearance:none;text-shadow:none;-webkit-box-shadow:none;-moz-box-shadow:none;-o-box-shadow:none;box-shadow:none;color:#000}
+textarea,input[type=text],input[type=submit],input[type=password],input[type=datetime],input[type=datetime-local],input[type=date],input[type=month],input[type=time],input[type=week],input[type=number],input[type=email],input[type=url],input[type=search],input[type=tel],input[type=color],.uneditable-input,.dropdown-menu,.navbar .nav>.active>a,.navbar .nav>.active>a:hover,.navbar .nav>.active>a:focus{text-shadow:none;-webkit-box-shadow:none;-moz-box-shadow:none;-o-box-shadow:none;box-shadow:none;color:#000}
 .blog-single .entry p{margin-bottom:30px}
 .blog-single blockquote{padding:30px 20px 38px 35px;border:1px solid #e5e5e5;-webkit-border-radius:2px;-moz-border-radius:2px;-o-border-radius:2px;border-radius:2px;position:relative;font-size:15px;font-style:italic;letter-spacing:1.5px}
 .blog-single blockquote::before{content:"''";position:absolute;top:22px;left:7px;color:#eab702;font-size:49px;font-weight:100;font-style:italic;z-index:1}

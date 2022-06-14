@@ -11,6 +11,7 @@ import cms.cms.Content;
 import cms.cms.Language;
 import java.io.*;
 import java.lang.reflect.*;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -110,7 +111,7 @@ public class Server extends HttpServlet {
             clazzes.add(Role.class);
             clazzes.add(Category_Product.class);
             ////////////shirn1 پیام     
-            clazzes.add(Messenger.class); 
+            clazzes.add(Messenger.class);
             clazzes.add(HMIS.Messenger.class);
             ///////////////////////////    shiran2      ماژول استراتژیک
 //            clazzes.add(Setting.class);//تنظیمات یادآوری
@@ -392,7 +393,10 @@ public class Server extends HttpServlet {
         return true;
     }
 
-    public static void main(String[] args) {
-        Server.sendEmail("shohreh.shiran@gmail.com", "shiran_shohreh@yahoo.com", "متن پیام", "<h1>سلام</h1><p>حضور بهم رسانید</p> ", true, null, db);
+    public static void main(String[] args) throws SQLException, Exception {
+//        Server.sendEmail("shohreh.shiran@gmail.com", "shiran_shohreh@yahoo.com", "متن پیام", "<h1>سلام</h1><p>حضور بهم رسانید</p> ", true, null, db);
+        Server.Connect();
+        jjDatabaseWeb db = Server.db;
+        sms.sendMessageByApi(null, db, "09133368036", "تست سلام  ", "", "","");
     }
 }

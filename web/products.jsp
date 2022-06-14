@@ -260,7 +260,7 @@
                                                                                                     <div class="textwidget">
                                                                                                         <ul class="footer-info">
                                                                                                             <li class="footer-home arrow"><a>صفحه اصلی</a></li>
-                                                                                                            <li class="footer-about arrow"><a>درباره ی ما</a></li>
+                                                                                                            <li class="footer-about arrow"><a>درباره ما</a></li>
                                                                                                             <li class="footer-Allproject arrow"><a>پروژه ها</a></li>
                                                                                                         </ul>
                                                                                                     </div>
