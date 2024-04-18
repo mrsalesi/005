@@ -10,7 +10,10 @@ import cms.tools.*;
 import static cms.tools.UploadServlet._logStatus;
 import static cms.tools.UploadServlet._status;
 import static cms.tools.UploadServlet.status_deleted;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.SQLException;
 import jj.*;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +21,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class Access_User {
 
@@ -203,8 +210,8 @@ public class Access_User {
     public static String setAttach(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean needString) throws Exception {
         try {
             String token = jjTools.getParameter(request, _token);
-            String fileName = jjTools.getParameter(request, _attachFile).toString();
-            Map<String, Object> map = new HashMap<String, Object>();
+            String fileName = jjTools.getParameter(request, _attachFile);
+            Map<String, Object> map = new HashMap<>();
             map.put(_attachFileUser, fileName);
             db.update(tableName, map, _token + "=" + token);
         } catch (Exception ex) {
@@ -220,8 +227,8 @@ public class Access_User {
     public static String setAttachPic(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean needString) throws Exception {
         try {
             String token = jjTools.getParameter(request, _token);
-            String fileName = jjTools.getParameter(request, _attachPicPersonal).toString();
-            Map<String, Object> map = new HashMap<String, Object>();
+            String fileName = jjTools.getParameter(request, _attachPicPersonal);
+            Map<String, Object> map = new HashMap<>();
             map.put(_attachPicPersonal, fileName);
             db.update(tableName, map, _token + "=" + token);
         } catch (Exception ex) {
@@ -285,7 +292,7 @@ public class Access_User {
 //                Server.outPrinter(request, response, errorMessage);
 //                return "";
 //            }
-            Map<String, Object> map = new HashMap<String, Object>();
+            Map<String, Object> map = new HashMap<>();
             map.put(_attachPicPersonal, jjTools.getParameter(request, _attachPicPersonal));
             map.put(_parent, jjTools.getSeassionUserId(request));
             map.put(_attachPicPersonnelCard, jjTools.getParameter(request, _attachPicPersonnelCard));
@@ -448,7 +455,7 @@ public class Access_User {
             List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, _id + "=" + id));
             String email = jjTools.getParameter(request, _email);
 
-            Map<String, Object> map = new HashMap<String, Object>();
+            Map<String, Object> map = new HashMap<>();
 
             map.put(_email, email.toLowerCase());
             map.put(_family, jjTools.getParameter(request, _family));
@@ -557,7 +564,7 @@ public class Access_User {
             List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, _id + "=" + id));
             String email = jjTools.getParameter(request, _email);
 
-            Map<String, Object> map = new HashMap<String, Object>();
+            Map<String, Object> map = new HashMap<>();
 
             map.put(_email, email.toLowerCase());
             map.put(_family, jjTools.getParameter(request, _family));
@@ -599,7 +606,7 @@ public class Access_User {
         try {
             String id = jjTools.getSessionAttribute(request, "#ID");
             String email = jjTools.getParameter(request, _email);
-            Map<String, Object> map = new HashMap<String, Object>();
+            Map<String, Object> map = new HashMap<>();
             map.put(_email, email.toLowerCase());
             map.put(_family, jjTools.getParameter(request, _family));
             map.put(_name, jjTools.getParameter(request, _name));
@@ -925,7 +932,7 @@ public class Access_User {
             attacheFiles = attacheFiles.replace(filename, "");
             System.out.println(attacheFiles);
 
-            Map<String, Object> map = new HashMap<String, Object>();
+            Map<String, Object> map = new HashMap<>();
             map.put(_attachFile, attacheFiles);
             System.out.println("____________________________________");
 
@@ -2023,7 +2030,7 @@ public class Access_User {
             //ایمیل یا شماره موبایل تکراری نباشد
             List<Map<String, Object>> userRow = jjDatabase.separateRow(db.Select(tableName, _email + "='" + email + "'"));
             if (userRow.isEmpty()) {
-                Map<String, Object> map = new HashMap<String, Object>();
+                Map<String, Object> map = new HashMap<>();
                 map.put(_email, email);
                 map.put(_name, jjTools.getParameter(request, _name).toLowerCase());
                 map.put(_family, jjTools.getParameter(request, _family).toLowerCase());
@@ -2196,7 +2203,7 @@ public class Access_User {
                 return "";
             }
 
-            Map<String, Object> map = new HashMap<String, Object>();
+            Map<String, Object> map = new HashMap<>();
             if (!jjTools.getParameter(request, _answer).isEmpty()) {
                 map.put(_answer, jjTools.getParameter(request, _answer));
             }
@@ -2590,7 +2597,7 @@ public class Access_User {
 
             List<Map<String, Object>> userRow = jjDatabase.separateRow(db.Select(tableName, _email + "='" + email + "'"));
             if (userRow.isEmpty()) {
-                Map<String, Object> map = new HashMap<String, Object>();
+                Map<String, Object> map = new HashMap<>();
                 map.put(_email, email);
                 map.put(_name, jjTools.getParameter(request, _name).toLowerCase());
                 map.put(_family, jjTools.getParameter(request, _family).toLowerCase());
@@ -2658,13 +2665,13 @@ public class Access_User {
         try {
             String reciversId = jjTools.getParameter(request, _id);
             List<Map<String, Object>> userRow = jjDatabaseWeb.separateRow(db.Select(Access_User.tableName, Access_User._id + "=" + reciversId));// پیام فقط برای کابران فعال میرود : ویژگی
-            String textMessage = " تعاونی مسکن کارکنان دادگستری اصفهان"
+            String textMessage = ""
                     + "<br/>"
                     + " شماره عضویت:" + " " + userRow.get(0).get(Access_User._int1).toString()
                     + "<br/>"
                     + " رمز عبور:" + " " + userRow.get(0).get(Access_User._pass).toString() + " "
                     + "<br/>"
-                    + "tmdke.ir";
+                    + Tice_config.getValue(db, "config_companyName");
             jjCalendar_IR date = new jjCalendar_IR();
             Messenger.sendMesseage(request, db, reciversId, "" + jjTools.getSeassionUserId(request) + "", "app,sms,email", String.valueOf(date.getDBFormat_8length()), "ارسال نام کاربری و رمز عبور", textMessage, "", "", "عادی", Tice_config.getValue(db, Tice_config._config_activeSms_name), Tice_config.getValue(db, Tice_config._config_activeEmail_name));
             Server.outPrinter(request, response, Js.modal("پیام با موفقیت ارسال شد", "ارسال پیام"));
@@ -2800,5 +2807,94 @@ public class Access_User {
             Server.outPrinter(request, response, Server.ErrorHandler(e));
             return "";
         }
+    }
+
+    public static void main(String[] args) throws SQLException, Exception {
+//        ثبت اعضای  فعال 
+        Server.Connect();
+        jjDatabaseWeb db = Server.db;
+//        sms.sendMessageByApi(null, db, "09133368036", "تست سلام  ", "", "", "");        
+        System.out.println("*******************inser_NewUsers****************************************");
+//obtaining input bytes from a file  
+        FileInputStream fis = new FileInputStream(new File("D:\\work\\customersProject\\tmkde.ir\\وبسایت\\وبسایت\\اعضا14021005.xlsx"));
+//creating workbook instance that refers to .xlsx file     
+        XSSFWorkbook workbook = new XSSFWorkbook(fis);
+//creating a Sheet object to retrieve the object  
+        XSSFSheet sheet = workbook.getSheetAt(0);
+        System.out.println("___________________Sheet_____________________");
+        System.out.println(sheet.getLastRowNum());
+        System.out.println("_____________________________________________");
+        DataFormatter formatter = new DataFormatter();
+        StringBuilder ok = new StringBuilder();
+        StringBuilder okOoofff = new StringBuilder();
+        int coutOk = 0;
+        int coutOkOoofff = 0;
+        int coutTekrariiii = 0;
+        for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+            Map<String, Object> map = new HashMap<>();
+            XSSFRow excelRow = sheet.getRow(i);
+//            System.out.println(i + "(" + formatter.formatCellValue(excelRow.getCell(12)) + ":" + formatter.formatCellValue(excelRow.getCell(44)) + ")");
+//            System.out.println(i + "[" + formatter.formatCellValue(excelRow.getCell(1)) + ":" + formatter.formatCellValue(excelRow.getCell(3)) + "]");
+//            System.out.println(formatter.formatCellValue(excelRow.getCell(0)));
+            if (jjNumber.isDigit(formatter.formatCellValue(excelRow.getCell(0)))) {
+
+                List<Map<String, Object>> userRowInDb = jjDatabaseWeb.separateRow(db.Select(tableName, _int1 + "='" + formatter.formatCellValue(excelRow.getCell(0)) + "'"));
+                if (userRowInDb.isEmpty()) {// اگر چنین کاربری وجود نداشت
+                    map.put(_id, formatter.formatCellValue(excelRow.getCell(0)).trim());
+                    map.put(_int1, formatter.formatCellValue(excelRow.getCell(0)).trim());//شماره عضویت
+                    map.put(_name, formatter.formatCellValue(excelRow.getCell(1)).trim());
+                    map.put(_family, formatter.formatCellValue(excelRow.getCell(2)).trim());
+                    map.put(_shomareShenasname, formatter.formatCellValue(excelRow.getCell(4)).trim());
+                    System.out.println(">>>>>>>>formatter.formatCellValue(excelRow.getCell(5)).replaceAll(\"/\", \"\").trim()>>>" + formatter.formatCellValue(excelRow.getCell(5)).replaceAll("/", "").trim());
+                    if (!formatter.formatCellValue(excelRow.getCell(5)).replaceAll("/", "").trim().isEmpty()) {
+                        map.put(_registDate, Integer.valueOf(formatter.formatCellValue(excelRow.getCell(5)).replaceAll("/", "").trim()));
+                    }
+                    map.put(_char2, formatter.formatCellValue(excelRow.getCell(6)).trim());//مبلغ حق عضویت
+                    map.put(_no1, formatter.formatCellValue(excelRow.getCell(7)).trim());//محل خدمت
+                    map.put(_no2, formatter.formatCellValue(excelRow.getCell(8)).trim());//وضعیت خدمت
+                    map.put(_char3, formatter.formatCellValue(excelRow.getCell(9)).trim());// تلفن ثابت
+                    map.put(_mobile, formatter.formatCellValue(excelRow.getCell(10)).trim());//همراه
+                    map.put(_studentNumber, formatter.formatCellValue(excelRow.getCell(11)).trim());//داخلی
+                    map.put(_jensiat, formatter.formatCellValue(excelRow.getCell(12)).equals("مرد") ? "آقای" : "خانم");
+                    map.put(_codeMeli, formatter.formatCellValue(excelRow.getCell(13)).trim());//شماره ملی
+                    map.put(_address, formatter.formatCellValue(excelRow.getCell(14)).trim());
+                    map.put(_question, formatter.formatCellValue(excelRow.getCell(15)).trim());//محل صدور
+                    map.put(_answer, formatter.formatCellValue(excelRow.getCell(16)).trim());//تاریخ صدور
+                    map.put(_weblog, formatter.formatCellValue(excelRow.getCell(17)).trim().equals(""));//شماره پرسنلی
+                    map.put(_int2, formatter.formatCellValue(excelRow.getCell(18)).trim());//شغل
+                    map.put(_postalCode, formatter.formatCellValue(excelRow.getCell(19)).trim());
+                    map.put(_password_hint, formatter.formatCellValue(excelRow.getCell(20)).trim());//ایثارگری
+                    if (!formatter.formatCellValue(excelRow.getCell(21)).replaceAll("/", "").trim().isEmpty()) {
+                        map.put(_birthdate, Integer.valueOf(formatter.formatCellValue(excelRow.getCell(21)).replaceAll("/", "").trim()));
+                    }
+                    map.put(_int3, formatter.formatCellValue(excelRow.getCell(22)).trim());//وضعیت پرونده
+                    map.put(_AccountInformation, formatter.formatCellValue(excelRow.getCell(23)).trim());//
+                    map.put(_grade, formatter.formatCellValue(excelRow.getCell(24))
+                            + "-" + formatter.formatCellValue(excelRow.getCell(25))
+                            + "-" + formatter.formatCellValue(excelRow.getCell(26)).trim());//کد و نام بانک و شعبه 
+                    map.put(_adminDescription, formatter.formatCellValue(excelRow.getCell(30)).trim());//توضیحات
+                    db.insert(Access_User.tableName, map);
+                    System.out.println("OK>>>>>>>" + "cell(0):" + formatter.formatCellValue(excelRow.getCell(0)).trim());
+                    ok.append("<<<OK\n" + formatter.formatCellValue(excelRow.getCell(0)).trim());
+                    coutOk++;
+                } else {
+                    System.out.println("Tekrariiii>>>>>>>" + "cell(0):" + formatter.formatCellValue(excelRow.getCell(0)).trim());
+//                    Tekrariiii.append("Tekrariiii>>>>>>>" + "cell(0):" + formatter.formatCellValue(excelRow.getCell(0)) + "\n");
+                    coutTekrariiii++;
+                }
+            }
+//            System.out.println("cell(0):" + formatter.formatCellValue(row.getCell(0)));//نام پابلیشر 
+//            System.out.println("cell(1):" + formatter.formatCellValue(row.getCell(1)));//نوع پابلیشر
+//            System.out.println("cell(12):" + formatter.formatCellValue(row.getCell(2)));//توضیحات 
+            System.out.println("___________________________________________________________________");
+        }
+//        System.out.println("groupId" + groupId + ")))))))))))))))))))))):sum OK:" + sum);
+        System.out.println("OK-----------------------------------------------------------------------------=" + coutOk);
+        System.out.println(ok);
+        System.out.println("OK_Move-----------------------------------------------------------------------------=" + coutOkOoofff);
+        System.out.println(okOoofff);
+       
+        System.out.println("Tekrariiiii-----------------------------------------------------------------------------=" + coutTekrariiii);
+        
     }
 }

@@ -225,16 +225,29 @@
                             <div id="sw">
                                 <div class="page-title parallax parallax1" style="background-position: 50% 7px;">
                                     <div class="overlay"></div>
+                                    <%
+                                        List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(News.tableName, News._id + "=" + idNews));
+                                        Map<String, Object> map = new HashMap<>();
+                                        int visit = Integer.parseInt(row.get(0).get(News._visit).toString()) + 1;
+                                        map.put(News._visit, visit);
+                                        jjCalendar_IR dateLable = new jjCalendar_IR(row.get(0).get(News._date).toString());
+                                        String month = dateLable.getMonthName();
+                                        int day = dateLable.getDay();
+                                        int year = dateLable.getYear();
+                                        db.update(News.tableName, map, News._id + "=" + idNews);
+                                        List<Map<String, Object>> rowComment = jjDatabaseWeb.separateRow(db.Select(Comment.tableName, Comment._refrenceId + " = " + row.get(0).get(News._id)));
+                                        List<Map<String, Object>> rowCategory = jjDatabase.separateRow(db.Select(News.tableName, News._category_id + "=" + row.get(0).get(News._category_id)));
+                                    %>
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="page-title-heading">
-                                                    <h1 class="title">اخبار و اطلاعیه های تعاونی مسکن کارکنان دادگستری اصفهان</h1>
+                                                    <h1 class="title">اخبار و اطلاعیه های تعاونی کارکنان دادگستری اصفهان</h1>
                                                 </div>
                                                 <div class="breadcrumbs">
                                                     <ul>
-                                                        <li><a href="index.jsp">صفحه اصلی</a></li>
-                                                        <li><a href="indexNews.jsp">اخبار</a></li>
+                                                        <li><a href="index.jsp">صفحه اصلی</a></li>                                                        
+                                                        <li><a href="indexNews.jsp"><%= row.get(0).get(News._category_id).toString().equals("3") ? "اطلاعیه ها" : "اخبار"%></a></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -246,20 +259,6 @@
                                         <div class="container">
                                             <div class="row">
                                                 <div class="col-md-8" id="swNews">
-                                                    <%
-                                                        List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(News.tableName, News._id + "=" + idNews));
-                                                        Map<String, Object> map = new HashMap<>();
-                                                        int visit = Integer.parseInt(row.get(0).get(News._visit).toString()) + 1;
-                                                        map.put(News._visit, visit);
-                                                        jjCalendar_IR dateLable = new jjCalendar_IR(row.get(0).get(News._date).toString());
-                                                        String month = dateLable.getMonthName();
-                                                        int day = dateLable.getDay();
-                                                        int year = dateLable.getYear();
-                                                        db.update(News.tableName, map, News._id + "=" + idNews);
-                                                        List<Map<String, Object>> rowComment = jjDatabaseWeb.separateRow(db.Select(Comment.tableName, Comment._refrenceId + " = " + row.get(0).get(News._id)));
-
-                                                        List<Map<String, Object>> rowCategory = jjDatabase.separateRow(db.Select(News.tableName, News._category_id + "=" + row.get(0).get(News._category_id)));
-                                                    %>
                                                     <div class="post-wrap">
                                                         <article class="post clearfix">
                                                             <div class="featured-post">
@@ -404,6 +403,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
                                     </section>
                                 </div>
                             </div>
@@ -597,14 +597,14 @@
                     <div id="site-off-canvas">
                         <span class="close"></span>
                         <div class="wrapper">
-<!--                            <div class="widget widget_search">
-                                <form role="search" method="get" class="search-form" action="#">
-                                    <label>
-                                        <input type="search" class="search-field" placeholder="جستجو" value="" name="s">
-                                    </label>
-                                    <input type="submit" class="search-submit" value="پیدا کردن">
-                                </form>
-                            </div>-->
+                            <!--                            <div class="widget widget_search">
+                                                            <form role="search" method="get" class="search-form" action="#">
+                                                                <label>
+                                                                    <input type="search" class="search-field" placeholder="جستجو" value="" name="s">
+                                                                </label>
+                                                                <input type="submit" class="search-submit" value="پیدا کردن">
+                                                            </form>
+                                                        </div>-->
                             <div id="nav_menu-2" class="widget widget-categories">
                                 <h4 class="widget-title">صفحات</h4>
                                 <ul>

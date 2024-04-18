@@ -1,0 +1,11 @@
+ALTER TABLE `db_taavoni`.`access_user` MODIFY COLUMN `user_weblog` VARCHAR(20);
+ALTER TABLE `db_taavoni`.`access_user` MODIFY COLUMN `user_password_hint` VARCHAR(150);
+ALTER TABLE `db_taavoni`.`access_user` MODIFY COLUMN `user_int2` VARCHAR(40) CHARACTER SET utf8 COLLATE utf8_general_ci,
+ MODIFY COLUMN `user_int3` VARCHAR(40) CHARACTER SET utf8 COLLATE utf8_general_ci,
+ MODIFY COLUMN `user_password_hint` VARCHAR(50),
+ MODIFY COLUMN `user_address` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci;
+ 
+ 
+ update  `db_taavoni`.`access_user` set user_email=user_codeMeli where id>3;
+
+

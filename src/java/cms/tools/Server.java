@@ -5,13 +5,10 @@ import cms.cms.*;
 //import cms.cms.Product;
 import cms.access.*;
 import HMIS.*;
-import HMIS.PlansForAssess;
 import HMIS.Upload;
-import cms.cms.Content;
 import cms.cms.Language;
 import java.io.*;
 import java.lang.reflect.*;
-import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,17 +21,16 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import javax.swing.table.DefaultTableModel;
 import jj.jjCalendar_IR;
 import jj.jjDatabaseWeb;
 
 public class Server extends HttpServlet {
 
-    public static String mainSite = "http://188.136.136.71/LAS/";
+    public static String mainSite = "https://www.tkd-esf.ir";
     public static String portalPage = "";
 //    public static String databaseName = "db_ershad";
     public static String databaseName = "db_taavoni";
-    public static String serverIp = "http://188.136.136.71/LAS/";
+    public static String serverIp = "https://www.tkd-esf.ir";
     public static String userName = "root";
     public static String password = "m123456";
 //    public static String userName = "root";
@@ -44,7 +40,7 @@ public class Server extends HttpServlet {
     public static String defaultLang = "1"; // fa
     public static String smsKey = "0";
     public static String smsPanelNumber = "0";
-    public static String siteName = "http://188.136.136.71/LAS";// callback url
+    public static String siteName = "https://www.tkd-esf.ir";// callback url
     public static String emailAccount = "ebrahemimorteza@gmail.com";
     public static String passEmail = "sepahan901614003";
     public static String smtpAcount = "smtp.gmail.com";
@@ -57,8 +53,8 @@ public class Server extends HttpServlet {
     //********************************************************************
 
     public static jjDatabaseWeb db;
-    public static final String port = "3306";
-//    public static final String port = "3307";
+//    public static final String port = "3306";
+    public static final String port = "3307";
     public static final String serverHostIP = "localhost";
     public static boolean pollNeedLogin = false;
     public static boolean pollShowAfterVote = true;
@@ -391,12 +387,5 @@ public class Server extends HttpServlet {
 
         ServerLog.Print("");
         return true;
-    }
-
-    public static void main(String[] args) throws SQLException, Exception {
-//        Server.sendEmail("shohreh.shiran@gmail.com", "shiran_shohreh@yahoo.com", "متن پیام", "<h1>سلام</h1><p>حضور بهم رسانید</p> ", true, null, db);
-        Server.Connect();
-        jjDatabaseWeb db = Server.db;
-        sms.sendMessageByApi(null, db, "09133368036", "تست سلام  ", "", "","");
     }
 }

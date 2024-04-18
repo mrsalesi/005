@@ -469,9 +469,9 @@ public class sms {
 
     public static String sendMessageByApi(HttpServletRequest request, jjDatabaseWeb db, String receptor, String message, String date, String type, String localid) throws IOException, SQLException, Exception {
         try {
-            String apiKey = Tice_config.getValue(db, Tice_config._config_apiKey_sms_name);
-            String sender = Tice_config.getValue(db, Tice_config._config_smsNumber_name);
-            URL url = new URL("https://api.kavenegar.com/v1/" + apiKey + "/sms/send.json?receptor=" + receptor + "&sender="+sender+"&message=" + URLEncoder.encode(message, "UTF-8") + ""
+            String apiKeyInDb = Tice_config.getValue(db, Tice_config._config_apiKey_sms_name);
+            String senderInDb = Tice_config.getValue(db, Tice_config._config_smsNumber_name);
+            URL url = new URL("https://api.kavenegar.com/v1/" + apiKeyInDb + "/sms/send.json?receptor=" + receptor + "&sender="+senderInDb+"&message=" + URLEncoder.encode(message, "UTF-8") + ""
             );// 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 //خط بالا با استفاده از اچ تی تی پی یو ار ال کانکشن می توان صفخه وب را باز کرد و اطلاعات ان را داخل کانکشن بریزیم  

@@ -129,10 +129,10 @@ public class Messenger {
 //                if (accDel) {
 //                }
                 if (row.get(i).get(_status).toString().equals(status_displayed)) {
-                    html.append("<td class='c mousePointer' style='text-align: center;' onclick='hmisMessenger.alert()' ><img src='template/delet.png' style='height:30px;margin:auto'/></td>");
+                    html.append("<td class='c mousePointer' style='text-align: center;' onclick='hmisMessenger.alert()' ><i class='p icon fa fa-trash'></i></td>");
 //                    return Js.modal("امکان حذف برای شما وجود ندارد", "پیام سامانه");
                 } else {
-                    html.append("<td class='c mousePointer' style='text-align: center;' onclick='hmisMessenger.m_delete(" + row.get(i).get(_id) + ");'><img src='template/delet.png' style='height:30px;margin:auto'/></td>");
+                    html.append("<td class='c mousePointer' style='text-align: center;' onclick='hmisMessenger.m_delete(" + row.get(i).get(_id) + ");'><i class='p icon fa fa-trash'></i></td>");
                 }
                 html.append("</tr>");
             }
@@ -402,13 +402,13 @@ public class Messenger {
                 html.append("<td style='text-align:center' class='r'>" + (row.get(i).get(_textMessage).toString()) + "</td>");
                 html.append("<td style='text-align:center' class='r'>" + (row.get(i).get(_status).toString()) + "</td>");
 
-                html.append("<td class='' style='text-align: center;' onclick='hmisMessages.m_select(" + row.get(i).get(_id) + ");'><img src='template/contract.png' style='height:30px;margin:auto'/></td>");
+                html.append("<td class='' style='text-align: center;' onclick='hmisMessages.m_select(" + row.get(i).get(_id) + ");'><i class='p icon ion-ios-gear'></i></td>");
                 if (accDel) {
                     if (row.get(i).get(_status).toString().equals(status_displayed)) {
-                        html.append("<td class='c mousePointer' style='text-align: center;' onclick='hmisMessenger.alert()' ><img src='template/delet.png' style='height:30px;margin:auto'/></td>");
+                        html.append("<td class='c mousePointer' style='text-align: center;' onclick='hmisMessenger.alert()' ><i class='p icon fa fa-trash'></i></td>");
 
                     } else {
-                        html.append("<td class='c mousePointer' style='text-align: center;' onclick='hmisMessages.m_delete(" + row.get(i).get(_id) + ");'><img src='template/delet.png' style='height:30px;margin:auto'/></td>");
+                        html.append("<td class='c mousePointer' style='text-align: center;' onclick='hmisMessages.m_delete(" + row.get(i).get(_id) + ");'><i class='p icon fa fa-trash'></i></td>");
                     }
                 }
                 html.append("</tr>");
@@ -477,13 +477,13 @@ public class Messenger {
                 html.append("<td style='text-align:center' class='r'>" + (row.get(i).get(_textMessage).toString()) + "</td>");
                 html.append("<td style='text-align:center' class='r'>" + (row.get(i).get(_status).toString()) + "</td>");
 
-                html.append("<td class='' style='text-align: center;' onclick='hmisMessages.m_select(" + row.get(i).get(_id) + ");'><img src='template/contract.png' style='height:30px;margin:auto'/></td>");
+                html.append("<td class='' style='text-align: center;' onclick='hmisMessages.m_select(" + row.get(i).get(_id) + ");'><i class='p icon ion-ios-gear'></i></td>");
                 if (accDel) {
                     if (row.get(i).get(_status).toString().equals(status_displayed)) {
-                        html.append("<td class='c mousePointer' style='text-align: center;' onclick='hmisMessenger.alert()' ><img src='template/delet.png' style='height:30px;margin:auto'/></td>");
+                        html.append("<td class='c mousePointer' style='text-align: center;' onclick='hmisMessenger.alert()' ><i class='p icon fa fa-trash'></i></td>");
 
                     } else {
-                        html.append("<td class='c mousePointer' style='text-align: center;' onclick='hmisMessages.m_delete(" + row.get(i).get(_id) + ");'><img src='template/delet.png' style='height:30px;margin:auto'/></td>");
+                        html.append("<td class='c mousePointer' style='text-align: center;' onclick='hmisMessages.m_delete(" + row.get(i).get(_id) + ");'><i class='p icon fa fa-trash'></i></td>");
                     }
                 }
                 html.append("</tr>");
@@ -513,12 +513,13 @@ public class Messenger {
 
     public static String refreshSentMessages(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
         try {
-            int id = jjTools.getSeassionUserId(request);
-//            if (!hasAccess.equals("")) {
-//                return hasAccess;
-//            }
+            if (!Access_User.hasAccess(request, db, rul_rfs)) {
+                Server.outPrinter(request, response, "شما مجوز دسترسی به این قسمت را ندارید");
+                return "";
+            }
             StringBuilder html = new StringBuilder();
-            List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(Messenger.tableName, _sender + "=" + jjTools.getSeassionUserId(request) + " AND ( " + _status + "='" + status_posted + "' OR " + _status + "='" + status_postQueue + "' )"));
+            List<Map<String, Object>> row = jjDatabase.separateRow(db.otherSelect("SELECT u.user_name, u.user_family,m.* FROM hmis_messenger m"
+                    + " LEFT JOIN access_user u on m.messenger_receiver = u.id WHERE " + _status + "='" + status_posted + "' AND " + _sender + "=" + jjTools.getSeassionUserId(request)));
             StringBuilder html3 = new StringBuilder();
             if (Access_User.hasAccess(request, db, rul_ins)) {
                 html.append(" <div class='card-header bg-primary tx-white'>پیام های ارسالی</div>"
@@ -532,7 +533,6 @@ public class Messenger {
                         + "</a>"
                 //                        + "</div>"  
                 );
-
                 html.append(""
                         //                        + "<div class='col-lg-12  mg-t-20'>"
                         + " <p class=\"mg-b-20 mg-sm-b-30\">\n"
@@ -545,6 +545,7 @@ public class Messenger {
             html.append("<table class='table display responsive' id='refreshSentMessages' dir='rtl'><thead>");
             html.append("<th width='5%' style='text-align:center'>کد</th>");
             html.append("<th width='10%' style='text-align:center'>ارسال در</th>");
+            html.append("<th width='15%' style='text-align:center'>گیرنده</th>");
             html.append("<th width='15%' style='text-align:center'>متن پیام</th>");
             html.append("<th width='15%' style='text-align:center'>وضعیت پیام</th>");
             html.append("<th width='5%' style='text-align:center'>عملیات</th>");
@@ -557,14 +558,15 @@ public class Messenger {
                 html.append("<tr class='mousePointer" + " " + getClassCssForStatus((row.get(i).get(_status).toString())) + "'>");
                 html.append("<td style='text-align:center' class='mousePointer" + " " + getClassCssForStatus((row.get(i).get(_status).toString())) + "'>" + (row.get(i).get(_id).toString()) + "</td>");
                 html.append("<td style='text-align:center' class='c'>" + jjCalendar_IR.getViewFormat(row.get(i).get(_postageDate)) + "</td>");
+                html.append("<td style='text-align:center' class='r'>" + row.get(i).get("user_name") + " " + row.get(i).get("user_family").toString() + "</td>");
                 html.append("<td style='text-align:center' class='r'>" + (row.get(i).get(_textMessage).toString()) + "</td>");
                 html.append("<td style='text-align:center' class='r'>" + (row.get(i).get(_status).toString()) + "</td>");
-                html.append("<td class='' style='text-align: center;' onclick='hmisSentMessages.m_select(" + row.get(i).get(_id) + ");'><img src='template/contract.png' style='height:30px;margin:auto'/></td>");
+                html.append("<td class='' style='text-align: center;' onclick='hmisSentMessages.m_select(" + row.get(i).get(_id) + ");'><i class='p icon ion-ios-gear'></i></td>");
                 if (accDel) {
                     if (row.get(i).get(_status).toString().equals(status_postQueue)) {// اگر در صف ارسال بود بشود حذف کرد
-                        html.append("<td class='c mousePointer' style='text-align: center;' onclick='hmisSentMessages.m_delete(" + row.get(i).get(_id) + ");'><img src='template/delet.png' style='height:30px;margin:auto'/></td>");
+                        html.append("<td class='c mousePointer' style='text-align: center;' onclick='hmisSentMessages.m_delete(" + row.get(i).get(_id) + ");'><i class='p icon fa fa-trash'></i></td>");
                     } else {
-                        html.append("<td class='c mousePointer' style='text-align: center;' onclick='hmisMessenger.alert()' ><img src='template/delet.png' style='height:30px;margin:auto'/></td>");
+                        html.append("<td class='c mousePointer' style='text-align: center;' onclick='hmisMessenger.alert()' ><i class='p icon fa fa-trash'></i></td>");
                     }
                 }
                 html.append("</tr>");
@@ -594,9 +596,14 @@ public class Messenger {
 
     public static String refreshRecivedMessages(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
         try {
+            if (!Access_User.hasAccess(request, db, rul_rfs)) {
+                Server.outPrinter(request, response, "شما مجوز دسترسی به این قسمت را ندارید");
+                return "";
+            }
             int id = jjTools.getSeassionUserId(request);
             StringBuilder html = new StringBuilder();
-            List<Map<String, Object>> row = jjDatabase.separateRow(db.Select(tableName, _status + "='" + status_posted + "' AND " + _receiver + "=" + jjTools.getSeassionUserId(request)));
+            List<Map<String, Object>> row = jjDatabase.separateRow(db.otherSelect("SELECT u.user_name, u.user_family,m.* FROM hmis_messenger m"
+                    + " LEFT JOIN access_user u on m.messenger_sender = u.id WHERE " + _status + "='" + status_posted + "' AND " + _receiver + "=" + jjTools.getSeassionUserId(request)));
             StringBuilder html3 = new StringBuilder();
             html.append(" <div class='card bd-primary mg-t-20'>"
                     + "    <div class='card-header bg-primary tx-white'>پیام های دریافتی</div>"
@@ -609,7 +616,7 @@ public class Messenger {
             html.append("<table id='refreshRecivedMessages' class='table table-striped table-hover dt-responsive display ' cellspacing='0' style='direction: rtl;'><thead>");
             html.append("<th width='5%' style='text-align:center'>کد</th>");
             html.append("<th width='30%' style='text-align:center'>ارسال در</th>");
-            html.append("<th width='30%' style='text-align:center'> گیرنده و فرستنده</th>");
+            html.append("<th width='30%' style='text-align:center'>فرستنده</th>");
             html.append("<th width='15%' style='text-align:center'>متن پیام</th>");
             html.append("<th width='15%' style='text-align:center'>وضعیت پیام</th>");
             html.append("<th width='5%' style='text-align:center'>عملیات</th>");
@@ -622,12 +629,12 @@ public class Messenger {
                 html.append("<tr class='mousePointer" + " " + getClassCssForStatus((row.get(i).get(_status).toString())) + "'>");
                 html.append("<td style='text-align:center' class='mousePointer" + " " + getClassCssForStatus((row.get(i).get(_status).toString())) + "'>" + (row.get(i).get(_id).toString()) + "</td>");
                 html.append("<td style='text-align:center' class='c'>" + jjCalendar_IR.getViewFormat(row.get(i).get(_postageDate)) + "</td>");
-                html.append("<td style='text-align:center' class='c'>" + Access_User.getUserName(row.get(i).get(_receiver).toString(), db) + "," + Access_User.getUserName(row.get(i).get(_sender).toString(), db) + "</td>");
+                html.append("<td style='text-align:center' class='c'>" + row.get(i).get("user_name") + " " + row.get(i).get("user_family").toString() + "</td>");
                 html.append("<td style='text-align:center' class='r'>" + (row.get(i).get(_textMessage).toString()) + "</td>");
                 html.append("<td style='text-align:center' class='r'>" + (row.get(i).get(_status).toString()) + "</td>");
-                html.append("<td class='' style='text-align: center;' onclick='hmisRecivedMessages.m_select(" + row.get(i).get(_id) + ");'><img src='template/contract.png' style='height:30px;margin:auto'/></td>");
+                html.append("<td class='' style='text-align: center;' onclick='hmisRecivedMessages.m_select(" + row.get(i).get(_id) + ");'><i class='p icon ion-ios-gear'></i></td>");
                 if (accDel) {
-                    html.append("<td class='c mousePointer' style='text-align: center;' onclick='hmisRecivedMessages.m_delete(" + row.get(i).get(_id) + ");'><img src='template/delet.png' style='height:30px;margin:auto'/></td>");
+                    html.append("<td class='c mousePointer' style='text-align: center;' onclick='hmisRecivedMessages.m_delete(" + row.get(i).get(_id) + ");'><i class='p icon fa fa-trash'></i></td>");
                 }
                 html.append("</tr>");
             }
@@ -1042,7 +1049,7 @@ public class Messenger {
                 return "";
             }
             jjCalendar_IR date = new jjCalendar_IR();
-            Map<String, Object> map = new HashMap<String, Object>();
+            Map<String, Object> map = new HashMap<>();
             map.put(_sender, jjTools.getSeassionUserId(request));
             map.put(_title, jjTools.getParameter(request, _title));
             map.put(_textMessage, jjTools.getParameter(request, _textMessage));
@@ -1736,7 +1743,7 @@ public class Messenger {
                         + "						foreground: true,"
                         + "                                             data:{script:'hmisMyMessages.m_refresh();'}"
                         + "					});");
-                Map<String, Object> map = new HashMap<String, Object>();
+                Map<String, Object> map = new HashMap<>();
                 map.put(_notificationFlag, 1);
                 db.update(tableName, map, _id + "=" + row.get(i).get(_id));
             }
@@ -1783,7 +1790,7 @@ public class Messenger {
                         + "						foreground: true,"
                         + "                                             data:{script:'hmisMyMessages.m_refresh();'}"
                         + "					});");
-                Map<String, Object> map = new HashMap<String, Object>();
+                Map<String, Object> map = new HashMap<>();
                 map.put(_notificationFlag, 1);
                 db.update(tableName, map, _id + "=" + row.get(i).get(_id));
             }
@@ -1818,7 +1825,7 @@ public class Messenger {
                         + "						foreground: true,"
                         + "                                             data:{script:'$(\".Alldiv\").hide();$(\"#swMyMessages\").show();hmisMyMessages.loadForm();hmisMyMessages.m_selectNotification(notification.id);'}"
                         + "					});");
-                Map<String, Object> map = new HashMap<String, Object>();
+                Map<String, Object> map = new HashMap<>();
                 map.put(_notificationFlag, 1);
                 db.update(tableName, map, _id + "=" + row.get(i).get(_id));
             }
@@ -2078,7 +2085,7 @@ public class Messenger {
                     //@ToDo  //کی از فایل ها اشتباها از سامانه حذف شده
                 }
             }
-            Map<String, Object> map = new HashMap<String, Object>();
+            Map<String, Object> map = new HashMap<>();
             map.put(_title, jjTools.getParameter(request, _title));
             map.put(_textMessage, jjTools.getParameter(request, _textMessage));
             map.put(_receiver, jjTools.getParameter(request, _receiver));
@@ -2164,7 +2171,9 @@ public class Messenger {
                 List<Map<String, Object>> userRow = jjDatabaseWeb.separateRow(db.Select(Access_User.tableName, Access_User._id + "=" + receiverMessageArray[j] + " AND " + Access_User._isActive + "=1"));// پیام فقط برای کابران فعال میرود : ویژگی
                 if (userRow.size() == 1) {// اگر چنین کاربری وجود داشت
                     if (jjNumber.isDigit(receiverMessageArray[j])) {// اگر آی دی داده شده عدد بود
-                        textMessage = userRow.get(0).get(Access_User._jensiat).toString() + " " + userRow.get(0).get(Access_User._name).toString() + " "
+                        textMessage
+                                = //                                userRow.get(0).get(Access_User._jensiat).toString() + " " +
+                                userRow.get(0).get(Access_User._name).toString() + " "
                                 + userRow.get(0).get(Access_User._family).toString() + " " + textMessage;
                         if (type.contains("مشاوره")) {
                             int i = 1;
@@ -2288,7 +2297,7 @@ public class Messenger {
      */
     public static String sendMesseageToSignatory(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws IOException {
         try {
-            Map<String, Object> map = new HashMap<String, Object>();
+            Map<String, Object> map = new HashMap<>();
             String userId = request.getParameter("userId");///ای دی یوزر
             String IdDocumentary = request.getParameter("IdDocumentary");//عنوان مستند
             String titleSign = request.getParameter("titleSign");//عنوان امضا کننده را به صورت جی اس دریافت میکنیم
@@ -2450,8 +2459,8 @@ public class Messenger {
      * @throws Exception
      */
     public static String insertChat(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws Exception {
-        try {
-            Map<String, Object> map = new HashMap<String, Object>();
+        try {       
+            Map<String, Object> map = new HashMap<>();
             map.put(_sender, jjTools.getSeassionUserId(request));
             map.put(_title, jjTools.getParameter(request, _title));
             map.put(_textMessage, jjTools.getParameter(request, _textMessage));

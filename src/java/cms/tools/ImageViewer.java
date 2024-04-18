@@ -58,8 +58,8 @@ public class ImageViewer extends HttpServlet {
         String[] contxtPath = request.getServletContext().getRealPath("/").split(pattern);
         ////به علت صحیح نبودن مسیر اپلود تغییر یافت
         String safePath = "";
-        for (int i = 0; i < contxtPath.length - 1; i++) {//in localhost for debug 
-//        for (int i = 0; i < contxtPath.length - 2; i++) {//return 2 folder up(parent of parent)
+//        for (int i = 0; i < contxtPath.length - 1; i++) {//in localhost for debug 
+        for (int i = 0; i < contxtPath.length - 2; i++) {//return 2 folder up(parent of parent)
             safePath += contxtPath[i] + System.getProperty("file.separator");
         }
         System.out.println(">>>>>: " + safePath);
@@ -108,6 +108,7 @@ public class ImageViewer extends HttpServlet {
         response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
         response.setHeader("Cache-Control", "public, max-age=604800"); // HTTP 1.1.        
         response.setDateHeader("Expires", 10000); // Proxies.
+        response.setHeader("Pragma", "private");
 
         ServletOutputStream os = response.getOutputStream();
         byte[] bufferData = new byte[1024];

@@ -50,8 +50,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
-        <title>تعاونی مسکن کارکنان دادگستری اصفهان</title>
-        <meta  name="discription" content="سایت اطلاع رسانی  آگهی فروش امتیاز ها و پنل اعضای تعاونی مسکن کارکنان دادگستری اصفهان" />        
+        <title>تعاونی کارکنان دادگستری اصفهان</title>
+        <meta  name="discription" content="سایت اطلاع رسانی  آگهی فروش امتیاز ها و پنل اعضای تعاونی کارکنان دادگستری اصفهان" />        
         <meta  name="author" content="شرکت پژوهشگران سیستم های هوشمند سپانو" />        
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <meta name="enamad" content="403829" />
@@ -177,7 +177,7 @@
                                                         <div class="container">
                                                             <%
                                                                 List<Map<String, Object>> row10 = jjDatabase.separateRow(db.Select(Category_Content.tableName, Category_Content._parent + "=39"));
-                                                                for (int o = 0;o < row10.size();o++) {
+                                                                for (int o = 0; o < row10.size(); o++) {
                                                             %>
                                                             <div class="col-md-4">
                                                                 <h2 style="text-align: right"><%=row10.get(o).get(Category_Content._title)%></h2>
@@ -323,7 +323,15 @@
                                 <%
                                     StringBuilder htmlNews = new StringBuilder();
                                     StringBuilder htmlNews2 = new StringBuilder();
-                                    List<Map<String, Object>> journalNews = jjDatabase.separateRow(db.Select(News.tableName, News._category_id + "=2  order by " + News._date));
+                                    List<Map<String, Object>> journalNews = jjDatabase.separateRow(db.Select(News.tableName, News._category_id + "=2 "
+                                            + "AND (" //فقط اخبار عمومی را بیاورد
+                                            + News._privateGroupId + " LIKE '%,0,%'"
+                                            + " OR "+ News._privateGroupId + " LIKE '%,ALL,%'"
+                                            + " OR "+ News._privateGroupId + " LIKE '0,0,%'"
+                                            + " OR "+  News._privateGroupId + " = '0,0'"
+                                            + " OR "+  News._privateGroupId + " = '' "
+                                            + " OR "+  News._privateGroupId + " IS null "
+                                            + ")  order by " + News._date));
                                     int h = 0;
                                     int count = 0;
 
@@ -460,7 +468,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flat-portfolio v4">
+                        <div class="flat-portfolio v4" >
                             <div class="portfolio-wrap clearfix">
                                 <div class="item All"  col-md-3 col-sm-12"  >
                                     <div class="flat-iconbox-carosuel-wrap">
@@ -493,13 +501,11 @@
                                     </div> 
                                 </div>
                                 <%
-                                    for (int j = 0;
-                                            rowCategouries.size()
-                                            > j; j++) {
+                                    for (int j = 0;rowCategouries.size()> j; j++) {
                                         List<Map<String, Object>> row2 = jjDatabase.separateRow(db.Select(Content.tableName, Content._category_id + "=" + rowCategouries.get(j).get(Category_Content._id)));
-                                        for (int b = 0; row2.size() > b; b++) {
+                                        for (int b = 0; row2.size()>b; b++) {
                                 %>
-                                <div class="item categouryId<%=j%> col-md-3 col-sm-6"  >
+                                <div class="item categouryId<%=j%> col-md-3 col-sm-6" style="display: none;" >
                                     <div class="iconbox-item">
                                         <div class="iconbox left style2" style="width: 100%;height: 300px;">
                                             <img src="upload/<%=row2.get(b).get(Content._pic)%>" alt="<%=row2.get(b).get(Content._title).toString().replaceAll("\"", "")%>" >
@@ -622,6 +628,7 @@
                                 <div class="textwidget">
                                     <ul class="">
                                         <li class="footer-home">تعاون برای کار شایسته
+                                                <a referrerpolicy="origin" target="_blank" href="https://trustseal.enamad.ir/?id=453628&amp;Code=GSebcucHWNlbCybNuHSojXFMCmUvdBKa" style="display: block;width: 10em;height: 15em;"><img referrerpolicy="origin" src="https://trustseal.enamad.ir/logo.aspx?id=453628&amp;Code=GSebcucHWNlbCybNuHSojXFMCmUvdBKa" alt="" style="cursor:pointer" code="GSebcucHWNlbCybNuHSojXFMCmUvdBKa"></a>                                            
                                         </li>
                                         <li class="footer-home">
                                             <a referrerpolicy="origin" target="_blank" href="https://trustseal.enamad.ir/?id=280314&amp;Code=Bb84FU0uCGo95feHpAfY">
@@ -643,103 +650,17 @@
             </div>
         </footer>
         <!--end footer-->
-        <div class="switcher-container">
-            <h2>
-                انتخاب رنگ<a class="sw-click">
-                    <i class="fa fa-cog">
-                    </i>
-                </a>
-            </h2>
-            <div class="selector-box">
-                <div class="clearfix">
-                </div>
-                <div class="sw-odd">
-                    <h3>
-                        انتخاب رنگ</h3>
-                    <div class="ws-colors">
-                        <a href="#color1" class="styleswitch current" id="color1">
-                            &nbsp;<span class="cl1">
-                            </span>
-                        </a>
-                        <a href="#color2" class="styleswitch" id="color2">
-                            &nbsp;<span class="cl2">
-                            </span>
-                        </a>
-                        <a href="#color3" class="styleswitch" id="color3">
-                            &nbsp;<span class="cl3">
-                            </span>
-                        </a>
-                        <a href="#color4" class="styleswitch" id="color4">
-                            &nbsp;<span class="cl4">
-                            </span>
-                        </a>
-                        <a href="#color5" class="styleswitch" id="color5">
-                            &nbsp;<span class="cl5">
-                            </span>
-                        </a>
-                        <a href="#color6" class="styleswitch" id="color6">
-                            &nbsp;<span class="cl6">
-                            </span>
-                        </a>
-                    </div>
-                </div>
-                <div class="sw-even">
-                    <h3>
-                        لایه بندی:</h3>
-                    <a  class="sw-light">
-                        حاشیه</a>
-                    <a  class="sw-dark">
-                        کامل</a>
-                </div>
-                <div class="sw-pattern pattern">
-                    <h3>
-                        پس زمینه:</h3>
-                    <a  class="sw-pattern" data-image="template/img/1.png">
-                        <img src="template/img/1.png" alt="image">
-                    </a>
-                    <a  class="sw-pattern" data-image="template/img/2.png">
-                        <img src="template/img/2.png" alt="image">
-                    </a>
-                    <a  class="sw-pattern" data-image="template/img/3.png">
-                        <img src="template/img/3.png" alt="image">
-                    </a>
-                    <a  class="sw-pattern" data-image="template/img/4.png">
-                        <img src="template/img/4.png" alt="image">
-                    </a>
-                    <a  class="sw-pattern" data-image="template/img/5.png">
-                        <img src="template/img/5.png" alt="image">
-                    </a>
-                    <a  class="sw-pattern" data-image="template/img/6.png">
-                        <img src="template/img/6.png" alt="image">
-                    </a>
-                    <a  class="sw-pattern" data-image="template/img/7.png">
-                        <img src="template/img/7.png" alt="image">
-                    </a>
-                    <a  class="sw-pattern" data-image="template/img/8.png">
-                        <img src="template/img/8.png" alt="image">
-                    </a>
-                    <a  class="sw-pattern" data-image="template/img/9.png">
-                        <img src="template/img/9.png" alt="image">
-                    </a>
-                    <a  class="sw-pattern" data-image="template/img/10.png">
-                        <img src="template/img/10.png" alt="image">
-                    </a>
-                </div>
-                <div class="clearfix">
-                </div>
-            </div>
-        </div>
         <div id="site-off-canvas">
             <span class="close"></span>
             <div class="wrapper">
-<!--                <div class="widget widget_search">
-                    <form role="search" method="get" class="search-form" action="#">
-                        <label>
-                            <input type="search" class="search-field" placeholder="جستجو" value="" name="s">
-                        </label>
-                        <input type="submit" class="search-submit" value="پیدا کردن">
-                    </form>
-                </div>-->
+                <!--                <div class="widget widget_search">
+                                    <form role="search" method="get" class="search-form" action="#">
+                                        <label>
+                                            <input type="search" class="search-field" placeholder="جستجو" value="" name="s">
+                                        </label>
+                                        <input type="submit" class="search-submit" value="پیدا کردن">
+                                    </form>
+                                </div>-->
                 <div id="nav_menu-2" class="widget widget-categories">
                     <h4 class="widget-title">صفحات</h4>
                     <ul>
@@ -778,14 +699,14 @@
         <script src="template/js/js.js" type="text/javascript"></script>
         <script src="template/js/gmap3.min.js" type="text/javascript"></script>
         <script src="template/js/main.js" type="text/javascript"></script>
-        <script src="template/js/jquery.themepunch.tools.min.js" type="text/javascript"></script>
         <script src="template/js/jquery.themepunch.revolution.min.js" type="text/javascript"></script>
+        <script src="template/js/jquery.themepunch.tools.min.js" type="text/javascript"></script>
         <script src="template/js/slider.js" type="text/javascript"></script> 
         <script src="template/js/util.js" type="text/javascript"></script>
-        <script src='template/js/owl.carousel.js' type='text/javascript'></script>
         <script src="jsCms/comment.js" type="text/javascript"></script>
+        <script src='template/js/owl.carousel.js' type='text/javascript'></script>
         <script>
-                            $(document).ready(function () {
+                            $(document).ready(function () {//
                                 var showChar = 100;
                                 var ellipsestext = "...";
                                 var moretext = "بیشتر بخوانید";
@@ -816,8 +737,7 @@
                                     $(this).prev().toggle();
                                     return false;
                                 });
-                            });
-                            (function () {
+                            function () {
                                 var container = $('.portfolio-wrap');
                                 var selector = ".All";
                                 $(selector).css("opacity", "1");
@@ -825,8 +745,8 @@
                                 $(this).addClass('active');
                                 container.isotope({filter: selector});
                                 return false;
-                            }());
-                            (function () {
+                            };
+                            function () {
                                 var token = window.localStorage.getItem('user_token');
                                 if (token === null || token === '' || token === 'undefined') {
                                     $('.register_url').show();
@@ -834,29 +754,9 @@
                                     $('.textlogin').show();
 //                                                            new jj("do=Access_User.loginUserInHome&user_token=" + token + "&panel=userNameAfterLogin").jjAjax2(false);
                                 }
-                            }());
-                            //                                                                        $('.flat-iconbox-carosuel').owlCarousel({
-                            //                                                                            items: 4,
-                            //                                                                            loop: true,
-                            //                                                                            pagination: false,
-                            //                                                                            slideSpeed: 700,
-                            //                                                                            paginationSpeed: 700,
-                            //                                                                            rewindSpeed: 700,
-                            //                                                                            lazyLoad: true
-                            //                                                                        });
-
-                            function loadNews(id) {
-                                new jj("do=News.showNews&panel=sw&jj=1&id=" + id).jjAjax2(true);
-                                $("html, body").animate({scrollTop: 0}, "slow");
-
-                            }
-                            function loadinformation(id) {
-                                new jj("do=News.showInfo&panel=sw&jj=1&id=" + id).jjAjax2(true);
-                                $("html, body").animate({scrollTop: 0}, "slow");
-
-                            }
-                            $(document).ready(function () {
-                                persian = {0: '۰', 1: '۱', 2: '۲', 3: '۳', 4: '۴', 5: '۵', 6: '۶', 7: '۷', 8: '۸', 9: '۹'};
+                            };
+                            //---------------------------------------------------------------------------
+                            persian = {0: '۰', 1: '۱', 2: '۲', 3: '۳', 4: '۴', 5: '۵', 6: '۶', 7: '۷', 8: '۸', 9: '۹'};
                                 function traverse(el) {
                                     if (el.nodeType == 3) {
                                         var list = el.data.match(/[0-9]/g);
@@ -871,6 +771,24 @@
                                 }
                                 traverse(document.body);
                             });
+                            //                                                                        $('.flat-iconbox-carosuel').owlCarousel({
+                            //                                                                            items: 4,
+                            //                                                                            loop: true,
+                            //                                                                            pagination: false,
+                            //                                                                            slideSpeed: 700,
+                            //                                                                            paginationSpeed: 700,
+                            //                                                                            rewindSpeed: 700,
+                            //                                                                            lazyLoad: true
+                            //                                                                        });
+
+                            function loadNews(id) {
+                                new jj("do=News.showNews&panel=sw&jj=1&id=" + id).jjAjax2(true);
+                                $("html, body").animate({scrollTop: 0}, "slow");
+                            }
+                            function loadinformation(id) {
+                                new jj("do=News.showInfo&panel=sw&jj=1&id=" + id).jjAjax2(true);
+                                $("html, body").animate({scrollTop: 0}, "slow");
+                            }
         </script>
     </body>      
 </html>

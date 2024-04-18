@@ -322,9 +322,11 @@
 //                        + " WHERE user_id="+jjTools.getSeassionUserId(request)+""
 //                        + " AND group_title LIKE 'اعضای پروژه ی%' ;"));
                 List<Map<String, Object>> groupId = jjDatabase.separateRow(db.Select(Access_Group_User.tableName, Access_Group_User._user_id + "='" + user.get(0).get(Access_User._id) + "'"));
-                List<Map<String, Object>> rowMessageTiket = jjDatabase.separateRow(db.otherSelect("SELECT hmis_Messenger.*," + Access_User._name + "," + Access_User._family
-                        + " FROM `db_taavoni`.`hmis_Messenger` LEFT  JOIN Access_user a on messenger_sender=a.id WHERE (" + Messenger._receiver + "=" + user.get(0).get(Access_User._id) + " OR "
-                        + Messenger._sender + "=" + user.get(0).get(Access_User._id) + ") AND " + Messenger._type + "='" + Messenger.message_Advice + "' GROUP BY  " + Messenger._chatID + " ORDER BY id desc"));
+                List<Map<String, Object>> rowMessageTiket = jjDatabase.separateRow(db.otherSelect(
+                        "SELECT * FROM ("// برای اینکه وقتی گروپ بای میکند آخرین رکورد را سمپل مند در نتایج
+                        + "SELECT hmis_Messenger.*," + Access_User._name + "," + Access_User._family
+                        + " FROM hmis_Messenger LEFT  JOIN Access_user a on messenger_sender=a.id WHERE (" + Messenger._receiver + "=" + user.get(0).get(Access_User._id) + " OR "
+                        + Messenger._sender + "=" + user.get(0).get(Access_User._id) + ") AND " + Messenger._type + "='" + Messenger.message_Advice + "' ORDER BY id) t GROUP BY  messenger_chatID"));
                 System.out.println("groupId.size()" + groupId.size());
                 if (!groupId.isEmpty()) {
                     for (int z = 0; z < groupId.size(); z++) {
@@ -385,7 +387,7 @@
                                     </h3>
                                 </div>
                                 <div class="panel-body">
-                                    <strong>تعاونی مسکن کارکنان دادگستری</strong><br/><em><%=user.get(0).get(Access_User._name)%> <%=user.get(0).get(Access_User._family)%></em><br/><%=user.get(0).get(Access_User._address)%><br/><%=user.get(0).get(Access_User._postalCode)%><br/><%=user.get(0).get(Access_User._mobile)%>
+                                    <strong>تعاونی کارکنان دادگستری</strong><br/><em><%=user.get(0).get(Access_User._name)%> <%=user.get(0).get(Access_User._family)%></em><br/><%=user.get(0).get(Access_User._address)%><br/><%=user.get(0).get(Access_User._postalCode)%><br/><%=user.get(0).get(Access_User._mobile)%>
                                 </div>
                                 <div class="panel-footer clearfix  portfolio-filter" >
                                     <a style="width: 100%;text-align: center" data-filter=".hammer"   class="tp-caption sfl flat-button-slider bg-button-slider-32bfc0">
@@ -577,7 +579,7 @@
                                             <span class="label label-default">
                                                 <%=dayNews%><%=monthNews%><%=yearNews%>
                                             </span>
-                                            <a   onclick="selectNews(<%=news.get(0).get(News._id)%>)" ><%=news.get(0).get(News._title)%></a>
+                                            <a   href="indexNews.jsp?idNews=<%=news.get(0).get(News._id)%>" target="_blank" ><%=news.get(0).get(News._title)%></a>
                                         </h3>
                                         <blockquote>
                                             <p>
@@ -1245,7 +1247,7 @@
                                                         int dayNews = dateLableNews.getDay();
                                                         int yearNews = dateLableNews.getYear();
                                                 %>
-                                                <a menuitemname="1" onclick="selectNews(<%=news.get(0).get(News._id)%>)" class="list-group-item" id="ClientAreaHomePagePanels-Recent_News-1">
+                                                <a menuitemname="1" href="indexNews.jsp?idNews=<%=news.get(0).get(News._id)%>" target="_blank" class="list-group-item" id="ClientAreaHomePagePanels-Recent_News-1">
                                                     <%=news.get(0).get(News._title)%><br/><span class="text-last-updated"><%=dayNews%><%=monthNews%><%=yearNews%></span>
                                                 </a>
                                                 <%}%>
@@ -1279,13 +1281,13 @@
                                             <div class="list-group">
                                                 <%
                                                     if (user.get(0).get(Access_User._attachFile) == "") {
-                                                        System.out.print(">>>>1111" );
+                                                        System.out.print(">>>>1111");
                                                 %>
                                                 <a menuitemname="0"  class="list-group-item" id="ClientAreaHomePagePanels-Recent_News-0">
                                                     <p>فایلی برای شما اپلود نشده است</p>
                                                 </a>
                                                 <%} else {%>
-                                                <% 
+                                                <%
                                                     String attachFiles = user.get(0).get(Access_User._attachFile).toString();
                                                     String[] attachFilesArray = attachFiles.split(",");
                                                     for (int l = 0; l < attachFilesArray.length; l++) {
@@ -1401,7 +1403,7 @@
                                     <%System.out.print(">>>>11" + projectMe + "//" + news + "//" + rowFactor);
                                         for (int i = 0; i < news.size(); i++) {
                                     %>
-                                    <a onclick="selectNews(<%=news.get(0).get(News._id)%>)" menuitemname="Order New Services"  class="list-group-item" id="Secondary_Sidebar-Client_Shortcuts-Order_New_Services">
+                                    <a href="indexNews.jsp?idNews=<%=news.get(0).get(News._id)%>" target="_blank" menuitemname="Order New Services"  class="list-group-item" id="Secondary_Sidebar-Client_Shortcuts-Order_New_Services">
                                         &nbsp;<%=news.get(0).get(News._title)%>
                                     </a><%}%>
                                     <%}%>

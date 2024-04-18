@@ -20,7 +20,6 @@ import jj.jjDatabaseWeb;
 import jj.jjNumber;
 import zarinpal.Zarinpal;
 
-
 /**
  *
  * @author Rashidi
@@ -42,10 +41,11 @@ public class Payment {
     //@ToDo اضافه کردن توضیحات در پنل در کد ها
     public static String _date = "payment_date";
     public static String status_sabteavalie = "ثبت اولیه";
+    public static String status_sabtePardakht = "ثبت پرداخت";// ولی تایید نشده
     public static String status_pardakhtShode = "پرداخت شده";
-    public static String status_pardakhtNaShode = "پرداخت نشده";   
+    public static String status_pardakhtNaShode = "پرداخت نشده";
     public static String lbl_delete = "حذف";
-    public static int rul_rfs =410;
+    public static int rul_rfs = 410;
     public static int rul_dlt = 411;
 //    public static int rul_ins = 183;
 //    public static int rul_edt = 184;
@@ -93,7 +93,7 @@ public class Payment {
             String html2 = Js.setHtml("#" + panel, html.toString());
             html2 += Js.table("#refreshPayment", height, 0, "", "لیست تراکنش ها");
             return html2;
-        } catch (Exception ex) { 
+        } catch (Exception ex) {
             return Server.ErrorHandler(ex);
         }
     }
@@ -215,7 +215,42 @@ public class Payment {
 //        return "";
 //    }
     ////// <------------- refreshFactorStatus() -------------  
-      ////// ------------- payment() ------------->  
+    ////// ------------- payment() ------------->  
+
+    /**
+     * تغییر وضعیت فاکتور
+     *
+     * @param db
+     * @param id
+     * @param newSatus
+     * @return
+     */
+    public static String changeStatus(jjDatabaseWeb db, String id, String newSatus) {
+        try {
+            String errorMessageId = jjValidation.isDigitMessageFa(id, "کد");
+            if (!errorMessageId.equals("")) {
+                return Js.dialog(errorMessageId);
+            }
+            String oldStatus = jjDatabaseWeb.separateRow(db.Select(tableName, _status, _id + "=" + id)).get(0).get(_status).toString();
+            if (!oldStatus.equals(newSatus)) {
+                db.otherStatement("UPDATE " + tableName + " SET " + _statusLog
+                        + "=concat(ifnull(" + _statusLog + ",''),'"
+                        + newSatus
+                        + "-"
+                        + jjCalendar_IR.getViewFormat(new jjCalendar_IR().getDBFormat_8length())
+                        + " "
+                        + new jjCalendar_IR().getTimeFormat_8length()
+                        + "%23A%23"
+                        + "') ,"
+                        + _status + "='" + newSatus + "'  WHERE id=" + id + ";");
+            }
+            return "";
+        } catch (Exception ex) {
+            Server.ErrorHandler(ex);
+            return "عملیات تغییر وضعیت بدرستی صورت نگرفت. Err166";
+        }
+    }
+
     public static String payment(HttpServletRequest request, HttpServletResponse response, jjDatabaseWeb db, boolean isPost) throws IOException {
         try {
             String webService = jjTools.getParameter(request, PaymentSetting._webService);
@@ -229,7 +264,7 @@ public class Payment {
                 return "";
 //                return sadadMelli.sadadPayRequest(amount, orderId, request, db, isPost);
             } else if (webService.equals("zarinpal")) {
-                Server.outPrinter(request, response, Zarinpal.ZarinPaymentRequest(request,response, db, isPost));
+                Server.outPrinter(request, response, Zarinpal.ZarinPaymentRequest(request, response, db, isPost));
                 return "";
 //                return ZarinPal.xrdiniPaymentRequest(request, db, isPost);
 
@@ -249,6 +284,6 @@ public class Payment {
             return "";
         }
     }
-        ////// <------------- payment() ------------- 
+    ////// <------------- payment() ------------- 
 
 }

@@ -4,6 +4,16 @@
     Author     : IRANNOVIN
 --%>
 
+<%@page import="jj.jjNumber"%>
+<%@page import="cms.tools.Payment"%>
+<%@page import="com.sun.xml.internal.ws.api.ha.HaInfo"%>
+<%@page import="org.apache.commons.io.IOUtils"%>
+<%@page import="java.io.InputStream"%>
+<%@page import="java.io.OutputStream"%>
+<%@page import="java.net.URL"%>
+<%@page import="org.json.JSONObject"%>
+<%@page import="java.net.HttpURLConnection"%>
+<%@page import="cms.cms.Tice_config"%>
 <%@page import="cms.access.Access_Group_User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -41,13 +51,132 @@
     Server.Connect();
 //    request.setAttribute("text", "تعاونی دادگستری");
 //    Content.sw(request, response, Server.db, true);
+
     String user_token = jjTools.getParameter(request, "user_token");
     String user_bills = jjTools.getParameter(request, "user_bills");
 //    System.out.println("user_token====" + user_token);
     System.out.println("user_bills====>" + user_token);
-    StringBuilder html1 = new StringBuilder();
     jjDatabaseWeb db;
     db = Server.db;
+    String paymentError = "";
+
+    HttpURLConnection con = null;
+    List<Map<String, Object>> rowFactor = jjDatabase.separateRow(db.otherSelect("SELECT product_factor.*,product_factor_item.* FROM product_factor LEFT JOIN product_factor_item ON product_factor.id = product_factor_item.product_factor_item_factorId where product_factor.product_factor_serialNumber ='" + user_bills + "'"));
+    List<Map<String, Object>> user = jjDatabase.separateRow(db.Select(Access_User.tableName, Access_User._id + "=" + rowFactor.get(0).get(Factor._userId)));
+    Map<String, Object> map = new HashMap<>();
+    String sepTerminalKey = Tice_config.getValue(Server.db, "config_sepTerminalId");
+    if (jjNumber.isDigit(jjTools.getParameter(request, "paymentId"))) {//اگر در پارامتر ها کد پرداخت بود یعنی از صفحه ی پرداخت برگشته و باید وضعیت پرداخت را چک و اعمال کنیم
+        if (jjTools.getParameter(request, "State").equals("OK")) {// وضعیت را با استفاده از پارامتر های برگشتی از درگاه پرداخت بررسی میکنیم            
+            System.out.println(" call back url:::::~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>");
+            String refnum = jjTools.getParameter(request, "RefNum");
+            String Amount = jjTools.getParameter(request, "Amount");
+            String TerminalId = jjTools.getParameter(request, "TerminalId");
+            String ResNum = jjTools.getParameter(request, "ResNum");
+            String State = jjTools.getParameter(request, "State");
+            String Status = jjTools.getParameter(request, "Status");
+            String Rrn = jjTools.getParameter(request, "Prn");
+            String TraceNo = jjTools.getParameter(request, "TraceNo");
+            String Token = jjTools.getParameter(request, "Token");
+            String MID = jjTools.getParameter(request, "MID");
+            String SecurePan = jjTools.getParameter(request, "SecurePan");
+            jjTools.ShowAllParameter(request);
+            JSONObject cred = new JSONObject();
+            List<Map<String, Object>> payemntForVerifyRow = jjDatabase.separateRow(db.Select(Payment.tableName,
+                    Payment._id + "=" + jjTools.getParameter(request, "paymentId")//رف نام همان آی دی پرداخت است که بانک بر گردانده است و  با پیمنت آی دی یکی استF
+            ));
+            if (!payemntForVerifyRow.get(0).get(Payment._amount).equals(Amount)) {
+                paymentError += "مقدار پرداختی شما با مقدار فاکتور همخوانی ندارد. در صورت کسر وجه بعد از یک ساعت به حساب شما برگشت میشود";
+            } else {
+                cred.put("TerminalId", sepTerminalKey);
+                cred.put("RefNum", payemntForVerifyRow.get(0).get(Payment._refrenceId));
+                String url = "http://sep.tkd-esf.ir:8000/verifyTxnRandomSessionkey/ipg/VerifyTransaction";
+                con = (HttpURLConnection) new URL(url).openConnection();
+                con.setDoOutput(true);
+                con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                con.setRequestProperty("Accept", "application/json");
+                byte[] outputBytes = cred.toString().getBytes("UTF-8");
+                OutputStream os = con.getOutputStream();
+                os.write(outputBytes);
+                InputStream is = con.getInputStream();
+                String resultStr = IOUtils.toString(is, "UTF-8");
+                System.out.println(">>>>>>>>Token Json" + resultStr);
+                JSONObject result = new JSONObject(resultStr);
+                if (result.get("Success").toString().equals("true")) {
+                JSONObject TransactionDetail = new JSONObject(result.get("TransactionDetail"));
+                    System.out.println("token:" + result.get("token").toString());
+                    map.clear();
+                    map.put(Payment._comments, result.get("ResultDescription").toString() + TransactionDetail.get("MaskedPan").toString());
+                    map.put(Payment._orderId, TransactionDetail.get("RefNum").toString());
+                    db.update(Payment.tableName, map, Payment._id + "=" + payemntForVerifyRow.get(0).get(Payment._id));
+                    paymentError+="پرداخت با موفقیت انجام شد";
+                    Payment.changeStatus(db, jjTools.getParameter(request, "paymentId"), Payment.status_pardakhtShode);
+                } else {
+                    paymentError+="پرداخت در مرحله ی نهایی تایید نشد، در صورتیکه تا یک ساعت وجه به حساب شما بازگشت نشد در ساعات اداری با پشتیبانی بانک تماس بگیرید";
+                    System.out.println("errorCode:" + result.get("errorCode").toString());
+                    System.out.println("errorDesc:" + result.get("errorDesc").toString());
+                }
+            }
+            System.out.println("~_~_~_~_~_");
+
+        } else {
+            switch (jjTools.getParameter(request, "State")){                
+                    case "CanceledByUser":
+                        paymentError+="کاربر انصراف داده است";
+                    case "Failed":
+                        paymentError+="پرداخت انجام نشد.";
+                    case "SessionIsNull":
+                        paymentError+="کاربر در بازه زمانی تعیین شده پاسخی ارسال نکرده است.";
+                    case "InvalidParameters":
+                        paymentError+="پارامترهای ارسالی نامعتبر است";
+                    case "MerchantIpAddressIsInvalid":
+                        paymentError+="آدرس سرور پذیرنده نامعتبر است ";
+                    case "TokenNotFound":
+                        paymentError+="توکن ارسال شده یافت نشد";
+                    case "TerminalNotFound":
+                        paymentError+="شماره ترمینال ارسال شده یافت نشد";
+                        
+            }
+                        
+            paymentError += "پرداخت نشده -  کد ";
+            Payment.changeStatus(db, jjTools.getParameter(request, "paymentId"), Payment.status_pardakhtNaShode);
+        }
+    }
+    map.put(Payment._amount, rowFactor.get(0).get(Factor._totalAmount));
+    map.put(Payment._date, jjCalendar_IR.getDatabaseFormat_8length(null, true));
+    map.put(Payment._factorId, rowFactor.get(0).get(Factor._id));
+    map.put(Payment._status, Payment.status_sabteavalie);
+    List<Map<String, Object>> payemntRow = jjDatabase.separateRow(db.insert(Payment.tableName, map));
+    //ارسال درخواست توکن برای بانک صادرات
+    JSONObject cred = new JSONObject();
+    cred.put("action", "token");
+    cred.put("TerminalId", sepTerminalKey);
+    cred.put("Amount", rowFactor.get(0).get(Factor._totalAmount));
+    cred.put("ResNum", payemntRow.get(0).get(Payment._id));
+    cred.put("RedirectUrl", "https://www.tkd-esf.ir/bills.jsp?user_bills=" + user_bills + "&paymentId=" + payemntRow.get(0).get(Payment._id));
+    String url = "http://sep.tkd-esf.ir:8000/onlinepg/onlinepg";
+    con = (HttpURLConnection) new URL(url).openConnection();
+    con.setDoOutput(true);
+    con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+    con.setRequestProperty("Accept", "application/json");
+    byte[] outputBytes = cred.toString().getBytes("UTF-8");
+    OutputStream os = con.getOutputStream();
+    os.write(outputBytes);
+    InputStream is = con.getInputStream();
+    String resultStr = IOUtils.toString(is, "UTF-8");
+    System.out.println(">>>>>>>>Token Json" + resultStr);
+    JSONObject result = new JSONObject(resultStr);
+    System.out.println("status:" + result.get("status").toString());
+    if (result.get("status").toString().equals("1")) {
+        System.out.println("token:" + result.get("token").toString());
+        map.put(Payment._refrenceId, result.get("token").toString());
+        db.update(Payment.tableName, map, Payment._id + "=" + payemntRow.get(0).get(Payment._id));
+    } else {
+        System.out.println("errorCode:" + result.get("errorCode").toString());
+        System.out.println("errorDesc:" + result.get("errorDesc").toString());
+
+    }
+//    System.out.println("refreshToken\n" + result.get("refreshToken").toString());
+
 %>
 <!DOCTYPE html>
 <!-- saved from url=(0047)http://themesflat.com/html/arch/latestpost.html -->
@@ -245,8 +374,7 @@
                                                 <div class="submenu mega-menu" style="">
                                                     <div class="row">
                                                         <div class="container">
-                                                            <%
-                                                                List<Map<String, Object>> row10 = jjDatabase.separateRow(db.Select(Category_Content.tableName, Category_Content._parent + "=39"));
+                                                            <%                                                                List<Map<String, Object>> row10 = jjDatabase.separateRow(db.Select(Category_Content.tableName, Category_Content._parent + "=39"));
                                                                 for (int o = 0; o < row10.size(); o++) {
                                                             %>
                                                             <div class="col-md-4">
@@ -299,9 +427,6 @@
                         <div class="container-fluid invoice-container">
 
                             <%
-                                List<Map<String, Object>> rowFactor = jjDatabase.separateRow(db.otherSelect("SELECT product_factor.*,product_factor_item.* FROM product_factor LEFT JOIN product_factor_item ON product_factor.id = product_factor_item.product_factor_item_factorId where product_factor.product_factor_serialNumber ='" + user_bills + "'"));
-                                List<Map<String, Object>> user = jjDatabase.separateRow(db.Select(Access_User.tableName, Access_User._id + "=" + rowFactor.get(0).get(Factor._userId)));
-
                                 jjCalendar_IR dateLable1 = new jjCalendar_IR(rowFactor.get(0).get(Factor._dueDate).toString());
                                 String month1 = dateLable1.getMonthName();
                                 int day1 = dateLable1.getDay();
@@ -312,6 +437,7 @@
 
                                     <p><img src="template/img/logo.png" title=""></p>
                                     <h3>صورت حساب شماره  <%=rowFactor.get(0).get(Factor._serialNumber)%></h3>
+                                    <br><%=paymentError%>
 
                                 </div>
                                 <div class="invoice-col text-center">
@@ -338,7 +464,7 @@
                                             <div class="panel-heading">پرداخت به </div>
                                             <div class="panel-body">
                                                 <address>
-                                                    تعاونی مسکن کارکنان دادگستری<br/>
+                                                    تعاونی کارکنان دادگستری<br/>
                                                     میزبان  فعالیت های ساخت وساز<br/>                        
                                                     تلفن تماس:۰۳۱-۳۶۶۳۹۸۷۱-۲<br/>
                                                     ایمیل: taavoni@gmail.com<br/>
@@ -448,7 +574,7 @@
                                                    data-show-local=""
                                                    class="payment-methods"
                                                    checked                                />
-                                            پرداخت آنلاین توسط کارت شتاب - درگاه بانک ملت
+                                            پرداخت آنلاین توسط کارت شتاب - درگاه بانک صادرات
                                         </label>
                                         <label class="radio-inline">
                                             <input type="radio"
@@ -460,9 +586,11 @@
                                                    />
                                             اپلود فیش پرداخت شده
                                         </label>
-                                        <a style="width: 30%;text-align: center;display: block;margin: 10px auto" data-filter=".hammer"  href="#" class="tp-caption sfl flat-button-slider bg-button-slider-32bfc0">
-                                            <i class="fa fa-pencil-alt"></i> ادامه پرداخت
-                                        </a>
+                                        <form onload="document.forms['forms'].submit()" action="https://sep.shaparak.ir/OnlinePG/OnlinePG" method="post" > 
+                                            <input type="hidden" name="Token" value="<%= result.get("token").toString()%>" />                                                                                         
+                                            <input name="GetMethod" type="hidden" value="false"/> <!--true | false | empty string | null--> 
+                                            <input value="پرداخت" type="submit" style="width: 30%;text-align: center;display: block;margin: 10px auto" data-filter=".hammer"  href="#" class="tp-caption sfl flat-button-slider bg-button-slider-32bfc0" />                                              
+                                        </form>                                        
                                     </div>
                                 </div>
 
@@ -687,9 +815,9 @@
         <script src="template/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
         <script src="template/js/dataTables.responsive.min.js" type="text/javascript"></script>
         <script>
-$(document).ready(function () {
-$('#example').DataTable();
-});
+                                            $(document).ready(function () {
+                                                $('#example').DataTable();
+                                            });
         </script>
         <script>
 
@@ -905,7 +1033,4 @@ $('#example').DataTable();
             };
         </script>
     </body>      
-</html>
-
-</div>    </body>
 </html>

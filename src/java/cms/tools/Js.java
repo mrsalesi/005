@@ -122,6 +122,13 @@ public class Js {
         return setVal(selector, value.toString());
     }
 
+    public static String setValCKeditor(String selector, Object value) {
+//        return "$('" + selector + "').summernote('code', '" + value.toString() + "');";
+
+        return "CKEDITOR.instances."+selector+".setData('" + value.toString().replaceAll("'", "") + "');";
+        
+        
+    }
     public static String setValSummerNote(String selector, Object value) {
 //        return "$('" + selector + "').summernote('code', '" + value.toString() + "');";
         return "$('" + selector + "').summernote('code', '" + value.toString().replaceAll("'", "") + "');";

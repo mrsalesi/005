@@ -80,7 +80,6 @@
                     <ul class="nav-sub">
                         <li class="nav-item" id="managmentContent" style="display: none;"><a href="#swContent" class="nav-link ShowOneDiv" onclick="if ($('#swContentTbl').html() == '') {
                                     cmsContent.m_refresh();
-                                    back();
                                 }
                                 ;
                                 cmsContent.tabSizeTbl();
@@ -94,7 +93,6 @@
                                                         cmsKanoon.loadForm(); return false;">مدیریت محتوای کانونها</a></li>-->
                         <li class="nav-item" id="managmentContentCategory" style="display: none;"><a href="#swCategoryContent" onclick="if ($('#swCategoryContentTbl').html() == '') {
                                     cmsCategoryContent.m_refresh();
-                                    back();
                                 }
                                 ;
                                 cmsCategoryContent.tabSizeTbl();
@@ -506,9 +504,8 @@
                                 <div id="swSentMessagesForm" style="display: none;"></div>
                             </div>
                             <div class="Alldiv" id="swMessages">
-
-                                <div id="swCommentTbl" ></div>
-                                <div id="swCommentForm" style="display: none;"></div>
+                                <div id="swMessagesTbl" ></div>
+                                <div id="swMessagesForm" style="display: none;"></div>
                             </div>
                             <div class="Alldiv" id="swRecivedMessages">
                                 <div id="swRecivedMessagesTbl" ></div>
@@ -718,39 +715,38 @@
                                     if (backArray.length != 0)
                                         id = backArray.pop();
                                     if (id !== null && id != "" && id != "undefined") {
-
                                         showOneDiv($(id));
                                     }
 
                                 };
                                 function back() {
-                                    cmsContent.m_show_tbl();
-                                    cmsCategoryContent.m_show_tbl();
-                                    cmsPic.m_show_tbl();
-                                    cmsCategoryGallery.m_show_tbl();
-                                    cmsNews.m_show_tbl();
-                                    cmsCategoryNews.m_show_tbl();
-                                    hmisForms.m_show_tbl();
-                                    hmisSentMessages.m_show_tbl();
-                                    cmsProduct.m_show_tbl();
-                                    cmsCategoryProducts.m_show_tbl();
-                                    cmsUser.m_show_tbl();
-                                    cmsGroup.m_show_tbl();
+//                                    cmsContent.m_show_tbl();
+//                                    cmsCategoryContent.m_show_tbl();
+//                                    cmsPic.m_show_tbl();
+//                                    cmsCategoryGallery.m_show_tbl();
+//                                    cmsNews.m_show_tbl();
+//                                    cmsCategoryNews.m_show_tbl();
+//                                    hmisForms.m_show_tbl();
+//                                    hmisSentMessages.m_show_tbl();
+//                                    cmsProduct.m_show_tbl();
+//                                    cmsCategoryProducts.m_show_tbl();
+//                                    cmsUser.m_show_tbl();
+//                                    cmsGroup.m_show_tbl();
                                 }
-                                $(".nav-sub li").on("click", function () {
-                                    cmsContent.m_show_tbl();
-                                    cmsCategoryContent.m_show_tbl();
-                                    cmsPic.m_show_tbl();
-                                    cmsCategoryGallery.m_show_tbl();
-                                    cmsNews.m_show_tbl();
-                                    cmsCategoryNews.m_show_tbl();
-                                    hmisForms.m_show_tbl();
-                                    hmisSentMessages.m_show_tbl();
-                                    cmsProduct.m_show_tbl();
-                                    cmsCategoryProducts.m_show_tbl();
-                                    cmsUser.m_show_tbl();
-                                    cmsGroup.m_show_tbl();
-                                });
+//                                $(".nav-sub li").on("click", function () {
+//                                    cmsContent.m_show_tbl();
+//                                    cmsCategoryContent.m_show_tbl();
+//                                    cmsPic.m_show_tbl();
+//                                    cmsCategoryGallery.m_show_tbl();
+//                                    cmsNews.m_show_tbl();
+//                                    cmsCategoryNews.m_show_tbl();
+//                                    hmisForms.m_show_tbl();
+//                                    hmisSentMessages.m_show_tbl();
+//                                    cmsProduct.m_show_tbl();
+//                                    cmsCategoryProducts.m_show_tbl();
+//                                    cmsUser.m_show_tbl();
+//                                    cmsGroup.m_show_tbl();
+//                                });
                                 //        
                                 $(document).ready(function () {
                                     $(window).bind('beforeunload', function () {
