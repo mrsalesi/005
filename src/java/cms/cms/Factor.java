@@ -31,12 +31,13 @@ public class Factor {
     public static String _paymentDate = "product_factor_paymentDate";
     public static String _time = "product_factor_time";
     public static String _statuse = "product_factor_statuse";
+    public static String _statusLog = "product_factor_statusLog";
     public static String _attach = "product_factor_attach";
     public static String _discription = "product_factor_discription";
     public static String _totalAmountValueAdded = "product_factor_totalAmountValueAdded";
     public static String _totalAmount = "product_factor_totalAmount";
-    public static String lbl_statusePaid = "پرداخت شده";
-    public static String lbl_statuseUnPaid = "پرداخت نشده";
+    public static String status_pardakhtShode = "پرداخت شده";
+    public static String statusePardakhtNaShode = "پرداخت نشده";
     public static String lbl_insert = "ذخیره";
     public static String lbl_delete = "حذف";
     public static String lbl_edit = "ویرایش";
@@ -90,7 +91,7 @@ public class Factor {
             html.append("<th width='15%' class='c'>عملیات</th>");
             html.append("</thead><tbody>");
             for (int i = 0; i < row.size(); i++) {
-                if (row.get(i).get(_statuse).equals(lbl_statusePaid)) {
+                if (row.get(i).get(_statuse).equals(status_pardakhtShode)) {
                     html.append("<tr style='background-color:#9eed9099;'>");
                     html.append("<td class='c' style='background-color:#9eed9099;'>" + (row.get(i).get(_id).toString()) + "</td>");
                 } else {
@@ -238,7 +239,7 @@ public class Factor {
             map.put(_zipCode, jjTools.getParameter(request, _zipCode));
             map.put(_zipCode2, jjTools.getParameter(request, _zipCode2));
             map.put(_attach, jjTools.getParameter(request, _attach));
-            map.put(_statuse, lbl_statuseUnPaid);
+            map.put(_statuse, statusePardakhtNaShode);
             if (jjTools.getParameter(request, _totalAmount).equals("")) {
                 map.put(_totalAmount, 0);
             } else {
@@ -400,7 +401,7 @@ public class Factor {
                 map.put(_tell2, row.get(0).get(_tell2));
                 map.put(_zipCode, row.get(0).get(_zipCode));
                 map.put(_zipCode2, row.get(0).get(_zipCode2));
-                map.put(_statuse, lbl_statuseUnPaid);
+                map.put(_statuse, statusePardakhtNaShode);
                 map.put(_date, jjCalendar_IR.getDatabaseFormat_8length(null, true));
                 nextInstallementDate.addMonth(installementPeriod);
                 map.put(_dueDate, nextInstallementDate.getDBFormat_8length());
@@ -427,7 +428,7 @@ public class Factor {
                     mapItems.put(FactorItem._valueAdded, factorItemRows.get(j).get(FactorItem._valueAdded));
                     mapItems.put(FactorItem._date, nextInstallementDate.getDBFormat_8length());// تاریخ این قسمت کاربردی ندارد
                     mapItems.put(FactorItem._time, dateIR.getTimeFormat_4length());
-                    mapItems.put(FactorItem._statuse, lbl_statuseUnPaid);
+                    mapItems.put(FactorItem._statuse, statusePardakhtNaShode);
                     if (db.insert(FactorItem.tableName, mapItems).getRowCount() == 0) {
                         String errorMessage = "عملیات درج یکی از آیتم ها به درستی صورت نگرفت.";
                         if (jjTools.getParameter(request, "myLang").equals("2")) {
@@ -1045,7 +1046,7 @@ public class Factor {
             map.put(_zipCode2, jjTools.getParameter(request, _zipCode2));
             map.put(_totalAmountValueAdded, 0);
             map.put(_totalAmount, 0);
-            map.put(_statuse, lbl_statuseUnPaid);
+            map.put(_statuse, statusePardakhtNaShode);
             map.put(_date, dateIR.getDBFormat_8length());
             map.put(_time, dateIR.getTimeFormat_4length());
             List<Map<String, Object>> row = jjDatabase.separateRow(db.insert(tableName, map));
@@ -1449,7 +1450,7 @@ public class Factor {
             map.put(_zipCode2, jjTools.getParameter(request, _zipCode2));
             map.put(_totalAmountValueAdded, 0);
             map.put(_totalAmount, 0);
-            map.put(_statuse, lbl_statuseUnPaid);
+            map.put(_statuse, statusePardakhtNaShode);
             map.put(_date, dateIR.getDBFormat_8length());
             map.put(_time, dateIR.getTimeFormat_4length());
             List<Map<String, Object>> row = jjDatabase.separateRow(db.insert(tableName, map));
@@ -2004,7 +2005,7 @@ public class Factor {
                     + "</div>"
                     + "    </div>\n"
                     + "</div>");
-            if (row.get(0).get(_statuse).toString().equals(lbl_statuseUnPaid)) {
+            if (row.get(0).get(_statuse).toString().equals(statusePardakhtNaShode)) {
                 //نمایش درگاه های پرداخت
                 html.append("<div class='col-12 bankDiv' style='text-align: center;margin-top: 10px;'>");
                 List<Map<String, Object>> bankRow = jjDatabaseWeb.separateRow(db.Select(PaymentSetting.tableName));
@@ -2170,7 +2171,7 @@ public class Factor {
                     + "</div>"
                     + "</div>");
 
-            if (row.get(0).get(_statuse).toString().equals(lbl_statuseUnPaid)) {
+            if (row.get(0).get(_statuse).toString().equals(statusePardakhtNaShode)) {
                 //نمایش درگاه های پرداخت
                 html.append("<div class='col-12 bankDiv' style='text-align: center;margin-top: 10px;'>");
                 List<Map<String, Object>> bankRow = jjDatabaseWeb.separateRow(db.Select(PaymentSetting.tableName));
@@ -2256,6 +2257,40 @@ public class Factor {
         } catch (Exception ex) {
             Server.outPrinter(request, response, Server.ErrorHandler(ex));
             return "";
+        }
+    }
+    
+      /**
+     * تغییر وضعیت فاکتور
+     *
+     * @param db
+     * @param id
+     * @param newSatus
+     * @return
+     */
+    public static String changeStatus(jjDatabaseWeb db, String id, String newSatus) {
+        try {
+            String errorMessageId = jjValidation.isDigitMessageFa(id, "کد");
+            if (!errorMessageId.equals("")) {
+                return Js.dialog(errorMessageId);
+            }
+            String oldStatus = jjDatabaseWeb.separateRow(db.Select(tableName, _id + "=" + id)).get(0).get(_statuse).toString();
+            if (!oldStatus.equals(newSatus)) {
+                db.otherStatement("UPDATE " + tableName + " SET " + _statusLog
+                        + "=concat(ifnull(" + _statusLog + ",''),'"
+                        + newSatus
+                        + "-"
+                        + jjCalendar_IR.getViewFormat(new jjCalendar_IR().getDBFormat_8length())
+                        + " "
+                        + new jjCalendar_IR().getTimeFormat_8length()
+                        + "%23A%23"
+                        + "') ,"
+                        + _statuse + "='" + newSatus + "'  WHERE id=" + id + ";");
+            }
+            return "";
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return "عملیات تغییر وضعیت بدرستی صورت نگرفت. Err166";
         }
     }
 

@@ -100,7 +100,7 @@
         background: none;
         background-image: none;
         border: 1px solid #a0b3b0;
-        color: #ffffff;
+        color: #ffffff !important;
         border-radius: 0;
         transition: border-color 0.25s ease, box-shadow 0.25s ease;
     }
@@ -160,7 +160,7 @@
     }
 
     .forgot {
-        margin-top: -20px;
+        margin: 20px;
         text-align: right;
     }
 
@@ -270,7 +270,7 @@
                     <a class="" onclick='CreateCaptcha();'>کد مجدد</a>
                 </div>
 
-                <p class="forgot"><a onclick="forgetPassInHome();">رمز عبور خود را فراموش کرده اید?</a></p>
+                <p class="forgot" style="display: block;margin: 10px 0"><a onclick="forgetPassInHome();">رمز عبور خود را فراموش کرده اید?</a></p>
 
                 <button class="button button-block" onclick="CheckCaptcha();">ورود</button>
                 <p id="loginMessagePanel" class="text-danger"></p>

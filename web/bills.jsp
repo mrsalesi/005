@@ -47,13 +47,13 @@
 <%@page import="cms.cms.Comment"%>
 <%@page import="cms.cms.News"%>
 <%
-
+    System.out.println("_____________________PAYMENT_____________________");
     Server.Connect();
 //    request.setAttribute("text", "تعاونی دادگستری");
 //    Content.sw(request, response, Server.db, true);
 
     String user_token = jjTools.getParameter(request, "user_token");
-    String user_bills = jjTools.getParameter(request, "user_bills");
+    String user_bills = jjTools.getParameter(request, "id");
 //    System.out.println("user_token====" + user_token);
     System.out.println("user_bills====>" + user_token);
     jjDatabaseWeb db;
@@ -61,7 +61,10 @@
     String paymentError = "";
 
     HttpURLConnection con = null;
-    List<Map<String, Object>> rowFactor = jjDatabase.separateRow(db.otherSelect("SELECT product_factor.*,product_factor_item.* FROM product_factor LEFT JOIN product_factor_item ON product_factor.id = product_factor_item.product_factor_item_factorId where product_factor.product_factor_serialNumber ='" + user_bills + "'"));
+    List<Map<String, Object>> rowFactor = jjDatabase.separateRow(db.otherSelect("SELECT product_factor.* ,"
+            + FactorItem._priceAfterDiscount + "," + FactorItem._percentageOfValueAdded + "," + FactorItem._valueAdded + "," + FactorItem._totalPrice
+            + " FROM product_factor LEFT JOIN product_factor_item ON product_factor.id = product_factor_item.product_factor_item_factorId where product_factor.id ='" + user_bills + "'"));
+    List<Map<String, Object>> rowFactorItems = jjDatabase.separateRow(db.Select(FactorItem.tableName, FactorItem._factorId + "=" + rowFactor.get(0).get(Factor._id)));
     List<Map<String, Object>> user = jjDatabase.separateRow(db.Select(Access_User.tableName, Access_User._id + "=" + rowFactor.get(0).get(Factor._userId)));
     Map<String, Object> map = new HashMap<>();
     String sepTerminalKey = Tice_config.getValue(Server.db, "config_sepTerminalId");
@@ -87,11 +90,13 @@
             if (!payemntForVerifyRow.get(0).get(Payment._amount).equals(Amount)) {
                 paymentError += "مقدار پرداختی شما با مقدار فاکتور همخوانی ندارد. در صورت کسر وجه بعد از یک ساعت به حساب شما برگشت میشود";
             } else {
-                cred.put("TerminalId", sepTerminalKey);
-                cred.put("RefNum", payemntForVerifyRow.get(0).get(Payment._refrenceId));
+                cred.put("TerminalNumber", sepTerminalKey);
+                cred.put("RefNum", refnum);
                 String url = "http://sep.tkd-esf.ir:8000/verifyTxnRandomSessionkey/ipg/VerifyTransaction";
+                System.out.println("raw data to sep.tkd-esf.ir >>>" + cred.toString());
                 con = (HttpURLConnection) new URL(url).openConnection();
                 con.setDoOutput(true);
+                con.setDoInput(true);
                 con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                 con.setRequestProperty("Accept", "application/json");
                 byte[] outputBytes = cred.toString().getBytes("UTF-8");
@@ -102,78 +107,93 @@
                 System.out.println(">>>>>>>>Token Json" + resultStr);
                 JSONObject result = new JSONObject(resultStr);
                 if (result.get("Success").toString().equals("true")) {
-                JSONObject TransactionDetail = new JSONObject(result.get("TransactionDetail"));
-                    System.out.println("token:" + result.get("token").toString());
+                    JSONObject TransactionDetail = result.getJSONObject("TransactionDetail");
+                    System.out.println("ResultDescription:" + result.get("ResultDescription").toString());
                     map.clear();
-                    map.put(Payment._comments, result.get("ResultDescription").toString() + TransactionDetail.get("MaskedPan").toString());
+                    map.put(Payment._comments, result.get("ResultDescription").toString());
                     map.put(Payment._orderId, TransactionDetail.get("RefNum").toString());
+                    map.put(Payment._comments, TransactionDetail.get("RRN").toString() + "-" + TransactionDetail.get("MaskedPan").toString());
                     db.update(Payment.tableName, map, Payment._id + "=" + payemntForVerifyRow.get(0).get(Payment._id));
-                    paymentError+="پرداخت با موفقیت انجام شد";
+                    paymentError += "پرداخت با موفقیت انجام شد";
                     Payment.changeStatus(db, jjTools.getParameter(request, "paymentId"), Payment.status_pardakhtShode);
+                    Factor.changeStatus(db, payemntForVerifyRow.get(0).get(Payment._factorId).toString(), Factor.status_pardakhtShode);
                 } else {
-                    paymentError+="پرداخت در مرحله ی نهایی تایید نشد، در صورتیکه تا یک ساعت وجه به حساب شما بازگشت نشد در ساعات اداری با پشتیبانی بانک تماس بگیرید";
-                    System.out.println("errorCode:" + result.get("errorCode").toString());
-                    System.out.println("errorDesc:" + result.get("errorDesc").toString());
+                    paymentError += result.get("ResultDescription").toString();
+                    System.out.println("ResultDescription" + result.get("ResultDescription").toString());
+                    System.out.println("ResultCode" + result.get("ResultCode").toString());
                 }
             }
             System.out.println("~_~_~_~_~_");
 
         } else {
-            switch (jjTools.getParameter(request, "State")){                
-                    case "CanceledByUser":
-                        paymentError+="کاربر انصراف داده است";
-                    case "Failed":
-                        paymentError+="پرداخت انجام نشد.";
-                    case "SessionIsNull":
-                        paymentError+="کاربر در بازه زمانی تعیین شده پاسخی ارسال نکرده است.";
-                    case "InvalidParameters":
-                        paymentError+="پارامترهای ارسالی نامعتبر است";
-                    case "MerchantIpAddressIsInvalid":
-                        paymentError+="آدرس سرور پذیرنده نامعتبر است ";
-                    case "TokenNotFound":
-                        paymentError+="توکن ارسال شده یافت نشد";
-                    case "TerminalNotFound":
-                        paymentError+="شماره ترمینال ارسال شده یافت نشد";
-                        
+            switch (jjTools.getParameter(request, "State")) {
+                case "CanceledByUser":
+                    paymentError += "کاربر انصراف داده است";
+                    break;
+                case "Failed":
+                    paymentError += "پرداخت انجام نشد.";
+                    break;
+                case "SessionIsNull":
+                    paymentError += "کاربر در بازه زمانی تعیین شده پاسخی ارسال نکرده است.";
+                    break;
+                case "InvalidParameters":
+                    paymentError += "پارامترهای ارسالی نامعتبر است";
+                    break;
+                case "MerchantIpAddressIsInvalid":
+                    paymentError += "آدرس سرور پذیرنده نامعتبر است ";
+                    break;
+                case "TokenNotFound":
+                    paymentError += "توکن ارسال شده یافت نشد";
+                    break;
+                case "TerminalNotFound":
+                    paymentError += "شماره ترمینال ارسال شده یافت نشد";
+                    break;
+
             }
-                        
-            paymentError += "پرداخت نشده -  کد ";
+
+            paymentError += "  پرداخت نشده  -  کد    ";
             Payment.changeStatus(db, jjTools.getParameter(request, "paymentId"), Payment.status_pardakhtNaShode);
         }
     }
-    map.put(Payment._amount, rowFactor.get(0).get(Factor._totalAmount));
-    map.put(Payment._date, jjCalendar_IR.getDatabaseFormat_8length(null, true));
-    map.put(Payment._factorId, rowFactor.get(0).get(Factor._id));
-    map.put(Payment._status, Payment.status_sabteavalie);
-    List<Map<String, Object>> payemntRow = jjDatabase.separateRow(db.insert(Payment.tableName, map));
-    //ارسال درخواست توکن برای بانک صادرات
-    JSONObject cred = new JSONObject();
-    cred.put("action", "token");
-    cred.put("TerminalId", sepTerminalKey);
-    cred.put("Amount", rowFactor.get(0).get(Factor._totalAmount));
-    cred.put("ResNum", payemntRow.get(0).get(Payment._id));
-    cred.put("RedirectUrl", "https://www.tkd-esf.ir/bills.jsp?user_bills=" + user_bills + "&paymentId=" + payemntRow.get(0).get(Payment._id));
-    String url = "http://sep.tkd-esf.ir:8000/onlinepg/onlinepg";
-    con = (HttpURLConnection) new URL(url).openConnection();
-    con.setDoOutput(true);
-    con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-    con.setRequestProperty("Accept", "application/json");
-    byte[] outputBytes = cred.toString().getBytes("UTF-8");
-    OutputStream os = con.getOutputStream();
-    os.write(outputBytes);
-    InputStream is = con.getInputStream();
-    String resultStr = IOUtils.toString(is, "UTF-8");
-    System.out.println(">>>>>>>>Token Json" + resultStr);
-    JSONObject result = new JSONObject(resultStr);
-    System.out.println("status:" + result.get("status").toString());
-    if (result.get("status").toString().equals("1")) {
-        System.out.println("token:" + result.get("token").toString());
-        map.put(Payment._refrenceId, result.get("token").toString());
-        db.update(Payment.tableName, map, Payment._id + "=" + payemntRow.get(0).get(Payment._id));
-    } else {
-        System.out.println("errorCode:" + result.get("errorCode").toString());
-        System.out.println("errorDesc:" + result.get("errorDesc").toString());
+    String sepToken = "";//اگر وضعیت فاکتور پرداخت شده بود ایجاد میشود
+    if (rowFactor.get(0).get(Factor._statuse).toString().equals(Factor.statusePardakhtNaShode)) {
+        map.put(Payment._amount, rowFactor.get(0).get(Factor._totalAmount));
+        map.put(Payment._date, jjCalendar_IR.getDatabaseFormat_8length(null, true));
+        map.put(Payment._userId, jjTools.getSeassionUserId(request));
+        map.put(Payment._factorId, rowFactor.get(0).get(Factor._id));
+        map.put(Payment._status, Payment.status_sabteavalie);
+        List<Map<String, Object>> payemntRow = jjDatabase.separateRow(db.insert(Payment.tableName, map));
+        //ارسال درخواست توکن برای بانک صادرات
+        JSONObject cred = new JSONObject();
+        cred.put("action", "token");
+        cred.put("TerminalId", sepTerminalKey);
+        cred.put("Amount", rowFactor.get(0).get(Factor._totalAmount));
+        cred.put("ResNum", payemntRow.get(0).get(Payment._id));
+        cred.put("RedirectUrl", "https://www.tkd-esf.ir/billPaymentStatus.jsp?" + "paymentId=" + payemntRow.get(0).get(Payment._id));
+//        cred.put("RedirectUrl", "http://localhost:8084/005/billPaymentStatus.jsp?" + "paymentId=" + payemntRow.get(0).get(Payment._id));
+        String url = "http://sep.tkd-esf.ir:8000/onlinepg/onlinepg";
+        con = (HttpURLConnection) new URL(url).openConnection();
+        con.setDoOutput(true);
+        con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+        con.setRequestProperty("Accept", "application/json");
+        byte[] outputBytes = cred.toString().getBytes("UTF-8");
+        OutputStream os = con.getOutputStream();
+        os.write(outputBytes);
+        InputStream is = con.getInputStream();
+        String resultStr = IOUtils.toString(is, "UTF-8");
+        System.out.println(">>>>>>>>Token Json" + resultStr);
+        JSONObject result = new JSONObject(resultStr);
+        System.out.println("status:" + result.get("status").toString());
+        if (result.get("status").toString().equals("1")) {
+            System.out.println("token:" + result.get("token").toString());
+            sepToken = result.get("token").toString();
+            map.put(Payment._refrenceId, result.get("token").toString());
+            db.update(Payment.tableName, map, Payment._id + "=" + payemntRow.get(0).get(Payment._id));
+        } else {
+            System.out.println("errorCode:" + result.get("errorCode").toString());
+            System.out.println("errorDesc:" + result.get("errorDesc").toString());
 
+        }
     }
 //    System.out.println("refreshToken\n" + result.get("refreshToken").toString());
 
@@ -319,108 +339,6 @@
             </div>
         </section>
         <div class="boxed">
-            <div class="top">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <ul class="flat-information">
-                                <li class="phone"><a href="tel:031-36639871">تلفن تماس:031-36639871-2</a></li>
-                                <li class="email"><a href="">ایمیل: taavoni@gmail.com</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="social-links">
-                                <!--                                                        <a href="">
-                                                                                            <a  class="register_url flat-button button-color button-normal yellow " style="" onclick='$("#sw").load("login.html")'>ثبت نام/ورود</a>
-                                                                                            <a id="userNameAfterLogin" class="textlogin" style="display: none;"></a>
-                                                                                        </a>-->
-                                <a href=""><i class="fa fa-twitter"></i></a>
-                                <a href=""><i class="fa fa-facebook"></i></a>
-                                <a href=""><i class="fa fa-instagram"></i></a>
-                                <a href=""><i class="fa fa-linkedin"></i></a>
-                                <!--<a href=""><a id="userNameAfterLogin1" class="textlogin1" style="display: none"></a></a>-->
-
-                                <!--<a class="register_url" style='display: none' onclick='$("#sw").load("login.html")'><i class="fa fa-user menu-extra-mobile"></i></a>-->
-                                <!--<a id="userNameAfterLogin" class="prof textlogin flat-button button-color button-normal yellow " style="display: none;margin: 0px 5px;"></a>-->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <header id="header" class="header clearfix">
-                <div class="container">
-                    <div class="row">
-                        <div class="header-wrap clearfix">
-                            <div class="col-md-3">
-                                <div id="logo" class="logo">
-                                    <a href="" rel="home">
-                                        <img src="template/img/logo.png" alt="image">
-                                    </a>
-                                </div>
-                                <div class="btn-menu">
-                                    <span></span>
-                                </div>
-                            </div>
-                            <div class="col-md-9 pos-static">
-                                <div class="nav-wrap has-megamenu">
-                                    <nav id="mainnav" class="mainnav">
-                                        <ul class="menu">
-                                            <li class="home">
-                                                <a href="index.jsp">صفحه اصلی</a>
-                                            </li>
-                                            <li class="has-mega-menu">
-                                                <a class="has-mega" href="">پروژه های شرکت</a>
-                                                <div class="submenu mega-menu" style="">
-                                                    <div class="row">
-                                                        <div class="container">
-                                                            <%                                                                List<Map<String, Object>> row10 = jjDatabase.separateRow(db.Select(Category_Content.tableName, Category_Content._parent + "=39"));
-                                                                for (int o = 0; o < row10.size(); o++) {
-                                                            %>
-                                                            <div class="col-md-4">
-                                                                <h2 style="text-align: right"><%=row10.get(o).get(Category_Content._title)%></h2>
-                                                                <ul class="mega-menu-sub">
-                                                                    <%
-                                                                        List<Map<String, Object>> row9 = jjDatabase.separateRow(db.Select(Content.tableName, Content._category_id + "=" + row10.get(o).get(Category_Content._id)));
-                                                                        for (int b = 0; b < row9.size(); b++) {
-                                                                    %>
-                                                                    <li><a href=""><i class="fa fa-flag"></i><%=row9.get(b).get(Content._title)%></a></li> 
-                                                                            <%}%>
-
-                                                                </ul>
-                                                            </div>
-                                                            <%}%>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li><a href="" onclick="new jj('do=Content.sw&panel=sw&text=تیم شرکت&jj=1').jjAjax2()">تیم شرکت</a></li>
-                                            <li><a href="" onclick="$('#sw').load('gallery.jsp')">گالری</a></li>
-                                            <li><a href="">خدمات</a> </li>
-                                            <li><a href="" onclick="new jj('do=Content.sw&panel=sw&text=درباره ما&jj=1').jjAjax2()">درباره ی شرکت </a></li>
-                                            <li><a href="" onclick="new jj('do=Content.sw&panel=sw&text=تماس با ما&jj=1').jjAjax2()">تماس با ما</a></li>
-
-                                        </ul>
-                                    </nav>
-                                </div>
-                                <ul class="menu menu-extra" style="">
-                                    <li class="off-canvas-toggle">
-                                        <a href="#"><i class="fa fa-bars"></i></a>
-                                    </li>
-
-                                </ul><!--
-                                <ul class="menu menu-extra-mobile" style="">
-                                    <li class="off-canvas-toggle">
-                                        <a  class="register_url flat-button button-border button-normal " style="display: none;margin: 27px 2px;" onclick='$("#sw").load("login.html")'><i class="fa fa-user"></i></a>
-                                        <a id="userNameAfterLogin" class="textlogin flat-button button-border button-normal  " style="display: none;margin: 27px 2px;"></a>
-                                    </li>
-                                </ul>-->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
             <div id="sw" style="background: #fff">
                 <div class="container">
                     <div class="row">
@@ -437,7 +355,9 @@
 
                                     <p><img src="template/img/logo.png" title=""></p>
                                     <h3>صورت حساب شماره  <%=rowFactor.get(0).get(Factor._serialNumber)%></h3>
+                                    <span>کد  <%=rowFactor.get(0).get(Factor._id)%></span>
                                     <br><%=paymentError%>
+
 
                                 </div>
                                 <div class="invoice-col text-center">
@@ -445,29 +365,22 @@
                                     <div class="invoice-status">
                                         <span class="unpaid"><%=rowFactor.get(0).get(Factor._statuse)%></span>
                                     </div>
-
                                     <div class="small-text">
                                         تاریخ سررسید: <%=day1%><%=month1%><%=year1%> 
-
                                     </div>
-
-
                                 </div>
                             </div>
-
                             <hr>
-
-
                                 <div class="row">
                                     <div class="invoice-col ">
                                         <div class="panel panel-default">
                                             <div class="panel-heading">پرداخت به </div>
                                             <div class="panel-body">
                                                 <address>
-                                                    تعاونی کارکنان دادگستری<br/>
-                                                    میزبان  فعالیت های ساخت وساز<br/>                        
+                                                    تعاونی چند منظوره کارکنان دادگستری اصفهان<br/>
+                                                  <br/>                        
                                                     تلفن تماس:۰۳۱-۳۶۶۳۹۸۷۱-۲<br/>
-                                                    ایمیل: taavoni@gmail.com<br/>
+                                                    ایمیل: tmkde@yahoo.com<br/>
                                                 </address>
                                             </div>
                                         </div>
@@ -500,8 +413,8 @@
 
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <h3 class="panel-title"><strong>اقلام صورت حساب</strong></h3>
-                                    </div>
+                                        <h3 class="panel-title"><strong>صورت حساب</strong></h3>
+                                    </div>                               
                                     <div class="panel-body" style="direction: rtl">
                                         <div class="table-responsive">
                                             <table class="table table-condensed">
@@ -512,6 +425,9 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    <% for (int x = 0; x < rowFactorItems.size(); x++) { %>
+                                                    <!--@Todo-->
+                                                    <% }%>
                                                     <tr>                                                                                                                                                                                                        
                                                         <tr>
                                                             <td class="total-row text-right"><strong>جمع با تخفیف</strong></td>
@@ -532,230 +448,97 @@
                                     </div>
                                 </div>
 
-                                <p>* نشان دهنده آیتم های مالیاتی.</p>
+                                <!--<p>* نشان دهنده آیتم های مالیاتی.</p>-->
+                                <%if (rowFactor.get(0).get(Factor._statuse).toString().equals(Factor.status_pardakhtShode)) {
+                                        //اگر وضعیت پرداخت شده بود چزئیات پرداخت را نشان میدهیم
+                                    List<Map<String, Object>> paymentRow = jjDatabase.separateRow(db.Select(Payment.tableName,
+                                            Payment._factorId + "=" + rowFactor.get(0).get(Factor._id)
+                                            + " AND "
+                                            + Payment._status + "='" + Payment.status_pardakhtShode+"'")
+                                    );
+                                    if (paymentRow.size() > 0) {
 
+                                %>
                                 <div class="transactions-container small-text">
                                     <div class="table-responsive">
                                         <table class="table table-condensed">
+
                                             <thead>
                                                 <tr>
                                                     <td class="text-center"><strong>تاریخ پرداخت</strong></td>
-                                                    <td class="text-center"><strong>درگاه</strong></td>
+                                                    <td class="text-center"><strong>مبلغ</strong></td>
                                                     <td class="text-center"><strong>شناسه پرداخت</strong></td>
-                                                    <td class="text-center"><strong>مقدار</strong></td>
+                                                    <td class="text-center"><strong>توضیحات</strong></td>
                                                 </tr>
                                             </thead>
                                             <tbody>
-
-                                                <tr>                                                                                                                                                                                                        
+                                                <tr>
+                                                    <td class="text-center"><strong><%= paymentRow.get(0).get(Payment._date)  %></strong></td>
+                                                    <td class="text-center"><strong><%= paymentRow.get(0).get(Payment._amount)  %></strong></td>
+                                                    <td class="text-center"><strong><%= paymentRow.get(0).get(Payment._refrenceId)  %></strong></td>
+                                                    <td class="text-center"><strong><%= paymentRow.get(0).get(Payment._comments)  %></strong></td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
+                                <%}
+                                    } %>
 
                                 <div class="sub-heading">
                                     <span>جزئیات پرداخت</span>
                                 </div>
 
+                                <% if (rowFactor.get ( 
+                                        0).get(Factor._statuse).toString().equals(Factor.statusePardakhtNaShode)) {
+                                %>
                                 <div class="alert alert-success text-center large-text" role="alert">
                                     قابل پرداخت : &nbsp; <strong> <%=rowFactor.get(0).get(FactorItem._totalPrice)%> ریال</strong>
                                 </div>
-
                                 <div id="paymentGatewaysContainer" class="form-group">
-                                    <p class="small text-muted">لطفا روش پرداخت خود را انتخاب نمایید</p>
+                                    <!--<p class="small text-muted">لطفا روش پرداخت خود را انتخاب نمایید</p>-->
 
                                     <div class="text-center">
                                         <label class="radio-inline">
-                                            <input type="radio"
+                                            <img src="template/img/logoBankSaderat.jpg"
+                                                 <input type="radio"
                                                    name="paymentmethod"
                                                    value="namellat"
                                                    data-payment-type="Invoices"
                                                    data-show-local=""
                                                    class="payment-methods"
                                                    checked                                />
-                                            پرداخت آنلاین توسط کارت شتاب - درگاه بانک صادرات
+                                                پرداخت آنلاین توسط کارت شتاب - درگاه بانک صادرات
                                         </label>
-                                        <label class="radio-inline">
-                                            <input type="radio"
-                                                   name="paymentmethod"
-                                                   value="nasaman"
-                                                   data-payment-type="Invoices"
-                                                   data-show-local=""
-                                                   class="payment-methods"
-                                                   />
-                                            اپلود فیش پرداخت شده
-                                        </label>
+                                        <!--                                        <label class="radio-inline">
+                                                                                    <input type="radio"
+                                                                                           name="paymentmethod"
+                                                                                           value="nasaman"
+                                                                                           data-payment-type="Invoices"
+                                                                                           data-show-local=""
+                                                                                           class="payment-methods"
+                                                                                           />
+                                                                                    اپلود فیش پرداخت شده
+                                                                                </label>-->
                                         <form onload="document.forms['forms'].submit()" action="https://sep.shaparak.ir/OnlinePG/OnlinePG" method="post" > 
-                                            <input type="hidden" name="Token" value="<%= result.get("token").toString()%>" />                                                                                         
+                                            <input type="hidden" name="Token" value="<%= sepToken%>" />                                                                                         
                                             <input name="GetMethod" type="hidden" value="false"/> <!--true | false | empty string | null--> 
                                             <input value="پرداخت" type="submit" style="width: 30%;text-align: center;display: block;margin: 10px auto" data-filter=".hammer"  href="#" class="tp-caption sfl flat-button-slider bg-button-slider-32bfc0" />                                              
                                         </form>                                        
                                     </div>
                                 </div>
+                                <% }%>
 
                                 <div class="pull-right btn-group btn-group-sm hidden-print">
-                                    <a href="javascript:window.print()" class="btn btn-default"><i class="fas fa-print"></i> پرینت</a>
-                                    <a href="dl.php?type=i&amp;id=903287" class="btn btn-default"><i class="fas fa-download"></i> دریافت فایل</a>
+                                    <a href="javascript:window.print()" class="btn btn-default"> پرینت</a>
+                                    <!--                                    <a href="dl.php?type=i&amp;id=903287" class="btn btn-default"><i class="fas fa-download"></i> دریافت فایل</a>-->
                                 </div>
                         </div>
                     </div>
-                </div>                                                                                                                    
-                <footer class="footer" style="margin-top: 10px">
-                    <div class="footer-widgets">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="widget widget_text widget_info">
-                                        <h4 class="widget-title">ادرس</h4>
-                                        <div class="textwidget">
-                                            <ul class="footer-info">
-                                                <li class="address">اصفهان<br/>خیابان نیکبخت<br/>
-                                                    <br/>تعاونی دادگستری اصفهان</li>
-                                                <li class="phone">تلفن:031-323652650</li>
-                                                <li class="email">Info@example.com</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="widget widget_text widget_info">
-                                        <h4 class="widget-title">منو</h4>
-                                        <div class="textwidget">
-                                            <ul class="footer-info">
-                                                <li class="footer-home arrow"><a>صفحه اصلی</a></li>
-
-                                                <li class="footer-Allproject arrow"><a>درباره ما</a></li>
-                                                <li class="footer-Allproject arrow"><a>پروژه ها</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="widget widget_text widget_info">
-                                        <h4 class="widget-title">خدمات</h4>
-                                        <div class="textwidget">
-                                            <ul class="footer-info">
-                                                <li class="footer-home arrow"><a>پرداخت ها و صورتحساب ها</a></li>
-                                                <li class="footer-about arrow"><a>پروژه ها من</a></li>
-                                                <li class="footer-Allproject arrow"><a>پروژه های شرکت</a></li>
-                                                <li class="footer-Allproject arrow"><a>پیام ها</a></li>
-                                                <li class="footer-Allproject arrow"><a>گزارش پروژه ها</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="widget widget_text widget_info">
-                                        <h4 class="widget-title">تعاونی دادگستری اصفهان</h4>
-                                        <div class="textwidget">
-                                            <ul class="">
-                                                <li class="footer-home"><a>تعاون برای کار شایسته</a></li>
-                                                <li class="footer-about">  <div class="social-links">
-                                                        <a href="" class="root-blue"><i class="fa fa-twitter"></i></a>
-                                                        <a href="" class="root-blue"><i class="fa fa-facebook"></i></a>
-                                                        <a href="" class="root-blue"><i class="fa fa-instagram"></i></a>
-                                                        <a href="" class="root-blue"><i class="fa fa-linkedin"></i></a>
-                                                        <a href="" class="root-blue"><i class="fa fa-skype"></i></a>
-                                                    </div></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </footer>
+                </div>                
                 <!--end footer-->
             </div>
-        </div>
-        <div class="switcher-container">
-            <h2>
-                انتخاب رنگ<a href="" class="sw-click">
-                    <i class="fa fa-cog">
-                    </i>
-                </a>
-            </h2>
-            <div class="selector-box">
-                <div class="clearfix">
-                </div>
-                <div class="sw-odd">
-                    <h3>
-                        انتخاب رنگ</h3>
-                    <div class="ws-colors">
-                        <a href="#color1" class="styleswitch current" id="color1">
-                            &nbsp;<span class="cl1">
-                            </span>
-                        </a>
-                        <a href="#color2" class="styleswitch" id="color2">
-                            &nbsp;<span class="cl2">
-                            </span>
-                        </a>
-                        <a href="#color3" class="styleswitch" id="color3">
-                            &nbsp;<span class="cl3">
-                            </span>
-                        </a>
-                        <a href="#color4" class="styleswitch" id="color4">
-                            &nbsp;<span class="cl4">
-                            </span>
-                        </a>
-                        <a href="#color5" class="styleswitch" id="color5">
-                            &nbsp;<span class="cl5">
-                            </span>
-                        </a>
-                        <a href="#color6" class="styleswitch" id="color6">
-                            &nbsp;<span class="cl6">
-                            </span>
-                        </a>
-                    </div>
-                </div>
-                <div class="sw-even">
-                    <h3>
-                        لایه بندی:</h3>
-                    <a href="#" class="sw-light">
-                        حاشیه</a>
-                    <a href="#" class="sw-dark">
-                        کامل</a>
-                </div>
-                <div class="sw-pattern pattern">
-                    <h3>
-                        پس زمینه:</h3>
-                    <a href="#" class="sw-pattern" data-image="template/img/1.png">
-                        <img src="template/img/1.png" alt="image">
-                    </a>
-                    <a href="#" class="sw-pattern" data-image="template/img/2.png">
-                        <img src="template/img/2.png" alt="image">
-                    </a>
-                    <a href="#" class="sw-pattern" data-image="template/img/3.png">
-                        <img src="template/img/3.png" alt="image">
-                    </a>
-                    <a href="#" class="sw-pattern" data-image="template/img/4.png">
-                        <img src="template/img/4.png" alt="image">
-                    </a>
-                    <a href="#" class="sw-pattern" data-image="template/img/5.png">
-                        <img src="template/img/5.png" alt="image">
-                    </a>
-                    <a href="#" class="sw-pattern" data-image="template/img/6.png">
-                        <img src="template/img/6.png" alt="image">
-                    </a>
-                    <a href="#" class="sw-pattern" data-image="template/img/7.png">
-                        <img src="template/img/7.png" alt="image">
-                    </a>
-                    <a href="#" class="sw-pattern" data-image="template/img/8.png">
-                        <img src="template/img/8.png" alt="image">
-                    </a>
-                    <a href="#" class="sw-pattern" data-image="template/img/9.png">
-                        <img src="template/img/9.png" alt="image">
-                    </a>
-                    <a href="#" class="sw-pattern" data-image="template/img/10.png">
-                        <img src="template/img/10.png" alt="image">
-                    </a>
-                </div>
-                <div class="clearfix">
-                </div>
-            </div>
-        </div>
+        </div>       
         <div id="site-off-canvas">
             <span class="close"></span>
             <div class="wrapper">

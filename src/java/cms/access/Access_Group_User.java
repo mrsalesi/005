@@ -229,8 +229,8 @@ public class Access_Group_User {
 //        sms.sendMessageByApi(null, db, "09133368036", "تست سلام  ", "", "", "");        
         System.out.println("*******************inser_MediaPlanItem****************************************");
 //obtaining input bytes from a file  
-        FileInputStream fis = new FileInputStream(new File("D:\\work\\customersProject\\tmkde.ir\\وبسایت\\وبسایت\\برديس.xlsx"));
-        int groupId = 30;
+        FileInputStream fis = new FileInputStream(new File("D:\\work\\customersProject\\tmkde.ir\\وبسایت\\وبسایت\\مرق.xlsx"));
+        int groupId = 14;
 //creating workbook instance that refers to .xlsx file     
         XSSFWorkbook workbook = new XSSFWorkbook(fis);
 //creating a Sheet object to retrieve the object  

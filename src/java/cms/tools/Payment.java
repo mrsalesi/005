@@ -18,6 +18,8 @@ import jj.jjCalendar_IR;
 import jj.jjDatabase;
 import jj.jjDatabaseWeb;
 import jj.jjNumber;
+import org.json.JSONException;
+import org.json.JSONObject;
 import zarinpal.Zarinpal;
 
 /**
@@ -284,6 +286,33 @@ public class Payment {
             return "";
         }
     }
-    ////// <------------- payment() ------------- 
+        ////// <------------- payment() ------------- 
 
+    public static void main(String[] args) throws JSONException {
+        Server.Connect();
+        Factor.changeStatus(Server.db, "115", Factor.status_pardakhtShode);
+//        String resultStr = "{\"TransactionDetail\":"
+//                + "{\"RRN\":\"22956137732\","
+//                + "\"RefNum\":\"GmshtyjwKSsPo1IgAf0DKlr4QOxAeuT+vVSH9/G4qL\",\"MaskedPan\":\"610433****7586\","
+//                + "\"HashedPan\":\"e95c7b313bae1ac6459e6d6fc525e3a85a46e9311428740792ce0770b0f66be5\","
+//                + "\"TerminalNumber\":21556016,\"OrginalAmount\":10000,\"AffectiveAmount\":10000,"
+//                + "\"StraceDate\":\"2024-04-21 18:56:08\",\"StraceNo\":\"869417\"}"
+//                + ",\"PurchaseInfo\":null,\"ResultCode\":0,"
+//                + "\"ResultDescription\":\"عملیات با موفقیت انجام شد\",\"Success\":true}";
+//        JSONObject result = new JSONObject(resultStr);
+//        if (result.get("Success").toString().equals("true")) {
+//            JSONObject TransactionDetail = result.getJSONObject("TransactionDetail");
+//            System.out.println(TransactionDetail.toString());
+//            System.out.println(TransactionDetail.get("RefNum").toString());
+//            System.out.println(TransactionDetail.get("RRN").toString());
+//            System.out.println(TransactionDetail.get("MaskedPan").toString());
+//            System.out.println("ResultDescription:" + result.get("ResultDescription").toString());
+//            System.out.println("پرداخت با موفقیت انجام شد");
+//
+//        } else {
+//
+//            System.out.println("ResultDescription" + result.get("ResultDescription").toString());
+//            System.out.println("ResultCode" + result.get("ResultCode").toString());
+//        }
+    }
 }

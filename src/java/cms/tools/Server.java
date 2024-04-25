@@ -23,6 +23,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import jj.jjCalendar_IR;
 import jj.jjDatabaseWeb;
+import jj.jjTime;
 
 public class Server extends HttpServlet {
 
@@ -245,7 +246,7 @@ public class Server extends HttpServlet {
                     Method[] methods = clazz.get(j).getMethods();
                     for (int i = 0; i < methods.length; i++) {
                         if (methods[i].getName().equals(methodName)) {
-                            ServerLog.Print("Run: " + className + "." + methods[i].getName() + "()");
+                            ServerLog.Print("Run: " + className + "." + methods[i].getName() + "()" + "--->" + jjTools.getSeassionUserId(request) + " " + jjCalendar_IR.getDatabaseFormat_8length(null, true) + "-" + jjTime.getTime4lenth(""));
                             methods[i].invoke(null, request, response, db, false);//پارامتر آخر را فقط جی اس پی ها و توابع جاوایی داخل هم فراخوانی می کنند
                             return;
                         }

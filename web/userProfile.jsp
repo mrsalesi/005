@@ -3,6 +3,7 @@
     Created on : Nov 15, 2021, 1:13:01 PM
     Author     : IRANNOVIN
 --%>
+<%@page import="cms.cms.Tice_config"%>
 <%@page import="HMIS.FormAnswers"%>
 <%@page import="HMIS.Messenger"%>
 <%@page import="cms.access.Access_Group_User"%>
@@ -310,23 +311,25 @@
         <div id="sw">
             <%
                 List<Map<String, Object>> user = jjDatabase.separateRow(db.Select(Access_User.tableName, Access_User._token + "='" + user_token + "'" + " OR " + Access_User._id + "=" + jjTools.getSeassionUserId(request)));
-                List<Map<String, Object>> projectMe = null;
                 List<Map<String, Object>> news = null;
                 List<Map<String, Object>> rowFactor = null;
                 rowFactor = jjDatabase.separateRow(db.otherSelect("SELECT product_factor.*,product_factor_item_productId,product_factor_item_factorId FROM product_factor "
                         + " LEFT JOIN product_factor_item ON product_factor.id = product_factor_item.product_factor_item_factorId "
-                        + " WHERE product_factor.product_factor_userId ='" + user.get(0).get(Access_User._id) + "' GROUP BY product_factor.id"));
+                        + " WHERE product_factor.product_factor_userId ='" + user.get(0).get(Access_User._id) + "' GROUP BY product_factor.id ORDER BY id DESC"));
                 String groups = "";//گروه هایی که کاربر در آنها عضویت دارد
 //                 List<Map<String, Object>> myProjects =  jjDatabase.separateRow(db.otherSelect("SELECT group_title FROM access_user_group"
 //                        + "  LEFT JOIN access_group g ON group_id=g.id"
 //                        + " WHERE user_id="+jjTools.getSeassionUserId(request)+""
 //                        + " AND group_title LIKE 'اعضای پروژه ی%' ;"));
-                List<Map<String, Object>> groupId = jjDatabase.separateRow(db.Select(Access_Group_User.tableName, Access_Group_User._user_id + "='" + user.get(0).get(Access_User._id) + "'"));
                 List<Map<String, Object>> rowMessageTiket = jjDatabase.separateRow(db.otherSelect(
                         "SELECT * FROM ("// برای اینکه وقتی گروپ بای میکند آخرین رکورد را سمپل مند در نتایج
                         + "SELECT hmis_Messenger.*," + Access_User._name + "," + Access_User._family
                         + " FROM hmis_Messenger LEFT  JOIN Access_user a on messenger_sender=a.id WHERE (" + Messenger._receiver + "=" + user.get(0).get(Access_User._id) + " OR "
                         + Messenger._sender + "=" + user.get(0).get(Access_User._id) + ") AND " + Messenger._type + "='" + Messenger.message_Advice + "' ORDER BY id) t GROUP BY  messenger_chatID"));
+                
+                // پیدا کردن پروژه های این کاربر
+                List<Map<String, Object>> projectMe = null;
+                List<Map<String, Object>> groupId = jjDatabase.separateRow(db.Select(Access_Group_User.tableName, Access_Group_User._user_id + "='" + user.get(0).get(Access_User._id) + "'"));
                 System.out.println("groupId.size()" + groupId.size());
                 if (!groupId.isEmpty()) {
                     for (int z = 0; z < groupId.size(); z++) {
@@ -387,7 +390,7 @@
                                     </h3>
                                 </div>
                                 <div class="panel-body">
-                                    <strong>تعاونی کارکنان دادگستری</strong><br/><em><%=user.get(0).get(Access_User._name)%> <%=user.get(0).get(Access_User._family)%></em><br/><%=user.get(0).get(Access_User._address)%><br/><%=user.get(0).get(Access_User._postalCode)%><br/><%=user.get(0).get(Access_User._mobile)%>
+                                    <strong><%=user.get(0).get(Access_User._name)%> <%=user.get(0).get(Access_User._family)%></strong><br/><em>کد کاربری <%=user.get(0).get(Access_User._id)%>%></em><br/><%=user.get(0).get(Access_User._address)%><br/><%=user.get(0).get(Access_User._postalCode)%><br/><%=user.get(0).get(Access_User._mobile)%>
                                 </div>
                                 <div class="panel-footer clearfix  portfolio-filter" >
                                     <a style="width: 100%;text-align: center" data-filter=".hammer"   class="tp-caption sfl flat-button-slider bg-button-slider-32bfc0">
@@ -711,7 +714,8 @@
                                                                                                                         </div>-->
                                                         </div>
                                                         <div class="row col-lg-12">
-                                                            <button class="col-lg-4 flat-button button-color button-normal black" onclick="$('#newTicket').slideUp();$('#ticketTable').show();">بازگشت </button>
+                                                            <button class="col-lg-4 flat-button button-color button-normal black" onclick="$('#newTicket').slideUp();
+                                                                    $('#ticketTable').show();">بازگشت </button>
                                                             <button class="col-lg-6 flat-button button-color button-normal blue" onclick="sendTicket();">ارسال </button>
                                                         </div><!-- card -->
                                                     </div><!-- card -->
@@ -726,7 +730,6 @@
                                 <table id="factorTable" class="uk-table uk-table-hover uk-table-striped " style="width:100%;">
                                     <thead>
                                         <tr>
-                                            <th>صورت حساب</th>
                                             <th>شماره صورتحساب</th>
                                             <th>تاریخ صورت حساب</th>
                                             <th>مبلغ</th>
@@ -737,7 +740,7 @@
                                     <tbody>
                                         <% if (rowFactor != null) {
                                                 for (int i = 0; i < rowFactor.size(); i++) {
-                                                    String statusePaid = Factor.lbl_statuseUnPaid;
+                                                    String statusePaid = Factor.statusePardakhtNaShode;
                                                     if (rowFactor.get(i).get(Factor._statuse).toString().equals(statusePaid)) {
                                         %>
                                         <%jjCalendar_IR dateLablePaid = new jjCalendar_IR(rowFactor.get(i).get(Factor._date).toString());
@@ -753,7 +756,7 @@
                                             <td><%=dayPaid%><%=monthPaid%><%=yearPaid%></td>
                                             <td><%=rowFactor.get(i).get(Factor._totalAmount)%></td>
                                             <td><%=rowFactor.get(i).get(Factor._statuse)%></td>
-                                            <td><a href="bills.jsp?user_bills=<%=rowFactor.get(i).get(Factor._serialNumber)%>"><i class="fa fa-cog cog-table"></i></a></td>
+                                            <td><a href="bills.jsp?id=<%=rowFactor.get(i).get(Factor._id)%>"><i class="fa fa-cog cog-table"></i></a></td>
                                         </tr><%
                                                 }
                                             }
@@ -773,7 +776,7 @@
                                 <table id="example1" class="uk-table uk-table-hover uk-table-striped table-unPaid" style="width:100%;">
                                     <thead>
                                         <tr>
-                                            <th>صورت حساب</th>
+                                            <!--<th>صورت حساب</th>-->
                                             <th>شماره صورتحساب</th>
                                             <th>تاریخ صورت حساب</th>
                                             <th>مبلغ</th>
@@ -785,9 +788,9 @@
                                         <%if (rowFactor != null) {
                                                 for (int x = 0; x < rowFactor.size(); x++) {
                                                     String statuse = rowFactor.get(x).get(Factor._statuse).toString();
-                                                    String statuseUnPaid = Factor.lbl_statuseUnPaid;
+                                                    String statuseUnPaid = Factor.statusePardakhtNaShode;
                                                     if (rowFactor.get(x).get(Factor._statuse).toString().equals(statuseUnPaid)) {
-                                                        System.out.print("%$%$%$%$%$%$" + rowFactor.get(x).get(Factor._statuse).toString() + Factor.lbl_statuseUnPaid);
+                                                        System.out.print("%$%$%$%$%$%$" + rowFactor.get(x).get(Factor._statuse).toString() + Factor.statusePardakhtNaShode);
                                         %>
                                         <%      jjCalendar_IR dateLableUnPaid = new jjCalendar_IR(rowFactor.get(x).get(Factor._date).toString());
                                             String monthUnPaid = dateLableUnPaid.getMonthName();
@@ -797,12 +800,11 @@
                                             System.out.println("...........^^^^........");
                                             List<Map<String, Object>> nameProject2 = jjDatabase.separateRow(db.Select(Product.tableName, Content._id + "=" + rowFactor.get(x).get(FactorItem._productId)));%>
                                         <tr >
-                                            <td><%=rowFactor.get(x).get(Factor._discription)%></td>
                                             <td><%=rowFactor.get(x).get(Factor._serialNumber)%></td>
                                             <td><%=dayUnPaid%><%=monthUnPaid%><%=yearUnPaid%></td>
                                             <td><%=rowFactor.get(x).get(Factor._totalAmount)%></td>
                                             <td><%=rowFactor.get(x).get(Factor._statuse)%></td>
-                                            <td><a href="bills.jsp?user_bills=<%=rowFactor.get(x).get(Factor._serialNumber)%>"><i class="fa fa-cog cog-table"></i></a></td>
+                                            <td><a href="bills.jsp?id=<%=rowFactor.get(x).get(Factor._id)%>"><i class="fa fa-cog cog-table"></i></a></td>
                                         </tr><%
                                                 }
                                             }
@@ -820,7 +822,7 @@
                                     <tfoot>
                                         <tr>
                                             <th>صورت حساب</th>
-                                            <th>شماره صورتحساب</th>
+                                            <th>شماره صورتحساب1</th>
                                             <th>تاریخ صورت حساب</th>
                                             <th>مبلغ</th>
                                             <th>وضعیت</th>
@@ -832,20 +834,17 @@
                                 <table id="example1" class="uk-table uk-table-hover uk-table-striped" style="width:100%;">
                                     <thead>
                                         <tr>
-                                            <th>صورت حساب</th>
                                             <th>شماره صورتحساب</th>
-                                            <th>تاریخ صورت حساب</th>
+                                            <th>تاریخ صورتحساب</th>
                                             <th>مبلغ</th>
                                             <th>وضعیت</th>
-                                            <th>مشاهده</th>
+                                            <th>پرداخت/مشاهده</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <%if (rowFactor != null) {
                                                 for (int x = 0; x < rowFactor.size(); x++) {
-                                                    String statuse = rowFactor.get(x).get(Factor._statuse).toString();
-                                                    String statuseUnPaid = Factor.lbl_statuseUnPaid;
-                                                    System.out.print("...././.>>>>/........" + rowFactor.get(x).get(Factor._statuse).toString() + Factor.lbl_statuseUnPaid);
+                                                    System.out.print("...././.>>>>/........" + rowFactor.get(x).get(Factor._statuse).toString() + Factor.statusePardakhtNaShode);
                                         %>
                                         <%      jjCalendar_IR dateLableUnPaid = new jjCalendar_IR(rowFactor.get(x).get(Factor._date).toString());
                                             String monthUnPaid = dateLableUnPaid.getMonthName();
@@ -853,13 +852,12 @@
                                             int yearUnPaid = dateLableUnPaid.getYear();
                                             System.out.print("%$%$%$%$%$%78777");
                                             List<Map<String, Object>> nameProject2 = jjDatabase.separateRow(db.Select(Product.tableName, Product._id + "=" + rowFactor.get(x).get(FactorItem._productId)));%>
-                                        <tr >
-                                            <td><%=rowFactor.get(x).get(Factor._discription)%></td>
-                                            <td><%=rowFactor.get(x).get(Factor._serialNumber)%></td>
+                                        <tr style="<%=rowFactor.get(x).get(Factor._statuse).toString().equals(Factor.status_pardakhtShode) ? "color:green" : ""%>" >
+                                            <td><%=rowFactor.get(x).get(Factor._serialNumber).toString().isEmpty() ? ("کد" + rowFactor.get(x).get(Factor._id)) : rowFactor.get(x).get(Factor._serialNumber)%></td>
                                             <td><%=dayUnPaid%><%=monthUnPaid%><%=yearUnPaid%></td>
                                             <td><%=rowFactor.get(x).get(Factor._totalAmount)%></td>
                                             <td><%=rowFactor.get(x).get(Factor._statuse)%></td>
-                                            <td><a href="bills.jsp?user_bills=<%=rowFactor.get(x).get(Factor._serialNumber)%>"><i class="fa fa-cog cog-table"></i></a></td>
+                                            <td><a href="bills.jsp?id=<%=rowFactor.get(x).get(Factor._id)%>"><img src="template/img/Payment-icon.png" style="width: 3em" /></a></td>
                                         </tr><%
                                             }
                                         } else {
@@ -1341,25 +1339,25 @@
                                     </a>
                                 </div>
                             </div>
-                            <div menuitemname="Client Shortcuts" class="panel panel-sidebar panel-sidebar">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">
-                                        <i class="fa fa-bookmark"></i>&nbsp;          صورت حساب ها
-                                        <i class="fa fa-chevron-up panel-minimise pull-right"></i>
-                                    </h3>
-                                </div>
-                                <div class="list-group portfolio-filter">
-                                    <a menuitemname="Order New Services" data-filter=".table-paid"   class="list-group-item" id="Secondary_Sidebar-Client_Shortcuts-Order_New_Services">
-                                        &nbsp;     پرداخت شده
-                                    </a>
-                                    <a menuitemname="Register New Domain" data-filter=".table-unPaid"  class="list-group-item" id="Secondary_Sidebar-Client_Shortcuts-Register_New_Domain">
-                                        &nbsp;     پرداخت نشده
-                                    </a>
-                                    <!--                                                                                                                                                                <a menuitemname="Logout" data-filter=".table-cancle"   class="list-group-item" id="Secondary_Sidebar-Client_Shortcuts-Logout">
-                                                                                &nbsp;     لغو شده
-                                                                                </a>-->
-                                </div>
-                            </div>
+                            <!--                            <div menuitemname="Client Shortcuts" class="panel panel-sidebar panel-sidebar">
+                                                            <div class="panel-heading">
+                                                                <h3 class="panel-title">
+                                                                    <i class="fa fa-bookmark"></i>&nbsp;          صورت حساب ها
+                                                                    <i class="fa fa-chevron-up panel-minimise pull-right"></i>
+                                                                </h3>
+                                                            </div>
+                                                            <div class="list-group portfolio-filter">
+                                                                <a menuitemname="Order New Services" data-filter=".table-paid"   class="list-group-item" id="Secondary_Sidebar-Client_Shortcuts-Order_New_Services">
+                                                                    &nbsp;     پرداخت شده
+                                                                </a>
+                                                                <a menuitemname="Register New Domain" data-filter=".table-unPaid"  class="list-group-item" id="Secondary_Sidebar-Client_Shortcuts-Register_New_Domain">
+                                                                    &nbsp;     پرداخت نشده
+                                                                </a>
+                                                                                                                                                                                                        <a menuitemname="Logout" data-filter=".table-cancle"   class="list-group-item" id="Secondary_Sidebar-Client_Shortcuts-Logout">
+                                                                                                            &nbsp;     لغو شده
+                                                                                                            </a>
+                                                            </div>
+                                                        </div>-->
                             <div menuitemname="Client Shortcuts" class="panel panel-sidebar panel-sidebar">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">
@@ -1417,158 +1415,8 @@
         </div>
     </div>
     <!--end scrip-->
-    <!--start footer-->
-    <footer class="footer" style="margin-top: 10px">
-        <div class="footer-widgets">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="widget widget_text widget_info">
-                            <h4 class="widget-title">ادرس</h4>
-                            <div class="textwidget">
-                                <ul class="footer-info">
-                                    <li class="address">اصفهان<br/><br/>خیابان نیکبخت<br/>
-                                        <br/>تعاونی دادگستری اصفهان</li>
-                                    <li class="phone">تلفن:031-323652650</li>
-                                    <li class="email">Info@example.com</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="widget widget_text widget_info">
-                            <h4 class="widget-title">منو</h4>
-                            <div class="textwidget">
-                                <ul class="footer-info">
-                                    <li class="footer-home arrow"><a>صفحه اصلی</a></li>
-                                    <li class="footer-Allproject arrow"><a>درباره ما</a></li>
-                                    <li class="footer-Allproject arrow"><a>پروژه ها</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="widget widget_text widget_info">
-                            <h4 class="widget-title">خدمات</h4>
-                            <div class="textwidget">
-                                <ul class="footer-info">
-                                    <li class="footer-home arrow"><a>پرداخت ها و صورتحساب ها</a></li>
-                                    <li class="footer-about arrow"><a>پروژه ها من</a></li>
-                                    <li class="footer-Allproject arrow"><a>پروژه های شرکت</a></li>
-                                    <li class="footer-Allproject arrow"><a>پیام ها</a></li>
-                                    <li class="footer-Allproject arrow"><a>گزارش پروژه ها</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="widget widget_text widget_info">
-                            <h4 class="widget-title">تعاونی دادگستری اصفهان</h4>
-                            <div class="textwidget">
-                                <ul class="">
-                                    <li class="footer-home"><a>تعاون برای کار شایسته</a></li>
-                                    <li class="footer-about">  <div class="social-links">
-                                            <a  class="root-blue"><i class="fa fa-twitter"></i></a>
-                                            <a  class="root-blue"><i class="fa fa-facebook"></i></a>
-                                            <a  class="root-blue"><i class="fa fa-instagram"></i></a>
-                                            <a  class="root-blue"><i class="fa fa-linkedin"></i></a>
-                                            <a  class="root-blue"><i class="fa fa-skype"></i></a>
-                                        </div></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!--end footer-->
-    <div class="switcher-container">
-        <h2>
-            انتخاب رنگ<a class="sw-click">
-                <i class="fa fa-cog">
-                </i>
-            </a>
-        </h2>
-        <div class="selector-box">
-            <div class="clearfix">
-            </div>
-            <div class="sw-odd">
-                <h3>
-                    انتخاب رنگ</h3>
-                <div class="ws-colors">
-                    <a href="#color1" class="styleswitch current" id="color1">
-                        &nbsp;<span class="cl1">
-                        </span>
-                    </a>
-                    <a href="#color2" class="styleswitch" id="color2">
-                        &nbsp;<span class="cl2">
-                        </span>
-                    </a>
-                    <a href="#color3" class="styleswitch" id="color3">
-                        &nbsp;<span class="cl3">
-                        </span>
-                    </a>
-                    <a href="#color4" class="styleswitch" id="color4">
-                        &nbsp;<span class="cl4">
-                        </span>
-                    </a>
-                    <a href="#color5" class="styleswitch" id="color5">
-                        &nbsp;<span class="cl5">
-                        </span>
-                    </a>
-                    <a href="#color6" class="styleswitch" id="color6">
-                        &nbsp;<span class="cl6">
-                        </span>
-                    </a>
-                </div>
-            </div>
-            <div class="sw-even">
-                <h3>
-                    لایه بندی:</h3>
-                <a  class="sw-light">
-                    حاشیه</a>
-                <a  class="sw-dark">
-                    کامل</a>
-            </div>
-            <div class="sw-pattern pattern">
-                <h3>
-                    پس زمینه:</h3>
-                <a  class="sw-pattern" data-image="template/img/1.png">
-                    <img src="template/img/1.png" alt="image">
-                </a>
-                <a  class="sw-pattern" data-image="template/img/2.png">
-                    <img src="template/img/2.png" alt="image">
-                </a>
-                <a  class="sw-pattern" data-image="template/img/3.png">
-                    <img src="template/img/3.png" alt="image">
-                </a>
-                <a  class="sw-pattern" data-image="template/img/4.png">
-                    <img src="template/img/4.png" alt="image">
-                </a>
-                <a  class="sw-pattern" data-image="template/img/5.png">
-                    <img src="template/img/5.png" alt="image">
-                </a>
-                <a  class="sw-pattern" data-image="template/img/6.png">
-                    <img src="template/img/6.png" alt="image">
-                </a>
-                <a  class="sw-pattern" data-image="template/img/7.png">
-                    <img src="template/img/7.png" alt="image">
-                </a>
-                <a  class="sw-pattern" data-image="template/img/8.png">
-                    <img src="template/img/8.png" alt="image">
-                </a>
-                <a  class="sw-pattern" data-image="template/img/9.png">
-                    <img src="template/img/9.png" alt="image">
-                </a>
-                <a  class="sw-pattern" data-image="template/img/10.png">
-                    <img src="template/img/10.png" alt="image">
-                </a>
-            </div>
-            <div class="clearfix">
-            </div>
-        </div>
-    </div>
+    <!--start footer-->    
+    <!--end footer-->    
     <div id="site-off-canvas">
         <span class="close"></span>
         <div class="wrapper">
@@ -1584,11 +1432,14 @@
                 <h4 class="widget-title">صفحات</h4>
                 <ul>
                     <li><a href="index.jsp">صفحه اصلی</a></li>
-                    <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;">پروژه های شرکت</a></li>
+                    <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();
+                            return false;">پروژه های شرکت</a></li>
                     <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();
                             return false;">گالری</a></li>
-                    <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;">تماس با ما</a></li>
-                    <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();return false;">درباره ما</a></li>
+                    <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();
+                            return false;">تماس با ما</a></li>
+                    <li><a onclick="new jj('do=Content.sw&panel=sw&text=' + $(this).html() + '&jj=1').jjAjax2();
+                            return false;">درباره ما</a></li>
                 </ul>
             </div>
         </div>
@@ -1701,13 +1552,14 @@
                             return false;
                         }());
                         $('.portfolio-filter').on('click', function () {
+                            var selector = $(this).find("a").attr('data-filter');
                             $(".allTabs").css("display", "none");
                             $(".client-home-panels.All").css("display", "none");
-                            var selector = $(this).find("a").attr('data-filter');
                             $(selector).css("display", "block");
                             $('.portfolio-filter').removeClass('active');
                             $(this).addClass('active');
-                            $container.isotope({filter: selector});
+                            $("html, body").animate({scrollTop: $(selector).offset().top}, 500);
+//                            $container.isotope({filter: selector});
                             return false;
                         });
                         (function () {
